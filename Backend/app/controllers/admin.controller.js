@@ -46,7 +46,7 @@ exports.findAdminByCredential = (req,res) => {
                 .then(data => {
                     if(data){
                         var sqlData = data.get({plain:true})
-                        var token = jwt.sign({username: sqlData.username,adminid: sqlData.admin_id, merchantid: sqlData.merchant_id},"TestingSecret", {expiresIn: '1d'})
+                        var token = jwt.sign({username: sqlData.username,adminid: sqlData.admin_id, merchantid: sqlData.merchant_id},"TrckerTestSecret", {expiresIn: '1d'})
                         const adminsession = {
                             admin_id : sqlData.admin_id,
                             token : token,
