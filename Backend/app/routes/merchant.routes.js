@@ -14,24 +14,28 @@ module.exports = app => {
   
     // Retrieve a single Merchant with id
     router.get("/profile",adminMiddleware.isAuthenticated ,merchants.findOne);
+
   
     router.get("/branches",adminMiddleware.isAuthenticated ,branches.findAll);
 
     router.get("/products",adminMiddleware.isAuthenticated ,products.findAll);
 
-    router.get("/campaigns",adminMiddleware.isAuthenticated ,campaigns.findAllMerchant);
+    router.get("/campaign",adminMiddleware.isAuthenticated ,campaigns.findAllMerchant);
+
+    
+    router.post("/campaign/create",adminMiddleware.isAuthenticated, campaigns.createCustom);
 
     // Update a Merchant with id
-    router.put("/", adminMiddleware.isAuthenticated ,merchants.update);
+    router.put("/profile", adminMiddleware.isAuthenticated ,merchants.update);
   
     // Delete a Merchant with id
     router.delete("/:id", merchants.delete);
   
-    // Create a new Merchant
-    router.delete("/", merchants.deleteAll);
+    // // Create a new Merchant
+    // router.delete("/", merchants.deleteAll);
 
     // Create a new Merchant
     router.post("/loadData", merchants.loadData);
   
-    app.use('/api/merchant', router);
+    app.use('/merchant/', router);
   };

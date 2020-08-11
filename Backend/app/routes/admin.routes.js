@@ -6,13 +6,13 @@ module.exports = app => {
 
     var router = require("express").Router();
 
-    router.post("/", admins.create);
+    router.post("/admin/create", admins.create);
 
-    router.post("/login", admins.findAdminByCredential);
+    router.post("/auth", admins.findAdminByCredential);
 
-    router.get("/", adminMiddleware.isAuthenticated,admindetails.findOne);
+    router.get("/admin/find", adminMiddleware.isAuthenticated,admindetails.findOne);
 
     router.post("/logout", adminMiddleware.isAuthenticated, adminsessions.destroySession);
 
-    app.use('/api/admins', router);
+    app.use('/merchant/', router);
 }

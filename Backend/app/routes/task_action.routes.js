@@ -4,20 +4,20 @@ module.exports = app => {
     var router = require("express").Router();
   
     // Create a new Task Action
-    router.post("/", adminMiddleware.isAuthenticated ,task_actions.createCustom);
+    router.post("/task", adminMiddleware.isAuthenticated ,task_actions.createCustom);
   
-    // Retrieve all Task Actions
-    router.get("/",task_actions.findAll);
+    // // Retrieve all Task Actions
+    // router.get("/",task_actions.findAll);
 
     // Retrieve all Task Actions
-    router.get("/merchant",adminMiddleware.isAuthenticated,task_actions.findAllforMerchant);
+    router.get("/task",adminMiddleware.isAuthenticated,task_actions.findAllforMerchant);
 
   
     // // Retrieve a single Task Action with id
     // router.get("/", task_actions.findOne);
   
     // Update a Task Action with id
-    router.put("/", adminMiddleware.isAuthenticated, task_actions.update);
+    router.put("/task", adminMiddleware.isAuthenticated, task_actions.update);
   
     // Delete a Task Action with id
     router.delete("/", task_actions.delete);
@@ -25,5 +25,5 @@ module.exports = app => {
     // // Create a new Task Action
     // router.delete("/", task_actions.deleteAll);
   
-    app.use('/api/task_action', router);
+    app.use('/merchant/', router);
   };

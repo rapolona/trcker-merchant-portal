@@ -19,5 +19,5 @@ module.exports = app => {
     router.delete("/", adminMiddleware.isAuthenticated ,products.delete);
   
   
-    app.use('/api/product', router);
+    app.use('/merchant/product', router);
   };

@@ -20,5 +20,5 @@ module.exports = app => {
   
 
   
-    app.use('/api/branch', router);
+    app.use('/merchant/branch/', router);
   };
