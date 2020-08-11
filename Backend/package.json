@@ -23,6 +23,7 @@
     "glob": "^7.1.6",
     "jsonwebtoken": "^8.5.1",
     "mysql2": "^2.1.0",
-    "sequelize": "^6.3.4"
+    "sequelize": "^6.3.4",
+    "sequelize-fixtures": "^1.2.0"
   }
 }

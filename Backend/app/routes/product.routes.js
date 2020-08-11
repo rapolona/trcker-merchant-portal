@@ -16,10 +16,8 @@ module.exports = app => {
     router.put("/:id", products.update);
   
     // Delete a Product with id
-    router.delete("/:id", products.delete);
+    router.delete("/", adminMiddleware.isAuthenticated ,products.delete);
   
-    // Create a new Product
-    router.delete("/", products.deleteAll);
   
     app.use('/api/product', router);
   };

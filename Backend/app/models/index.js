@@ -29,6 +29,13 @@ db.merchants = require("./merchant.model.js")(sequelize, Sequelize);
 db.branches = require("./branch.model.js")(sequelize, Sequelize);
 db.products = require("./product.model.js")(sequelize, Sequelize);
 
+//Campaign Related Tables
+db.campaigns = require("./campaign.model.js")(sequelize, Sequelize);
+db.campaign_branch_associations = require("./campaign_branch_association.model.js")(sequelize, Sequelize);
+db.task_action_classifications = require("./task_action_classification.model.js")(sequelize, Sequelize);
+db.task_actions = require("./task_action.model.js")(sequelize, Sequelize);
+db.campaign_task_actions = require("./campaign_task_action.model.js")(sequelize, Sequelize);
+
 db.admins.hasOne(db.admindetails, { foreignKey: "admin_id", as:"adminDetails"});
 db.admins.hasOne(db.adminsessions, {foreignKey: "admin_id", as:"adminSessions"});
 db.merchants.hasMany(db.admins, {foreignKey: "merchant_id", as:"merchantAdmins"})
@@ -39,5 +46,24 @@ db.branches.belongsTo(db.merchants, {foreignKey: "merchant_id"});
 
 db.merchants.hasMany(db.products, {foreignKey:'merchant_id'});
 db.products.belongsTo(db.merchants, {foreignKey: "merchant_id"});
+
+//Campaign Related Associations
+db.campaigns.hasMany(db.campaign_branch_associations, {foreignKey:'campaign_id'},{ onDelete: 'cascade' });
+db.campaign_branch_associations.belongsTo(db.campaigns, {foreignKey: "campaign_id"});
+
+db.branches.hasMany(db.campaign_branch_associations, {foreignKey:'branch_id'}, { onDelete: 'cascade' });
+db.campaign_branch_associations.belongsTo(db.branches, {foreignKey: "branch_id"});
+
+db.campaigns.belongsToMany(db.branches,{through:db.campaign_branch_associations, foreignKey:'campaign_id'})
+db.branches.belongsToMany(db.campaigns,{through:db.campaign_branch_associations,foreignKey:'branch_id'})
+
+db.campaigns.hasMany(db.campaign_task_actions, {foreignKey:'campaign_id'},{ onDelete: 'cascade' });
+db.campaign_task_actions.belongsTo(db.campaigns, {foreignKey: "campaign_id"});
+
+db.task_actions.hasMany(db.campaign_task_actions, {foreignKey:'task_action_id'});
+db.campaign_task_actions.belongsTo(db.task_actions, {foreignKey: "task_action_id"});
+
+db.task_action_classifications.hasMany(db.task_actions, {foreignKey:'task_action_classification_id'});
+db.task_actions.belongsTo(db.task_action_classifications, {foreignKey: "task_action_classification_id"});
 
 module.exports = db

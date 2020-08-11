@@ -1,8 +1,8 @@
 module.exports = {
   HOST: "localhost",
-  USER: "trcker_service_user",
-  PASSWORD: "gNhp7j$N",
-  DB: "trcker_test_db",
+  USER: "tester",
+  PASSWORD: "password",
+  DB: "merchant-portal-git",
   dialect: "mysql",
   pool: {
     max: 5,

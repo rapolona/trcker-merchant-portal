@@ -16,10 +16,9 @@ module.exports = app => {
     router.put("/", branches.update);
   
     // Delete a Branch with id
-    router.delete("/:id", branches.delete);
+    router.delete("/", adminMiddleware.isAuthenticated ,branches.delete);
   
-    // Create a new Branch
-    router.delete("/", branches.deleteAll);
+
   
     app.use('/api/branch', router);
   };

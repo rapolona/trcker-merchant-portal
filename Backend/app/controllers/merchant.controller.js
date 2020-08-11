@@ -1,4 +1,5 @@
 const db = require("../models");
+const sequelize_fixtures = require('sequelize-fixtures');
 const Merchant = db.merchants;
 const Branch = db.branches;
 const Product = db.products;
@@ -144,5 +145,20 @@ exports.deleteAll = (req, res) => {
             err.message || "Some error occurred while removing all Merchants."
         });
       });
+  };
+
+  exports.loadData = (req, res) => {
+    sequelize_fixtures.loadFile('app/fixtures/merchant_data.json', db).then(function(){
+      Merchant.findAll({include: Branch, Product})
+      .then(data => {
+        res.send(data);
+      })
+      .catch(err => {
+        res.status(500).send({
+          message:
+            err.message || "Some error occurred while retrieving merchants."
+        });
+      });
+  });
   };
 

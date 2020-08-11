@@ -1,0 +1,188 @@
+[
+    {
+        "model": "merchants",
+        "data": {
+            "merchant_id": "2701d3d5-7058-442d-af6b-52c151e5459c",
+            "name": "Bench",
+            "address":"Makati City",
+            "trade_name": "Clothing and Utility",
+            "sector":"Life",
+            "business_structure":"test",
+            "authorized_representative":"Bench Bo",
+            "position":"test",
+            "contact_person":"test",
+            "contact_number":"test",
+            "email_address":"test",
+            "business_nature":"test",
+            "product_type":"test"
+            
+        }
+    },
+    {
+        "model": "merchants",
+        "data": {
+            "merchant_id": "27570d1a-2556-4e8c-931f-8fd462ee9e0e",
+            "name": "Coke",
+            "address":"Quezon City",
+            "trade_name": "Food and Beverages",
+            "sector":"Life",
+            "business_structure":"test",
+            "authorized_representative":"Jason Coke",
+            "position":"test",
+            "contact_person":"test",
+            "contact_number":"test",
+            "email_address":"test",
+            "business_nature":"test",
+            "product_type":"test"
+            
+        }
+    },
+    {
+        "model": "merchants",
+        "data": {
+            "merchant_id": "c9623ccb-1fd0-461e-903d-e73629f0c1dc",
+            "name": "Trcker",
+            "address":"Quezon City",
+            "trade_name": "Tech",
+            "sector":"Tech",
+            "business_structure":"Operations",
+            "authorized_representative":"Trcker Ops",
+            "position":"test",
+            "contact_person":"test",
+            "contact_number":"test",
+            "email_address":"test",
+            "business_nature":"test",
+            "product_type":"test"
+            
+        }
+    },
+    {
+        "model": "products",
+        "data": {
+            "product_name": "Coke 1.5L",
+            "product_price":75,
+            "merchant_id": "27570d1a-2556-4e8c-931f-8fd462ee9e0e"
+        }
+    },
+    {
+        "model": "products",
+        "data": {
+            "product_name": "Coke 500ml",
+            "product_price":35,
+            "merchant_id": "27570d1a-2556-4e8c-931f-8fd462ee9e0e"
+        }
+    },
+    {
+        "model": "products",
+        "data": {
+            "product_name": "Standard Shirt",
+            "product_price":500,
+            "merchant_id": "2701d3d5-7058-442d-af6b-52c151e5459c"
+        }
+    },
+    {
+        "model": "branches",
+        "data": {
+            "branch_id": "420742a0-e9c5-47f2-8ce8-c59df05d46d4",
+            "name": "Rustans Supermarket Makati",
+            "address":"2nd Floor, Glorietta 3, Ayala Avenue, Ayala Center, Makati, 1226 Metro Manila",
+            "city": "Makati City",
+            "latitude":"14.551726",
+            "longitude":"121.024623",
+            "photo_url":"none",
+            "merchant_id":"27570d1a-2556-4e8c-931f-8fd462ee9e0e"
+        }
+    },
+    {
+        "model": "branches",
+        "data": {
+            "branch_id": "314b97d5-9416-429e-beb6-fabfc4d096b3",
+            "name": "Savemore Berkeley",
+            "address":"Katipunan Ave, Quezon City, 1800 Metro Manila",
+            "city": "Quezon City",
+            "latitude":"14.644742",
+            "longitude":"121.074239",
+            "photo_url":"none",
+            "merchant_id":"27570d1a-2556-4e8c-931f-8fd462ee9e0e"
+        }
+    },
+    {
+        "model": "branches",
+        "data": {
+            "branch_id": "fe22e6df-5c39-455e-b191-6bc9264c7401",
+            "name": "Bench UPTC",
+            "address":"U.P Town Center, Katipunan Ave, Diliman, Quezon City, 1108 Metro Manila",
+            "city": "Quezon City",
+            "latitude":"14.649563",
+            "longitude":"121.075155",
+            "photo_url":"none",
+            "merchant_id":"2701d3d5-7058-442d-af6b-52c151e5459c"
+        }
+    },
+    {
+        "model": "task_action_classifications",
+        "data": {
+            "task_action_classification_id": "9fb15271-d0cc-45d5-b5a1-792db2a9349d",
+            "name": "Share of Shelf",
+            "description":"Learn about how much of the shelves your products occupy",
+            "task_type": "Merchandising"
+        }   
+    },
+    {
+        "model": "task_action_classifications",
+        "data": {
+            "task_action_classification_id": "59be994c-da8b-47a6-b0b9-df6068961fe5",
+            "name": "Pricing & Availability",
+            "description":"Check your product's prices and if they're available in the branch",
+            "task_type": "Merchandising"
+        }   
+    },
+    {
+        "model": "task_action_classifications",
+        "data": {
+            "task_action_classification_id": "50b34c5a-b0ff-4b19-9353-148365fe8e34",
+            "name": "Merchandising Materials",
+            "description":"Be informed what materials are being used for merchandising",
+            "task_type": "Merchandising"
+        }   
+    },
+    {
+        "model": "task_action_classifications",
+        "data": {
+            "task_action_classification_id": "5f99da91-23b9-4cc8-b3b7-363814adef95",
+            "name": "Payment Acceptance Tool",
+            "description":"What modes of payment are available in your branches",
+            "task_type": "Merchandising"
+        }   
+    },
+    {
+        "model": "task_action_classifications",
+        "data": {
+            "task_action_classification_id": "57e2c884-6cfc-4fa2-9cc8-b92f6747f535",
+            "name": "Custom",
+            "description": "Create your own Task",
+            "task_type": "Custom"
+        }   
+    },
+    {
+        "model": "task_actions",
+        "data": {
+            "task_action_id": "bde09bf6-ae9e-4181-8b99-57aa1505c732",
+            "task_action_name": "Take a picture of shelf space",
+            "task_action_description":"Make sure you get the entire shelf in frame",
+            "subject_level": "Supermarkets",
+            "task_action_classification_id": "9fb15271-d0cc-45d5-b5a1-792db2a9349d"
+        }  
+    },
+    {
+        "model": "task_actions",
+        "data": {
+            "task_action_id": "6373f6de-feda-4565-b912-6be4f7fd6f62",
+            "task_action_name": "Take a picture of menu items",
+            "task_action_description":"Look for menu items including our products and take a picture",
+            "subject_level": "Restaurants",
+            "task_action_classification_id": "9fb15271-d0cc-45d5-b5a1-792db2a9349d"
+        }  
+    }
+    
+]

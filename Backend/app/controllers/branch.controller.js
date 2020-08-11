@@ -44,7 +44,11 @@ exports.create = (req, res) => {
 exports.findAll = (req, res) => {
 
   const id = req.body.merchantid;
-  var condition = id ? { merchant_id: { [Op.eq]: `${id}` } } : null;
+  var condition = null;
+  if(req.body.merchantid){
+    condition = {merchant_id: id};
+  }
+  console.log(condition)
 
   Branch.findAll({ where: condition })
     .then(data => {
@@ -100,10 +104,11 @@ exports.update = (req, res) => {
 
 // Delete a Branch with the specified id in the request
 exports.delete = (req, res) => {
-    const id = req.params.id;
+    const id = req.body.branch_id;
+    const merchant_id = req.body.merchantid;
   
     Branch.destroy({
-      where: { id: id }
+      where: { branch_id: id, merchant_id: merchant_id }
     })
       .then(num => {
         if (num == 1) {
