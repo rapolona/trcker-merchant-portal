@@ -47,6 +47,8 @@ db.branches.belongsTo(db.merchants, {foreignKey: "merchant_id"});
 db.merchants.hasMany(db.products, {foreignKey:'merchant_id'});
 db.products.belongsTo(db.merchants, {foreignKey: "merchant_id"});
 
+db.task_tickets = require("./task_ticket.model.js")(sequelize, Sequelize);
+
 //Campaign Related Associations
 db.campaigns.hasMany(db.campaign_branch_associations, {foreignKey:'campaign_id'},{ onDelete: 'cascade' });
 db.campaign_branch_associations.belongsTo(db.campaigns, {foreignKey: "campaign_id"});
@@ -65,5 +67,7 @@ db.campaign_task_actions.belongsTo(db.task_actions, {foreignKey: "task_action_id
 
 db.task_action_classifications.hasMany(db.task_actions, {foreignKey:'task_action_classification_id'});
 db.task_actions.belongsTo(db.task_action_classifications, {foreignKey: "task_action_classification_id"});
+
+db.task_tickets.belongsTo(db.campaigns,{foreignKey:'campaign_id'});
 
 module.exports = db
