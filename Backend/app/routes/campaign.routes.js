@@ -10,20 +10,20 @@ module.exports = app => {
     router.post("/create",adminMiddleware.isAuthenticated, campaigns.createCustom);
   
     // Retrieve all Campaigns
-    router.get("/", campaigns.findAllCustom);
+    router.get("/campaign/all", campaigns.findAllCustom);
 
     // Retrieve all Campaigns
     router.get("/custom", campaigns.findAllCustom);
   
-    // Retrieve a single Campaign with id
-    router.get("/:id", campaigns.findOne);
+    // // Retrieve a single Campaign with id
+    // router.get("/:id", campaigns.findOne);
   
     // Update a Campaign with id
-    router.put("/:id", campaigns.update);
+    router.put("/campaign/update", campaigns.update);
   
     // Delete a Campaign with id
     router.delete("/", campaigns.delete);
   
   
-    app.use('/api/campaign', router);
+    app.use('/merchant/', router);
   };

@@ -71,10 +71,10 @@ exports.findOne = (req, res) => {
 
 // Update a Campaign_Task_Action by the id in the request
 exports.update = (req, res) => {
-    const id = req.body.id;
+    const task_id = req.body.campaign_task_action_id;
   
     Campaign_Task_Action.update(req.body, {
-      where: { id: id }
+      where: { campaign_task_action_id: task_id }
     })
       .then(num => {
         if (num == 1) {
@@ -96,10 +96,10 @@ exports.update = (req, res) => {
 
 // Delete a Campaign_Task_Action with the specified id in the request
 exports.delete = (req, res) => {
-    const id = req.params.id;
+    const task_id = req.body.campaign_task_action_id;
   
     Campaign_Task_Action.destroy({
-      where: { id: id }
+      where: { campaign_task_action_id: task_id }
     })
       .then(num => {
         if (num == 1) {
