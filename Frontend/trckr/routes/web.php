@@ -44,6 +44,9 @@ Route::get('/merchant/rewards', 'MerchantController@rewards');
 
 Route::get('/campaign/view ', 'CampaignController@view');
 Route::get('/campaign/create ', 'CampaignController@create');
+//Ajax for Campaign Creation
+Route::post('/campaign/create_campaign ', 'CampaignController@create_campaign');
+
 
 Route::get('/task/view ', 'TaskController@view');
 Route::get('/task/create ', 'TaskController@create');

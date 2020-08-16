@@ -36,6 +36,7 @@
                         <th style="width: 10px">#</th>
                         <th>Brand</th>
                         <th>Description</th>
+                        <th>Type</th>
                         <th style="width: 40px">Action?</th>
                     </tr>
                     </thead>

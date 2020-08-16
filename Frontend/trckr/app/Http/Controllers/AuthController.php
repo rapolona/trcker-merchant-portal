@@ -26,12 +26,23 @@ class AuthController extends Controller
     public function login_post(Request $request) {
       $email = $request->input('email');
       $password = $request->input('password');
-      
-      //$login_url = 
+
+      // mock endpoint
       $login = Http::post('https://run.mocky.io/v3/41ca8b84-277c-491a-85eb-5f9783a35af2',  [
         "username" => $email,
         "password" => $password
       ]);
+
+      //api call for tasks
+      //http://localhost:6001/merchant/task
+      /*
+      $api_endpoint = "http://localhost:6001/merchant/task";
+      $login = Http::withToken($this->$_backend_token)->gepostt($api_endpoint,  [
+        "username" => $email,
+        "password" => $password
+      ]);
+      $login = json_decode($tasks);
+      */
       
       if ($login->status() !== 200)
       {

@@ -66,6 +66,24 @@ class TicketController extends Controller
         return view('ticket.ticket', ['tickets' => $tickets]);
     }
 
+    public function single_view()
+    {
+        //payload
+        $merchant_id = "";
+        $user_id = "";
+        
+        $api_endpoint = "/merchant/ticket/all"; 
+        /*
+        $profile = Http::get($api_endpoint,  [
+        ]);
+        */
+        //mock data
+        $tickets_data = array(
+        );
+
+        return view('ticket.ticket', ['tickets' => $tickets]);
+    }
+
     //AJAX for Accept Ticket ticket.ticket.blade.php
     public function approve_ticket(Request $request)
     {

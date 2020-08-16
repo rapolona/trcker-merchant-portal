@@ -47,7 +47,7 @@
                                 <div class="form-group row">
                                     <label for="branches" class="col-sm-2 col-form-label">Branches</label>
                                     <div class="col-sm-10">
-                                    <select id="branch_select" name="branch" multiple="" class="form-control">
+                                    <select id="branch_select" name="branch[]" multiple="" class="form-control">
                                         <option>option 1</option>
                                         <option>option 2</option>
                                         <option>option 3</option>
@@ -65,7 +65,7 @@
                                     <div class="col-sm-10">
                                         <span>Select All</span>
                                         <input type="checkbox" id="input_branch_checkbox" name="branch_checkbox" value="" placeholder="">
-                                        <select id="branch_select" name="audience" multiple="" class="form-control">
+                                        <select id="branch_select" name="audience[]" multiple="" class="form-control">
                                             <option>option 1</option>
                                             <option>option 2</option>
                                             <option>option 3</option>
@@ -102,13 +102,13 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                        
+                                        @foreach ($tasks as $t)
                                         <tr>
-                                            <td>testin tasks</td>
-                                            <td> testin tasks</td>
+                                            <td> {{ $t['task_name'] }}</td>
+                                            <td> {{ $t['description'] }}</td>
                                             <td><input type="checkbox" name="" id=""> </td>
                                         </tr>
-                                        
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>
@@ -122,13 +122,6 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                        
-                                        <tr>
-                                            <td>testin selected</td>
-                                            <td> testing selected</td>
-                                            <td><input type="checkbox" name="" id=""> </td>
-                                        </tr>
-                                        
                                     </tbody>
                                 </table>
                             </div>
@@ -165,7 +158,7 @@
         
                 $.ajax({
                     type:'POST',
-                    url: "/merchant/modify_profile",
+                    url: "/campaign/create_campaign",
                     data: formData,
                     cache:false,
                     contentType: false,

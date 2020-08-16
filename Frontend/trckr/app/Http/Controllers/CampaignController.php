@@ -17,10 +17,12 @@ class CampaignController extends Controller
         $merchant_id = "";
         $user_id = "";
         
-        $api_endpoint = "/merchant/campaign/all"; 
+        //api call for campaigns
+        //http://localhost:6001/merchant/campaign
         /*
-        $profile = Http::get($api_endpoint,  [
-        ]);
+        $api_endpoint = "http://localhost:6001/merchant/campaign";
+        $campaigns = Http::withToken($this->$_backend_token)->get($api_endpoint,  []);
+        $campaigns = json_decode($campaigns);
         */
         //mock data
         $campaigns = array(
@@ -55,6 +57,54 @@ class CampaignController extends Controller
 
     public function create()
     {
-        return view('campaign.create', []);
+        //api call for tasks
+        //http://localhost:6001/merchant/task
+        /*
+        $api_endpoint = "http://localhost:6001/merchant/task";
+        $tasks = Http::withToken($this->$_backend_token)->get($api_endpoint,  []);
+        $tasks = json_decode($tasks);
+        */
+        $tasks = array(
+            array(
+                "task_name" => "Sample Task 1",
+                "description" => "Sample Description"
+            ),
+            array(
+                "task_name" => "Sample Task 2",
+                "description" => "Sample Description"
+            ),
+            array(
+                "task_name" => "Sample Task 3",
+                "description" => "Sample Description"
+            ),
+        );
+
+        return view('campaign.create', ['tasks' => $tasks]);
+    }
+
+    public function create_campaign(Request $request)
+    {
+        /*
+        request()->validate([
+            'file'  => 'required|mimes:csv,txt|max:2048',
+        ]);
+        */
+
+        $data = $request->all();
+
+        request()->validate([
+            'campaign_name' => 'required|max:50',
+            'campaign_type' => 'required',
+            'description' => '',
+            'reward' => '',
+            'duration_from' => '',
+            'duration_to' => ''
+        ]);
+
+        return Response()->json([
+            "success" => true,
+            "messaGE" => "Campaign creation successful!",
+            "file" => $data
+        ]);
     }
 }
