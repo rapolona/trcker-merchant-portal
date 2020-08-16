@@ -15,6 +15,12 @@ module.exports = (sequelize, Sequelize) => {
             key: 'merchant_id'
         }  
       },
+      campaign_name: {
+        type: Sequelize.STRING
+      },
+      campaign_description: {
+        type: Sequelize.STRING
+      },
       start_date: {
         type: Sequelize.DATE
       },

@@ -95,6 +95,8 @@ exports.createCustom = (req, res) => {
       start_date: req.body.start_date,
       end_date: req.body.end_date,
       budget: req.body.budget,
+      campaign_name: req.body.campaign_name,
+      campaign_description: req.body.campaign_description,
       audience_age_min: req.body.audience_age_min,
       audience_age_max: req.body.audience_age_max,
       audience_gender: req.body.audience_gender,
