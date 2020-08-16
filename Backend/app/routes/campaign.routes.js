@@ -22,7 +22,7 @@ module.exports = app => {
     router.put("/campaign/update", campaigns.update);
   
     // Delete a Campaign with id
-    router.delete("/", campaigns.delete);
+    router.delete("/campaign",adminMiddleware.isAuthenticated ,campaigns.delete);
   
   
     app.use('/merchant/', router);

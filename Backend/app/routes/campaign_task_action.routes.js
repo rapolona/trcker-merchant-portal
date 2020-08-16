@@ -3,8 +3,8 @@ module.exports = app => {
     const adminMiddleware = require("../middlewares/admin.middleware.js")
     var router = require("express").Router();
   
-    // // Create a new Campaign Task Action
-    // router.post("/", adminMiddleware.isAuthenticated, campaign_task_actions.create);
+    // Create a new Campaign Task Action
+    router.post("/campaign/task", adminMiddleware.isAuthenticated, campaign_task_actions.create);
   
     // // Retrieve all Campaign Task Actions. 
     // router.get("/", campaign_task_actions.findAll);
