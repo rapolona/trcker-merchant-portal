@@ -94,6 +94,7 @@ exports.createCustom = (req, res) => {
       merchant_id: req.body.merchantid,
       start_date: req.body.start_date,
       end_date: req.body.end_date,
+      budget: req.body.budget,
       audience_age_min: req.body.audience_age_min,
       audience_age_max: req.body.audience_age_max,
       audience_gender: req.body.audience_gender,

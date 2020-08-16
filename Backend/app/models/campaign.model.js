@@ -33,6 +33,9 @@ module.exports = (sequelize, Sequelize) => {
       allowed_account_level: {
         type: Sequelize.STRING
       },
+      budget: {
+        type: Sequelize.FLOAT
+      },
       super_shoppers: {
         type: Sequelize.BOOLEAN
       },
