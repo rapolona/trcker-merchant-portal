@@ -38,29 +38,10 @@
         }
     },
     {
-        "model": "merchants",
-        "data": {
-            "merchant_id": "c9623ccb-1fd0-461e-903d-e73629f0c1dc",
-            "name": "Trcker",
-            "address":"Quezon City",
-            "trade_name": "Tech",
-            "sector":"Tech",
-            "business_structure":"Operations",
-            "authorized_representative":"Trcker Ops",
-            "position":"test",
-            "contact_person":"test",
-            "contact_number":"test",
-            "email_address":"test",
-            "business_nature":"test",
-            "product_type":"test"
-            
-        }
-    },
-    {
         "model": "products",
         "data": {
             "product_name": "Coke 1.5L",
-            "product_price":75,
+            "product_description":"1.5l bottle of Coke",
             "merchant_id": "27570d1a-2556-4e8c-931f-8fd462ee9e0e"
         }
     },
@@ -68,7 +49,7 @@
         "model": "products",
         "data": {
             "product_name": "Coke 500ml",
-            "product_price":35,
+            "product_description":"500ml bottle of Coke",
             "merchant_id": "27570d1a-2556-4e8c-931f-8fd462ee9e0e"
         }
     },
@@ -76,7 +57,7 @@
         "model": "products",
         "data": {
             "product_name": "Standard Shirt",
-            "product_price":500,
+            "product_description":"Simple and timeless shirt",
             "merchant_id": "2701d3d5-7058-442d-af6b-52c151e5459c"
         }
     },

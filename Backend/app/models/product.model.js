@@ -12,8 +12,9 @@ module.exports = (sequelize, Sequelize) => {
         unique:true,
         allowNull: false
       },
-      product_price: {
-        type: Sequelize.FLOAT
+      product_description: {
+        type: Sequelize.STRING,
+        allowNull: false
       },
       merchant_id: {
         type: DataTypes.UUID,
