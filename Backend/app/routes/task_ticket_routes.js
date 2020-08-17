@@ -6,5 +6,5 @@ module.exports = app => {
     router.put("/approve", adminMiddleware.isAuthenticated, task_tickets.approve);
     router.put("/reject", adminMiddleware.isAuthenticated, task_tickets.reject);
   
-    app.use('/api/task_ticket', router);
+    app.use('/merchant', router);
   };
