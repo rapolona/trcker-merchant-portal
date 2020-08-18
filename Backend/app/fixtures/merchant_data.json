@@ -149,9 +149,11 @@
         "model": "task_actions",
         "data": {
             "task_action_id": "bde09bf6-ae9e-4181-8b99-57aa1505c732",
-            "task_action_name": "Take a picture of shelf space",
-            "task_action_description":"Make sure you get the entire shelf in frame",
-            "subject_level": "Supermarkets",
+            "task_action_name": "Main Shelf Check",
+            "task_action_description":"Please upload image of the main shelf of the [category]",
+            "subject_level": "Category",
+            "data_source": "Upload Image",
+            "data_type": "image",
             "task_action_classification_id": "9fb15271-d0cc-45d5-b5a1-792db2a9349d"
         }  
     },
@@ -159,9 +161,11 @@
         "model": "task_actions",
         "data": {
             "task_action_id": "6373f6de-feda-4565-b912-6be4f7fd6f62",
-            "task_action_name": "Take a picture of menu items",
-            "task_action_description":"Look for menu items including our products and take a picture",
-            "subject_level": "Restaurants",
+            "task_action_name": "Merchandiser Check",
+            "task_action_description":"What product did the merchandiser recommed?",
+            "subject_level": "SKU",
+            "data_source": "Choose all that apply",
+            "data_type": "text",
             "task_action_classification_id": "9fb15271-d0cc-45d5-b5a1-792db2a9349d"
         }  
     }

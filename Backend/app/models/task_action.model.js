@@ -8,7 +8,7 @@ module.exports = (sequelize, Sequelize) => {
         unique:true
       },
       task_action_name: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(64),
         unique:true,
         allowNull: false
       },
@@ -16,7 +16,13 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.STRING
       },
       subject_level: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING(64)
+      },
+      data_type: {
+        type: Sequelize.STRING(64)
+      },
+      data_source: {
+        type: Sequelize.STRING(64)
       },
       merchant_id: {
         type: DataTypes.UUID,

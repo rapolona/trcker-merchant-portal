@@ -53,8 +53,10 @@ exports.createCustom = (req, res) => {
       task_action_name: req.body.task_action_name,
       task_action_description: req.body.task_action_description,
       subject_level: req.body.subject_level,
+      data_type: req.body.data_type,
+      data_source: req.body.data_source,
       merchant_id: req.body.merchantid,
-      task_action_classification_id: "57e2c884-6cfc-4fa2-9cc8-b92f6747f535"
+      task_action_classification_id: "57e2c884-6cfc-4fa2-9cc8-b92f6747f535" //Id for custom task
     };
 
     console.log(task_action)

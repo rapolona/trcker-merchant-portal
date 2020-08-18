@@ -48,6 +48,9 @@ exports.create = (req, res) => {
         merchant_id: req.body.merchantid,
         start_date: req.body.start_date,
         end_date: req.body.end_date,
+        campaign_name: req.body.campaign_name,
+        campaign_description: req.body.campaign_description,
+        budget: req.body.budget,
         audience_age_min: req.body.audience_age_min,
         audience_age_max: req.body.audience_age_max,
         audience_gender: req.body.audience_gender,
@@ -112,7 +115,9 @@ exports.createCustom = (req, res) => {
       campaign_branch_associations: branches_container,
       campaign_reward: req.body.reward
   };
-
+  if(campaign.allow_everyone){
+    campaign.allowed_account_level='any'
+  }
 
   console.log(campaign)
 
