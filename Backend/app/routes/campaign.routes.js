@@ -4,7 +4,7 @@ module.exports = app => {
     var router = require("express").Router();
   
     // Create a new Campaign
-    router.post("/", adminMiddleware.isAuthenticated, campaigns.create);
+    //router.post("/", adminMiddleware.isAuthenticated, campaigns.create);
 
     // Create a new Campaign this is WIP developing campaigns, branches, and campaign task actions in one go
     router.post("/create",adminMiddleware.isAuthenticated, campaigns.createCustom);
