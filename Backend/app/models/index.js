@@ -35,6 +35,7 @@ db.campaign_branch_associations = require("./campaign_branch_association.model.j
 db.task_action_classifications = require("./task_action_classification.model.js")(sequelize, Sequelize);
 db.task_actions = require("./task_action.model.js")(sequelize, Sequelize);
 db.campaign_task_actions = require("./campaign_task_action.model.js")(sequelize, Sequelize);
+db.campaign_task_action_choices = require("./campaign_task_action_choices.model.js")(sequelize, Sequelize);
 
 db.admins.hasOne(db.admindetails, { foreignKey: "admin_id", as:"adminDetails"});
 db.admins.hasOne(db.adminsessions, {foreignKey: "admin_id", as:"adminSessions"});
@@ -64,6 +65,7 @@ db.campaign_task_actions.belongsTo(db.campaigns, {foreignKey: "campaign_id"});
 
 db.task_actions.hasMany(db.campaign_task_actions, {foreignKey:'task_action_id'});
 db.campaign_task_actions.belongsTo(db.task_actions, {foreignKey: "task_action_id"});
+db.campaign_task_actions.hasMany(db.campaign_task_action_choices, {foreignKey: "campaign_task_action_id"})
 
 db.task_action_classifications.hasMany(db.task_actions, {foreignKey:'task_action_classification_id'});
 db.task_actions.belongsTo(db.task_action_classifications, {foreignKey: "task_action_classification_id"});
