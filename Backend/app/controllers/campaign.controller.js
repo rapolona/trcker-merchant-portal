@@ -4,6 +4,7 @@ const { branches } = require("../models");
 const Campaign = db.campaigns;
 const Branch = db.branches;
 const Campaign_Task_Action = db.campaign_task_actions;
+const Campaign_Task_Action_Choices = db.campaign_task_action_choices;
 const Campaign_Branch_Association = db.campaign_branch_associations;
 const Campaign_Reward = db.campaign_rewards;
 const Task_Ticket = db.task_tickets;
