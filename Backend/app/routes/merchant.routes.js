@@ -3,6 +3,7 @@ module.exports = app => {
     const branches = require("../controllers/branch.controller.js");
     const products = require("../controllers/product.controller.js");
     const campaigns = require("../controllers/campaign.controller.js");
+
     const adminMiddleware = require("../middlewares/admin.middleware.js")
     var router = require("express").Router();
 
@@ -36,6 +37,10 @@ module.exports = app => {
 
     // Create a new Merchant
     router.post("/loadData", merchants.loadData);
+
+    router.get("/dashboard/activecampaign", adminMiddleware.isAuthenticated, campaigns.getActiveCampaigns);
+
+    router.get("/dashboard/totalrespondents", adminMiddleware.isAuthenticated, campaigns.countRespondents);
   
     app.use('/merchant/', router);
   };

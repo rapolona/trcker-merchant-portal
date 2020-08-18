@@ -6,6 +6,7 @@ const Branch = db.branches;
 const Campaign_Task_Action = db.campaign_task_actions;
 const Campaign_Branch_Association = db.campaign_branch_associations;
 const Campaign_Reward = db.campaign_rewards;
+const Task_Ticket = db.task_tickets;
 const Op = db.Sequelize.Op;
 
 
@@ -269,3 +270,33 @@ exports.deleteAll = (req, res) => {
       });
   };
 
+
+  exports.countRespondents = (req,res) => {
+    Task_Ticket.findAll({include:[{model:Campaign, where:{merchant_id: req.body.merchantid}, attributes:[]}],group:['campaign_id'], attributes:[
+      [db.Sequelize.fn("COUNT", "user_id"), "respondents"], 'campaign_id'
+    ]})
+    .then(data => {
+      res.send(data)
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while counting respondents"
+      });
+    })
+  }
+
+  exports.getActiveCampaigns = (req,res) => {
+    const merchantId = req.body.merchantid;
+  
+    Campaign.findAll({where: {merchant_id: merchantId, status: 1}, raw:true,attributes:[[db.Sequelize.fn('COUNT','campaign_id'), "active_campaigns"]]})
+    .then(data => {
+      res.send(data)
+    })
+    .catch(err=>{
+      res.status(500).send({
+        message:
+          err.message || "Error counting campaign"
+      });
+    })
+  }
