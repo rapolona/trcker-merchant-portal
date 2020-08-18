@@ -4,7 +4,9 @@ const { branches } = require("../models");
 const Campaign = db.campaigns;
 const Branch = db.branches;
 const Campaign_Task_Action = db.campaign_task_actions;
+const Campaign_Task_Action_Choices = db.campaign_task_action_choices;
 const Campaign_Branch_Association = db.campaign_branch_associations;
+const Campaign_Reward = db.campaign_rewards;
 const Task_Ticket = db.task_tickets;
 const Op = db.Sequelize.Op;
 
@@ -107,14 +109,19 @@ exports.createCustom = (req, res) => {
       status: req.body.status,
       task_type: req.body.task_type,
       campaign_task_actions: campaign_task_actions_container,
-      campaign_branch_associations: branches_container
+      campaign_branch_associations: branches_container,
+      campaign_reward: req.body.reward
   };
 
 
   console.log(campaign)
 
   //Save Campaign in the database
-  Campaign.create(campaign, {include: [{model:Campaign_Task_Action, as:"campaign_task_actions"},{model:Campaign_Branch_Association, as:"campaign_branch_associations"}]})
+  Campaign.create(campaign, {include: [
+    {model:Campaign_Task_Action, as:"campaign_task_actions", include:[{model:Campaign_Task_Action_Choices}]},
+    {model:Campaign_Branch_Association, as:"campaign_branch_associations"},
+    {model:Campaign_Reward, as:"campaign_reward"}
+  ]})
     .then(data => {
       res.send(data);
     })
