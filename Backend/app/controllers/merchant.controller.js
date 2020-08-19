@@ -107,10 +107,10 @@ exports.update = (req, res) => {
 
 // Delete a Merchant with the specified id in the request
 exports.delete = (req, res) => {
-    const id = req.params.id;
+    const id = req.body.merchant_id;
   
     Merchant.destroy({
-      where: { id: id }
+      where: { merchant_id: id }
     })
       .then(num => {
         if (num == 1) {
