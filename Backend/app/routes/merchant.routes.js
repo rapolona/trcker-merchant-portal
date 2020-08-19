@@ -30,7 +30,7 @@ module.exports = app => {
     router.put("/profile", adminMiddleware.isAuthenticated ,merchants.update);
   
     // Delete a Merchant with id
-    router.delete("/delete", merchants.delete);
+    //router.delete("/delete", merchants.delete);
   
     // // Create a new Merchant
     // router.delete("/", merchants.deleteAll);
