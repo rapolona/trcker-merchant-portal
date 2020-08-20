@@ -63,6 +63,7 @@ Route::get('/campaign/campaign_type/task ', 'CampaignController@campaign_type');
 
 Route::get('/task/view ', 'TaskController@view');
 Route::get('/task/create ', 'TaskController@create');
+Route::post('/task/create ', 'TaskController@create_task');
 
 /*
 Route::get('/file', 'FileController@index');

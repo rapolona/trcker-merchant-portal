@@ -425,6 +425,21 @@ return [
                 ],
             ],
         ],
+        'DateRangePicker' => [
+            'active' => false,
+            'files' => [
+                [
+                    'type' => 'js',
+                    'asset' => false,
+                    'location' => '//cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/3.0.5/daterangepicker.min.js',
+                ],
+                [
+                    'type' => 'css',
+                    'asset' => false,
+                    'location' => '//cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/3.0.5/daterangepicker.css',
+                ],
+            ],
+        ],
         'Chartjs' => [
             'active' => false,
             'files' => [
@@ -460,5 +475,20 @@ return [
                 ],
             ],
         ],
+        'JqueryUI' => [
+            'active' => false,
+            'files' => [
+                [
+                    'type' => 'css',
+                    'asset' => false,
+                    'location' => '//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => false,
+                    'location' => '//code.jquery.com/ui/1.12.0/jquery-ui.js',
+                ],
+            ]
+        ]
     ],
 ];

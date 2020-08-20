@@ -69,17 +69,21 @@
         
                 $.ajax({
                     type:'POST',
-                    url: "/merchant/users/upload",
+                    url: "/#",
                     data: formData,
                     cache:false,
                     contentType: false,
                     processData: false,
                     success: (data) => {
-                        this.reset();
-                        console.log(data);
+                        $(".modal-title").text("xxx Successful!");
+                        $(".modal-body").html("<p>" + data.message + "</p>");
+                        $("#myModal").modal('show');
                     },
                     error: function(data){
-                        console.log(data);
+                        $(".modal-title").text("xxx Failed!");
+                        $(".modal-body").html("<p>" + data.responseText + "</p>");
+                        //$(".modal-body").html("<p>" + data.message + "</p>");
+                        $("#myModal").modal('show');
                     }
                 });
             });

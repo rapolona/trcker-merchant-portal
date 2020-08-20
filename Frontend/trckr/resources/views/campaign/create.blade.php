@@ -7,6 +7,9 @@
 @stop
 
 @section('content')
+@section('plugins.Select2', true)
+@section('plugins.DateRangePicker', true)
+@section('plugins.JqueryUI', true)
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -93,8 +96,8 @@
                                     <div class="form-group row">
                                         <label for="duration" class="col-sm-2 col-form-label">Duration</label>
                                         <div class="col-sm-10">
-                                            <input type="text" class="form-control" id="input_start_date" name="start_date" value="" placeholder="Enter Duration From">
-                                            <input type="text" class="form-control" id="input_end_date" name="end_date" value="" placeholder="Enter Duration To">                                    
+                                            <input type="text" class="form-control date" id="input_start_date" name="start_date" value="" placeholder="Enter Duration From">
+                                            <input type="text" class="form-control date" id="input_end_date" name="end_date" value="" placeholder="Enter Duration To">                                    
                                         </div>
                                     </div>
                                 </div>
@@ -168,7 +171,10 @@
 
 @section('js')
     <script type="text/javascript">
+        $('.date').datepicker({ dateFormat: 'yy-mm-dd' });
         $(document).ready(function (e) { 
+            $('.select2').select2();
+
             $("#input_audience_checkbox").click(function(){
                 var isChecked= $(this).is(':checked');
 
