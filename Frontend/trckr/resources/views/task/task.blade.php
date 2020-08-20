@@ -75,7 +75,6 @@
                     processData: false,
                     success: (data) => {
                         this.reset();
-                        alert('File has been uploaded successfully');
                         console.log(data);
                     },
                     error: function(data){

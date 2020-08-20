@@ -125,7 +125,7 @@ class ProductController extends Controller
         $products = json_decode($response);
 
         $count = 0;
-        //var_dump($products);exit;
+
         foreach ($products as &$p)
         {
             $p->no = $count+1;

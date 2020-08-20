@@ -56,8 +56,6 @@
                             </tr>
                             </thead>
                             <tbody>
-                                @php var_dump($tickets);
-                                @endphp
                                 @foreach ($tickets as $t)
                             <tr>
                                 <td> {{ $t->trckr_username }}</td>

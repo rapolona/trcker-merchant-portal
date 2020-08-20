@@ -128,7 +128,6 @@
         
         $(document).ready(function (e) { 
             $('#modify_merchant').submit(function(e) {
-                alert(1);
                 e.preventDefault();
 
                 var formData = new FormData(this);
@@ -146,7 +145,6 @@
                         $("#myModal").modal('show');
                     },
                     error: function(data){
-                        alert(JSON.stringify(data));
                         $(".modal-title").text("Failed to Update Merchant Information");
                         $(".modal-body").html("<p>" + data.responseText + "</p>");
                         $("#myModal").modal('show');

@@ -57,7 +57,7 @@
         
         $(document).ready(function (e) { 
             $('#modify_merchant').submit(function(e) {
-                alert(1);
+
                 e.preventDefault();
 
                 var formData = new FormData(this);

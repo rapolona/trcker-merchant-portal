@@ -9,19 +9,18 @@
 @section('content')
     <p>View Rewards</p>
     <div class="row">
-        <div class="col col-lg-9">
-        </div>      
-        <div class="col col-lg-3">
-            <form method="POST" enctype="multipart/form-data" id="" action="javascript:void(0)" >
-                <input type="hidden" name="_token" value="{{ csrf_token() }}">                    
-                <button type="submit" class="btn btn-block btn-primary btn-lg pull-right">Prefund Wallet</button>  
-            </form>
-        </div>
-    </div>
-    <div class="row">
         <div class="col col-lg-12">
             <div class="card" style="width:100%">
-                <!-- /.card-header -->
+                <div class="card-header">
+                    <form method="POST" enctype="multipart/form-data" id="file_upload" action="javascript:void(0)" >
+                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                        <input type="file" name="file" id="file" style="display:none">                
+
+                        <div class="btn-group float-lg-right" role="group" aria-label="Basic example">
+                            <button type="button" class="btn btn-primary btn-lg">Prefund Wallet</button>
+                        </div>
+                    </form>
+                </div>
                 <table class="table table-bordered">
                     <thead>                  
                     <tr>

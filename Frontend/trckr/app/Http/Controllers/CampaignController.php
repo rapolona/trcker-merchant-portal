@@ -72,7 +72,7 @@ class CampaignController extends Controller
 
         $session = $request->session()->get('session_merchant');
         $token = $session->token;
-        var_dump($token);
+
         $response = Http::withToken($token)->get($api_endpoint, []);
 
         if ($response->status() !== 200)
@@ -80,10 +80,6 @@ class CampaignController extends Controller
             //provide handling for failed campaign type retrieval
             return redirect('/dashboard');
         }
-
-        echo "<pre>";
-        var_dump($response->body());
-        echo "</pre>";
 
         $campaign_type = json_decode($response->body());
 
@@ -103,7 +99,7 @@ class CampaignController extends Controller
         #get task_classification_id of custom task
         $custom_task_action_classification_id = "";
         foreach($campaign_type as $k) {
-            var_dump($k);
+
             if ($k->task_type == "Custom") {
                 //var_dump($k);exit;
                 $custom_task_action_classification_id = $k->task_action_classification_id;

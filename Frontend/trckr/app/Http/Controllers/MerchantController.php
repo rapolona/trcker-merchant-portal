@@ -23,29 +23,9 @@ class MerchantController extends Controller
 
     public function debug(Request $request)
     {
-        $api_endpoint = Config::get('trckr.backend_url') . "merchant/branch";
-
-        $branches = array(
-            'name' => 'name10',
-            'address' => 'address1',
-            'city' => 'city1',
-            'longitude' => '123',
-            'latitude' => '456'
-        );
-
         $session = $request->session()->get('session_merchant');
         $token = $session->token;
         var_dump($token);
-        
-        $count = 1;
-        $debug = array();
-        $response = Http::withToken($token)->post($api_endpoint, $branches);
-
-        var_dump($api_endpoint);
-        echo "<pre>";
-        var_dump($response->body());
-        echo "</pre>";
-        var_dump($response->status());
     }
 
     public function view_profile(Request $request)
@@ -61,7 +41,7 @@ class MerchantController extends Controller
 
         $session = $request->session()->get('session_merchant');
         $token = $session->token;
-        var_dump($token);
+
         $response = Http::withToken($token)->get($api_endpoint, []);
         
         if ($response->status() !== 200)
@@ -71,8 +51,6 @@ class MerchantController extends Controller
         }
 
         $profile = json_decode($response);
-        
-        var_dump($profile);
 
         return view('merchant.merchant', ['profile' => $profile]);
     }

@@ -84,7 +84,6 @@
             $('#edit').click(function(e){
                 var products = [];
                 $.each($("input[name='product']:checked"), function(){
-                    alert($(this).attr("id"));
                     products.push($(this).attr("id"));
                 });
                 if (products.length != 1){

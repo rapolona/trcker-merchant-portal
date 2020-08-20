@@ -223,7 +223,6 @@
                     contentType: false,
                     processData: false,
                     success: (data) => {
-                        alert(123);
                         $(".modal-title").text("Campaign Creation Successful!");
                         $(".modal-body").html("<p>" + data.message + "</p>");
                         $("#myModal").modal('show');

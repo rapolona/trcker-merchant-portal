@@ -90,7 +90,6 @@
             $('#edit').click(function(e){
                 var branches = [];
                 $.each($("input[name='branch']:checked"), function(){
-                    alert($(this).attr("id"));
                     branches.push($(this).attr("id"));
                 });
 

@@ -115,7 +115,7 @@ class BranchController extends Controller
 
         $session = $request->session()->get('session_merchant');
         $token = $session->token;
-        var_dump($token);
+
         $response = Http::withToken($token)->get($api_endpoint, []);
         
         if ($response->status() !== 200)
