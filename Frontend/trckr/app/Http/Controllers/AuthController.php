@@ -28,8 +28,8 @@ class AuthController extends Controller
         $password = $request->input('password');
 
         //hardcode credentials
-        $email = "cokeadmin";
-        $password = "password";
+        //$email = "cokeadmin";
+        //$password = "password";
 
         //api call for login
         //http://localhost:6001/merchant/auth       
