@@ -42,12 +42,13 @@
                     <tbody>
                     @foreach ($campaigns as $c)
                     <tr>
-                        <td> {{ $c['no'] }}</td>
-                        <td> {{ $c['campaign_name'] }}</td>
-                        <td> {{ $c['budget'] }}</td>
-                        <td> {{ $c['duration'] }}</td>
-                        <td> {{ $c['status'] }}</td>
-                        <td><input type="checkbox" name="{{ $c['no'] }}" id="{{ $c['no'] }}" {{($c['action'] === 1 ? 'checked' : '') }}> </td>
+                        <input type="hidden" name="row_campaign_id[]" value="{{ $c->campaign_id}}"/>
+                        <td> {{ $c->no }}</td>
+                        <td> {{ $c->campaign_name }}</td>
+                        <td> {{ $c->budget }}</td>
+                        <td> {{ $c->duration }}</td>
+                        <td> {{ $c->status }}</td>
+                        <td><input type="checkbox" name="campaigns[]" id="campaigns[]" value="{{$c->campaign_id}}"></td>
                     </tr>
                     @endforeach
                     </tbody>
@@ -72,7 +73,7 @@
         
                 $.ajax({
                     type:'POST',
-                    url: "/merchant/products/upload",
+                    url: "/campaign/create_campaign",
                     data: formData,
                     cache:false,
                     contentType: false,

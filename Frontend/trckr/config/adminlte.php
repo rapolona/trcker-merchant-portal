@@ -268,13 +268,13 @@ return [
         [
             'icon_color' => 'orange',
             'text' => 'Products',
-            'url'  => 'merchant/products',
+            'url'  => 'merchant/product',
             'icon' => 'fas fa-fw fa-user',
         ],
         [
             'icon_color' => 'orange',
             'text' => 'Branches',
-            'url'  => 'merchant/branches',
+            'url'  => 'merchant/branch',
             'icon' => 'fas fa-fw fa-user',
         ],
         [

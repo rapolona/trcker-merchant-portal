@@ -7,8 +7,23 @@
 @stop
 
 @section('content')
-    <p>View Merchant Information</p>
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            <div class="modal-header" style="display:auto;">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Modal title</h4>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 
+    <p>View Merchant Information</p>
     <div class="row">
         <div class="col col-lg-12" >
             <div class="card">
@@ -20,13 +35,13 @@
                                 <div class="form-group row">
                                     <label for="company_name" class="col-sm-2 col-form-label">Company Name</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="input_company_name" name="company_name" value="{{( ! empty($profile->name) ? $profile->name : '')}}" placeholder="Enter Company Name">
+                                        <input type="text" class="form-control" id="input_name" name="name" value="{{( ! empty($profile->name) ? $profile->name : '')}}" placeholder="Enter Company Name">
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label for="company_address" class="col-sm-2 col-form-label">Company Address</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="input_company_address" name="company_address" value="{{( ! empty($profile->address) ? $profile->address : '')}}" placeholder="Enter Company Address">
+                                        <input type="text" class="form-control" id="input_address" name="address" value="{{( ! empty($profile->address) ? $profile->address : '')}}" placeholder="Enter Company Address">
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -66,7 +81,7 @@
                                 <div class="form-group row">
                                     <label for="representative" class="col-sm-3 col-form-label">Authorized Representative</label>
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control" id="input_representative" name="representative" value="{{( ! empty($profile->authorized_representative) ? $profile->authorized_representative : '')}}"placeholder="Enter Authorized Representative">
+                                        <input type="text" class="form-control" id="input_authorized_representative" name="authorized_representative" value="{{( ! empty($profile->authorized_representative) ? $profile->authorized_representative : '')}}"placeholder="Enter Authorized Representative">
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -126,11 +141,15 @@
                     contentType: false,
                     processData: false,
                     success: (data) => {
-                        this.reset();
-                        console.log(data);
+                        $(".modal-title").text("Update Merchant Information Successful");
+                        $(".modal-body").html("<p>" + data.message + "</p>");
+                        $("#myModal").modal('show');
                     },
                     error: function(data){
-                        console.log(data);
+                        alert(JSON.stringify(data));
+                        $(".modal-title").text("Failed to Update Merchant Information");
+                        $(".modal-body").html("<p>" + data.responseText + "</p>");
+                        $("#myModal").modal('show');
                     }
                 });
             });
