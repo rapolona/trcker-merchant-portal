@@ -36,7 +36,8 @@ exports.create = (req,res) => {
 exports.findAdminByCredential = (req,res) => {
     Admin.findOne({where: {username: req.body.username}, attributes:['password_salt']})
         .then(data => {
-            req.body.salt = data.get({plain:true}).password_salt
+            if(data){
+                req.body.salt = data.get({plain:true}).password_salt
             PasswordUtils.hash(req.body, (passwordObject) => {
                 const attempt = {
                     username : req.body.username,
@@ -98,6 +99,13 @@ exports.findAdminByCredential = (req,res) => {
                     });
                 })   
             })
+            } 
+            else{
+                res.status(500).send({
+                    message:
+                        "User was not found in the system"
+                });
+            }           
         })
         .catch(err => {
             res.status(500).send({

@@ -5,6 +5,7 @@ module.exports = app => {
 
     router.put("/approve", adminMiddleware.isAuthenticated, task_tickets.approve);
     router.put("/reject", adminMiddleware.isAuthenticated, task_tickets.reject);
-  
+    router.get("/tasktickets", adminMiddleware.isAuthenticated,task_tickets.findTicketsByUser);
+    router.get("/usertickets", adminMiddleware.isAuthenticated,task_tickets.findTicketsOfUser);
     app.use('/merchant', router);
   };
