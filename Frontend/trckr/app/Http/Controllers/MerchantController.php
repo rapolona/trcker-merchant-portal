@@ -43,6 +43,7 @@ class MerchantController extends Controller
         $token = $session->token;
 
         $response = Http::withToken($token)->get($api_endpoint, []);
+        var_dump($response->body());
         
         if ($response->status() !== 200)
         {

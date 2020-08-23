@@ -111,7 +111,7 @@ class BranchController extends Controller
         //api call for bramches
         //http://localhost:6001/merchant/branches
 
-        $api_endpoint = Config::get('trckr.backend_url') . "merchant/branch";
+        $api_endpoint = Config::get('trckr.backend_url') . "merchant/branches";
 
         $session = $request->session()->get('session_merchant');
         $token = $session->token;

@@ -64,7 +64,7 @@ class ProductController extends Controller
                 );
             }
 
-            $api_endpoint = Config::get('trckr.backend_url') . "merchant/product";
+            $api_endpoint = Config::get('trckr.backend_url') . "merchant/products";
             $session = $request->session()->get('session_merchant');
             $token = $session->token;
             
