@@ -124,7 +124,7 @@
          "subject_level": "Brand-Category" ,
          "data_type": "Text",
          "data_source": "Single Select Dropdown",
-         "task_action_classification_id": "9fb15271-d0cc-45d5-b5a1-792db2a9349d" 
+         "task_action_classification_id": "ae21e0db-43f6-4606-8c6e-8394c7a3ed26" 
          }
     },
     {
@@ -201,7 +201,7 @@
          "subject_level": "Category" ,
          "data_type": "Integer",
          "data_source": "INTEGER",
-         "task_action_classification_id": "9fb15271-d0cc-45d5-b5a1-792db2a9349d" 
+         "task_action_classification_id": "faa4fe08-2ec9-4d76-87fa-44bbfb9cc5be"
          }
     },
     {
