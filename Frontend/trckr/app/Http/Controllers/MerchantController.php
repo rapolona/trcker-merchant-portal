@@ -29,11 +29,7 @@ class MerchantController extends Controller
     }
 
     public function view_profile(Request $request)
-    {
-        //payload
-        $merchant_id = "";
-        $user_id = "";
-        
+    {        
         //api call for merchant information - no api endpoint yet
         //http://localhost:6001/merchant/profile
 
@@ -43,12 +39,20 @@ class MerchantController extends Controller
         $token = $session->token;
 
         $response = Http::withToken($token)->get($api_endpoint, []);
-        var_dump($response->body());
         
         if ($response->status() !== 200)
         {
-            //provide handling for failed merchant profile retrieval
-            return redirect('/dashboard');
+            //unauthorized request
+            if ($response->status() === 403) {
+                $validator = Validator::make($request->all(), []);
+                $validator->getMessageBag()->add('email', "Session Expired. Please login again. {$response->body()}");
+            
+                return redirect('/')
+                    ->withErrors($validator)
+                    ->withInput();      
+            }
+            
+            //else
         }
 
         $profile = json_decode($response);
@@ -60,6 +64,33 @@ class MerchantController extends Controller
     {
         //TODO: Field validation, will throw error on hit as response
         $data = (array) $request->all();
+
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|max:64',
+            'address' => 'required|max:64',
+            'trade_name' => 'required|max:64',
+            'authorized_representative' => 'required|max:64',
+            'contact_number' => 'required|numeric|digits_between:1,64',
+            'email_address' => 'required|email'
+        ]);
+
+        if ($validator->fails())
+        {
+            $error_string = "<b>Fields with Errors</b><br/>";
+            foreach ($validator->errors()->messages() as $k => $v)
+            {
+                $error_string .= "{$k}: <br/>";
+                foreach ($v as $l)
+                    $error_string .= "{$l}<br/>";
+            }
+
+            return Response()->json([
+                "success" => false,
+                "message" => $error_string,
+                "file" => $data,
+            ], 422);
+        }
+        //var_dump($validator);exit;
 
         $api_endpoint = Config::get('trckr.backend_url') . "merchant/profile";
 
@@ -80,7 +111,7 @@ class MerchantController extends Controller
 
         return Response()->json([
             "success" => true,
-            "message" => "Merchant Details are successfully saved!" . $response->body(),
+            "message" => "Merchant Details are successfully saved!",// . $response->body(),
             "file" => $data,
         ]);
     }

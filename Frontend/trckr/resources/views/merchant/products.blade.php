@@ -28,15 +28,15 @@
         <div class="col col-lg-12">
             <div class="card" style="width:100%">
                 <div class="card-header">
-                    <form method="POST" enctype="multipart/form-data" id="file_upload" action="javascript:void(0)" >
+                    <form method="POST" enctype="multipart/form-data" id="file_upload"action="javascript:void(0)" >
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                        <input type="file" name="file" id="file" style="display:none">                
+                        <input type="file" name="file" id="file" accept=".csv" style="display:none">                
 
                         <div class="btn-group float-lg-right" role="group" aria-label="Basic example">
                             <button type="button" id="upload_csv" class="btn btn-block btn-primary btn-lg pull-right">Upload CSV</button>  
                             <a href="/merchant/product/add" type="button" class="btn btn-primary btn-lg pull-right">Add</a>
                             <button type="button" class="btn btn-primary btn-lg" id="edit">Edit</button>    
-                            <button type="button" class="btn btn-primary btn-lg pull-right">Delete</button>
+                            <button type="button" class="btn btn-primary btn-lg" id="delete">Delete</button>
                         </div>
                     </form>
                 </div>
@@ -81,6 +81,48 @@
                 location.reload();
             });
 
+            $('#delete').click(function(e){
+                var formData = new FormData();
+                var products = [];
+
+                console.log(products);
+                $.each($("input[name='product']:checked"), function(){
+                    products.push($(this).attr("id"));
+                });
+
+                if (products.length < 1){
+                    $(".modal-title").text("Invalid Delete Selection!");
+                    $(".modal-body").html("<p>Please check at least one product!</p>");
+                    $("#myModal").modal('show');
+                    return;
+                }
+
+                console.log(products);
+
+                formData.append('products', products);
+                formData.append('_token', "{{ csrf_token() }}");
+
+                $.ajax({
+                    type:'POST',
+                    url: "/merchant/product/delete",
+                    data: formData,
+                    cache:false,
+                    contentType: false,
+                    processData: false,
+                    success: (data) => {
+                        $(".modal-title").text("Delete Product Successful!");
+                        $(".modal-body").html("<p>" + data.message + "</p>");
+                        $("#myModal").modal('show');
+                    },
+                    error: function(data){
+                        $(".modal-title").text("Delete Product Failed!");
+                        $(".modal-body").html("<p>" + data.responseJSON.message + "</p>");
+                        //$(".modal-body").html("<p>" + data.message + "</p>");
+                        $("#myModal").modal('show');
+                    }
+                });
+            });
+
             $('#edit').click(function(e){
                 var products = [];
                 $.each($("input[name='product']:checked"), function(){
@@ -123,7 +165,7 @@
                     },
                     error: function(data){
                         $(".modal-title").text("Upload Product Failed!");
-                        $(".modal-body").html("<p>" + data.responseText + "</p>");
+                        $(".modal-body").html("<p>" + data.responseJSON.message + "</p>");
                         //$(".modal-body").html("<p>" + data.message + "</p>");
                         $("#myModal").modal('show');
                     }

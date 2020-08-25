@@ -7,7 +7,7 @@
 @stop
 
 @section('content')
-    <p>Users Management</p>
+    <p>Users Management - Note, no api available yet to retrieve all users belonging to same merchant.</p>
     
     <div class="row">
         <div class="col col-lg-12">

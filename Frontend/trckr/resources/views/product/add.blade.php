@@ -83,21 +83,21 @@
                     contentType: false,
                     processData: false,
                     success: (data) => {
-                        $(".modal-title").val("Add Product Successful!");
+                        $(".modal-title").text("Add Product Successful!");
                         $(".modal-body").html("<p>" + data.message + "</p>");
                         $("#myModal").modal('show');
                     },
                     error: function(data){
-                        $(".modal-title").val("Add Product Failed!");
-                        $(".modal-body").html("<p>" + data.responseText + "</p>");
-                        //$(".modal-body").html("<p>" + data.message + "</p>");
+                        $(".modal-title").text("Add Product Failed!");
+                        //$(".modal-body").html("<p>" + data.responseText + "</p>");
+                        $(".modal-body").html("<p>" + data.responseJSON.message + "</p>");
                         $("#myModal").modal('show');
                     }
                 });
             });
 
             $("#back").click(function(){
-                history.go(-1);
+                window.location.href = "/merchant/branch";
             });
         });
     </script>

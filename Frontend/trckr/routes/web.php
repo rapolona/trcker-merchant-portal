@@ -34,7 +34,7 @@ Route::get('/merchant/product/add', 'ProductController@add_product_get');
 Route::post('/merchant/product/add', 'ProductController@add_product_post');
 Route::get('/merchant/product/edit', 'ProductController@edit_product_get');
 Route::post('/merchant/product/edit', 'ProductController@edit_product_post');
-Route::delete('/merchant/product/edit', 'ProductController@delete_product');
+Route::post('/merchant/product/delete', 'ProductController@delete_product');
 
 //Ajax for Uploader 
 Route::post('/merchant/product/upload', 'ProductController@upload_product');
@@ -44,7 +44,7 @@ Route::get('/merchant/branch/add', 'BranchController@add_branch_get');
 Route::post('/merchant/branch/add', 'BranchController@add_branch_post');
 Route::get('/merchant/branch/edit', 'BranchController@edit_branch_get');
 Route::post('/merchant/branch/edit', 'BranchController@edit_branch_post');
-Route::delete('/merchant/branch/edit', 'BranchController@delete_branch');
+Route::post('/merchant/branch/delete', 'BranchController@delete_branch');
 //Ajax for Uploader 
 Route::post('/merchant/branch/upload', 'BranchController@upload_branch');
 
