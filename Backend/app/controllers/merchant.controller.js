@@ -160,5 +160,20 @@ exports.deleteAll = (req, res) => {
         });
       });
   });
-  };
+};
+
+  exports.loadTasks = (req, res) => {
+    sequelize_fixtures.loadFile('app/fixtures/task_action_data.json', db).then(function(){
+      Merchant.findAll({include: Branch, Product})
+      .then(data => {
+        res.send(data);
+      })
+      .catch(err => {
+        res.status(500).send({
+          message:
+            err.message || "Some error occurred while retrieving merchants."
+        });
+      });
+  });
+};
 

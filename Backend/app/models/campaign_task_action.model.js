@@ -8,17 +8,17 @@ module.exports = (sequelize, Sequelize) => {
         unique:true
       },
       title: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(64),
         allowNull: false
       },
       description: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING(255)
       },
       required_inputs: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING(64)
       },
       benefits: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING(64)
       },
       campaign_id: {
         type: DataTypes.UUID,

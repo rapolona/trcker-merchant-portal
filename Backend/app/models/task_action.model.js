@@ -9,11 +9,10 @@ module.exports = (sequelize, Sequelize) => {
       },
       task_action_name: {
         type: Sequelize.STRING(64),
-        unique:true,
         allowNull: false
       },
       task_action_description: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING(255)
       },
       subject_level: {
         type: Sequelize.STRING(64)

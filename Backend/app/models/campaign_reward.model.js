@@ -22,7 +22,7 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.STRING(64)
       },
       reward_description: {
-        type: Sequelize.STRING(128)
+        type: Sequelize.STRING(255)
       },
       amount: {
         type: Sequelize.FLOAT

@@ -13,37 +13,43 @@ module.exports = (sequelize, Sequelize) => {
         allowNull: false
       },
       address: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING(255)
       },
       trade_name: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING(64)
       },
       sector: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING(64)
       },
       business_structure: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING(64)
       },
       authorized_representative: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING(64)
       },
       position: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING(64)
       },
       contact_person: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING(64)
       },
       contact_number: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING(64),
+        validate: {
+          isNumeric: true
+        }
       },
       email_address: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING(64),
+        validate: {
+          isEmail: true
+        }
       },
       business_nature: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING(64)
       },
       product_type: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING(64)
       }
     });
     return Merchant;

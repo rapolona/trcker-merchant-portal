@@ -1,0 +1,552 @@
+[
+    {
+    "model": "task_actions",  
+    "data": {
+         "task_action_name": "Activation Compliance" ,
+         "task_action_description": "In-store Activation Status" ,
+         "subject_level": "Brand-Category" ,
+         "data_type": "Text",
+         "data_source": "Single Select Dropdown",
+         "task_action_classification_id": "9fb15271-d0cc-45d5-b5a1-792db2a9349d" 
+         }
+    },
+    {
+    "model": "task_actions",  
+    "data": {
+         "task_action_name": "Activation Compliance" ,
+         "task_action_description": "In-store Activation Type" ,
+         "subject_level": "Brand-Category" ,
+         "data_type": "Text",
+         "data_source": "Single Select Dropdown",
+         "task_action_classification_id": "9fb15271-d0cc-45d5-b5a1-792db2a9349d" 
+         }
+    },
+    {
+    "model": "task_actions",  
+    "data": {
+         "task_action_name": "Activation Compliance" ,
+         "task_action_description": "# of Promo Personnel" ,
+         "subject_level": "Brand-Category" ,
+         "data_type": "Integer",
+         "data_source": "INTEGER",
+         "task_action_classification_id": "9fb15271-d0cc-45d5-b5a1-792db2a9349d" 
+         }
+    },
+    {
+    "model": "task_actions",  
+    "data": {
+         "task_action_name": "Activation Compliance" ,
+         "task_action_description": "In-store Activation Photo" ,
+         "subject_level": "Brand-Category" ,
+         "data_type": "Image",
+         "data_source": "CHECKBOX",
+         "task_action_classification_id": "9fb15271-d0cc-45d5-b5a1-792db2a9349d" 
+         }
+    },
+    {
+    "model": "task_actions",  
+    "data": {
+         "task_action_name": "Activation Compliance" ,
+         "task_action_description": "In-store Activation Location" ,
+         "subject_level": "Brand-Category" ,
+         "data_type": "Text",
+         "data_source": "Single Select Dropdown",
+         "task_action_classification_id": "9fb15271-d0cc-45d5-b5a1-792db2a9349d" 
+         }
+    },
+    {
+    "model": "task_actions",  
+    "data": {
+         "task_action_name": "Availability" ,
+         "task_action_description": "Is this [brand] available in the checkout counters?" ,
+         "subject_level": "Brand" ,
+         "data_type": "Boolean",
+         "data_source": "YES OR NO",
+         "task_action_classification_id": "9fb15271-d0cc-45d5-b5a1-792db2a9349d" 
+         }
+    },
+    {
+    "model": "task_actions",  
+    "data": {
+         "task_action_name": "Competitor Check" ,
+         "task_action_description": "Point of Purchase Materials Photo" ,
+         "subject_level": "Competitor" ,
+         "data_type": "Image",
+         "data_source": "CHECKBOX",
+         "task_action_classification_id": "9fb15271-d0cc-45d5-b5a1-792db2a9349d" 
+         }
+    },
+    {
+    "model": "task_actions",  
+    "data": {
+         "task_action_name": "Main Shelf Check" ,
+         "task_action_description": "Total Category Facings" ,
+         "subject_level": "Category" ,
+         "data_type": "Integer",
+         "data_source": "INTEGER",
+         "task_action_classification_id": "9fb15271-d0cc-45d5-b5a1-792db2a9349d" 
+         }
+    },
+    {
+    "model": "task_actions",  
+    "data": {
+         "task_action_name": "Main Shelf Check" ,
+         "task_action_description": "Please upload image of the main shelf of the [category]" ,
+         "subject_level": "Category" ,
+         "data_type": "Image",
+         "data_source": "CHECKBOX",
+         "task_action_classification_id": "9fb15271-d0cc-45d5-b5a1-792db2a9349d" 
+         }
+    },
+    {
+    "model": "task_actions",  
+    "data": {
+         "task_action_name": "Main Shelf Check" ,
+         "task_action_description": "How many total product facings for the brand?" ,
+         "subject_level": "Brand-Category" ,
+         "data_type": "Integer",
+         "data_source": "INTEGER",
+         "task_action_classification_id": "9fb15271-d0cc-45d5-b5a1-792db2a9349d" 
+         }
+    },
+    {
+    "model": "task_actions",  
+    "data": {
+         "task_action_name": "Main Shelf Check" ,
+         "task_action_description": "How many facings for [competitor] brands?" ,
+         "subject_level": "Competitor" ,
+         "data_type": "Integer",
+         "data_source": "INTEGER",
+         "task_action_classification_id": "9fb15271-d0cc-45d5-b5a1-792db2a9349d" 
+         }
+    },
+    {
+    "model": "task_actions",  
+    "data": {
+         "task_action_name": "Main Shelf Check" ,
+         "task_action_description": "Share of Shelf" ,
+         "subject_level": "Competitor" ,
+         "data_type": "Percentage",
+         "data_source": "Calculated Value",
+         "task_action_classification_id": "9fb15271-d0cc-45d5-b5a1-792db2a9349d" 
+         }
+    },
+    {
+    "model": "task_actions",  
+    "data": {
+         "task_action_name": "Main Shelf Check" ,
+         "task_action_description": "Does the competitor have an end-shelf?" ,
+         "subject_level": "Competitor" ,
+         "data_type": "Boolean",
+         "data_source": "YES OR NO",
+         "task_action_classification_id": "9fb15271-d0cc-45d5-b5a1-792db2a9349d" 
+         }
+    },
+    {
+    "model": "task_actions",  
+    "data": {
+         "task_action_name": "Main Shelf Check" ,
+         "task_action_description": "Please upload image of competitor's end-shelf" ,
+         "subject_level": "Competitor" ,
+         "data_type": "Image",
+         "data_source": "CHECKBOX",
+         "task_action_classification_id": "9fb15271-d0cc-45d5-b5a1-792db2a9349d" 
+         }
+    },
+    {
+    "model": "task_actions",  
+    "data": {
+         "task_action_name": "Main Shelf Check" ,
+         "task_action_description": "Does the competitor have an island display?" ,
+         "subject_level": "Competitor" ,
+         "data_type": "Boolean",
+         "data_source": "YES OR NO",
+         "task_action_classification_id": "9fb15271-d0cc-45d5-b5a1-792db2a9349d" 
+         }
+    },
+    {
+    "model": "task_actions",  
+    "data": {
+         "task_action_name": "Main Shelf Check" ,
+         "task_action_description": "Is the main shelf category managed?" ,
+         "subject_level": "Category" ,
+         "data_type": "Boolean",
+         "data_source": "YES OR NO",
+         "task_action_classification_id": "9fb15271-d0cc-45d5-b5a1-792db2a9349d" 
+         }
+    },
+    {
+    "model": "task_actions",  
+    "data": {
+         "task_action_name": "Merchandiser Check" ,
+         "task_action_description": "What brand did the merchandiser recommend?" ,
+         "subject_level": "Brand" ,
+         "data_type": "Text",
+         "data_source": "CHECKBOX",
+         "task_action_classification_id": "9fb15271-d0cc-45d5-b5a1-792db2a9349d" 
+         }
+    },
+    {
+    "model": "task_actions",  
+    "data": {
+         "task_action_name": "Merchandiser Check" ,
+         "task_action_description": "What product did the merchandiser recommed?" ,
+         "subject_level": "SKU" ,
+         "data_type": "Text",
+         "data_source": "CHECKBOX",
+         "task_action_classification_id": "9fb15271-d0cc-45d5-b5a1-792db2a9349d" 
+         }
+    },
+    {
+    "model": "task_actions",  
+    "data": {
+         "task_action_name": "Off-shelf Inventory" ,
+         "task_action_description": "Does this brand have an end-shelf display?" ,
+         "subject_level": "Brand-Category" ,
+         "data_type": "Boolean",
+         "data_source": "YES OR NO",
+         "task_action_classification_id": "9fb15271-d0cc-45d5-b5a1-792db2a9349d" 
+         }
+    },
+    {
+    "model": "task_actions",  
+    "data": {
+         "task_action_name": "Off-shelf Inventory" ,
+         "task_action_description": "Please upload image of brand's end-shelf" ,
+         "subject_level": "Brand-Category" ,
+         "data_type": "Image",
+         "data_source": "CHECKBOX",
+         "task_action_classification_id": "9fb15271-d0cc-45d5-b5a1-792db2a9349d" 
+         }
+    },
+    {
+    "model": "task_actions",  
+    "data": {
+         "task_action_name": "Off-shelf Inventory" ,
+         "task_action_description": "Does this brand have an island display?" ,
+         "subject_level": "Brand-Category" ,
+         "data_type": "Boolean",
+         "data_source": "YES OR NO",
+         "task_action_classification_id": "9fb15271-d0cc-45d5-b5a1-792db2a9349d" 
+         }
+    },
+    {
+    "model": "task_actions",  
+    "data": {
+         "task_action_name": "Off-shelf Inventory" ,
+         "task_action_description": "Did you see this product in another main shelf?" ,
+         "subject_level": "Brand" ,
+         "data_type": "Boolean",
+         "data_source": "YES OR NO",
+         "task_action_classification_id": "9fb15271-d0cc-45d5-b5a1-792db2a9349d" 
+         }
+    },
+    {
+    "model": "task_actions",  
+    "data": {
+         "task_action_name": "Off-shelf Inventory" ,
+         "task_action_description": "End Shelf Photo" ,
+         "subject_level": "Brand" ,
+         "data_type": "Image",
+         "data_source": "CHECKBOX",
+         "task_action_classification_id": "9fb15271-d0cc-45d5-b5a1-792db2a9349d" 
+         }
+    },
+    {
+    "model": "task_actions",  
+    "data": {
+         "task_action_name": "Pricing" ,
+         "task_action_description": "What is the original price?" ,
+         "subject_level": "SKU" ,
+         "data_type": "Currency",
+         "data_source": "FLOAT",
+         "task_action_classification_id": "9fb15271-d0cc-45d5-b5a1-792db2a9349d" 
+         }
+    },
+    {
+    "model": "task_actions",  
+    "data": {
+         "task_action_name": "Pricing" ,
+         "task_action_description": "What is the price after discount?" ,
+         "subject_level": "SKU" ,
+         "data_type": "Currency",
+         "data_source": "FLOAT",
+         "task_action_classification_id": "9fb15271-d0cc-45d5-b5a1-792db2a9349d" 
+         }
+    },
+    {
+    "model": "task_actions",  
+    "data": {
+         "task_action_name": "Pricing" ,
+         "task_action_description": "Discount in Pesos" ,
+         "subject_level": "SKU" ,
+         "data_type": "Currency",
+         "data_source": "FLOAT",
+         "task_action_classification_id": "9fb15271-d0cc-45d5-b5a1-792db2a9349d" 
+         }
+    },
+    {
+    "model": "task_actions",  
+    "data": {
+         "task_action_name": "Pricing" ,
+         "task_action_description": "Discount %" ,
+         "subject_level": "SKU" ,
+         "data_type": "Percentage",
+         "data_source": "FLOAT",
+         "task_action_classification_id": "9fb15271-d0cc-45d5-b5a1-792db2a9349d" 
+         }
+    },
+    {
+    "model": "task_actions",  
+    "data": {
+         "task_action_name": "Product Availability" ,
+         "task_action_description": "Earliest Expiry Date" ,
+         "subject_level": "SKU" ,
+         "data_type": "Date",
+         "data_source": "Date Field",
+         "task_action_classification_id": "9fb15271-d0cc-45d5-b5a1-792db2a9349d" 
+         }
+    },
+    {
+    "model": "task_actions",  
+    "data": {
+         "task_action_name": "Product Availability" ,
+         "task_action_description": "Is this product available?" ,
+         "subject_level": "SKU" ,
+         "data_type": "Boolean",
+         "data_source": "YES OR NO",
+         "task_action_classification_id": "9fb15271-d0cc-45d5-b5a1-792db2a9349d" 
+         }
+    },
+    {
+    "model": "task_actions",  
+    "data": {
+         "task_action_name": "Promotion Check" ,
+         "task_action_description": "What is the product bundled with as a promotion?" ,
+         "subject_level": "SKU" ,
+         "data_type": "Text",
+         "data_source": "TEXT",
+         "task_action_classification_id": "9fb15271-d0cc-45d5-b5a1-792db2a9349d" 
+         }
+    },
+    {
+    "model": "task_actions",  
+    "data": {
+         "task_action_name": "Main Shelf Check" ,
+         "task_action_description": "Share of Shelf" ,
+         "subject_level": "Brand-Category" ,
+         "data_type": "Percentage",
+         "data_source": "FLOAT",
+         "task_action_classification_id": "9fb15271-d0cc-45d5-b5a1-792db2a9349d" 
+         }
+    },
+    {
+    "model": "task_actions",  
+    "data": {
+         "task_action_name": "Promotion Check" ,
+         "task_action_description": "Point of Purchase Materials Photo" ,
+         "subject_level": "Brand-Category" ,
+         "data_type": "Image",
+         "data_source": "PHOTO",
+         "task_action_classification_id": "9fb15271-d0cc-45d5-b5a1-792db2a9349d" 
+         }
+    },
+    {
+    "model": "task_actions",  
+    "data": {
+         "task_action_name": "Promotion Check" ,
+         "task_action_description": "Point of Purchase Materials Type" ,
+         "subject_level": "Brand-Category" ,
+         "data_type": "Text",
+         "data_source": "CHECKBOX",
+         "task_action_classification_id": "9fb15271-d0cc-45d5-b5a1-792db2a9349d" 
+         }
+    },
+    {
+    "model": "task_actions",  
+    "data": {
+         "task_action_name": "Promotion Check" ,
+         "task_action_description": "Point of Purchase Materials Type" ,
+         "subject_level": "Brand-Category" ,
+         "data_type": "Text",
+         "data_source": "CHECKBOX",
+         "task_action_classification_id": "9fb15271-d0cc-45d5-b5a1-792db2a9349d" 
+         }
+    },
+    {
+    "model": "task_actions",  
+    "data": {
+         "task_action_name": "Time and Motion" ,
+         "task_action_description": "What time were you shown to your seat?" ,
+         "subject_level": "" ,
+         "data_type": "Timestamp",
+         "data_source": "HH-MM",
+         "task_action_classification_id": "9fb15271-d0cc-45d5-b5a1-792db2a9349d" 
+         }
+    },
+    {
+    "model": "task_actions",  
+    "data": {
+         "task_action_name": "Time and Motion" ,
+         "task_action_description": "What time did you come in?" ,
+         "subject_level": "" ,
+         "data_type": "Timestamp",
+         "data_source": "HH-MM",
+         "task_action_classification_id": "9fb15271-d0cc-45d5-b5a1-792db2a9349d" 
+         }
+    },
+    {
+    "model": "task_actions",  
+    "data": {
+         "task_action_name": "Time and Motion" ,
+         "task_action_description": "What time were you shown to your seat?" ,
+         "subject_level": "" ,
+         "data_type": "Timestamp",
+         "data_source": "HH-MM",
+         "task_action_classification_id": "9fb15271-d0cc-45d5-b5a1-792db2a9349d" 
+         }
+    },
+    {
+    "model": "task_actions",  
+    "data": {
+         "task_action_name": "Time and Motion" ,
+         "task_action_description": "What time were did you order?" ,
+         "subject_level": "" ,
+         "data_type": "Timestamp",
+         "data_source": "HH-MM",
+         "task_action_classification_id": "9fb15271-d0cc-45d5-b5a1-792db2a9349d" 
+         }
+    },
+    {
+    "model": "task_actions",  
+    "data": {
+         "task_action_name": "Time and Motion" ,
+         "task_action_description": "What time did your order arrive?" ,
+         "subject_level": "" ,
+         "data_type": "Timestamp",
+         "data_source": "HH-MM",
+         "task_action_classification_id": "9fb15271-d0cc-45d5-b5a1-792db2a9349d" 
+         }
+    },
+    {
+    "model": "task_actions",  
+    "data": {
+         "task_action_name": "Time and Motion" ,
+         "task_action_description": "What time did you ask for your bill?" ,
+         "subject_level": "" ,
+         "data_type": "Timestamp",
+         "data_source": "HH-MM",
+         "task_action_classification_id": "9fb15271-d0cc-45d5-b5a1-792db2a9349d" 
+         }
+    },
+    {
+    "model": "task_actions",  
+    "data": {
+         "task_action_name": "Time and Motion" ,
+         "task_action_description": "What time did you leave the restaurant?" ,
+         "subject_level": "" ,
+         "data_type": "Timestamp",
+         "data_source": "HH-MM",
+         "task_action_classification_id": "9fb15271-d0cc-45d5-b5a1-792db2a9349d" 
+         }
+    },
+    {
+    "model": "task_actions",  
+    "data": {
+         "task_action_name": "" ,
+         "task_action_description": "What dish are you planning to order?" ,
+         "subject_level": "" ,
+         "data_type": "Text",
+         "data_source": "TEXT",
+         "task_action_classification_id": "9fb15271-d0cc-45d5-b5a1-792db2a9349d" 
+         }
+    },
+    {
+    "model": "task_actions",  
+    "data": {
+         "task_action_name": "" ,
+         "task_action_description": "What dish did you order?" ,
+         "subject_level": "" ,
+         "data_type": "Text",
+         "data_source": "PHOTO",
+         "task_action_classification_id": "9fb15271-d0cc-45d5-b5a1-792db2a9349d" 
+         }
+    },
+    {
+    "model": "task_actions",  
+    "data": {
+         "task_action_name": "Buying Pattern" ,
+         "task_action_description": "Upload your receipt" ,
+         "subject_level": "" ,
+         "data_type": "Image",
+         "data_source": "CHECKBOX",
+         "task_action_classification_id": "9fb15271-d0cc-45d5-b5a1-792db2a9349d" 
+         }
+    },
+    {
+    "model": "task_actions",  
+    "data": {
+         "task_action_name": "Point of Purchase Material Recall" ,
+         "task_action_description": "What was the message on the Promotional Material for [brand]?" ,
+         "subject_level": "Brand" ,
+         "data_type": "Text",
+         "data_source": "Single Select Dropdown",
+         "task_action_classification_id": "9fb15271-d0cc-45d5-b5a1-792db2a9349d" 
+         }
+    },
+    {
+    "model": "task_actions",  
+    "data": {
+         "task_action_name": "Shopping Route" ,
+         "task_action_description": "What was the first category you went to upon entering the store?" ,
+         "subject_level": "Category" ,
+         "data_type": "Text",
+         "data_source": "Single Select Dropdown",
+         "task_action_classification_id": "9fb15271-d0cc-45d5-b5a1-792db2a9349d" 
+         }
+    },
+    {
+    "model": "task_actions",  
+    "data": {
+         "task_action_name": "Shopping Route" ,
+         "task_action_description": "What was the last category you went to before checking out?" ,
+         "subject_level": "Category" ,
+         "data_type": "Text",
+         "data_source": "Single Select Dropdown",
+         "task_action_classification_id": "9fb15271-d0cc-45d5-b5a1-792db2a9349d" 
+         }
+    },
+    {
+    "model": "task_actions",  
+    "data": {
+         "task_action_name": "Product Perception" ,
+         "task_action_description": "Which of the following brands do you think is the best value for money?" ,
+         "subject_level": "Brand" ,
+         "data_type": "Text",
+         "data_source": "Single Select Dropdown",
+         "task_action_classification_id": "9fb15271-d0cc-45d5-b5a1-792db2a9349d" 
+         }
+    },
+    {
+    "model": "task_actions",  
+    "data": {
+         "task_action_name": "Product Perception" ,
+         "task_action_description": "What do you think makes this product better than its competitors?" ,
+         "subject_level": "SKU" ,
+         "data_type": "Text",
+         "data_source": "Single Select Dropdown",
+         "task_action_classification_id": "9fb15271-d0cc-45d5-b5a1-792db2a9349d" 
+         }
+    },
+    {
+    "model": "task_actions",  
+    "data": {
+         "task_action_name": "Product Perception" ,
+         "task_action_description": "Which of the following brands do you think are the most effective?" ,
+         "subject_level": "Brand" ,
+         "data_type": "Text",
+         "data_source": "Single Select Dropdown",
+         "task_action_classification_id": "9fb15271-d0cc-45d5-b5a1-792db2a9349d" 
+         }
+    }
+    ]

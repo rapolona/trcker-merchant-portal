@@ -8,24 +8,30 @@ module.exports = (sequelize, Sequelize) => {
         unique:true
       },
       name: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(64),
         unique:true,
         allowNull: false
       },
       address: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING(255)
       },
       city: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING(64)
       },
       latitude: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING(64),
+        validate: {
+          isFloat: true
+        }
       },
       longitude: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING(64),
+        validate: {
+          isFloat: true
+        }
       },
       photo_url: {
-        type: Sequelize.STRING
+        type: Sequelize.TEXT
       },
       merchant_id: {
         type: DataTypes.UUID,

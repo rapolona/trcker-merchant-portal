@@ -8,11 +8,11 @@ module.exports = (sequelize, Sequelize) => {
         unique:true
       },
       device_id: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(255),
         allowNull: false
       },
       approval_status: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING(64)
       },
       campaign_id:{
         type: DataTypes.UUID,

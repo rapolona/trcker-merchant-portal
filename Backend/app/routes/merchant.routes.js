@@ -38,6 +38,8 @@ module.exports = app => {
     // Create a new Merchant
     router.post("/loadData", merchants.loadData);
 
+    router.post("/loadTasks", merchants.loadTasks);
+
     router.get("/dashboard/activecampaign", adminMiddleware.isAuthenticated, campaigns.getActiveCampaigns);
 
     router.get("/dashboard/totalrespondents", adminMiddleware.isAuthenticated, campaigns.countRespondents);
