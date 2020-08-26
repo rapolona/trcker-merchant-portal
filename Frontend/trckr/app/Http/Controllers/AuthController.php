@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Config, Session;
+use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
@@ -27,9 +28,15 @@ class AuthController extends Controller
         $email = $request->input('email');
         $password = $request->input('password');
 
-        //hardcode credentials
-        //$email = "cokeadmin";
-        //$password = "password";
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|min:4',
+            'password' => 'required'
+        ]);
+
+        if ($validator->fails())
+            return redirect('/')
+                ->withErrors($validator)
+                ->withInput();
 
         //api call for login
         //http://localhost:6001/merchant/auth       
@@ -42,7 +49,12 @@ class AuthController extends Controller
 
         if ($response->status() !== 200)
         {
-            return redirect('/');
+            //$validator->addFailure('email', 'Invalid user credentials.', 'email');
+            $validator->getMessageBag()->add('email', "Invalid User Credentials. {$response->body()}");
+            
+            return redirect('/')
+                ->withErrors($validator)
+                ->withInput();            
         }
         
         $response = json_decode($response);
