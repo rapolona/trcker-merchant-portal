@@ -58,15 +58,19 @@
                             <tbody>
                                 @foreach ($tickets as $t)
                             <tr>
-                                <td> {{ $t->trckr_username }}</td>
-                                <td> {{ $t->email }}</td>
-                                <td> {{ $t->mobile_number }}</td>
+                                <td> {{ $t->user_detail->first_name . $t->user_detail->last_name }}</td>
+                                <td> {{ $t->user_detail->email }}</td>
+                                <td> No info available (not in capability/tasktickets schema yet) </td>
                                 <td> {{ $t->campaign_name }}</td>
-                                <td> {{ $t->tasks }}</td>
-                                <td> {{ $t->date_submitted }}</td>
-                                <td> {{ $t->device_id }}</td>
-                                <td> {{ $t->location }}</td>
-                                <td> {{ $t->status }}</td>
+                                <td> 
+                                    @foreach ($t->task_details as $d )
+                                        {{ $d->campaign_task_action->description}} <br/>
+                                    @endforeach    
+                                </td>
+                                <td> {{ $t->updatedAt }}</td>
+                                <td> No info available (not in capability/tasktickets schema yet) </td>
+                                <td> No info avaialable (not in capability/tasktickets schema yet)</td>
+                                <td> {{ $t->approval_status }}</td>
                                 <td>
                                     <input type="checkbox" name="task_ticket_id[]" value="{{ $t->task_ticket_id }}"> 
                                 </td>

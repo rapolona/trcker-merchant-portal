@@ -37,7 +37,7 @@
                             <button type="button" id="upload_csv" class="btn btn-block btn-primary btn-lg pull-right">Upload CSV</button>  
                             <a href="/merchant/branch/add" type="button" class="btn btn-primary btn-lg pull-right">Add</a>
                             <button type="button" class="btn btn-primary btn-lg" id="edit">Edit</button>    
-                            <button type="button" class="btn btn-primary btn-lg pull-right">Delete</button>
+                            <button type="button" class="btn btn-primary btn-lg" id="delete">Delete</button>
                         </div>
                     </form>
                 </div>
@@ -87,6 +87,48 @@
                 location.reload();
             });
 
+            $('#delete').click(function(e){
+                var formData = new FormData();
+                var branches = [];
+
+                console.log(branches);
+                $.each($("input[name='branch']:checked"), function(){
+                    branches.push($(this).attr("id"));
+                });
+
+                if (branches.length < 1){
+                    $(".modal-title").text("Invalid Delete Selection!");
+                    $(".modal-body").html("<p>Please check at least one product!</p>");
+                    $("#myModal").modal('show');
+                    return;
+                }
+
+                console.log(branches);
+
+                formData.append('branches', branches);
+                formData.append('_token', "{{ csrf_token() }}");
+
+                $.ajax({
+                    type:'POST',
+                    url: "/merchant/branch/delete",
+                    data: formData,
+                    cache:false,
+                    contentType: false,
+                    processData: false,
+                    success: (data) => {
+                        $(".modal-title").text("Delete Branch Successful!");
+                        $(".modal-body").html("<p>" + data.message + "</p>");
+                        $("#myModal").modal('show');
+                    },
+                    error: function(data){
+                        $(".modal-title").text("Delete Branch Failed!");
+                        $(".modal-body").html("<p>" + data.responseJSON.message + "</p>");
+                        //$(".modal-body").html("<p>" + data.message + "</p>");
+                        $("#myModal").modal('show');
+                    }
+                });
+            });
+            
             $('#edit').click(function(e){
                 var branches = [];
                 $.each($("input[name='branch']:checked"), function(){
@@ -129,8 +171,8 @@
                         $("#myModal").modal('show');
                     },
                     error: function(data){
-                        $(".modal-title").text("Upload branch Failed!");
-                        $(".modal-body").html("<p>" + data.responseText + "</p>");
+                        $(".modal-title").text("Upload Branch Failed!");
+                        $(".modal-body").html("<p>" + data.responseJSON.message + "</p>");
                         //$(".modal-body").html("<p>" + data.message + "</p>");
                         $("#myModal").modal('show');
                     }

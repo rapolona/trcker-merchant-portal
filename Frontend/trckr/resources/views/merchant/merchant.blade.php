@@ -31,7 +31,7 @@
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">                
                     <div class="card-body">
                         <div class="row">
-                            <div class="col col-lg-7">
+                            <div class="col col-lg-6">
                                 <div class="form-group row">
                                     <label for="company_name" class="col-sm-2 col-form-label">Company Name</label>
                                     <div class="col-sm-10">
@@ -51,18 +51,23 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="sector" class="col-sm-2 col-form-label">Sector</label>
+                                    <label for="sector" class="col-sm-2 col-form-label">Business Sector</label>
                                     <div class="col-sm-10">
                                         <select class="form-control" id="input_sector" name="sector">
                                             <option value="" selected disabled>Select Sector</option>
-                                            <option>option 1</option>
-                                            <option>option 2</option>
-                                            <option>option 3</option>
-                                            <option>option 4</option>
-                                            <option>option 5</option>
+                                            <option value="FMCG" {{( ! empty($profile->sector) AND $profile->sector == "FMCG") ? "selected" : ""}}>FMCG</option>
+                                            <option value="Pharma" {{( ! empty($profile->sector) AND $profile->sector == "Pharma") ? "selected" : ""}}>Pharma</option>
+                                            <option value="Services" {{( ! empty($profile->sector) AND $profile->sector == "Services") ? "selected" : ""}}>Services</option>
+                                            <option value="Retail" {{( ! empty($profile->sector) AND $profile->sector == "Retail") ? "selected" : ""}}>Retail</option>
+                                            <option value="E-commerce" {{( ! empty($profile->sector) AND $profile->sector == "E-commerce") ? "selected" : ""}}>E-commerce</option>
+                                            <option value="Food and Beverage" {{( ! empty($profile->sector) AND $profile->sector == "Food and Beverage") ? "selected" : ""}}>Food and Beverage</option>
+                                            <option value="Banking and Finance" {{( ! empty($profile->sector) AND $profile->sector == "Banking and Finance") ? "selected" : ""}}>Banking and Finance</option>
+                                            <option value="Healthcare" {{( ! empty($profile->sector) AND $profile->sector == "Healthcare") ? "selected" : ""}}>Healthcare</option>
+                                            <option value="Advertising" {{( ! empty($profile->sector) AND $profile->sector == "Advertising") ? "selected" : ""}}>Advertising</option>
                                         </select>
                                     </div>
                                 </div>
+                                <!--
                                 <div class="form-group row">
                                     <label for="business_structure" class="col-sm-2 col-form-label">Business Structure</label>
                                     <div class="col-sm-10">
@@ -76,8 +81,9 @@
                                         </select>
                                     </div>
                                 </div>
+                                -->
                             </div>
-                            <div class="col col-auto">
+                            <div class="col col-lg-6">
                                 <div class="form-group row">
                                     <label for="representative" class="col-sm-3 col-form-label">Authorized Representative</label>
                                     <div class="col-sm-9">
@@ -105,11 +111,13 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row justify-content-end">
-                        <div class="col col-lg-9">
-                        </div>      
-                        <div class="col col-lg-3 ">
+                    <div class="card-footer">
+                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                        <input type="file" name="file" id="file" style="display:none">                
+
+                        <div class="btn-group float-lg-right" role="group" aria-label="Basic example">
                             <button type="submit" class="btn btn-block btn-primary btn-lg pull-right" id="submit">Save Details</button>  
+                            <button type="button" class="btn btn-danger btn-lg pull-right" id="back">Back</button>
                         </div>
                     </div>
                 </form>
@@ -145,11 +153,17 @@
                         $("#myModal").modal('show');
                     },
                     error: function(data){
+                        console.log(JSON.stringify(data));
+                        //alert(JSON.stringfy(data));
                         $(".modal-title").text("Failed to Update Merchant Information");
-                        $(".modal-body").html("<p>" + data.responseText + "</p>");
+                        $(".modal-body").html("<p>" + data.responseJSON.message + "</p>");
                         $("#myModal").modal('show');
                     }
                 });
+            });
+
+            $("#back").click(function(){
+                window.location.href = "/main";
             });
         });
     </script>
