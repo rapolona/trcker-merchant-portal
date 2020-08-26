@@ -79,10 +79,10 @@ exports.findOne = (req, res) => {
 
 // Update a Branch by the id in the request
 exports.update = (req, res) => {
-    const id = req.body.id;
+    const branch_id = req.body.branch_id;
   
     Branch.update(req.body, {
-      where: { id: id }
+      where: { branch_id: branch_id }
     })
       .then(num => {
         if (num == 1) {

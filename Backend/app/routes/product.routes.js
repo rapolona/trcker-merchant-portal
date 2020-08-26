@@ -13,7 +13,7 @@ module.exports = app => {
     router.get("/:id", products.findOne);
   
     // Update a Product with id
-    router.put("/:id", products.update);
+    router.put("/", products.update);
   
     // Delete a Product with id
     router.delete("/", adminMiddleware.isAuthenticated ,products.delete);
