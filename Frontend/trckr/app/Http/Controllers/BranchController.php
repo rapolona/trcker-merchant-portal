@@ -94,7 +94,7 @@ class BranchController extends Controller
 
             return Response()->json([
                 "success" => true,
-                "message" => "Uploaded file successfully" . $response->body(),
+                "message" => "Uploaded file successfully", // . $response->body(),
                 "file" => $branches
             ]);
         }
@@ -120,7 +120,16 @@ class BranchController extends Controller
         
         if ($response->status() !== 200)
         {
-            //provide handling for failed product retrieval
+            if ($response->status() === 403) {
+                $validator = Validator::make($request->all(), []);
+                $validator->getMessageBag()->add('email', "Session Expired. Please login again. {$response->body()}");
+            
+                return redirect('/')
+                    ->withErrors($validator)
+                    ->withInput();      
+            }
+
+            //provide handling for failed branch retrieval
             return redirect('/dashboard');
         }
 
@@ -143,8 +152,32 @@ class BranchController extends Controller
 
     public function add_branch_post(Request $request)
     {
-        //TODO: Field validation, will throw error on hit as response
         $data = (array) $request->all();
+
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|max:64',
+            'address' => 'required|max:64',
+            'city' => 'required|max:64',
+            'longitude' => 'required',
+            'latitude' => 'required'
+        ]);
+
+        if ($validator->fails())
+        {
+            $error_string = "<b>Fields with Errors</b><br/>";
+            foreach ($validator->errors()->messages() as $k => $v)
+            {
+                $error_string .= "{$k}: <br/>";
+                foreach ($v as $l)
+                    $error_string .= "{$l}<br/>";
+            }
+
+            return Response()->json([
+                "success" => false,
+                "message" => $error_string,
+                "file" => $data,
+            ], 422);
+        }
 
         $api_endpoint = Config::get('trckr.backend_url') . "merchant/branch";
 
@@ -165,7 +198,7 @@ class BranchController extends Controller
 
         return Response()->json([
             "success" => true,
-            "message" => "Add Branch successfully saved!" . $response->body(),
+            "message" => "Add Branch successfully saved!", // . $response->body(),
             "file" => $data,
         ]);
     }
@@ -204,10 +237,33 @@ class BranchController extends Controller
     {
         $branch_id = $request->query('branch_id');
 
-        //TODO: Field validation, will throw error on hit as response
         $data = (array) $request->all();
-        //$data['id'] = $branch_id;
-        //$data['branch_id'] = $branch_id;
+
+        $validator = Validator::make($request->all(), [
+            'id' => 'required',
+            'name' => 'required|max:64',
+            'address' => 'required|max:64',
+            'city' => 'required|max:64',
+            'longitude' => 'required',
+            'latitude' => 'required'
+        ]);
+
+        if ($validator->fails())
+        {
+            $error_string = "<b>Fields with Errors</b><br/>";
+            foreach ($validator->errors()->messages() as $k => $v)
+            {
+                $error_string .= "{$k}: <br/>";
+                foreach ($v as $l)
+                    $error_string .= "{$l}<br/>";
+            }
+
+            return Response()->json([
+                "success" => false,
+                "message" => $error_string,
+                "file" => $data,
+            ], 422);
+        }
 
         $api_endpoint = Config::get('trckr.backend_url') . "merchant/branch";
 
@@ -233,7 +289,39 @@ class BranchController extends Controller
         ]);
     }
 
-    public function delete_branches()
+    public function delete_branch(Request $request)
     {
+        $data = (array) $request->all();
+
+        $api_endpoint = Config::get('trckr.backend_url') . "merchant/branch";
+        $session = $request->session()->get('session_merchant');
+        $token = $session->token;
+        
+        $count = 1;
+        $debug = array();
+
+        $branches = explode(",", $data['branches']);
+        foreach($branches as $b) {
+            $response = Http::withToken($token)->delete($api_endpoint, ["branch_id" => $b]);
+            $debug[] = $response;
+
+            if ($response->status() !== 200)
+            {
+                //provide handling for failed merchant profile modification
+                return Response()->json([
+                    "success" => false,
+                    "message" => "Failed Deleting Branch {$count} with error: [{$response->status()}] {$response->body()}",
+                    "file" => json_encode($response),
+                    "data" => json_encode($b)
+                ], 422);
+            }
+            $count+=1;
+        }
+
+        return Response()->json([
+            "success" => true,
+            "message" => "Deleted Branches successfully", //. $response->body(),
+            "file" => $data['branches']
+        ]);
     }
 }

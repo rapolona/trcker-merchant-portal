@@ -85,11 +85,11 @@
                                             <span>Select All</span>
                                             <input type="checkbox" id="input_audience_checkbox" name="audience_checkbox" value="" placeholder="">
                                             <select id="branch_select" name="audience[]" multiple="" class="form-control">
-                                                <option>option 1</option>
-                                                <option>option 2</option>
-                                                <option>option 3</option>
-                                                <option>option 4</option>
-                                                <option>option 5</option>
+                                                <option></option>
+                                                <option value="age">Age</option>
+                                                <option value="gender">Gender</option>
+                                                <option value="super_shopper">Super Shopper</option>
+                                                <option value="email">Email</option>
                                             </select>
                                         </div>
                                     </div>
