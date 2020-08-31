@@ -8,12 +8,12 @@ module.exports = (sequelize, Sequelize) => {
         unique:true
       },
       product_name: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(64),
         unique:true,
         allowNull: false
       },
       product_description: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(255),
         allowNull: false
       },
       merchant_id: {

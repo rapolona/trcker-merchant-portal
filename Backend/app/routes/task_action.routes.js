@@ -20,7 +20,7 @@ module.exports = app => {
     router.put("/task", adminMiddleware.isAuthenticated, task_actions.update);
   
     // Delete a Task Action with id
-    router.delete("/", task_actions.delete);
+    //router.delete("/", task_actions.delete);
   
     // // Create a new Task Action
     // router.delete("/", task_actions.deleteAll);

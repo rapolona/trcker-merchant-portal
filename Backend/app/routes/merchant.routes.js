@@ -30,13 +30,15 @@ module.exports = app => {
     router.put("/profile", adminMiddleware.isAuthenticated ,merchants.update);
   
     // Delete a Merchant with id
-    router.delete("/:id", merchants.delete);
+    //router.delete("/delete", merchants.delete);
   
     // // Create a new Merchant
     // router.delete("/", merchants.deleteAll);
 
     // Create a new Merchant
     router.post("/loadData", merchants.loadData);
+
+    router.post("/loadTasks", merchants.loadTasks);
 
     router.get("/dashboard/activecampaign", adminMiddleware.isAuthenticated, campaigns.getActiveCampaigns);
 

@@ -122,20 +122,40 @@ exports.createCustom = (req, res) => {
   console.log(campaign)
 
   //Save Campaign in the database
+//   Campaign.create(campaign, {include: [
+//     {model:Campaign_Task_Action, as:"campaign_task_actions", include:[{model:Campaign_Task_Action_Choices}]},
+//     {model:Campaign_Branch_Association, as:"campaign_branch_associations"},
+//     {model:Campaign_Reward, as:"campaign_reward"}
+//   ]})
+//     .then(data => {
+//       res.send(data);
+//     })
+//     .catch(err => {
+//       res.status(500).send({
+//         message:
+//           err.message || "Some error occurred while creating the Campaign."
+//       });
+//     });
+// };
+
+db.sequelize.transaction(transaction =>
   Campaign.create(campaign, {include: [
     {model:Campaign_Task_Action, as:"campaign_task_actions", include:[{model:Campaign_Task_Action_Choices}]},
     {model:Campaign_Branch_Association, as:"campaign_branch_associations"},
     {model:Campaign_Reward, as:"campaign_reward"}
-  ]})
-    .then(data => {
-      res.send(data);
-    })
-    .catch(err => {
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while creating the Campaign."
-      });
+  ],
+    transaction
+  }).then(data => {
+    res.send(data);
+  })
+  .catch(err => {
+    transaction.rollback();
+    res.status(500).send({
+      message:
+        err.message || "Some error occurred while creating the Campaign."
     });
+  })
+)
 };
 
 // Retrieve all Campaigns from the database.

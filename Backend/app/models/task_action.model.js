@@ -8,12 +8,11 @@ module.exports = (sequelize, Sequelize) => {
         unique:true
       },
       task_action_name: {
-        type: Sequelize.STRING(64),
-        unique:true,
+        type: Sequelize.STRING(255),
         allowNull: false
       },
       task_action_description: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING(255)
       },
       subject_level: {
         type: Sequelize.STRING(64)

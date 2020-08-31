@@ -16,10 +16,10 @@ module.exports = (sequelize, Sequelize) => {
         }  
       },
       campaign_name: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING(64)
       },
       campaign_description: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING(255)
       },
       start_date: {
         type: Sequelize.DATE
@@ -34,10 +34,10 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.INTEGER
       },
       audience_gender: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING(64)
       },
       allowed_account_level: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING(64)
       },
       budget: {
         type: Sequelize.FLOAT
@@ -52,7 +52,7 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.BOOLEAN
       },
       task_type: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING(64)
       },
     });
     

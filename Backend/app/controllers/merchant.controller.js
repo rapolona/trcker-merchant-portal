@@ -107,10 +107,10 @@ exports.update = (req, res) => {
 
 // Delete a Merchant with the specified id in the request
 exports.delete = (req, res) => {
-    const id = req.params.id;
+    const id = req.body.merchant_id;
   
     Merchant.destroy({
-      where: { id: id }
+      where: { merchant_id: id }
     })
       .then(num => {
         if (num == 1) {
@@ -160,5 +160,20 @@ exports.deleteAll = (req, res) => {
         });
       });
   });
-  };
+};
+
+  exports.loadTasks = (req, res) => {
+    sequelize_fixtures.loadFile('app/fixtures/task_action_data.json', db).then(function(){
+      Merchant.findAll({include: Branch, Product})
+      .then(data => {
+        res.send(data);
+      })
+      .catch(err => {
+        res.status(500).send({
+          message:
+            err.message || "Some error occurred while retrieving merchants."
+        });
+      });
+  });
+};
 

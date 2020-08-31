@@ -69,10 +69,10 @@ exports.findOne = (req, res) => {
 
 // Update a Product by the id in the request
 exports.update = (req, res) => {
-    const id = req.params.id;
+    const product_id = req.body.product_id;
   
     Product.update(req.body, {
-      where: { id: id }
+      where: { product_id: product_id }
     })
       .then(num => {
         if (num == 1) {
