@@ -14,5 +14,7 @@ module.exports = app => {
 
     router.post("/logout", adminMiddleware.isAuthenticated, adminsessions.destroySession);
 
+    router.post("/refresh", adminMiddleware.isAuthenticated, admins.refreshToken);
+
     app.use('/merchant/', router);
 }

@@ -114,3 +114,22 @@ exports.findAdminByCredential = (req,res) => {
             });
         })
 };
+
+exports.refreshToken = (req,res)=>{
+    var tokenData = jwt.verify(req.headers.authorization.split(' ')[1], "TrckerTestSecret");
+    var token = jwt.sign({username: tokenData.username,adminid: tokenData.adminid, merchantid: tokenData.merchantid},"TrckerTestSecret", {expiresIn: '1d'});
+    AdminSession.update({token: token}, {where: {admin_id : tokenData.adminid}})
+    .then(num => {
+        if(num == 1){
+            res.cookie("authentication", token)
+            res.send({token:token})
+        }
+    })
+    .catch(err => {
+        res.status(500).send({
+            message:
+                "Session error"
+        })
+    })
+}
+

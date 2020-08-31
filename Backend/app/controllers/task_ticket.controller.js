@@ -9,30 +9,9 @@ const Op = db.Sequelize.Op;
 exports.approve = (req, res) => {
   const id = req.body.task_ticket_id;
   var statusToSet = "APPROVED"
-    Task_Ticket.update({approval_status: statusToSet}, {
-      where: { task_ticket_id: id }
-    })
-      .then(num => {
-        if (num == 1) {
-          res.send({
-            message: "Task Ticket was updated successfully."
-          });
-        } else {
-          res.send({
-            message: `Cannot update Task_Ticket with id=${id}. Maybe Task_Ticket was not found or req.body is empty!`
-          });
-        }
-      })
-      .catch(err => {
-        res.status(500).send({
-          message: "Error updating Task_Action with id=" + id
-        });
-      });
-  };
-
-  exports.reject = (req, res) => {
-    const id = req.body.task_ticket_id;
-    var statusToSet = "REJECTED"
+  Task_Ticket.findOne({where: {task_ticket_id: id, approval_status: "Pending"}})
+  .then(data => {
+    if(data){
       Task_Ticket.update({approval_status: statusToSet}, {
         where: { task_ticket_id: id }
       })
@@ -52,6 +31,57 @@ exports.approve = (req, res) => {
             message: "Error updating Task_Action with id=" + id
           });
         });
+    }
+    else{
+      res.send({
+        message: "Cannot update the ticket repeatedly"
+      })
+    }
+  })
+  .catch(err => {
+    res.status(500).send({
+      message: "Something went wrong updating the ticket"
+    })
+  })
+  };
+
+  exports.reject = (req, res) => {
+    const id = req.body.task_ticket_id;
+    var statusToSet = "REJECTED"
+    Task_Ticket.findOne({where: {task_ticket_id: id, approval_status: "Pending"}})
+    .then(data => {
+      if(data){
+        Task_Ticket.update({approval_status: statusToSet}, {
+          where: { task_ticket_id: id }
+        })
+          .then(num => {
+            if (num == 1) {
+              res.send({
+                message: "Task Ticket was updated successfully."
+              });
+            } else {
+              res.send({
+                message: `Cannot update Task_Ticket with id=${id}. Maybe Task_Ticket was not found or req.body is empty!`
+              });
+            }
+          })
+          .catch(err => {
+            res.status(500).send({
+              message: "Error updating Task_Action with id=" + id
+            });
+          });
+      }
+      else{
+        res.send({
+          message: "Cannot update the ticket repeatedly"
+        })
+      }
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: "Something went wrong updating the ticket"
+      })
+    })
     };
 
 
