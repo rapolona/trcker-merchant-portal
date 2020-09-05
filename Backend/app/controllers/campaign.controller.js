@@ -78,13 +78,31 @@ exports.create = (req, res) => {
 
   // Create and Save a new Campaign
 exports.createCustom = (req, res) => {
-  // Validate request
-  if (!req.body.start_date) {
-    res.status(400).send({
-      message: "Content can not be empty!"
-    });
-    return;
-  }
+    // Validate request
+    if (!req.body.start_date) {
+      res.status(400).send({
+        message: "Content can not be empty!"
+      });
+      return;
+    }
+    if (moment(req.body.end_date).isBefore(moment(req.body.start_date).subtract(0,'days'))){
+      res.status(400).send({
+        message: "Cannot create campaign whose end date occurs before the start date"
+      });
+      return;
+    }
+    // if (moment(req.body.end_date).isBefore(moment(Date.now()).subtract(1,'days'))){
+    //   res.status(400).send({
+    //     message: "Cannot create campaign whose end date has already passed"
+    //   });
+    //   return;
+    // }
+    // if (moment(req.body.start_date).isBefore(moment(Date.now()).subtract(1,'days'))){
+    //   res.status(400).send({
+    //     message: "Cannot create campaign whose start date has already passed"
+    //   });
+    //   return;
+    // }
 
   // Create a campaign
   const campaign_task_actions_container = []

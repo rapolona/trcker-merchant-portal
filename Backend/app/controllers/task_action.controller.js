@@ -56,7 +56,8 @@ exports.createCustom = (req, res) => {
       data_type: req.body.data_type,
       data_source: req.body.data_source,
       merchant_id: req.body.merchantid,
-      task_action_classification_id: "57e2c884-6cfc-4fa2-9cc8-b92f6747f535" //Id for custom task
+      task_action_classification_id: req.body.task_action_classification_id
+      //task_action_classification_id: "57e2c884-6cfc-4fa2-9cc8-b92f6747f535"
     };
 
     console.log(task_action)
@@ -79,7 +80,7 @@ exports.findAll = (req, res) => {
     const name = req.query.name;
     var condition = name ? { name: { [Op.like]: `%${name}%` } } : null;
   
-    Task_Action.findAll({ where: condition, include: Task_Action_Classification })
+    Task_Action.findAll({ where: condition, include:{model: Task_Action_Classification, where: {task_type: 'Merchandising'}} })
       .then(data => {
         res.send(data);
       })
@@ -94,6 +95,12 @@ exports.findAll = (req, res) => {
 // Retrieve all Merchants from the database.
 exports.findAllforMerchant = (req, res) => {
   const merchant_id = req.body.merchantid;
+  const task_type = req.query.task_type;
+  include_condition = {model: Task_Action_Classification}
+
+  if(task_type){
+    include_condition = {model: Task_Action_Classification, where: {task_type: task_type}}
+  }
   
 
   Task_Action.findAll({ where: {
@@ -101,7 +108,7 @@ exports.findAllforMerchant = (req, res) => {
       { merchant_id: merchant_id },
       { merchant_id: null }
     ]
-  }, include: Task_Action_Classification
+  }, include: include_condition
  })
     .then(data => {
       res.send(data);

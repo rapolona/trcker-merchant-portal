@@ -36,8 +36,8 @@ exports.create = (req, res) => {
 
 // Retrieve all Merchants from the database.
 exports.findAll = (req, res) => {
-    const name = req.query.name;
-    var condition = name ? { name: { [Op.like]: `%${name}%` } } : null;
+    const task_type = req.query.task_type;
+    var condition = task_type ? { task_type: { [Op.like]: `%${task_type}%` } } : null;
   
     Task_Action_Classification.findAll({ where: condition })
       .then(data => {
