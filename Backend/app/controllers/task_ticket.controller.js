@@ -2,7 +2,7 @@ const db = require("../models");
 const Task_Ticket = db.task_tickets;
 const Task_Detail = db.task_details;
 const User_Detail = db.userdetails;
-const Campaign_Task_Action = db.campaign_task_actions;
+const Task_Question = db.task_questions;
 const Op = db.Sequelize.Op;
 
 // Update a Task_Ticketn by the id in the request
@@ -108,7 +108,7 @@ exports.approve = (req, res) => {
     exports.findTicketsOfUser = (req, res) => {
       const id = req.body.campaign_id
       const userid = req.body.user_id
-    
+       //TO DO: Refactor
       Task_Ticket.findAll({
         where: {campaign_id : id, user_id: userid}, 
         include: [

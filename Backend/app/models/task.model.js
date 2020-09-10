@@ -1,6 +1,6 @@
 const {DataTypes} = require("sequelize")
 module.exports = (sequelize, Sequelize) => {
-    const Task_Action = sequelize.define("task_action", {
+    const Task = sequelize.define("task", {
       task_action_id:{
         type: DataTypes.UUID,
         primaryKey: true,
@@ -17,12 +17,6 @@ module.exports = (sequelize, Sequelize) => {
       subject_level: {
         type: Sequelize.STRING(64)
       },
-      data_type: {
-        type: Sequelize.STRING(64)
-      },
-      data_source: {
-        type: Sequelize.STRING(64)
-      },
       merchant_id: {
         type: DataTypes.UUID,
         allowNull: true,
@@ -35,10 +29,10 @@ module.exports = (sequelize, Sequelize) => {
         type: DataTypes.UUID,
         allowNull: false,
         references: {         // Product belongsTo Merchant 1:1
-          model: 'task_action_classifications',
+          model: 'task_classifications',
           key: 'task_action_classification_id'
         }  
       }
     });
-    return Task_Action;
+    return Task;
   };

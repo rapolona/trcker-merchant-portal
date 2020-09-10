@@ -1,6 +1,6 @@
 [
      {
-     "model": "task_action_classifications",
+     "model": "task_classifications",
      "data": {
           "task_action_classification_id": "ae21e0db-43f6-4606-8c6e-8394c7a3ed26",
           "name": "Activation Compliance",
@@ -9,7 +9,7 @@
           }   
      },
      {
-     "model": "task_action_classifications",
+     "model": "task_classifications",
      "data": {
           "task_action_classification_id": "e0686628-2e05-4db3-9afb-c2a0ae924a71",
           "name": "Availability",
@@ -18,7 +18,7 @@
           }   
      },
      {
-     "model": "task_action_classifications",
+     "model": "task_classifications",
      "data": {
           "task_action_classification_id": "faa4fe08-2ec9-4d76-87fa-44bbfb9cc5be",
           "name": "Competitor Check",
@@ -27,7 +27,7 @@
           }   
      },
      {
-     "model": "task_action_classifications",
+     "model": "task_classifications",
      "data": {
           "task_action_classification_id": "b1c45962-481e-433e-a31c-e2e5bcce2da6",
           "name": "Main Shelf Check",
@@ -36,7 +36,7 @@
           }   
      },
           {
-     "model": "task_action_classifications",
+     "model": "task_classifications",
      "data": {  
           "task_action_classification_id": "c28807e2-b430-47cc-80b6-7d80689efbdc",
           "name": "Merchandiser Check",
@@ -45,7 +45,7 @@
           }   
      },
      {
-     "model": "task_action_classifications",
+     "model": "task_classifications",
      "data": {
           "task_action_classification_id": "2f4375e0-c3a7-4f8f-b1dd-ba695b3f9776",
           "name": "Off-shelf Inventory",
@@ -54,7 +54,7 @@
           }   
      },
      {
-     "model": "task_action_classifications",
+     "model": "task_classifications",
      "data": {
           "task_action_classification_id": "35077358-d5e2-4083-8d1b-fc0fd5bad8ee",
           "name": "Pricing",
@@ -63,7 +63,7 @@
           }   
      },
      {
-     "model": "task_action_classifications",
+     "model": "task_classifications",
      "data": {
           "task_action_classification_id": "23652efc-75b0-49b0-89e0-92e672ca850f",
           "name": "Product Availability",
@@ -72,7 +72,7 @@
           }   
      },
           {
-     "model": "task_action_classifications",
+     "model": "task_classifications",
      "data": {
           "task_action_classification_id": "a8858ef1-c09d-4921-86cd-d53c898f2441",
           "name": "Promotion Check",
@@ -81,7 +81,7 @@
           }   
      },
      {
-     "model": "task_action_classifications",
+     "model": "task_classifications",
      "data": {
           "task_action_classification_id": "b1b01799-4f50-4aa6-9468-23dbc621be84",
           "name": "Buying Pattern",
@@ -90,7 +90,7 @@
           }   
      },
      {
-     "model": "task_action_classifications",
+     "model": "task_classifications",
      "data": {
           "task_action_classification_id": "f3810b41-f5f1-446a-aaa8-6b69b7c09d6f",
           "name": "Point of Purchase Material Recall",
@@ -99,7 +99,7 @@
           }   
      },
      {
-     "model": "task_action_classifications",
+     "model": "task_classifications",
      "data": {
           "task_action_classification_id": "09133cc7-78cb-4a5b-abd2-dd4939439b80",
           "name": "Shopping Route",
@@ -108,7 +108,7 @@
           }   
      },
      {
-     "model": "task_action_classifications",
+     "model": "task_classifications",
      "data": {
           "task_action_classification_id": "ebaa4059-6856-4ac6-b204-b58df74cd0b1",
           "name": "Product Perception",
@@ -117,7 +117,7 @@
           }   
      },
     {
-    "model": "task_actions",  
+    "model": "tasks",  
     "data": {
          "task_action_name": "In-store Activation Status" ,
          "task_action_description": "In-store Activation Status" ,
@@ -128,7 +128,7 @@
          }
     },
     {
-    "model": "task_actions",  
+    "model": "tasks",  
     "data": {
          "task_action_name": "In-store Activation Type" ,
          "task_action_description": "In-store Activation Type" ,
@@ -139,7 +139,7 @@
          }
     },
     {
-    "model": "task_actions",  
+    "model": "tasks",  
     "data": {
          "task_action_name": "# of Promo Personnel" ,
          "task_action_description": "# of Promo Personnel" ,
@@ -150,7 +150,7 @@
          }
     },
     {
-    "model": "task_actions",  
+    "model": "tasks",  
     "data": {
          "task_action_name": "In-store Activation Photo",
          "task_action_description": "In-store Activation Photo" ,
@@ -161,7 +161,7 @@
          }
     },
     {
-    "model": "task_actions",  
+    "model": "tasks",  
     "data": {
          "task_action_name": "In-store Activation Location",
          "task_action_description": "In-store Activation Location" ,
@@ -172,7 +172,7 @@
          }
     },
     {
-    "model": "task_actions",  
+    "model": "tasks",  
     "data": {
          "task_action_name": "Is this [brand] available in the checkout counters?"  ,
          "task_action_description": "Is this [brand] available in the checkout counters?" ,
@@ -183,7 +183,7 @@
          }
     },
     {
-    "model": "task_actions",  
+    "model": "tasks",  
     "data": {
          "task_action_name": "Point of Purchase Materials Photo"  ,
          "task_action_description": "Point of Purchase Materials Photo" ,
@@ -194,7 +194,7 @@
          }
     },
     {
-    "model": "task_actions",  
+    "model": "tasks",  
     "data": {
          "task_action_name": "Total Category Facings"  ,
          "task_action_description": "Total Category Facings" ,
@@ -205,7 +205,7 @@
          }
     },
     {
-    "model": "task_actions",  
+    "model": "tasks",  
     "data": {
          "task_action_name":  "Please upload image of the main shelf of the [category]" ,
          "task_action_description": "Please upload image of the main shelf of the [category]" ,
@@ -216,7 +216,7 @@
          }
     },
     {
-    "model": "task_actions",  
+    "model": "tasks",  
     "data": {
          "task_action_name":  "How many total product facings for the brand?"  ,
          "task_action_description": "How many total product facings for the brand?" ,
@@ -227,7 +227,7 @@
          }
     },
     {
-    "model": "task_actions",  
+    "model": "tasks",  
     "data": {
          "task_action_name": "How many facings for [competitor] brands?" ,
          "task_action_description": "How many facings for [competitor] brands?" ,
@@ -238,7 +238,7 @@
          }
     },
     {
-    "model": "task_actions",  
+    "model": "tasks",  
     "data": {
          "task_action_name": "Share of Shelf" ,
          "task_action_description": "Share of Shelf" ,
@@ -249,7 +249,7 @@
          }
     },
     {
-    "model": "task_actions",  
+    "model": "tasks",  
     "data": {
          "task_action_name": "Does the competitor have an end-shelf?" ,
          "task_action_description": "Does the competitor have an end-shelf?" ,
@@ -260,7 +260,7 @@
          }
     },
     {
-    "model": "task_actions",  
+    "model": "tasks",  
     "data": {
          "task_action_name": "Please upload image of competitor's end-shelf"  ,
          "task_action_description": "Please upload image of competitor's end-shelf" ,
@@ -271,7 +271,7 @@
          }
     },
     {
-    "model": "task_actions",  
+    "model": "tasks",  
     "data": {
          "task_action_name":  "Does the competitor have an island display?" ,
          "task_action_description": "Does the competitor have an island display?" ,
@@ -282,7 +282,7 @@
          }
     },
     {
-    "model": "task_actions",  
+    "model": "tasks",  
     "data": {
          "task_action_name": "Is the main shelf category managed?" ,
          "task_action_description": "Is the main shelf category managed?" ,
@@ -293,7 +293,7 @@
          }
     },
     {
-    "model": "task_actions",  
+    "model": "tasks",  
     "data": {
          "task_action_name": "What brand did the merchandiser recommend?" ,
          "task_action_description": "What brand did the merchandiser recommend?" ,
@@ -304,7 +304,7 @@
          }
     },
     {
-    "model": "task_actions",  
+    "model": "tasks",  
     "data": {
          "task_action_name": "What product did the merchandiser recommed?" ,
          "task_action_description": "What product did the merchandiser recommed?" ,
@@ -315,7 +315,7 @@
          }
     },
     {
-    "model": "task_actions",  
+    "model": "tasks",  
     "data": {
          "task_action_name":  "Does this brand have an end-shelf display?" ,
          "task_action_description": "Does this brand have an end-shelf display?" ,
@@ -326,7 +326,7 @@
          }
     },
     {
-    "model": "task_actions",  
+    "model": "tasks",  
     "data": {
          "task_action_name": "Please upload image of brand's end-shelf",
          "task_action_description": "Please upload image of brand's end-shelf" ,
@@ -337,7 +337,7 @@
          }
     },
     {
-    "model": "task_actions",  
+    "model": "tasks",  
     "data": {
          "task_action_name": "Does this brand have an island display?"  ,
          "task_action_description": "Does this brand have an island display?" ,
@@ -348,7 +348,7 @@
          }
     },
     {
-    "model": "task_actions",  
+    "model": "tasks",  
     "data": {
          "task_action_name": "Did you see this product in another main shelf?" ,
          "task_action_description": "Did you see this product in another main shelf?" ,
@@ -359,7 +359,7 @@
          }
     },
     {
-    "model": "task_actions",  
+    "model": "tasks",  
     "data": {
          "task_action_name": "End Shelf Photo"  ,
          "task_action_description": "End Shelf Photo" ,
@@ -370,7 +370,7 @@
          }
     },
     {
-    "model": "task_actions",  
+    "model": "tasks",  
     "data": {
          "task_action_name": "What is the original price?" ,
          "task_action_description": "What is the original price?" ,
@@ -381,7 +381,7 @@
          }
     },
     {
-    "model": "task_actions",  
+    "model": "tasks",  
     "data": {
          "task_action_name": "What is the price after discount?" ,
          "task_action_description": "What is the price after discount?" ,
@@ -392,7 +392,7 @@
          }
     },
     {
-    "model": "task_actions",  
+    "model": "tasks",  
     "data": {
          "task_action_name": "Discount in Pesos" ,
          "task_action_description": "Discount in Pesos" ,
@@ -403,7 +403,7 @@
          }
     },
     {
-    "model": "task_actions",  
+    "model": "tasks",  
     "data": {
          "task_action_name": "Discount %" ,
          "task_action_description": "Discount %" ,
@@ -414,7 +414,7 @@
          }
     },
     {
-    "model": "task_actions",  
+    "model": "tasks",  
     "data": {
          "task_action_name": "Earliest Expiry Date" ,
          "task_action_description": "Earliest Expiry Date" ,
@@ -425,7 +425,7 @@
          }
     },
     {
-    "model": "task_actions",  
+    "model": "tasks",  
     "data": {
          "task_action_name": "Is this product available?" ,
          "task_action_description": "Is this product available?" ,
@@ -436,7 +436,7 @@
          }
     },
     {
-    "model": "task_actions",  
+    "model": "tasks",  
     "data": {
          "task_action_name": "What is the product bundled with as a promotion?"  ,
          "task_action_description": "What is the product bundled with as a promotion?" ,
@@ -447,7 +447,7 @@
          }
     },
     {
-    "model": "task_actions",  
+    "model": "tasks",  
     "data": {
          "task_action_name": "Share of Shelf",
          "task_action_description": "Share of Shelf" ,
@@ -458,7 +458,7 @@
          }
     },
     {
-    "model": "task_actions",  
+    "model": "tasks",  
     "data": {
          "task_action_name": "Point of Purchase Materials Photo" ,
          "task_action_description": "Point of Purchase Materials Photo" ,
@@ -469,7 +469,7 @@
          }
     },
     {
-    "model": "task_actions",  
+    "model": "tasks",  
     "data": {
          "task_action_name": "Point of Purchase Materials Type" ,
          "task_action_description": "Point of Purchase Materials Type" ,
@@ -480,7 +480,7 @@
          }
     },
     {
-    "model": "task_actions",  
+    "model": "tasks",  
     "data": {
          "task_action_name": "Point of Purchase Materials Type",
          "task_action_description": "Point of Purchase Materials Type" ,
@@ -492,7 +492,7 @@
     },
     
     {
-    "model": "task_actions",  
+    "model": "tasks",  
     "data": {
          "task_action_name": "Upload your receipt" ,
          "task_action_description": "Upload your receipt" ,
@@ -503,7 +503,7 @@
          }
     },
     {
-    "model": "task_actions",  
+    "model": "tasks",  
     "data": {
          "task_action_name": "What was the message on the Promotional Material for [brand]?" ,
          "task_action_description": "What was the message on the Promotional Material for [brand]?" ,
@@ -514,7 +514,7 @@
          }
     },
     {
-    "model": "task_actions",  
+    "model": "tasks",  
     "data": {
          "task_action_name": "What was the first category you went to upon entering the store?" ,
          "task_action_description": "What was the first category you went to upon entering the store?" ,
@@ -525,7 +525,7 @@
          }
     },
     {
-    "model": "task_actions",  
+    "model": "tasks",  
     "data": {
          "task_action_name":  "What was the last category you went to before checking out?" ,
          "task_action_description": "What was the last category you went to before checking out?" ,
@@ -536,7 +536,7 @@
          }
     },
     {
-    "model": "task_actions",  
+    "model": "tasks",  
     "data": {
          "task_action_name": "Which of the following brands do you think is the best value for money?" ,
          "task_action_description": "Which of the following brands do you think is the best value for money?" ,
@@ -547,7 +547,7 @@
          }
     },
     {
-    "model": "task_actions",  
+    "model": "tasks",  
     "data": {
          "task_action_name": "What do you think makes this product better than its competitors?" ,
          "task_action_description": "What do you think makes this product better than its competitors?" ,
@@ -558,7 +558,7 @@
          }
     },
     {
-    "model": "task_actions",  
+    "model": "tasks",  
     "data": {
          "task_action_name": "Which of the following brands do you think are the most effective?",
          "task_action_description": "Which of the following brands do you think are the most effective?" ,

@@ -2,7 +2,7 @@ module.exports = {
   HOST: "localhost",
   USER: "tester",
   PASSWORD: "password",
-  DB: "merchant-portal-git",
+  DB: "task-redesign",
   dialect: "mysql",
   pool: {
     max: 5,

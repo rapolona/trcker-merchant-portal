@@ -1,7 +1,7 @@
 const {DataTypes} = require("sequelize")
 module.exports = (sequelize, Sequelize) => {
-    const Campaign_Task_Action_Choices = sequelize.define("campaign_task_action_choices", {
-      campaign_task_action_choice_id:{
+    const Task_Question_Choices = sequelize.define("task_question_choices", {
+      choices_id:{
         type: DataTypes.UUID,
         primaryKey: true,
         defaultValue: Sequelize.UUIDV4,
@@ -11,14 +11,14 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      campaign_task_action_id: {
+      task_question_id: {
         type: DataTypes.UUID,
         allowNull: false,
         references: {         // User belongsTo Company 1:1
-          model: 'campaign_task_actions',
-          key: 'campaign_task_action_id'
+          model: 'task_questions',
+          key: 'task_question_id'
         }  
       },
     });
-    return Campaign_Task_Action_Choices;
+    return Task_Question_Choices;
   };

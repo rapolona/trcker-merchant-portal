@@ -3,8 +3,8 @@ const moment = require("moment");
 const { branches } = require("../models");
 const Campaign = db.campaigns;
 const Branch = db.branches;
-const Campaign_Task_Action = db.campaign_task_actions;
-const Campaign_Task_Action_Choices = db.campaign_task_action_choices;
+const Task_Question = db.task_questions;
+const Task_Question_Choices = db.task_question_choicess;
 const Campaign_Branch_Association = db.campaign_branch_associations;
 const Campaign_Reward = db.campaign_rewards;
 const Task_Ticket = db.task_tickets;
@@ -141,7 +141,7 @@ exports.createCustom = (req, res) => {
 
   //Save Campaign in the database
 //   Campaign.create(campaign, {include: [
-//     {model:Campaign_Task_Action, as:"campaign_task_actions", include:[{model:Campaign_Task_Action_Choices}]},
+//     {model:Task_Question, as:"campaign_task_actions", include:[{model:Task_Question_Choices}]},
 //     {model:Campaign_Branch_Association, as:"campaign_branch_associations"},
 //     {model:Campaign_Reward, as:"campaign_reward"}
 //   ]})
@@ -158,6 +158,7 @@ exports.createCustom = (req, res) => {
 
 db.sequelize.transaction(transaction =>
   Campaign.create(campaign, {include: [
+    //TO DO Refactor to handle changes with task questions
     {model:Campaign_Task_Action, as:"campaign_task_actions", include:[{model:Campaign_Task_Action_Choices}]},
     {model:Campaign_Branch_Association, as:"campaign_branch_associations"},
     {model:Campaign_Reward, as:"campaign_reward"}
@@ -202,7 +203,7 @@ exports.findAll = (req, res) => {
     console.log(req.body)
 
   
-    Campaign.findAll({ where: {merchant_id: merchant_id} , include: [Branch, Campaign_Task_Action]})
+    Campaign.findAll({ where: {merchant_id: merchant_id} , include: [Branch, Task_Question]})
       .then(data => {
         console.log(data)   
         res.json(data);
@@ -218,7 +219,7 @@ exports.findAll = (req, res) => {
     const name = req.query.name;
     var condition = name ? { name: { [Op.like]: `%${name}%` } } : null;
   
-    Campaign.findAll({ where: null , include: [Branch, Campaign_Task_Action]})
+    Campaign.findAll({ where: null , include: [Branch, Task_Question]})
       .then(data => {
         console.log(data)   
         res.json(data);
