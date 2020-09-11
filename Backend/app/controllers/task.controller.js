@@ -44,7 +44,7 @@ exports.create = (req, res) => {
 exports.createCustom = (req, res) => {
     // Validate request
     console.log(req.body)
-    if (!req.body.task_action_name) {
+    if (!req.body.task_name) {
       res.status(400).send({
         message: "Content can not be empty!"
       });
@@ -94,20 +94,9 @@ exports.createCustom = (req, res) => {
       })
     )
 
-    // // Save Task in the database
-    // Task.create(task)
-    //   .then(data => {
-    //     res.send(data);
-    //   })
-    //   .catch(err => {
-    //     res.status(500).send({
-    //       message:
-    //         err.message || "Some error occurred while creating the Task."
-    //     });
-    //   });
   };
 
-// Retrieve all Merchants from the database.
+// Retrieve all Tasks from the database.
 exports.findAll = (req, res) => {
     const name = req.query.name;
     var condition = name ? { name: { [Op.like]: `%${name}%` } } : null;
@@ -124,11 +113,11 @@ exports.findAll = (req, res) => {
       });
   };
 
-// Retrieve all Merchants from the database.
+// Retrieve all Tasks from the database.
 exports.findAllforMerchant = (req, res) => {
   const merchant_id = req.body.merchantid;
   const task_type = req.query.task_type;
-  include_condition = {model: Task_Classification}
+  include_condition = [{model: Task_Classification},{model: Task_Question, include:[{model:Task_Question_Choices}]}]
 
   if(task_type){
     include_condition = [
@@ -176,7 +165,8 @@ exports.update = (req, res) => {
     const id = req.body.task_id;
   
     Task.update(req.body, {
-      where: { task_id: id }
+      where: { task_id: id } , 
+      include: [{model:Task_Question, as:"task_questions", include:[{model:Task_Question_Choices}]}]
     })
       .then(num => {
         if (num == 1) {

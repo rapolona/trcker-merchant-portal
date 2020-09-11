@@ -1,571 +1,260 @@
 [
      {
-     "model": "task_classifications",
-     "data": {
-          "task_classification_id": "ae21e0db-43f6-4606-8c6e-8394c7a3ed26",
-          "name": "Activation Compliance",
-          "description": "request from client",
-          "task_type": "Merchandising"
-          }   
+          "model": "task_classifications",
+          "data": {
+               "task_classification_id": "ae21e0db-43f6-4606-8c6e-8394c7a3ed26",
+               "name": "Activation Compliance",
+               "description": "request from client",
+               "task_type": "Merchandising"
+               }   
      },
      {
-     "model": "task_classifications",
-     "data": {
-          "task_classification_id": "e0686628-2e05-4db3-9afb-c2a0ae924a71",
-          "name": "Availability",
-          "description": "request from client",
-          "task_type": "Merchandising"
-          }   
-     },
-     {
-     "model": "task_classifications",
-     "data": {
-          "task_classification_id": "faa4fe08-2ec9-4d76-87fa-44bbfb9cc5be",
-          "name": "Competitor Check",
-          "description": "request from client",
-          "task_type": "Merchandising"
-          }   
-     },
-     {
-     "model": "task_classifications",
-     "data": {
-          "task_classification_id": "b1c45962-481e-433e-a31c-e2e5bcce2da6",
-          "name": "Main Shelf Check",
-          "description": "request from client",
-          "task_type": "Merchandising"
-          }   
+          "model": "task_classifications",
+          "data": {
+               "task_classification_id": "e0686628-2e05-4db3-9afb-c2a0ae924a71",
+               "name": "Availability",
+               "description": "request from client",
+               "task_type": "Merchandising"
+               }   
      },
           {
-     "model": "task_classifications",
-     "data": {  
-          "task_classification_id": "c28807e2-b430-47cc-80b6-7d80689efbdc",
-          "name": "Merchandiser Check",
-          "description": "request from client",
-          "task_type": "Merchandising"
-          }   
+          "model": "task_classifications",
+          "data": {
+               "task_classification_id": "faa4fe08-2ec9-4d76-87fa-44bbfb9cc5be",
+               "name": "Competitor Check",
+               "description": "request from client",
+               "task_type": "Merchandising"
+               }   
      },
      {
-     "model": "task_classifications",
-     "data": {
-          "task_classification_id": "2f4375e0-c3a7-4f8f-b1dd-ba695b3f9776",
-          "name": "Off-shelf Inventory",
-          "description": "request from client",
-          "task_type": "Merchandising"
-          }   
+          "model": "task_classifications",
+          "data": {
+               "task_classification_id": "b1c45962-481e-433e-a31c-e2e5bcce2da6",
+               "name": "Main Shelf Check",
+               "description": "request from client",
+               "task_type": "Merchandising"
+               }   
      },
      {
-     "model": "task_classifications",
-     "data": {
-          "task_classification_id": "35077358-d5e2-4083-8d1b-fc0fd5bad8ee",
-          "name": "Pricing",
-          "description": "request from client",
-          "task_type": "Merchandising"
-          }   
-     },
-     {
-     "model": "task_classifications",
-     "data": {
-          "task_classification_id": "23652efc-75b0-49b0-89e0-92e672ca850f",
-          "name": "Product Availability",
-          "description": "request from client",
-          "task_type": "Merchandising"
-          }   
+          "model": "task_classifications",
+          "data": {  
+               "task_classification_id": "c28807e2-b430-47cc-80b6-7d80689efbdc",
+               "name": "Merchandiser Check",
+               "description": "request from client",
+               "task_type": "Merchandising"
+     }   
      },
           {
-     "model": "task_classifications",
-     "data": {
-          "task_classification_id": "a8858ef1-c09d-4921-86cd-d53c898f2441",
-          "name": "Promotion Check",
-          "description": "request from client",
-          "task_type": "Merchandising"
-          }   
+          "model": "task_classifications",
+          "data": {
+               "task_classification_id": "2f4375e0-c3a7-4f8f-b1dd-ba695b3f9776",
+               "name": "Off-shelf Inventory",
+               "description": "request from client",
+               "task_type": "Merchandising"
+               }   
+     },
+          {
+          "model": "task_classifications",
+          "data": {
+               "task_classification_id": "35077358-d5e2-4083-8d1b-fc0fd5bad8ee",
+               "name": "Pricing",
+               "description": "request from client",
+               "task_type": "Merchandising"
+               }   
+     },
+          {
+          "model": "task_classifications",
+          "data": {
+               "task_classification_id": "23652efc-75b0-49b0-89e0-92e672ca850f",
+               "name": "Product Availability",
+               "description": "request from client",
+               "task_type": "Merchandising"
+               }   
      },
      {
-     "model": "task_classifications",
-     "data": {
-          "task_classification_id": "b1b01799-4f50-4aa6-9468-23dbc621be84",
-          "name": "Buying Pattern",
-          "description": "request from client",
-          "task_type": "Shopper Insighting"
-          }   
+          "model": "task_classifications",
+          "data": {
+               "task_classification_id": "a8858ef1-c09d-4921-86cd-d53c898f2441",
+               "name": "Promotion Check",
+               "description": "request from client",
+               "task_type": "Merchandising"
+               }   
      },
      {
-     "model": "task_classifications",
-     "data": {
-          "task_classification_id": "f3810b41-f5f1-446a-aaa8-6b69b7c09d6f",
-          "name": "Point of Purchase Material Recall",
-          "description": "request from client",
-          "task_type": "Shopper Insighting"
-          }   
+          "model": "task_classifications",
+          "data": {
+               "task_classification_id": "b1b01799-4f50-4aa6-9468-23dbc621be84",
+               "name": "Buying Pattern",
+               "description": "request from client",
+               "task_type": "Shopper Insighting"
+               }   
      },
      {
-     "model": "task_classifications",
-     "data": {
-          "task_classification_id": "09133cc7-78cb-4a5b-abd2-dd4939439b80",
-          "name": "Shopping Route",
-          "description": "request from client",
-          "task_type": "Shopper Insighting"
-          }   
+          "model": "task_classifications",
+          "data": {
+               "task_classification_id": "f3810b41-f5f1-446a-aaa8-6b69b7c09d6f",
+               "name": "Point of Purchase Material Recall",
+               "description": "request from client",
+               "task_type": "Shopper Insighting"
+               }   
      },
      {
-     "model": "task_classifications",
-     "data": {
-          "task_classification_id": "ebaa4059-6856-4ac6-b204-b58df74cd0b1",
-          "name": "Product Perception",
-          "description": "request from client",
-          "task_type": "Shopper Insighting"
-          }   
+          "model": "task_classifications",
+          "data": {
+               "task_classification_id": "09133cc7-78cb-4a5b-abd2-dd4939439b80",
+               "name": "Shopping Route",
+               "description": "request from client",
+               "task_type": "Shopper Insighting"
+               }   
      },
-    {
-    "model": "tasks",  
-    "data": {
-         "task_name": "In-store Activation Status" ,
-         "task_description": "In-store Activation Status" ,
-         "subject_level": "Brand-Category" ,
-         "data_type": "Text",
-         "data_source": "Single Select Dropdown",
-         "task_classification_id": "ae21e0db-43f6-4606-8c6e-8394c7a3ed26" 
-         }
-    },
-    {
-    "model": "tasks",  
-    "data": {
-         "task_name": "In-store Activation Type" ,
-         "task_description": "In-store Activation Type" ,
-         "subject_level": "Brand-Category" ,
-         "data_type": "Text",
-         "data_source": "Single Select Dropdown",
-         "task_classification_id": "ae21e0db-43f6-4606-8c6e-8394c7a3ed26" 
-         }
-    },
-    {
-    "model": "tasks",  
-    "data": {
-         "task_name": "# of Promo Personnel" ,
-         "task_description": "# of Promo Personnel" ,
-         "subject_level": "Brand-Category" ,
-         "data_type": "Integer",
-         "data_source": "INTEGER",
-         "task_classification_id": "ae21e0db-43f6-4606-8c6e-8394c7a3ed26"
-         }
-    },
-    {
-    "model": "tasks",  
-    "data": {
-         "task_name": "In-store Activation Photo",
-         "task_description": "In-store Activation Photo" ,
-         "subject_level": "Brand-Category" ,
-         "data_type": "Image",
-         "data_source": "IMAGE",
-         "task_classification_id": "ae21e0db-43f6-4606-8c6e-8394c7a3ed26" 
-         }
-    },
-    {
-    "model": "tasks",  
-    "data": {
-         "task_name": "In-store Activation Location",
-         "task_description": "In-store Activation Location" ,
-         "subject_level": "Brand-Category" ,
-         "data_type": "Text",
-         "data_source": "Single Select Dropdown",
-         "task_classification_id": "ae21e0db-43f6-4606-8c6e-8394c7a3ed26"
-         }
-    },
-    {
-    "model": "tasks",  
-    "data": {
-         "task_name": "Is this [brand] available in the checkout counters?"  ,
-         "task_description": "Is this [brand] available in the checkout counters?" ,
-         "subject_level": "Brand" ,
-         "data_type": "Boolean",
-         "data_source": "TRUE OR FALSE",
-         "task_classification_id": "e0686628-2e05-4db3-9afb-c2a0ae924a71"
-         }
-    },
-    {
-    "model": "tasks",  
-    "data": {
-         "task_name": "Point of Purchase Materials Photo"  ,
-         "task_description": "Point of Purchase Materials Photo" ,
-         "subject_level": "Competitor" ,
-         "data_type": "Image",
-         "data_source": "IMAGE",
-         "task_classification_id": "faa4fe08-2ec9-4d76-87fa-44bbfb9cc5be"
-         }
-    },
-    {
-    "model": "tasks",  
-    "data": {
-         "task_name": "Total Category Facings"  ,
-         "task_description": "Total Category Facings" ,
-         "subject_level": "Category" ,
-         "data_type": "Integer",
-         "data_source": "INTEGER",
-         "task_classification_id": "faa4fe08-2ec9-4d76-87fa-44bbfb9cc5be"
-         }
-    },
-    {
-    "model": "tasks",  
-    "data": {
-         "task_name":  "Please upload image of the main shelf of the [category]" ,
-         "task_description": "Please upload image of the main shelf of the [category]" ,
-         "subject_level": "Category" ,
-         "data_type": "Image",
-         "data_source": "IMAGE",
-         "task_classification_id": "b1c45962-481e-433e-a31c-e2e5bcce2da6" 
-         }
-    },
-    {
-    "model": "tasks",  
-    "data": {
-         "task_name":  "How many total product facings for the brand?"  ,
-         "task_description": "How many total product facings for the brand?" ,
-         "subject_level": "Brand-Category" ,
-         "data_type": "Integer",
-         "data_source": "INTEGER",
-         "task_classification_id": "b1c45962-481e-433e-a31c-e2e5bcce2da6"
-         }
-    },
-    {
-    "model": "tasks",  
-    "data": {
-         "task_name": "How many facings for [competitor] brands?" ,
-         "task_description": "How many facings for [competitor] brands?" ,
-         "subject_level": "Competitor" ,
-         "data_type": "Integer",
-         "data_source": "INTEGER",
-         "task_classification_id": "b1c45962-481e-433e-a31c-e2e5bcce2da6"
-         }
-    },
-    {
-    "model": "tasks",  
-    "data": {
-         "task_name": "Share of Shelf" ,
-         "task_description": "Share of Shelf" ,
-         "subject_level": "Competitor" ,
-         "data_type": "Percentage",
-         "data_source": "Calculated Value",
-         "task_classification_id": "b1c45962-481e-433e-a31c-e2e5bcce2da6"
-         }
-    },
-    {
-    "model": "tasks",  
-    "data": {
-         "task_name": "Does the competitor have an end-shelf?" ,
-         "task_description": "Does the competitor have an end-shelf?" ,
-         "subject_level": "Competitor" ,
-         "data_type": "Boolean",
-         "data_source": "TRUE OR FALSE",
-         "task_classification_id": "b1c45962-481e-433e-a31c-e2e5bcce2da6" 
-         }
-    },
-    {
-    "model": "tasks",  
-    "data": {
-         "task_name": "Please upload image of competitor's end-shelf"  ,
-         "task_description": "Please upload image of competitor's end-shelf" ,
-         "subject_level": "Competitor" ,
-         "data_type": "Image",
-         "data_source": "IMAGE",
-         "task_classification_id": "b1c45962-481e-433e-a31c-e2e5bcce2da6"
-         }
-    },
-    {
-    "model": "tasks",  
-    "data": {
-         "task_name":  "Does the competitor have an island display?" ,
-         "task_description": "Does the competitor have an island display?" ,
-         "subject_level": "Competitor" ,
-         "data_type": "Boolean",
-         "data_source": "TRUE OR FALSE",
-         "task_classification_id": "b1c45962-481e-433e-a31c-e2e5bcce2da6"
-         }
-    },
-    {
-    "model": "tasks",  
-    "data": {
-         "task_name": "Is the main shelf category managed?" ,
-         "task_description": "Is the main shelf category managed?" ,
-         "subject_level": "Category" ,
-         "data_type": "Boolean",
-         "data_source": "TRUE OR FALSE",
-         "task_classification_id": "b1c45962-481e-433e-a31c-e2e5bcce2da6"
-         }
-    },
-    {
-    "model": "tasks",  
-    "data": {
-         "task_name": "What brand did the merchandiser recommend?" ,
-         "task_description": "What brand did the merchandiser recommend?" ,
-         "subject_level": "Brand" ,
-         "data_type": "Text",
-         "data_source": "CHECKBOX",
-         "task_classification_id": "c28807e2-b430-47cc-80b6-7d80689efbdc"
-         }
-    },
-    {
-    "model": "tasks",  
-    "data": {
-         "task_name": "What product did the merchandiser recommed?" ,
-         "task_description": "What product did the merchandiser recommed?" ,
-         "subject_level": "SKU" ,
-         "data_type": "Text",
-         "data_source": "CHECKBOX",
-         "task_classification_id": "c28807e2-b430-47cc-80b6-7d80689efbdc"
-         }
-    },
-    {
-    "model": "tasks",  
-    "data": {
-         "task_name":  "Does this brand have an end-shelf display?" ,
-         "task_description": "Does this brand have an end-shelf display?" ,
-         "subject_level": "Brand-Category" ,
-         "data_type": "Boolean",
-         "data_source": "TRUE OR FALSE",
-         "task_classification_id": "2f4375e0-c3a7-4f8f-b1dd-ba695b3f9776"
-         }
-    },
-    {
-    "model": "tasks",  
-    "data": {
-         "task_name": "Please upload image of brand's end-shelf",
-         "task_description": "Please upload image of brand's end-shelf" ,
-         "subject_level": "Brand-Category" ,
-         "data_type": "Image",
-         "data_source": "IMAGE",
-         "task_classification_id": "2f4375e0-c3a7-4f8f-b1dd-ba695b3f9776" 
-         }
-    },
-    {
-    "model": "tasks",  
-    "data": {
-         "task_name": "Does this brand have an island display?"  ,
-         "task_description": "Does this brand have an island display?" ,
-         "subject_level": "Brand-Category" ,
-         "data_type": "Boolean",
-         "data_source": "TRUE OR FALSE",
-         "task_classification_id": "2f4375e0-c3a7-4f8f-b1dd-ba695b3f9776"
-         }
-    },
-    {
-    "model": "tasks",  
-    "data": {
-         "task_name": "Did you see this product in another main shelf?" ,
-         "task_description": "Did you see this product in another main shelf?" ,
-         "subject_level": "Brand" ,
-         "data_type": "Boolean",
-         "data_source": "TRUE OR FALSE",
-         "task_classification_id": "2f4375e0-c3a7-4f8f-b1dd-ba695b3f9776"
-         }
-    },
-    {
-    "model": "tasks",  
-    "data": {
-         "task_name": "End Shelf Photo"  ,
-         "task_description": "End Shelf Photo" ,
-         "subject_level": "Brand" ,
-         "data_type": "Image",
-         "data_source": "IMAGE",
-         "task_classification_id": "2f4375e0-c3a7-4f8f-b1dd-ba695b3f9776"
-         }
-    },
-    {
-    "model": "tasks",  
-    "data": {
-         "task_name": "What is the original price?" ,
-         "task_description": "What is the original price?" ,
-         "subject_level": "SKU" ,
-         "data_type": "Currency",
-         "data_source": "FLOAT",
-         "task_classification_id": "35077358-d5e2-4083-8d1b-fc0fd5bad8ee" 
-         }
-    },
-    {
-    "model": "tasks",  
-    "data": {
-         "task_name": "What is the price after discount?" ,
-         "task_description": "What is the price after discount?" ,
-         "subject_level": "SKU" ,
-         "data_type": "Currency",
-         "data_source": "FLOAT",
-         "task_classification_id": "35077358-d5e2-4083-8d1b-fc0fd5bad8ee" 
-         }
-    },
-    {
-    "model": "tasks",  
-    "data": {
-         "task_name": "Discount in Pesos" ,
-         "task_description": "Discount in Pesos" ,
-         "subject_level": "SKU" ,
-         "data_type": "Currency",
-         "data_source": "FLOAT",
-         "task_classification_id": "35077358-d5e2-4083-8d1b-fc0fd5bad8ee" 
-         }
-    },
-    {
-    "model": "tasks",  
-    "data": {
-         "task_name": "Discount %" ,
-         "task_description": "Discount %" ,
-         "subject_level": "SKU" ,
-         "data_type": "Percentage",
-         "data_source": "FLOAT",
-         "task_classification_id": "35077358-d5e2-4083-8d1b-fc0fd5bad8ee" 
-         }
-    },
-    {
-    "model": "tasks",  
-    "data": {
-         "task_name": "Earliest Expiry Date" ,
-         "task_description": "Earliest Expiry Date" ,
-         "subject_level": "SKU" ,
-         "data_type": "Date",
-         "data_source": "Date Field",
-         "task_classification_id": "23652efc-75b0-49b0-89e0-92e672ca850f" 
-         }
-    },
-    {
-    "model": "tasks",  
-    "data": {
-         "task_name": "Is this product available?" ,
-         "task_description": "Is this product available?" ,
-         "subject_level": "SKU" ,
-         "data_type": "Boolean",
-         "data_source": "TRUE OR FALSE",
-         "task_classification_id": "23652efc-75b0-49b0-89e0-92e672ca850f"
-         }
-    },
-    {
-    "model": "tasks",  
-    "data": {
-         "task_name": "What is the product bundled with as a promotion?"  ,
-         "task_description": "What is the product bundled with as a promotion?" ,
-         "subject_level": "SKU" ,
-         "data_type": "Text",
-         "data_source": "TEXT",
-         "task_classification_id": "a8858ef1-c09d-4921-86cd-d53c898f2441" 
-         }
-    },
-    {
-    "model": "tasks",  
-    "data": {
-         "task_name": "Share of Shelf",
-         "task_description": "Share of Shelf" ,
-         "subject_level": "Brand-Category" ,
-         "data_type": "Percentage",
-         "data_source": "FLOAT",
-         "task_classification_id": "b1c45962-481e-433e-a31c-e2e5bcce2da6"
-         }
-    },
-    {
-    "model": "tasks",  
-    "data": {
-         "task_name": "Point of Purchase Materials Photo" ,
-         "task_description": "Point of Purchase Materials Photo" ,
-         "subject_level": "Brand-Category" ,
-         "data_type": "Image",
-         "data_source": "PHOTO",
-         "task_classification_id": "a8858ef1-c09d-4921-86cd-d53c898f2441"
-         }
-    },
-    {
-    "model": "tasks",  
-    "data": {
-         "task_name": "Point of Purchase Materials Type" ,
-         "task_description": "Point of Purchase Materials Type" ,
-         "subject_level": "Brand-Category" ,
-         "data_type": "Text",
-         "data_source": "CHECKBOX",
-         "task_classification_id": "a8858ef1-c09d-4921-86cd-d53c898f2441"
-         }
-    },
-    {
-    "model": "tasks",  
-    "data": {
-         "task_name": "Point of Purchase Materials Type",
-         "task_description": "Point of Purchase Materials Type" ,
-         "subject_level": "Brand-Category" ,
-         "data_type": "Text",
-         "data_source": "CHECKBOX",
-         "task_classification_id": "a8858ef1-c09d-4921-86cd-d53c898f2441"
-         }
-    },
-    
-    {
-    "model": "tasks",  
-    "data": {
-         "task_name": "Upload your receipt" ,
-         "task_description": "Upload your receipt" ,
-         "subject_level": "" ,
-         "data_type": "Image",
-         "data_source": "IMAGE",
-         "task_classification_id": "b1b01799-4f50-4aa6-9468-23dbc621be84"
-         }
-    },
-    {
-    "model": "tasks",  
-    "data": {
-         "task_name": "What was the message on the Promotional Material for [brand]?" ,
-         "task_description": "What was the message on the Promotional Material for [brand]?" ,
-         "subject_level": "Brand" ,
-         "data_type": "Text",
-         "data_source": "Single Select Dropdown",
-         "task_classification_id": "f3810b41-f5f1-446a-aaa8-6b69b7c09d6f" 
-         }
-    },
-    {
-    "model": "tasks",  
-    "data": {
-         "task_name": "What was the first category you went to upon entering the store?" ,
-         "task_description": "What was the first category you went to upon entering the store?" ,
-         "subject_level": "Category" ,
-         "data_type": "Text",
-         "data_source": "Single Select Dropdown",
-         "task_classification_id": "09133cc7-78cb-4a5b-abd2-dd4939439b80" 
-         }
-    },
-    {
-    "model": "tasks",  
-    "data": {
-         "task_name":  "What was the last category you went to before checking out?" ,
-         "task_description": "What was the last category you went to before checking out?" ,
-         "subject_level": "Category" ,
-         "data_type": "Text",
-         "data_source": "Single Select Dropdown",
-         "task_classification_id": "09133cc7-78cb-4a5b-abd2-dd4939439b80" 
-         }
-    },
-    {
-    "model": "tasks",  
-    "data": {
-         "task_name": "Which of the following brands do you think is the best value for money?" ,
-         "task_description": "Which of the following brands do you think is the best value for money?" ,
-         "subject_level": "Brand" ,
-         "data_type": "Text",
-         "data_source": "Single Select Dropdown",
-         "task_classification_id": "ebaa4059-6856-4ac6-b204-b58df74cd0b1"
-         }
-    },
-    {
-    "model": "tasks",  
-    "data": {
-         "task_name": "What do you think makes this product better than its competitors?" ,
-         "task_description": "What do you think makes this product better than its competitors?" ,
-         "subject_level": "SKU" ,
-         "data_type": "Text",
-         "data_source": "Single Select Dropdown",
-         "task_classification_id": "ebaa4059-6856-4ac6-b204-b58df74cd0b1"
-         }
-    },
-    {
-    "model": "tasks",  
-    "data": {
-         "task_name": "Which of the following brands do you think are the most effective?",
-         "task_description": "Which of the following brands do you think are the most effective?" ,
-         "subject_level": "Brand" ,
-         "data_type": "Text",
-         "data_source": "Single Select Dropdown",
-         "task_classification_id": "ebaa4059-6856-4ac6-b204-b58df74cd0b1"
-         }
-    }
+     {
+          "model": "task_classifications",
+          "data": {
+               "task_classification_id": "ebaa4059-6856-4ac6-b204-b58df74cd0b1",
+               "name": "Product Perception",
+               "description": "request from client",
+               "task_type": "Shopper Insighting"
+               }   
+     },
+     {
+          "model": "task_classifications",
+          "data": {
+               "task_classification_id": "ebaa4059-6856-4ac6-b204-b58df74cd0b2",
+               "name": "Time and Motion",
+               "description": "request from client",
+               "task_type": "Mystery Shopper"
+               }   
+     },
+     {
+          "model": "tasks",  
+          "data": {
+               "task_id": "971b1e88-05cf-41b6-87b6-596f30cbc99a",
+               "task_name": "In-store Activation Status" ,
+               "task_description": "In-store Activation Status" ,
+               "subject_level": "Brand-Category" ,
+               "task_classification_id": "ae21e0db-43f6-4606-8c6e-8394c7a3ed26" 
+          }
+     },
+     {
+          "model": "task_questions",  
+          "data":{
+               "task_question_id": "9244bcda-00c8-4406-89f1-829f2b1193a8",
+               "question":"What are the types of activation did you see in the area?",              
+               "required_inputs":"SINGLE SELECT DROPDOWN",
+               "task_id": "971b1e88-05cf-41b6-87b6-596f30cbc99a"
+          }
+     },
+     {
+          "model": "task_question_choices",  
+          "data":{
+               "task_question_id": "9244bcda-00c8-4406-89f1-829f2b1193a8",
+               "choices_value":"Shelf Activations"            
+          }
+     },
+     {
+          "model": "task_question_choices",  
+          "data":{
+               "task_question_id": "9244bcda-00c8-4406-89f1-829f2b1193a8",
+               "choices_value":"Multiple Positions"            
+          }
+     },
+     {
+          "model": "tasks",  
+          "data": {
+               "task_id": "92b22406-218a-4451-adbc-69e334cdbdce",
+               "task_name": "# of Promo Personnel" ,
+               "task_description": "Request from" ,
+               "subject_level": "Brand-Category" ,
+               "task_classification_id": "ae21e0db-43f6-4606-8c6e-8394c7a3ed26"
+          }
+     },
+     {
+          "model": "task_questions",  
+          "data":{
+               "task_question_id": "b1a6d921-ef5a-4cde-8698-08af1666d5b0",
+               "question":"How many personnel did you see offering the product?",              
+               "required_inputs":"INTEGER",
+               "task_id": "92b22406-218a-4451-adbc-69e334cdbdce"
+          }
+     },
+     {
+          "model": "tasks",  
+          "data": {
+               "task_id": "dbbb9fed-6110-4364-bc2d-06103567715e",
+               "task_name":  "Main Shelf Check" ,
+               "task_description": "Help give us insights on how our products look like in a shelf? " ,
+               "subject_level": "Category" ,
+               "task_classification_id": "b1c45962-481e-433e-a31c-e2e5bcce2da6" 
+          }
+     },
+     {
+          "model": "task_questions",  
+          "data":{
+               "task_question_id": "188a9c4a-fba4-4c61-9d51-682a568bfe39",
+               "question":"Please upload image of the main shelf of the [category]",
+               "required_inputs":"IMAGE",
+               "task_id": "dbbb9fed-6110-4364-bc2d-06103567715e"
+          }
+     }, 
+     {
+          "model": "tasks",  
+          "data": {
+               "task_id": "7dbbea91-3bb4-4706-b8eb-46657a66509a",
+               "task_name":  "Off-shelf Inventory Check" ,
+               "task_description": "Request from Client" ,
+               "subject_level": "Brand-Category" ,
+               "task_classification_id": "2f4375e0-c3a7-4f8f-b1dd-ba695b3f9776"
+          }
+     },
+     {
+          "model": "task_questions",  
+          "data":{
+               "task_question_id": "d8e2ef5e-d4c6-4e8d-84c2-5ffd13499d5d",
+               "question":"Does this brand have an end-shelf display?",
+               "required_inputs":"TRUE OR FALSE",
+               "task_id": "7dbbea91-3bb4-4706-b8eb-46657a66509a"
+          }
+     },
+     {
+          "model": "tasks",  
+          "data": {
+               "task_id": "7e88f006-0c8f-464d-9fc4-6ad4c11dca30",
+               "task_name": "Check Price Discount" ,
+               "task_description": "Request from Client" ,
+               "subject_level": "SKU" ,
+               "task_classification_id": "35077358-d5e2-4083-8d1b-fc0fd5bad8ee" 
+          }
+     },
+     {
+          "model": "task_questions",  
+          "data":{
+               "task_question_id": "3c422993-27ab-40e5-b538-f3dedcd9ecb7",
+               "question":"How much is the discount in Peso for our product?",
+               "required_inputs":"FLOAT",
+               "task_id": "7e88f006-0c8f-464d-9fc4-6ad4c11dca30"
+          }
+     },
+     {
+          "model": "tasks",  
+          "data": {
+               "task_id": "a7784b00-f094-4b57-ae8b-c8a5945cdb6a",
+               "task_name": "Provide Time and Motion" ,
+               "task_description": "Help us improve our service by providing your experience?" ,
+               "subject_level": "SKU" ,
+               "task_classification_id": "ebaa4059-6856-4ac6-b204-b58df74cd0b2" 
+          }
+     },
+     {
+          "model": "task_questions",  
+          "data":{
+               "task_question_id": "ff808734-afa9-4cc1-8b07-d6d319743088",
+               "question":"What time did you leave the restaurant?",
+               "required_inputs":"TIMESTAMP",
+               "task_id": "a7784b00-f094-4b57-ae8b-c8a5945cdb6a"
+          }
+     }
+
+
+
+
     ]
