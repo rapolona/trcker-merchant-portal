@@ -1,7 +1,7 @@
 const {DataTypes} = require("sequelize")
 module.exports = (sequelize, Sequelize) => {
     const Task_Classification = sequelize.define("task_classification", {
-      task_action_classification_id:{
+      task_classification_id:{
         type: DataTypes.UUID,
         primaryKey: true,
         defaultValue: Sequelize.UUIDV4,

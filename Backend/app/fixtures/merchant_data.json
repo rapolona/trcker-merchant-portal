@@ -103,7 +103,7 @@
     {
         "model": "task_classifications",
         "data": {
-            "task_action_classification_id": "57e2c884-6cfc-4fa2-9cc8-b92f6747f535",
+            "task_classification_id": "57e2c884-6cfc-4fa2-9cc8-b92f6747f535",
             "name": "Custom",
             "description": "Create your own Task",
             "task_type": "Custom"

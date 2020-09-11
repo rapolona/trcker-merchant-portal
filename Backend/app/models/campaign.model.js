@@ -51,7 +51,7 @@ module.exports = (sequelize, Sequelize) => {
       status: {
         type: Sequelize.BOOLEAN
       },
-      task_type: {
+      campaign_type: {
         type: Sequelize.STRING(64)
       },
     });

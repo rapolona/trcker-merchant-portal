@@ -30,12 +30,12 @@ module.exports = (sequelize, Sequelize) => {
           key:'user_id'
         }
       },
-      task_action_classification_id: {
+      task_classification_id: {
         type: DataTypes.UUID,
         allowNull: false,
         references: {         // Product belongsTo Merchant 1:1
-          model: 'task_action_classifications',
-          key: 'task_action_classification_id'
+          model: 'task_classifications',
+          key: 'task_classification_id'
         }  
       }
     });

@@ -1,21 +1,24 @@
 const {DataTypes} = require("sequelize")
 module.exports = (sequelize, Sequelize) => {
     const Task = sequelize.define("task", {
-      task_action_id:{
+      task_id:{
         type: DataTypes.UUID,
         primaryKey: true,
         defaultValue: Sequelize.UUIDV4,
         unique:true
       },
-      task_action_name: {
+      task_name: {
         type: Sequelize.STRING(255),
         allowNull: false
       },
-      task_action_description: {
+      task_description: {
         type: Sequelize.STRING(255)
       },
       subject_level: {
         type: Sequelize.STRING(64)
+      },
+      banner_image:{
+        type: Sequelize.TEXT('long')
       },
       merchant_id: {
         type: DataTypes.UUID,
@@ -25,7 +28,7 @@ module.exports = (sequelize, Sequelize) => {
           key: 'merchant_id'
         }  
       },
-      task_action_classification_id: {
+      task_classification_id: {
         type: DataTypes.UUID,
         allowNull: false,
         references: {         // Product belongsTo Merchant 1:1

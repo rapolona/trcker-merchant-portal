@@ -3,22 +3,22 @@ module.exports = app => {
     const adminMiddleware = require("../middlewares/admin.middleware.js")
     var router = require("express").Router();
   
-    // Create a new Campaign Task Action
+    // Create a new Task Question
     router.post("/campaign/task", adminMiddleware.isAuthenticated, task_questions.create);
   
-    // // Retrieve all Campaign Task Actions. 
+    // // Retrieve all Task Question. 
     // router.get("/", task_questions.findAll);
   
-    // // Retrieve a single Campaign Task Action with id
+    // // Retrieve a single Task Question with id
     // router.get("/:id", task_questions.findOne);
   
-    // Update a Campaign Task Action with id
+    // Update a Task Question with id
     router.put("/campaign/task",adminMiddleware.isAuthenticated, task_questions.update);
   
-    // Delete a Campaign Task Action with id
+    // Delete a Task Question with id
     router.delete("/campaign/task",adminMiddleware.isAuthenticated ,task_questions.delete);
   
-    // // Create a new Campaign Task Action
+    // // Create a new Task Question
     // router.delete("/", task_questions.deleteAll);
   
     app.use('/merchant/', router);

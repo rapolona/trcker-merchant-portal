@@ -19,11 +19,11 @@ exports.create = (req, res) => {
   
     // Create a task
     const task = {
-      task_action_name: req.body.task_action_name,
-      task_action_description: req.body.task_action_description,
+      task_name: req.body.task_name,
+      task_description: req.body.task_description,
       subject_level: req.body.subject_level,
       merchant_id: req.body.merchantid,
-      task_action_classification_id: req.body.task_action_classification_id
+      task_classification_id: req.body.task_classification_id
     };
 
     console.log(task)
@@ -65,11 +65,11 @@ exports.createCustom = (req, res) => {
   
     // Create a task
     const task = {
-      task_action_name: req.body.task_action_name,
-      task_action_description: req.body.task_action_description,
+      task_name: req.body.task_name,
+      task_description: req.body.task_description,
       subject_level: req.body.subject_level,
       merchant_id: req.body.merchantid,
-      task_action_classification_id: req.body.task_action_classification_id,
+      task_classification_id: req.body.task_classification_id,
       task_questions: task_questions_container
       //task_action_classification_id: "57e2c884-6cfc-4fa2-9cc8-b92f6747f535"
     };
@@ -173,10 +173,10 @@ exports.findOne = (req, res) => {
 
 // Update a Task by the id in the request
 exports.update = (req, res) => {
-    const id = req.body.task_action_id;
+    const id = req.body.task_id;
   
     Task.update(req.body, {
-      where: { task_action_id: id }
+      where: { task_id: id }
     })
       .then(num => {
         if (num == 1) {
@@ -198,7 +198,7 @@ exports.update = (req, res) => {
 
 // Delete a Task with the specified id in the request
 exports.delete = (req, res) => {
-    const id = req.body.task_action_id;
+    const id = req.body.task_id;
   
     Task.destroy({
       where: { id: id }

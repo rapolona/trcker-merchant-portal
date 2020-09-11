@@ -4,28 +4,18 @@ const Op = db.Sequelize.Op;
 
 // Create and Save a new Task_Question
 exports.create = (req, res) => {
-    // Validate request
-    if (!req.body.title) {
-      res.status(400).send({
-        message: "Content can not be empty!"
-      });
-      return;
-    }
-  
     // Create a task_question
     const task_question = {
-      title: req.body.title,
-      description: req.body.description,
+      question: req.body.question,
       required_inputs: req.body.required_inputs,
-      benefits: req.body.benefits,
-      campaign_id: req.body.campaign_id,
-      task_action_id: req.body.task_action_id
+      task_id: req.body.task_id,
+      task_question_choices: req.body.task_question_choices
     };
 
     console.log(task_question)
   
     // Save Task_Question in the database
-    Task_Question.create(task_question)
+    Task_Question.create(task_question, {include: [{model: Task_Question_Choices, as:"task_question_choices"}]})
       .then(data => {
         res.send(data);
       })
@@ -126,12 +116,12 @@ exports.deleteAll = (req, res) => {
       truncate: false
     })
       .then(nums => {
-        res.send({ message: `${nums} Merchants were deleted successfully!` });
+        res.send({ message: `${nums} Task_Question were deleted successfully!` });
       })
       .catch(err => {
         res.status(500).send({
           message:
-            err.message || "Some error occurred while removing all Merchants."
+            err.message || "Some error occurred while removing all Task_Question."
         });
       });
   };

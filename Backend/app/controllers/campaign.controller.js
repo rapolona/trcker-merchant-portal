@@ -3,9 +3,10 @@ const moment = require("moment");
 const { branches } = require("../models");
 const Campaign = db.campaigns;
 const Branch = db.branches;
-const Task_Question = db.task_questions;
-const Task_Question_Choices = db.task_question_choicess;
+const Task_Questions = db.task_questions;
+const Task_Question_Choices = db.task_question_choices;
 const Campaign_Branch_Association = db.campaign_branch_associations;
+const Campaign_Task_Association = db.campaign_task_associations;
 const Campaign_Reward = db.campaign_rewards;
 const Task_Ticket = db.task_tickets;
 const Op = db.Sequelize.Op;
@@ -105,15 +106,12 @@ exports.createCustom = (req, res) => {
     // }
 
   // Create a campaign
-  const campaign_task_actions_container = []
   const branches_container = []
-  for(i=0;i<req.body.campaign_task_actions.length;i++){
-    campaign_task_actions_container.push(req.body.campaign_task_actions[i])
-  }
+  
   for(i=0;i<req.body.branches.length;i++){
     branches_container.push(req.body.branches[i])
   }
-  console.log(campaign_task_actions_container)
+  console.log(req.body.tasks)
   const campaign = {
       merchant_id: req.body.merchantid,
       start_date: req.body.start_date,
@@ -128,8 +126,8 @@ exports.createCustom = (req, res) => {
       super_shoppers: req.body.super_shoppers,
       allow_everyone: req.body.allow_everyone,
       status: req.body.status,
-      task_type: req.body.task_type,
-      campaign_task_actions: campaign_task_actions_container,
+      campaign_type: req.body.campaign_type,
+      campaign_task_associations: req.body.tasks,
       campaign_branch_associations: branches_container,
       campaign_reward: req.body.reward
   };
@@ -141,7 +139,7 @@ exports.createCustom = (req, res) => {
 
   //Save Campaign in the database
 //   Campaign.create(campaign, {include: [
-//     {model:Task_Question, as:"campaign_task_actions", include:[{model:Task_Question_Choices}]},
+//     {model:Task_Questions, as:"task_questions", include:[{model:Task_Questions}]},
 //     {model:Campaign_Branch_Association, as:"campaign_branch_associations"},
 //     {model:Campaign_Reward, as:"campaign_reward"}
 //   ]})
@@ -158,8 +156,7 @@ exports.createCustom = (req, res) => {
 
 db.sequelize.transaction(transaction =>
   Campaign.create(campaign, {include: [
-    //TO DO Refactor to handle changes with task questions
-    {model:Campaign_Task_Action, as:"campaign_task_actions", include:[{model:Campaign_Task_Action_Choices}]},
+    {model:Campaign_Task_Association, as:"campaign_task_associations"},
     {model:Campaign_Branch_Association, as:"campaign_branch_associations"},
     {model:Campaign_Reward, as:"campaign_reward"}
   ],
@@ -203,7 +200,7 @@ exports.findAll = (req, res) => {
     console.log(req.body)
 
   
-    Campaign.findAll({ where: {merchant_id: merchant_id} , include: [Branch, Task_Question]})
+    Campaign.findAll({ where: {merchant_id: merchant_id} , include: [Branch]})
       .then(data => {
         console.log(data)   
         res.json(data);
@@ -219,7 +216,7 @@ exports.findAll = (req, res) => {
     const name = req.query.name;
     var condition = name ? { name: { [Op.like]: `%${name}%` } } : null;
   
-    Campaign.findAll({ where: null , include: [Branch, Task_Question]})
+    Campaign.findAll({ where: null , include: [Branch]})
       .then(data => {
         console.log(data)   
         res.json(data);

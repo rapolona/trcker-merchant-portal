@@ -2,7 +2,7 @@ const db = require("../models");
 const Task_Ticket = db.task_tickets;
 const Task_Detail = db.task_details;
 const User_Detail = db.userdetails;
-const Task_Question = db.task_questions;
+const Task_Question = db.task_question;
 const Op = db.Sequelize.Op;
 
 // Update a Task_Ticketn by the id in the request
@@ -28,7 +28,7 @@ exports.approve = (req, res) => {
         })
         .catch(err => {
           res.status(500).send({
-            message: "Error updating Task_Action with id=" + id
+            message: "Error updating Task Ticket with id=" + id
           });
         });
     }
@@ -67,7 +67,7 @@ exports.approve = (req, res) => {
           })
           .catch(err => {
             res.status(500).send({
-              message: "Error updating Task_Action with id=" + id
+              message: "Error updating Task Ticket with id=" + id
             });
           });
       }
@@ -113,7 +113,7 @@ exports.approve = (req, res) => {
         where: {campaign_id : id, user_id: userid}, 
         include: [
           {model: Task_Detail, as:'task_details', include: [{
-            model:Campaign_Task_Action, as: 'campaign_task_action', attributes: ['description']}]
+            model:Task_Question, as: 'task_question', attributes: ['description']}]
           },
           {model: User_Detail, as:'user_detail', attributes: ['first_name', 'last_name', 'account_level', 'email']}
         ]

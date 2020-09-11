@@ -116,19 +116,19 @@ exports.delete = (req, res) => {
       });
   };
 
-// Delete all Merchants from the database.
+// Delete all Task_Classification from the database.
 exports.deleteAll = (req, res) => {
     Task_Classification.destroy({
       where: {},
       truncate: false
     })
       .then(nums => {
-        res.send({ message: `${nums} Merchants were deleted successfully!` });
+        res.send({ message: `${nums} Task_Classification were deleted successfully!` });
       })
       .catch(err => {
         res.status(500).send({
           message:
-            err.message || "Some error occurred while removing all Merchants."
+            err.message || "Some error occurred while removing all Task_Classification."
         });
       });
   };

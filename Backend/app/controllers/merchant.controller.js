@@ -163,7 +163,7 @@ exports.deleteAll = (req, res) => {
 };
 
   exports.loadTasks = (req, res) => {
-    sequelize_fixtures.loadFile('app/fixtures/task_action_data.json', db).then(function(){
+    sequelize_fixtures.loadFile('app/fixtures/task_data.json', db).then(function(){
       Merchant.findAll({include: Branch, Product})
       .then(data => {
         res.send(data);
