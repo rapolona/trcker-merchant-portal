@@ -97,7 +97,7 @@
             });
 
             $("#back").click(function(){
-                window.location.href = "/merchant/branch";
+                window.location.href = "/merchant/product";
             });
         });
     </script>

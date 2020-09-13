@@ -1,9 +1,9 @@
 @extends('adminlte::page')
 
-@section('title', 'Trckr | Create New Task')
+@section('title', 'Trckr | View Task')
 
-@section('content_header')`
-    <h1>Create New Task</h1>
+@section('content_header')
+    <h1>View Task</h1>
 @stop
 
 @section('content')
@@ -24,69 +24,59 @@
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
 
-    <p>Create Task</p>
+    <p>View Task</p>
 
     <div class="card">
-        <form class="form-vertical" id="create_task" enctype="multipart/form-data">
+        <form class="form-vertical" id="create_task">
             <div class="card-body">           
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">                
                 
                 <div class="form-group row">
                     <label for="company_name" class="col-sm-2 col-form-label">Task Name</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="input_task_name" name="task_name" value="" placeholder="Enter Task Name">
+                        <span>{{ ($task->task_name) ? $task->task_name : ''}}</span>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="company_name" class="col-sm-2 col-form-label">Task Description</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="input_task_description" name="task_description" value="" placeholder="Enter Task Description">
+                        <span>{{ ($task->task_description) ? $task->task_description : ''}}</span>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="company_name" class="col-sm-2 col-form-label">Subject Level</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="input_subject_level" name="subject_level" value="" placeholder="Enter Subject Level">
+                        <span>{{ ($task->subject_level) ? $task->subject_level : ''}}</span>
                     </div>
                 </div>
-                <!--
-                <div class="form-group row">
-                    <label for="company_name" class="col-sm-2 col-form-label">Data Source / Data Type</label>
-                    <div class="col-sm-10">
-                        <select class="form-control" name="data_source" style="width: 100%;">
-                            <option value="">Select One</option>
-                            @foreach ($task_config as $t)
-                            <option value="{{$t['data_source']}}-{{$t['data_type']}}">{{$t['data_source']}} - {{$t['data_type']}}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-                -->
                 <div class="form-group row">
                     <label for="company_name" class="col-sm-2 col-form-label">Task Classification</label>
                     <div class="col-sm-10">
-                        <select class="form-control" name="task_classification_id" style="width: 100%;">
-                            <option value="">Select One</option>
+                        <span>
                             @foreach ($task_classification as $ta)
-                            <option value="{{$ta->task_classification_id}}">{{$ta->name}}</option>
+                                @if  ($ta->task_classification_id == $task->task_classification_id)
+                                    {{$ta->name}}
+                                @endif
                             @endforeach
-                        </select>
+                        </span>
                     </div>
                 </div>
-                <div class="form-group row">
+                <div class="form-group row" id="image_container">
                     <label for="company_name" class="col-sm-2 col-form-label">Banner Image</label>
                     <div class="col-sm-10">
-                        <input type="file" class="custom-file-input" id="exampleInputFile" name="banner_image" accept="image/*" >
-                        <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                        <input type="hidden" class="custom-file-input" id="image" name="banner_image" value="{{ ($task->banner_image) ? $task->banner_image : ''}}" >
+                        @php
+                            $temp = $task->banner_image;
+                            echo '<img src="' . $temp . '" />';
+                        @endphp
                     </div>
                 </div>
 
                 <div class="build-wrap"></div>
-                
             </div>
             <div class="card-footer">
                 <div class="btn-group float-lg-right" role="group" aria-label="Basic example">
-                    <button type="submit" class="btn btn-block btn-primary btn-lg pull-right" id="submit">Save Details</button>  
+                    <button type="button" class="btn btn-block btn-primary btn-lg pull-right" id="edit">Edit Details</button>  
                     <button type="button" class="btn btn-danger btn-lg pull-right" id="back">Back</button>
                 </div>
             </div>
@@ -105,9 +95,14 @@
     <script type="text/javascript">
         
         $(document).ready(function (e) { 
+            /*
+            var image = new Image();
+            image.src = $("#image").val();
+            $(image).appendTo("#image_container");
+            alert(1);
+            */
 
-            let options = {
-                fields:[{
+            let fields = [{
                     label: 'True or False',
                     className: 'true_or_false',
                     placeholder: 'True or False',
@@ -176,50 +171,74 @@
                     type: 'number',
                     icon: '🌟',
                 }
-                ],
-                //todo: remove view on non-essential control items
-                controlOrder: [
-                    'radio-group'
-                ]
-            };
+                ];
 
-            //$('.build-wrap').formBuilder(options);
-            var formBuilder = $('.build-wrap').formBuilder(options);
-
-            $('#create_task').submit(function(e) {
-                e.preventDefault();
-                var myFormBuilder = formBuilder.actions.getData('json', true);
+            var addField = new Array();
+            //never mix javascript with laravel data :) zzz
+            @foreach($task->task_questions as $question)
+                var temp = findObjectInArrayByProperty(fields, "className", "{{$question->required_inputs}}");
+                temp.name = "{{$question->task_question_id}}";
+                temp.label = "{{$question->question}}";
+                console.log("{{json_encode($question->task_question_choices)}}");
+                @if (count($question->task_question_choices) > 0)
+                    tempvalues = new Array();
+                    //console.log("{{count($question->task_question_choices)}}");
+                    @foreach($question->task_question_choices as $values)
+                        tempvalues.push(
+                            {
+                                "label": "{{$values->choices_value}}",
+                                "value": "{{$values->choices_id}}"
+                            }
+                        );
+                    @endforeach
+                    temp.values = tempvalues;
+                @endif
+                console.log(temp);
                 
+                addField.push(temp);
+            @endforeach
 
-                var formData = new FormData(this);
+            console.log(JSON.stringify(options));
+            
 
-                //formData.append('data_type', "custom");
-                formData.append('form_builder', myFormBuilder);
-
-                $.ajax({
-                    type:'POST',
-                    url: "/task/create",
-                    data: formData,
-                    cache:false,
-                    contentType: false,
-                    processData: false,
-                    success: (data) => {
-                        $(".modal-title").text("Task Creation Successful!");
-                        $(".modal-body").html("<p>" + data.message + "</p>");
-                        $("#myModal").modal('show');
-                    },
-                    error: function(data){
-                        $(".modal-title").text("Task Creation Failed!");
-                        //$(".modal-body").html("<p>" + data.responseText + "</p>");
-                        $(".modal-body").html("<p>" + data.responseJSON.message + "</p>");
-                        $("#myModal").modal('show');
-                    }
-                });
-            });
+            var options = {
+                container,
+                addField,
+                dataType: 'json',
+                fields: fields,
+            };
+            //$(container).formRender(options);
 
             $("#back").click(function(){
                 window.location.href = "/task/view";
             });
+
+            $("#edit").click(function(){
+                window.location.href = "/task/edit?task_action_id={{$task->task_id}}";
+            });
+        
+            var formData = JSON.stringify(addField);
+
+            var container = $('.build-wrap');
+            //var formData = '[{"label":"True or False","className":"true_or_false","placeholder":"True or False","type":"radio-group","subType":"true-or-false","values":[{"label":"True","value":"tof-4458"},{"label":"False","value":"tof-7692"}],"icon":"🌟","name":"361eeaef-38eb-4c73-8e0a-ce5266db36c7"},{"label":"Float","className":"FLOAT","placeholder":"float","type":"number","icon":"🌟","name":"4233ca1f-30b6-4840-aed9-42ae39362a37","values":[]},{"label":"Single Select Dropdown","className":"SINGLE SELECT DROPDOWN","placeholder":"Single Select Dropdown","type":"select","icon":"🌟","name":"898570d7-dd13-44eb-80c8-9eb98f570612","values":[]},{"label":"Calculated Value","className":"CALCULATED VALUE","placeholder":"Calculated Value","type":"number","icon":"🌟","name":"945b3a0c-9aed-4da5-870c-1bdb3cb53a17","values":[]},{"label":"Text","className":"TEXT","placeholder":"Text","type":"textarea","icon":"🌟","name":"aa6cdb51-1415-4a89-a3c2-fe8a25ebbf70","values":[]},{"label":"Take a Photo","className":"PHOTO","placeholder":"Take a Photo","type":"file","icon":"🌟","name":"ba7a059f-8170-45e9-a5d8-ffb9dea6be97","values":[]},{"label":"Date","className":"DATEFIELD","placeholder":"date","type":"date","icon":"🌟","name":"d84d32ba-8480-49e6-840b-5bb8ebd48622","values":[]},{"label":"Checkbox","className":"CHECKBOX","placeholder":"Checkbox","type":"checkbox-group","icon":"🌟","name":"ec1ea6f5-54e8-4340-8fe8-3c82bc4183e0","values":[]},{"label":"Amount","className":"CURRENCY","placeholder":"Amount","type":"number","icon":"🌟","name":"f1109f0b-a84a-4ed7-85b2-81fdecb21cab","values":[]}]';
+
+            var formRenderOpts = {
+                container,
+                formData,
+                fields: fields,
+                dataType: 'json'
+            };
+
+            console.log(formRenderOpts);
+            $(container).formRender(formRenderOpts);
+
         });
+
+
+        function findObjectInArrayByProperty(array, propertyName, propertyValue) {
+            return array.find((o) => { return o[propertyName] === propertyValue });
+        }
+
+        
     </script>
 @stop

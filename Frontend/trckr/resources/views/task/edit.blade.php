@@ -1,9 +1,9 @@
 @extends('adminlte::page')
 
-@section('title', 'Trckr | Create New Task')
+@section('title', 'Trckr | Edit Task')
 
-@section('content_header')`
-    <h1>Create New Task</h1>
+@section('content_header')
+    <h1>Edit Task</h1>
 @stop
 
 @section('content')
@@ -24,29 +24,29 @@
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
 
-    <p>Create Task</p>
+    <p>Edit Task</p>
 
     <div class="card">
-        <form class="form-vertical" id="create_task" enctype="multipart/form-data">
+        <form class="form-vertical" id="create_task">
             <div class="card-body">           
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">                
                 
                 <div class="form-group row">
                     <label for="company_name" class="col-sm-2 col-form-label">Task Name</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="input_task_name" name="task_name" value="" placeholder="Enter Task Name">
+                        <input type="text" class="form-control" id="input_task_name" name="task_name" placeholder="Enter Task Name" value="{{ ($task->task_name) ? $task->task_name : ''}}">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="company_name" class="col-sm-2 col-form-label">Task Description</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="input_task_description" name="task_description" value="" placeholder="Enter Task Description">
+                        <input type="text" class="form-control" id="input_task_description" name="task_description" placeholder="Enter Task Description" value="{{ ($task->task_description) ? $task->task_description : ''}}">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="company_name" class="col-sm-2 col-form-label">Subject Level</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="input_subject_level" name="subject_level" value="" placeholder="Enter Subject Level">
+                        <input type="text" class="form-control" id="input_subject_level" name="subject_level" placeholder="Enter Subject Level" value="{{ ($task->subject_level) ? $task->subject_level : ''}}" >
                     </div>
                 </div>
                 <!--
@@ -56,7 +56,10 @@
                         <select class="form-control" name="data_source" style="width: 100%;">
                             <option value="">Select One</option>
                             @foreach ($task_config as $t)
-                            <option value="{{$t['data_source']}}-{{$t['data_type']}}">{{$t['data_source']}} - {{$t['data_type']}}</option>
+                            <option value="{{$t['data_source']}}-{{$t['data_type']}}" 
+                                @php echo ($t['data_source'] == $task->data_source AND $t['data_type'] == $task->data_type) ? "selected" : ""
+                                @endphp
+                                >{{$t['data_source']}} - {{$t['data_type']}}</option>
                             @endforeach
                         </select>
                     </div>
@@ -68,7 +71,10 @@
                         <select class="form-control" name="task_classification_id" style="width: 100%;">
                             <option value="">Select One</option>
                             @foreach ($task_classification as $ta)
-                            <option value="{{$ta->task_classification_id}}">{{$ta->name}}</option>
+                            <option value="{{$ta->task_classification_id}}"
+                            @php echo ($ta->task_classification_id == $task->task_classification_id) ? "selected" : ""
+                                @endphp
+                                >{{$ta->name}}</option>
                             @endforeach
                         </select>
                     </div>
@@ -76,13 +82,12 @@
                 <div class="form-group row">
                     <label for="company_name" class="col-sm-2 col-form-label">Banner Image</label>
                     <div class="col-sm-10">
-                        <input type="file" class="custom-file-input" id="exampleInputFile" name="banner_image" accept="image/*" >
+                        <input type="file" class="custom-file-input" id="exampleInputFile" name="banner_image" accept="image/*" value="{{ ($task->banner_image) ? $task->banner_image : ''}}" >
                         <label class="custom-file-label" for="exampleInputFile">Choose file</label>
                     </div>
                 </div>
 
                 <div class="build-wrap"></div>
-                
             </div>
             <div class="card-footer">
                 <div class="btn-group float-lg-right" role="group" aria-label="Basic example">
@@ -105,9 +110,7 @@
     <script type="text/javascript">
         
         $(document).ready(function (e) { 
-
-            let options = {
-                fields:[{
+            let fields = [{
                     label: 'True or False',
                     className: 'true_or_false',
                     placeholder: 'True or False',
@@ -176,40 +179,75 @@
                     type: 'number',
                     icon: '🌟',
                 }
-                ],
+                ];
+            let options = {
+                fields: fields,
                 //todo: remove view on non-essential control items
                 controlOrder: [
                     'radio-group'
                 ]
             };
 
-            //$('.build-wrap').formBuilder(options);
             var formBuilder = $('.build-wrap').formBuilder(options);
+
+            formBuilder.promise.then(function(fb) {
+                var addField = new Array();
+                //never mix javascript with laravel data :) zzz
+                @foreach($task->task_questions as $question)
+                    var temp = findObjectInArrayByProperty(fields, "className", "{{$question->required_inputs}}");
+                    temp.name = "{{$question->task_question_id}}";
+                    temp.label = "{{$question->question}}";
+                    @if (count($question->task_question_choices) > 0)
+                        tempvalues = new Array();
+                        //console.log("{{count($question->task_question_choices)}}");
+                        @foreach($question->task_question_choices as $values)
+                            tempvalues.push(
+                                {
+                                    "label": "{{$values->choices_value}}",
+                                    "value": "{{$values->choices_id}}"
+                                }
+                            );
+                        @endforeach
+                        temp.values = tempvalues;
+                    @endif
+                    console.log(temp);
+                    //formBuilder.actions.addField(temp,1);
+                    addField.push(temp);
+                @endforeach
+
+                fb.actions.setData(addField);
+            });
+            
+
+            //$('.build-wrap').formBuilder(options);
+            
 
             $('#create_task').submit(function(e) {
                 e.preventDefault();
-                var myFormBuilder = formBuilder.actions.getData('json', true);
-                
-
+ 
                 var formData = new FormData(this);
+
+                var myFormBuilder = formBuilder.actions.getData('json', true);
 
                 //formData.append('data_type', "custom");
                 formData.append('form_builder', myFormBuilder);
 
+                formData.append("task_id", "{{ $task_id }}");
+
                 $.ajax({
                     type:'POST',
-                    url: "/task/create",
+                    url: "/task/edit",
                     data: formData,
                     cache:false,
                     contentType: false,
                     processData: false,
                     success: (data) => {
-                        $(".modal-title").text("Task Creation Successful!");
+                        $(".modal-title").text("Task Modification Successful!");
                         $(".modal-body").html("<p>" + data.message + "</p>");
                         $("#myModal").modal('show');
                     },
                     error: function(data){
-                        $(".modal-title").text("Task Creation Failed!");
+                        $(".modal-title").text("Task Modification Failed!");
                         //$(".modal-body").html("<p>" + data.responseText + "</p>");
                         $(".modal-body").html("<p>" + data.responseJSON.message + "</p>");
                         $("#myModal").modal('show');
@@ -221,5 +259,11 @@
                 window.location.href = "/task/view";
             });
         });
+
+        function findObjectInArrayByProperty(array, propertyName, propertyValue) {
+            return array.find((o) => { return o[propertyName] === propertyValue });
+        }
+
+        
     </script>
 @stop

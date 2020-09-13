@@ -66,11 +66,11 @@ return [
     */
 
     'usermenu_enabled' => true,
-    'usermenu_header' => false,
+    'usermenu_header' => true,
     'usermenu_header_class' => 'bg-primary',
-    'usermenu_image' => false,
-    'usermenu_desc' => false,
-    'usermenu_profile_url' => false,
+    'usermenu_image' => true,
+    'usermenu_desc' => true,
+    'usermenu_profile_url' => true,
 
     /*
     |--------------------------------------------------------------------------
@@ -145,7 +145,7 @@ return [
     |
     */
 
-    'sidebar_mini' => true,
+    'sidebar_mini' => false,
     'sidebar_collapse' => false,
     'sidebar_collapse_auto_size' => false,
     'sidebar_collapse_remember' => false,
@@ -245,9 +245,16 @@ return [
         ],
         */
         [
+            'text' => 'Logout',
+            //'search' => true,
+            'url' => 'logout',
+            //'topnav' => true,
+            'topnav_right' => true
+        ],
+        [
             'icon_color' => 'yellow',
             'text' => 'Dashboard',
-            'url'  => 'main/dashboard',
+            'url'  => 'dashboard',
             'icon' => 'fas fa-fw fa-chart-pie',
         ],
         ['header' => 'Merchant Profile'],
@@ -442,7 +449,7 @@ return [
             ],
         ],
         'Chartjs' => [
-            'active' => false,
+            'active' => true,
             'files' => [
                 [
                     'type' => 'js',
