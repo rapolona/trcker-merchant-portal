@@ -69,7 +69,7 @@ class BranchController extends Controller
 
             $api_endpoint = Config::get('trckr.backend_url') . "merchant/branch";
             $session = $request->session()->get('session_merchant');
-            $token = $session->token;
+            $token = ( ! empty($session->token)) ? $session->token : "";
             
             $count = 1;
             $debug = array();
@@ -114,7 +114,7 @@ class BranchController extends Controller
         $api_endpoint = Config::get('trckr.backend_url') . "merchant/branches";
 
         $session = $request->session()->get('session_merchant');
-        $token = $session->token;
+        $token = ( ! empty($session->token)) ? $session->token : "";
 
         $response = Http::withToken($token)->get($api_endpoint, []);
         
@@ -129,7 +129,20 @@ class BranchController extends Controller
                     ->withInput();      
             }
 
-            //provide handling for failed branch retrieval
+            if ($response->status() === 500) {
+                $handler = json_decode($response->body());
+                
+                if ($handler->message->name == "JsonWebTokenError")
+
+                $validator = Validator::make($request->all(), []);
+                $validator->getMessageBag()->add('email', "Session Expired. Please login again. {$response->body()}");
+            
+                return redirect('/')
+                    ->withErrors($validator)
+                    ->withInput();      
+            }
+
+            //general handling
             return redirect('/dashboard');
         }
 
@@ -182,7 +195,7 @@ class BranchController extends Controller
         $api_endpoint = Config::get('trckr.backend_url') . "merchant/branch";
 
         $session = $request->session()->get('session_merchant');
-        $token = $session->token;
+        $token = ( ! empty($session->token)) ? $session->token : "";
 
         $response = Http::withToken($token)->post($api_endpoint, $data);
         
@@ -207,16 +220,38 @@ class BranchController extends Controller
     {
         $branch_id = $request->query('branch_id');
 
-        $api_endpoint = Config::get('trckr.backend_url') . "merchant/branch";
+        $api_endpoint = Config::get('trckr.backend_url') . "merchant/branches";
 
         $session = $request->session()->get('session_merchant');
-        $token = $session->token;
+        $token = ( ! empty($session->token)) ? $session->token : "";
 
         $response = Http::withToken($token)->get($api_endpoint, []);
         
         if ($response->status() !== 200)
         {
-            //provide handling for failed merchant profile retrieval
+            if ($response->status() === 403) {
+                $validator = Validator::make($request->all(), []);
+                $validator->getMessageBag()->add('email', "Session Expired. Please login again. {$response->body()}");
+            
+                return redirect('/')
+                    ->withErrors($validator)
+                    ->withInput();      
+            }
+
+            if ($response->status() === 500) {
+                $handler = json_decode($response->body());
+                
+                if ($handler->message->name == "JsonWebTokenError")
+
+                $validator = Validator::make($request->all(), []);
+                $validator->getMessageBag()->add('email', "Session Expired. Please login again. {$response->body()}");
+            
+                return redirect('/')
+                    ->withErrors($validator)
+                    ->withInput();      
+            }
+
+            //general handling
             return redirect('/dashboard');
         }
 
@@ -235,12 +270,11 @@ class BranchController extends Controller
 
     public function edit_branch_post(Request $request)
     {
-        $branch_id = $request->query('branch_id');
-
+        //$branch_id = $request->query('branch_id');
         $data = (array) $request->all();
 
         $validator = Validator::make($request->all(), [
-            'id' => 'required',
+            'branch_id' => 'required',
             'name' => 'required|max:64',
             'address' => 'required|max:64',
             'city' => 'required|max:64',
@@ -268,7 +302,7 @@ class BranchController extends Controller
         $api_endpoint = Config::get('trckr.backend_url') . "merchant/branch";
 
         $session = $request->session()->get('session_merchant');
-        $token = $session->token;
+        $token = ( ! empty($session->token)) ? $session->token : "";
 
         $response = Http::withToken($token)->put($api_endpoint, $data);
         
@@ -284,7 +318,7 @@ class BranchController extends Controller
 
         return Response()->json([
             "success" => true,
-            "message" => "Edit Branch successfully saved!" . $response->body(),
+            "message" => "Branch was successfully modified!",
             "file" => $data,
         ]);
     }
@@ -295,7 +329,7 @@ class BranchController extends Controller
 
         $api_endpoint = Config::get('trckr.backend_url') . "merchant/branch";
         $session = $request->session()->get('session_merchant');
-        $token = $session->token;
+        $token = ( ! empty($session->token)) ? $session->token : "";
         
         $count = 1;
         $debug = array();

@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Dashboard')
+@section('title', 'Ticket Management')
 
 @section('content_header')
     <h1>Ticket Management</h1>
@@ -49,28 +49,29 @@
                                 <th>Campaign Name</th>
                                 <th>Task</th>
                                 <th>Date Submitted</th>
-                                <th>Device ID</th>
-                                <th>Location</th>
-                                <th>Status</th>
-                                <th style="width: 40px">Action?</th>
+                                <th style="width: 5%">Device ID</th>
+                                <th style="width: 5%">Location</th>
+                                <th style="width: 5%">Status</th>
+                                <th style="width: 5%">Action?</th>
                             </tr>
                             </thead>
                             <tbody>
                                 @foreach ($tickets as $t)
                             <tr>
-                                <td> {{ $t->user_detail->first_name . $t->user_detail->last_name }}</td>
-                                <td> {{ $t->user_detail->email }}</td>
-                                <td> No info available (not in capability/tasktickets schema yet) </td>
-                                <td> {{ $t->campaign_name }}</td>
-                                <td> 
+                                <input class="view_id" type="hidden" name="task_ticket_id[]" value="{{ $t->task_ticket_id }}"/>
+                                <td class="view"> {{ $t->user_detail->first_name . " " . $t->user_detail->last_name }}</td>
+                                <td class="view"> {{ $t->user_detail->email }}</td>
+                                <td class="view"> No info available (not in capability/tasktickets schema yet) </td>
+                                <td class="view"> {{ $t->campaign_name }}</td>
+                                <td class="view"> 
                                     @foreach ($t->task_details as $d )
-                                        {{ $d->campaign_task_action->description}} <br/>
+                                        {{ $d->task_question->question}} <br/>
                                     @endforeach    
                                 </td>
-                                <td> {{ $t->updatedAt }}</td>
-                                <td> No info available (not in capability/tasktickets schema yet) </td>
-                                <td> No info avaialable (not in capability/tasktickets schema yet)</td>
-                                <td> {{ $t->approval_status }}</td>
+                                <td class="view"> {{ $t->updatedAt }}</td>
+                                <td class="view"> {{ $t->device_id}} </td>
+                                <td class="view"> No info avaialable (not in capability/tasktickets schema yet)</td>
+                                <td class="view"> {{ $t->approval_status }}</td>
                                 <td>
                                     <input type="checkbox" name="task_ticket_id[]" value="{{ $t->task_ticket_id }}"> 
                                 </td>
@@ -92,6 +93,13 @@
 @section('js')
     <script type="text/javascript">
         $(document).ready(function (e) { 
+
+            $('.view').click(function(){
+                var ticket_id = $(this).siblings('.view_id').val();
+                
+                window.location.href = "/ticket/view_ticket?ticket_id=" + ticket_id;
+            });
+
             $("#approve").click(function(){
                 $("#action").val('approve');
             });

@@ -17,9 +17,10 @@ use Illuminate\Http\Request;
 Route::get('/', 'AuthController@index');
 Route::get('/login', 'AuthController@login_get');
 Route::post('/login', 'AuthController@login_post');
+Route::get('/logout', 'AuthController@logout');
 
 
-Route::get('/main', 'MainController@index');
+Route::get('/dashboard', 'MainController@index');
 
 
 
@@ -55,6 +56,7 @@ Route::post('/merchant/users/upload', 'MerchantController@upload_users');
 Route::get('/merchant/rewards', 'MerchantController@rewards');
 
 Route::get('/campaign/view ', 'CampaignController@view');
+Route::get('/campaign/view_campaign ', 'CampaignController@view_campaign');
 Route::get('/campaign/create ', 'CampaignController@create');
 //Ajax for Campaign Creation
 Route::post('/campaign/create_campaign ', 'CampaignController@create_campaign');
@@ -62,15 +64,19 @@ Route::get('/campaign/campaign_type/task ', 'CampaignController@campaign_type');
 
 
 Route::get('/task/view ', 'TaskController@view');
-Route::get('/task/create ', 'TaskController@create');
-Route::post('/task/create ', 'TaskController@create_task');
-
+Route::get('/task/view_task ', 'TaskController@view_task');
+Route::get('/task/create ', 'TaskController@create_task_get');
+Route::post('/task/create ', 'TaskController@create_task_post');
+Route::post('/task/delete', 'TaskController@delete_task');
+Route::get('/task/edit', 'TaskController@edit_task_get');
+Route::post('/task/edit', 'TaskController@edit_task_post');
 /*
 Route::get('/file', 'FileController@index');
 Route::post('/file/store', 'FileController@store');
 */
 
 Route::get('/ticket/view', 'TicketController@view');
+Route::get('/ticket/view_ticket', 'TicketController@view_ticket');
 Route::get('/ticket/create', 'TicketController@create');
 Route::post('/ticket/approve_ticket', 'TicketController@approve_ticket');
 Route::post('/ticket/reject_ticket', 'TicketController@reject_ticket');

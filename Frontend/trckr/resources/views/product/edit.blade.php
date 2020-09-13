@@ -63,7 +63,7 @@
 @stop
 
 @section('css')
-    <link rel="stylesheet" href="/css/admin_custom.css">
+    <link rel="stylesheet" href="#">
 @stop
 
 @section('js')
@@ -74,17 +74,17 @@
                 e.preventDefault();
 
                 var formData = new FormData(this);
-                formData.append("id", "{{ $product_id }}");
+                formData.append("product_id", "{{ $product_id }}");
         
                 $.ajax({
                     type:'POST',
-                    url: "/merchant/product/edit?{{ $product_id }}",
+                    url: "/merchant/product/edit",
                     data: formData,
                     cache:false,
                     contentType: false,
                     processData: false,
                     success: (data) => {
-                        $(".modal-title").val("Edit Product Successful!");
+                        $(".modal-title").text("Edit Product Successful!");
                         $(".modal-body").html("<p>" + data.message + "</p>");
                         $("#myModal").modal('show');
                     },
@@ -95,6 +95,7 @@
                         $("#myModal").modal('show');
                     }
                 });
+                
             });
 
             $("#back").click(function(){

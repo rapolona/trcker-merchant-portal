@@ -24,7 +24,7 @@ class MerchantController extends Controller
     public function debug(Request $request)
     {
         $session = $request->session()->get('session_merchant');
-        $token = $session->token;
+        $token = ( ! empty($session->token)) ? $session->token : "";
         var_dump($token);
     }
 
@@ -36,13 +36,12 @@ class MerchantController extends Controller
         $api_endpoint = Config::get('trckr.backend_url') . "merchant/profile";
 
         $session = $request->session()->get('session_merchant');
-        $token = $session->token;
+        $token = ( ! empty($session->token)) ? $session->token : "";
 
         $response = Http::withToken($token)->get($api_endpoint, []);
         
         if ($response->status() !== 200)
         {
-            //unauthorized request
             if ($response->status() === 403) {
                 $validator = Validator::make($request->all(), []);
                 $validator->getMessageBag()->add('email', "Session Expired. Please login again. {$response->body()}");
@@ -51,8 +50,22 @@ class MerchantController extends Controller
                     ->withErrors($validator)
                     ->withInput();      
             }
+
+            if ($response->status() === 500) {
+                $handler = json_decode($response->body());
+                
+                if ($handler->message->name == "JsonWebTokenError")
+
+                $validator = Validator::make($request->all(), []);
+                $validator->getMessageBag()->add('email', "Session Expired. Please login again. {$response->body()}");
             
-            //else
+                return redirect('/')
+                    ->withErrors($validator)
+                    ->withInput();      
+            }
+
+            //general handling
+            return redirect('/dashboard');
         }
 
         $profile = json_decode($response);
@@ -70,8 +83,9 @@ class MerchantController extends Controller
             'address' => 'required|max:64',
             'trade_name' => 'required|max:64',
             'authorized_representative' => 'required|max:64',
+            'position' => 'required|max:64',
             'contact_number' => 'required|numeric|digits_between:1,64',
-            'email_address' => 'required|email'
+            'email_address' => 'required|email|max:64'
         ]);
 
         if ($validator->fails())
@@ -90,12 +104,11 @@ class MerchantController extends Controller
                 "file" => $data,
             ], 422);
         }
-        //var_dump($validator);exit;
 
         $api_endpoint = Config::get('trckr.backend_url') . "merchant/profile";
 
         $session = $request->session()->get('session_merchant');
-        $token = $session->token;
+        $token = ( ! empty($session->token)) ? $session->token : "";
 
         $response = Http::withToken($token)->put($api_endpoint, $data);
         

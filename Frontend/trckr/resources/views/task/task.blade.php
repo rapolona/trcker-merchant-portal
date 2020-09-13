@@ -35,31 +35,34 @@
                         <div class="btn-group float-lg-right" role="group" aria-label="Basic example">
                             <a href="/task/create" type="button" class="btn btn-primary btn-lg pull-right">Add</a>
                             <button type="button" class="btn btn-primary btn-lg" id="edit">Edit</button>    
-                            <button type="button" class="btn btn-primary btn-lg pull-right">Delete</button>
+                            <button type="button" class="btn btn-primary btn-lg" id="delete">Delete</button>
                         </div>
                     </form>
                 </div>
                 <!-- /.card-header -->
-                <table class="table table-bordered">
-                    <thead>                  
-                    <tr>
-                        <th>Task Name</th>
-                        <th>Description</th>
-                        <th>Subject Level</th>
-                        <th style="width: 40px">Action?</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    @foreach ($tasks as $t)
-                    <tr>
-                        <td> {{ $t->task_action_name }}</td>
-                        <td> {{ $t->task_action_description }}</td>
-                        <td> {{ $t->subject_level }}</td>
-                        <td><input type="checkbox" name="branch" id="{{$t->task_action_id}}"></td>
-                    </tr>
-                    @endforeach
-                    </tbody>
-                </table>
+                <div class="card-body">
+                    <table class="table table-bordered">
+                        <thead>                  
+                        <tr>
+                            <th>Task Name</th>
+                            <th>Description</th>
+                            <th>Subject Level</th>
+                            <th style="width: 40px">Action?</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach ($tasks as $t)
+                        <tr>
+                            <input class="view_id" type="hidden" name="row_task_id[]" value="{{$t->task_id}}"/>
+                            <td class="view"> {{ $t->task_name }}</td>
+                            <td class="view"> {{ $t->task_description }}</td>
+                            <td class="view"> {{ $t->subject_level }}</td>
+                            <td><input type="checkbox" name="task" id="{{$t->task_id}}"></td>
+                        </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
@@ -72,28 +75,74 @@
 @section('js')
     <script type="text/javascript">
       
-        $(document).ready(function (e) { 
-            $('#file_upload').submit(function(e) {
-                //e.preventDefault();
+        $(document).ready(function (e) {
 
-                var formData = new FormData(this);
-        
+            $('.view').click(function(){
+                var task_id = $(this).siblings('.view_id').val();
+                
+                window.location.href = "/task/view_task?task_id=" + task_id;
+            });
+
+            $('#myModal').on('hidden.bs.modal', function () {
+                location.reload();
+            });
+             
+            $('#delete').click(function(e){
+                var formData = new FormData();
+                var task = [];
+
+                $.each($("input[name='task']:checked"), function(){
+                    task.push($(this).attr("id"));
+                });
+
+                if (task.length < 1){
+                    $(".modal-title").text("Invalid Delete Selection!");
+                    $(".modal-body").html("<p>Please check at least one Task!</p>");
+                    $("#myModal").modal('show');
+                    return;
+                }
+
+                console.log(task);
+
+                formData.append('tasks', task);
+                formData.append('_token', "{{ csrf_token() }}");
+
                 $.ajax({
                     type:'POST',
-                    url: "/merchant/products/upload",
+                    url: "/task/delete",
                     data: formData,
                     cache:false,
                     contentType: false,
                     processData: false,
                     success: (data) => {
-                        this.reset();
-                        console.log(data);
+                        $(".modal-title").text("Delete Task Successful!");
+                        $(".modal-body").html("<p>" + data.message + "</p>");
+                        $("#myModal").modal('show');
                     },
                     error: function(data){
-                        console.log(data);
+                        $(".modal-title").text("Delete Task Failed!");
+                        $(".modal-body").html("<p>" + data.responseJSON.message + "</p>");
+                        //$(".modal-body").html("<p>" + data.message + "</p>");
+                        $("#myModal").modal('show');
                     }
                 });
             });
+            
+            $('#edit').click(function(e){
+                var tasks = [];
+                $.each($("input[name='task']:checked"), function(){
+                    tasks.push($(this).attr("id"));
+                });
+
+                if (tasks.length != 1){
+                    $(".modal-title").text("Invalid Edit Selection!");
+                    $(".modal-body").html("<p>Please check one task only!</p>");
+                    $("#myModal").modal('show');
+                    return;
+                }
+
+                window.location.href = "/task/edit?task_action_id=" + tasks[0];
+            });
         });
-  </script>
+    </script>
 @stop

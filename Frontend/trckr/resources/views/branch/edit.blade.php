@@ -85,7 +85,7 @@
                 e.preventDefault();
                 
                 var formData = new FormData(this);
-                formData.append("id", "{{ $branch_id }}");
+                formData.append("branch_id", "{{ $branch_id }}");
         
                 $.ajax({
                     type:'POST',
