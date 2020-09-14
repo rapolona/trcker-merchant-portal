@@ -133,7 +133,9 @@ exports.findAllforMerchant = (req, res) => {
       { merchant_id: merchant_id },
       { merchant_id: null }
     ]
-  }, include: include_condition
+  },order:[
+     [{model: Task_Question},'index', 'ASC']], 
+  include: include_condition
  })
     .then(data => {
       res.send(data);
