@@ -11,6 +11,10 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.STRING(255),
         allowNull: false
       },
+      index: {
+        type: Sequelize.INTEGER,
+        allowNull:false
+      },
       required_inputs: {
         type: Sequelize.STRING(64)
       },

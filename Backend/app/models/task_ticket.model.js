@@ -30,6 +30,14 @@ module.exports = (sequelize, Sequelize) => {
           key:'user_id'
         }
       },
+      branch_id:{
+        type:DataTypes.UUID,
+        allowNull:false,
+        references:{
+          model:'branches',
+          key:'branch_id'
+        }
+      },
       task_classification_id: {
         type: DataTypes.UUID,
         allowNull: false,

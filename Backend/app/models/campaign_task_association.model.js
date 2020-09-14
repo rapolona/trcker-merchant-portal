@@ -10,15 +10,19 @@ module.exports = (sequelize, Sequelize) => {
       campaign_id: {
         type: DataTypes.UUID,
         allowNull: false,
-        references: {     
+        references: {         // User belongsTo Company 1:1
           model: 'campaigns',
           key: 'campaign_id'
         }  
       },
+      index:{
+        type: Sequelize.INTEGER,
+        allowNull: false
+      },
       task_id: {
         type: DataTypes.UUID,
         allowNull: false,
-        references: {     
+        references: {         // User belongsTo Company 1:1
           model: 'tasks',
           key: 'task_id'
         }  

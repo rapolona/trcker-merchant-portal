@@ -59,6 +59,7 @@ exports.createCustom = (req, res) => {
 
     task_questions_container = []
     for(i=0;i<req.body.task_questions.length;i++){
+      req.body.task_questions[i].index = i+1;
       task_questions_container.push(req.body.task_questions[i])
     }
     

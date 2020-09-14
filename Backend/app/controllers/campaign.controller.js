@@ -107,6 +107,9 @@ exports.createCustom = (req, res) => {
 
   // Create a campaign
   const branches_container = []
+  for(i=0;i<req.body.tasks.length; i++){
+    req.body.tasks[i].index = i+1;
+  }
   
   for(i=0;i<req.body.branches.length;i++){
     branches_container.push(req.body.branches[i])
