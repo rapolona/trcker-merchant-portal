@@ -1,3 +1,4 @@
+const { task_question_choices } = require("../models");
 const db = require("../models");
 const Task = db.tasks;
 const Task_Question = db.task_questions;
@@ -188,6 +189,116 @@ exports.update = (req, res) => {
         });
       });
   };
+
+  // Update a Task by the id in the request
+exports.chainedUpdate = (req, res) => {
+  const id = req.body.task_id;
+  const merchant_id = req.body.merchantid;
+  var chainedPromises = [];
+
+
+  db.sequelize.transaction({autocommit:false},transaction => {
+
+  chainedPromises.push(
+    Task.update(req.body, {
+        where: {
+            task_id: id,
+            merchant_id: merchant_id
+        }, transaction
+    }).then(num => {
+      if (num != 1) {
+        res.status(500).send({
+          message: `Cannot update Task with id=${id}. Maybe task does not belong to merchant or was not found.`
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: "Error updating Task with id=" + id
+      });
+    })
+  );
+
+  //For every question, Push query to update task question
+  req.body.task_questions.forEach((element,i) => {
+    element.task_id = id;
+    element.index = i+1;
+    if(element.task_question_id){
+      chainedPromises.push(
+        Task_Question.update(element, {
+            where: {
+                task_question_id: element.task_question_id,
+            }, transaction
+        }).then(num => {
+          if (num != 1) {
+            res.status(500).send({
+              message: `Cannot update Task Question with id=${element.task_question_id}. Maybe task question does not belong to merchant or was not found.`
+            });
+          }
+        })
+        .catch(err => {
+          res.status(500).send({
+            message:
+              err.message || "Some error occurred while updating the Task Questions."
+          });
+        })
+      );
+    
+    }
+    else{
+      chainedPromises.push(
+        Task_Question.create(element, transaction
+        ).catch(err => {
+          res.status(500).send({
+            message:
+              err.message || "Some error occurred while creating the Task Questions."
+          });
+        })
+      );
+    }
+
+  //If question has choices, Push query to update each choice
+    if(element.task_question_choices)
+    {
+      element.task_question_choices.forEach((choice) => {
+        console.log(choice)
+        choice.task_question_id = element.task_question_id;
+        Task_Question_Choices.upsert(choice, {
+          where: {
+              choices_id: choice.choices_id,
+          }, transaction
+      }).catch(err => {
+    
+        res.status(500).send({
+          message:
+            err.message || "Some error occurred while updating the Task Question Choices."
+        });
+      })
+      })
+    }
+
+    });
+    return Promise.all(chainedPromises)
+    .then(data => {
+          res.status(200).send({
+            message:
+             "Update task successful"
+          });
+        })
+        .catch(err => {
+          res.status(500).send({
+            message:
+              err.message || "Some error occurred while updating the Task Questions."
+          });
+        });
+  })
+
+  
+
+
+
+  
+};
 
 // Delete a Task with the specified id in the request
 exports.delete = (req, res) => {

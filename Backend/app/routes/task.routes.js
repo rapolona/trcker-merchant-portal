@@ -17,7 +17,7 @@ module.exports = app => {
     // router.get("/", tasks.findOne);
   
     // Update a Task with id
-    router.put("/task", adminMiddleware.isAuthenticated, tasks.update);
+    router.put("/task", adminMiddleware.isAuthenticated, tasks.chainedUpdate);
   
     // Delete a Task with id
     //router.delete("/", tasks.delete);
