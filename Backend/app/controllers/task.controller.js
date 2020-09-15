@@ -119,7 +119,14 @@ exports.findAll = (req, res) => {
 exports.findAllforMerchant = (req, res) => {
   const merchant_id = req.body.merchantid;
   const task_type = req.query.task_type;
-  include_condition = [{model: Task_Classification},{model: Task_Question, include:[{model:Task_Question_Choices}]}]
+  const task_id = req.query.task_id;
+  var include_condition = [{model: Task_Classification},{model: Task_Question, include:[{model:Task_Question_Choices}]}]
+  var where_condition = {
+    [Op.or]: [
+      { merchant_id: merchant_id },
+      { merchant_id: null }
+    ]
+  }
 
   if(task_type){
     include_condition = [
@@ -127,14 +134,14 @@ exports.findAllforMerchant = (req, res) => {
       {model: Task_Question, include:[{model:Task_Question_Choices}]}
     ]
   }
+  if(task_id){
+    where_condition = {
+      task_id : task_id
+    }
+  }
   
 
-  Task.findAll({ where: {
-    [Op.or]: [
-      { merchant_id: merchant_id },
-      { merchant_id: null }
-    ]
-  },order:[
+  Task.findAll({ where: where_condition,order:[
      [{model: Task_Question},'index', 'ASC']], 
   include: include_condition
  })
