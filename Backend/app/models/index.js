@@ -71,8 +71,6 @@ db.branches.belongsToMany(db.campaigns,{through:db.campaign_branch_associations,
 
 db.campaigns.hasMany(db.campaign_task_associations, {foreignKey:'campaign_id'}, {onDelete:'cascade'});
 db.tasks.hasMany(db.campaign_task_associations, {foreignKey:'task_id'}, {onDelete: 'cascade'});
-db.campaign_task_associations.belongsTo(db.campaigns, {foreignKey: "campaign_id"});
-db.campaign_task_associations.belongsTo(db.tasks, {foreignKey: "task_id"});
 db.campaigns.belongsToMany(db.tasks, {through:db.campaign_task_associations, foreignKey:'campaign_id'})
 db.tasks.belongsToMany(db.campaigns, {through:db.campaign_task_associations, foreignKey:'task_id'})
 
@@ -89,7 +87,7 @@ db.tasks.belongsTo(db.task_classifications, {foreignKey: "task_classification_id
 db.task_tickets.belongsTo(db.campaigns,{foreignKey:'campaign_id'});
 db.task_tickets.belongsTo(db.userdetails, {foreignKey:'user_id', sourceKey: 'user_id', targetKey: 'user_id'});
 db.task_tickets.hasMany(db.task_details, {foreignKey:'task_ticket_id'});
-
+db.task_tickets.belongsTo(db.branches, {foreignKey:'branch_id'});
 db.task_questions.hasMany(db.task_details, {foreignKey: 'task_question_id'});
 db.task_details.belongsTo(db.task_questions, {foreignKey:'task_question_id'})
 

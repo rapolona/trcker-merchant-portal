@@ -128,7 +128,7 @@ exports.createCustom = (req, res) => {
       allowed_account_level: req.body.allowed_account_level,
       super_shoppers: req.body.super_shoppers,
       allow_everyone: req.body.allow_everyone,
-      status: req.body.status,
+      status: 0,
       campaign_type: req.body.campaign_type,
       campaign_task_associations: req.body.tasks,
       campaign_branch_associations: branches_container,
@@ -250,26 +250,46 @@ exports.findOne = (req, res) => {
 // Update a Campaign by the id in the request
 exports.update = (req, res) => {
     const id = req.body.campaign_id;
-  
-    Campaign.update(req.body, {
-      where: { campaign_id: id }
+    if(req.body.tasks){
+      for(var i = 0; i < req.body.tasks.length; i++){
+        req.body.tasks[i].campaign_id = id
+        req.body.tasks[i].index = i+1;
+      }
+    }
+    if(req.body.branches){
+      for(var i=0; i<req.body.branches.length;i++){
+        req.body.branches[i].campaign_id = id
+      }
+    }
+    console.log(req.body.tasks)
+    db.sequelize.transaction({autocommit:false},transaction => {
+      return Promise.all([
+        Campaign.update(req.body, {
+          where: { campaign_id: id, merchant_id : req.body.merchantid, status:0},
+          transaction: transaction
+        }),
+        Campaign_Task_Association.destroy({
+          where: {campaign_id: id},
+          transaction:transaction}),
+        Campaign_Task_Association.bulkCreate(req.body.tasks, {transaction:transaction}),
+        Campaign_Reward.update(req.body.reward, {where: {campaign_id : id}, transaction:transaction}),
+        Campaign_Branch_Association.destroy({
+          where: {campaign_id: id},
+          transaction:transaction
+        }),
+        Campaign_Branch_Association.bulkCreate(req.body.branches, {transaction:transaction})
+      ])
     })
-      .then(num => {
-        if (num == 1) {
-          res.send({
-            message: "Campaign was updated successfully."
-          });
-        } else {
-          res.send({
-            message: `Cannot update Campaign with id=${id}. Maybe Campaign was not found or req.body is empty!`
-          });
-        }
+    .then(data => {
+      console.log(data)
+      res.send(data)
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: err || "Error updating campaign"
       })
-      .catch(err => {
-        res.status(500).send({
-          message: "Error updating Campaign with id=" + id
-        });
-      });
+    })
+  
   };
 
 // Delete a Campaign with the specified id in the request
@@ -317,9 +337,15 @@ exports.deleteAll = (req, res) => {
 
 
   exports.countRespondents = (req,res) => {
-    Task_Ticket.findAll({include:[{model:Campaign, where:{merchant_id: req.body.merchantid}, attributes:[]}],group:['campaign_id'], attributes:[
-      [db.Sequelize.fn("COUNT", "user_id"), "respondents"], 'campaign_id'
-    ]})
+    var groupByParam = req.query.groupby
+    var groupArr = ['campaign_id']
+    var includeArr = [{model:Campaign, where:{merchant_id: req.body.merchantid}, attributes:['campaign_name', 'campaign_description']}]
+    if(groupByParam && groupByParam == "BRANCH"){
+      groupArr.push('task_ticket.branch_id')
+      includeArr.push({model:Branch, attributes:['name']})
+    }
+    Task_Ticket.findAll({include:includeArr,group:groupArr, attributes:[
+      [db.Sequelize.fn("COUNT", "user_id"), "respondents"], 'campaign_id']})
     .then(data => {
       res.send(data)
     })
