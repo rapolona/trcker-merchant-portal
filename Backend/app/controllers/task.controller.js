@@ -43,6 +43,7 @@ exports.create = (req, res) => {
   };
 
 exports.createCustom = (req, res) => {
+    var allowedInputValues = ["TEXT", "SINGLE SELECT DROPDOWN", "CHECKBOX", "TRUE OR FALSE", "FLOAT", "IMAGE", "INTEGER", "TIMESTAMP", "CALCULATED VALUE"]
     // Validate request
     console.log(req.body)
     if (!req.body.task_name) {
@@ -58,8 +59,17 @@ exports.createCustom = (req, res) => {
       return;
     }
 
+
     task_questions_container = []
     for(i=0;i<req.body.task_questions.length;i++){
+      var matchedInput = allowedInputValues.find(element => element == req.body.task_questions[i].required_inputs.toUpperCase())
+      if(!matchedInput){
+        res.status(400).send({
+          message: "One of the required Input not supported"
+        });
+        return;
+      }
+      req.body.task_questions[i].required_inputs = req.body.task_questions[i].required_inputs.toUpperCase();
       req.body.task_questions[i].index = i+1;
       task_questions_container.push(req.body.task_questions[i])
     }
