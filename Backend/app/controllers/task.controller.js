@@ -45,7 +45,7 @@ exports.create = (req, res) => {
 exports.createCustom = (req, res) => {
     var allowedInputValues = ["TEXT", "SINGLE SELECT DROPDOWN", "CHECKBOX", "TRUE OR FALSE", "FLOAT", "IMAGE", "INTEGER", "TIMESTAMP", "CALCULATED VALUE", "DATETIME"]
     // Validate request
-    console.log(req.body)
+    //console.log(req.body)
     if (!req.body.task_name) {
       res.status(400).send({
         message: "Content can not be empty!"
@@ -82,11 +82,12 @@ exports.createCustom = (req, res) => {
       subject_level: req.body.subject_level,
       merchant_id: req.body.merchantid,
       task_classification_id: req.body.task_classification_id,
-      task_questions: task_questions_container
+      task_questions: task_questions_container,
+      banner_image: req.body.banner_image
       //task_action_classification_id: "57e2c884-6cfc-4fa2-9cc8-b92f6747f535"
     };
 
-    console.log(task)
+    //console.log(task)
     
     db.sequelize.transaction(transaction =>
       Task.create(task, {include: [
@@ -95,6 +96,7 @@ exports.createCustom = (req, res) => {
       ],
         transaction
       }).then(data => {
+        data.banner_image = "Image Uploaded"
         res.send(data);
       })
       .catch(err => {
@@ -113,7 +115,7 @@ exports.findAll = (req, res) => {
     const name = req.query.name;
     var condition = name ? { name: { [Op.like]: `%${name}%` } } : null;
   
-    Task.findAll({ where: condition, include:{model: Task_Classification, where: {task_type: 'Merchandising'}} })
+    Task.findAll({attributes:{exclude:['banner_image']}, where: condition, include:{model: Task_Classification, where: {task_type: 'Merchandising'}} })
       .then(data => {
         res.send(data);
       })
@@ -131,6 +133,7 @@ exports.findAllforMerchant = (req, res) => {
   const task_type = req.query.task_type;
   const task_id = req.query.task_id;
   var include_condition = [{model: Task_Classification},{model: Task_Question, include:[{model:Task_Question_Choices}]}]
+  var exclude_condition = ['banner_image']
   var where_condition = {
     [Op.or]: [
       { merchant_id: merchant_id },
@@ -148,10 +151,11 @@ exports.findAllforMerchant = (req, res) => {
     where_condition = {
       task_id : task_id
     }
+    exclude_condition =[]
   }
   
 
-  Task.findAll({ where: where_condition,order:[
+  Task.findAll({attributes:{exclude:exclude_condition}, where: where_condition,order:[
      [{model: Task_Question},'index', 'ASC']], 
   include: include_condition
  })
