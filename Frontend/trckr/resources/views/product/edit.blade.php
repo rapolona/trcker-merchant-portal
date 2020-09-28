@@ -48,9 +48,11 @@
                         <form method="POST" enctype="multipart/form-data" id="file_upload" action="javascript:void(0)" >
                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
                             <input type="file" name="file" id="file" style="display:none">                
-
                             <div class="btn-group float-lg-right" role="group" aria-label="Basic example">
-                                <button type="submit" class="btn btn-block btn-primary btn-lg pull-right" id="submit">Save Details</button>  
+                                <button class="btn btn-primary btn-lg" type="submit" value="Edit Product" id="edit">
+                                    <span class="spinner-border spinner-border-sm" role="status" id="loader_edit" aria-hidden="true" disabled> </span>
+                                    Edit Product
+                                </button>
                                 <button type="button" class="btn btn-danger btn-lg pull-right" id="back">Back</button>
                             </div>
                         </form>
@@ -67,6 +69,7 @@
 @stop
 
 @section('js')
+    <script type="text/javascript" src="/vendor/trckr/trckr.js"></script>
     <script type="text/javascript">
         
         $(document).ready(function (e) { 
@@ -76,26 +79,7 @@
                 var formData = new FormData(this);
                 formData.append("product_id", "{{ $product_id }}");
         
-                $.ajax({
-                    type:'POST',
-                    url: "/merchant/product/edit",
-                    data: formData,
-                    cache:false,
-                    contentType: false,
-                    processData: false,
-                    success: (data) => {
-                        $(".modal-title").text("Edit Product Successful!");
-                        $(".modal-body").html("<p>" + data.message + "</p>");
-                        $("#myModal").modal('show');
-                    },
-                    error: function(data){
-                        $(".modal-title").text("Edit Product Failed!");
-                        //$(".modal-body").html("<p>" + data.responseText + "</p>");
-                        $(".modal-body").html("<p>" + data.responseJSON.message + "</p>");
-                        $("#myModal").modal('show');
-                    }
-                });
-                
+                post("/merchant/product/edit", "Edit Product", "edit", formData, "/merchant/product");                
             });
 
             $("#back").click(function(){

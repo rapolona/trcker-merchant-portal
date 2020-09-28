@@ -44,25 +44,6 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="company_name" class="col-sm-2 col-form-label">Subject Level</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" id="input_subject_level" name="subject_level" value="" placeholder="Enter Subject Level">
-                    </div>
-                </div>
-                <!--
-                <div class="form-group row">
-                    <label for="company_name" class="col-sm-2 col-form-label">Data Source / Data Type</label>
-                    <div class="col-sm-10">
-                        <select class="form-control" name="data_source" style="width: 100%;">
-                            <option value="">Select One</option>
-                            @foreach ($task_config as $t)
-                            <option value="{{$t['data_source']}}-{{$t['data_type']}}">{{$t['data_source']}} - {{$t['data_type']}}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-                -->
-                <div class="form-group row">
                     <label for="company_name" class="col-sm-2 col-form-label">Task Classification</label>
                     <div class="col-sm-10">
                         <select class="form-control" name="task_classification_id" style="width: 100%;">
@@ -86,7 +67,10 @@
             </div>
             <div class="card-footer">
                 <div class="btn-group float-lg-right" role="group" aria-label="Basic example">
-                    <button type="submit" class="btn btn-block btn-primary btn-lg pull-right" id="submit">Save Details</button>  
+                    <button class="btn btn-primary btn-lg" type="submit" value="submit" id="submit">
+                        <span class="spinner-border spinner-border-sm" role="status" id="loader_submit" aria-hidden="true" disabled> </span>
+                        Add Task
+                    </button>    
                     <button type="button" class="btn btn-danger btn-lg pull-right" id="back">Back</button>
                 </div>
             </div>
@@ -100,16 +84,53 @@
 @stop
 
 @section('js')
+    <script type="text/javascript" src="/vendor/trckr/trckr.js"></script>
     <script type="text/javascript" src="/vendor/form-builder/form-builder.min.js"></script>
     <script type="text/javascript" src="/vendor/form-builder/form-render.min.js"></script>
     <script type="text/javascript">
         
         $(document).ready(function (e) { 
-
             let options = {
+                disableFields: ['autocomplete', 'radio-group', 'checkbox-group','button','hidden','paragraph','header','select','text','textarea','file','date','number'],
+                disabledAttrs: ['access','other','placeholder','required','value','description','inline','max','maxlength','min','multiple','rows','step','style','subtype','toggle'],
                 fields:[{
+                    label: 'Checkbox',
+                    className: 'CHECKBOX',
+                    placeholder: 'Checkbox',
+                    type: 'checkbox-group',
+                },{
+                    label: 'Date',
+                    className: 'DATETIME',
+                    placeholder: 'date',
+                    type: 'date',
+                },{
+                    label: 'Float',
+                    className: 'FLOAT',
+                    placeholder: 'float',
+                    type: 'number',
+                },{
+                    label: 'Integer',
+                    className: 'INTEGER',
+                    placeholder: 'Integer',
+                    type: 'number',
+                },{
+                    label: 'Take a Photo',
+                    className: 'IMAGE',
+                    placeholder: 'Take a Photo',
+                    type: 'file',
+                },{
+                    label: 'Single Select Dropdown',
+                    className: 'SINGLE SELECT DROPDOWN',
+                    placeholder: 'Single Select Dropdown',
+                    type: 'select',
+                },{
+                    label: 'Text',
+                    className: 'TEXT',
+                    placeholder: 'Text',
+                    type: 'textarea',
+                },{
                     label: 'True or False',
-                    className: 'true_or_false',
+                    className: 'TRUE OR FALSE',
                     placeholder: 'True or False',
                     type: 'radio-group',
                     subType: 'true-or-false',
@@ -120,67 +141,8 @@
                         label: 'False',
                         value: 'tof-' + Math.floor((Math.random() * 9999) + 1),
                     }],
-                    icon: '🌟',
-                },{
-                    label: 'Take a Photo',
-                    className: 'PHOTO',
-                    placeholder: 'Take a Photo',
-                    type: 'file',
-                    icon: '🌟',
-                },{
-                    label: 'Integer',
-                    className: 'INTEGER',
-                    placeholder: 'Integer',
-                    type: 'number',
-                    icon: '🌟',
-                },{
-                    label: 'Checkbox',
-                    className: 'CHECKBOX',
-                    placeholder: 'Checkbox',
-                    type: 'checkbox-group',
-                    icon: '🌟',
-                },{
-                    label: 'Single Select Dropdown',
-                    className: 'SINGLE SELECT DROPDOWN',
-                    placeholder: 'Single Select Dropdown',
-                    type: 'select',
-                    icon: '🌟',
-                },{
-                    label: 'Calculated Value',
-                    className: 'CALCULATED VALUE',
-                    placeholder: 'Calculated Value',
-                    type: 'number',
-                    icon: '🌟',
-                },{
-                    label: 'Amount',
-                    className: 'CURRENCY',
-                    placeholder: 'Amount',
-                    type: 'number',
-                    icon: '🌟',
-                },{
-                    label: 'Text',
-                    className: 'TEXT',
-                    placeholder: 'Text',
-                    type: 'textarea',
-                    icon: '🌟',
-                },{
-                    label: 'Date',
-                    className: 'DATEFIELD',
-                    placeholder: 'date',
-                    type: 'date',
-                    icon: '🌟',
-                },{
-                    label: 'Float',
-                    className: 'FLOAT',
-                    placeholder: 'float',
-                    type: 'number',
-                    icon: '🌟',
                 }
                 ],
-                //todo: remove view on non-essential control items
-                controlOrder: [
-                    'radio-group'
-                ]
             };
 
             //$('.build-wrap').formBuilder(options);
@@ -196,25 +158,7 @@
                 //formData.append('data_type', "custom");
                 formData.append('form_builder', myFormBuilder);
 
-                $.ajax({
-                    type:'POST',
-                    url: "/task/create",
-                    data: formData,
-                    cache:false,
-                    contentType: false,
-                    processData: false,
-                    success: (data) => {
-                        $(".modal-title").text("Task Creation Successful!");
-                        $(".modal-body").html("<p>" + data.message + "</p>");
-                        $("#myModal").modal('show');
-                    },
-                    error: function(data){
-                        $(".modal-title").text("Task Creation Failed!");
-                        //$(".modal-body").html("<p>" + data.responseText + "</p>");
-                        $(".modal-body").html("<p>" + data.responseJSON.message + "</p>");
-                        $("#myModal").modal('show');
-                    }
-                });
+                post("/task/create", "Add Task", "submit", formData, "/task/view");
             });
 
             $("#back").click(function(){

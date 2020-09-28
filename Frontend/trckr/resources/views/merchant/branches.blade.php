@@ -31,13 +31,22 @@
                 <div class="card-header">
                     <form method="POST" enctype="multipart/form-data" id="file_upload" action="javascript:void(0)" >
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                        <input type="file" name="file" id="file" style="display:none">                
-
+                        <input type="file" name="file" id="file" style="display:none">
                         <div class="btn-group float-lg-right" role="group" aria-label="Basic example">
-                            <button type="button" id="upload_csv" class="btn btn-block btn-primary btn-lg pull-right">Upload CSV</button>  
-                            <a href="/merchant/branch/add" type="button" class="btn btn-primary btn-lg pull-right">Add</a>
-                            <button type="button" class="btn btn-primary btn-lg" id="edit">Edit</button>    
-                            <button type="button" class="btn btn-primary btn-lg" id="delete">Delete</button>
+                            <button class="btn btn-primary btn-lg" type="button" value="Upload CSV" id="upload_csv">
+                                <span class="spinner-border spinner-border-sm" role="status" id="loader_upload_csv" aria-hidden="true" disabled> </span>
+                                Upload CSV
+                            </button> 
+                            <a href="/merchant/branch/add" type="button" class="btn btn-primary btn-lg pull-right" id="add">
+                                Add
+                            </a>   
+                            <button class="btn btn-primary btn-lg" type="button" value="Edit" id="edit">
+                                Edit
+                            </button>   
+                            <button class="btn btn-primary btn-lg" type="button" value="Delete" id="delete">
+                                <span class="spinner-border spinner-border-sm" role="status" id="loader_delete" aria-hidden="true" disabled> </span>
+                                Delete
+                            </button>
                         </div>
                     </form>
                 </div>
@@ -80,12 +89,10 @@
 @stop
 
 @section('js')
+    <script type="text/javascript" src="/vendor/trckr/trckr.js"></script>
     <script type="text/javascript">
 
         $(document).ready(function (e) {
-            $('#myModal').on('hidden.bs.modal', function () {
-                location.reload();
-            });
 
             $('#delete').click(function(e){
                 var formData = new FormData();
@@ -108,25 +115,7 @@
                 formData.append('branches', branches);
                 formData.append('_token', "{{ csrf_token() }}");
 
-                $.ajax({
-                    type:'POST',
-                    url: "/merchant/branch/delete",
-                    data: formData,
-                    cache:false,
-                    contentType: false,
-                    processData: false,
-                    success: (data) => {
-                        $(".modal-title").text("Delete Branch Successful!");
-                        $(".modal-body").html("<p>" + data.message + "</p>");
-                        $("#myModal").modal('show');
-                    },
-                    error: function(data){
-                        $(".modal-title").text("Delete Branch Failed!");
-                        $(".modal-body").html("<p>" + data.responseJSON.message + "</p>");
-                        //$(".modal-body").html("<p>" + data.message + "</p>");
-                        $("#myModal").modal('show');
-                    }
-                });
+                post("/merchant/branch/delete", "Delete Branch", "delete", formData, "/merchant/branch");
             });
             
             $('#edit').click(function(e){
@@ -158,25 +147,7 @@
 
                 var formData = new FormData(this);
                 
-                $.ajax({
-                    type:'POST',
-                    url: "/merchant/branch/upload",
-                    data: formData,
-                    cache:false,
-                    contentType: false,
-                    processData: false,
-                    success: (data) => {
-                        $(".modal-title").text("Upload Branch Successful!");
-                        $(".modal-body").html("<p>" + data.message + "</p>");
-                        $("#myModal").modal('show');
-                    },
-                    error: function(data){
-                        $(".modal-title").text("Upload Branch Failed!");
-                        $(".modal-body").html("<p>" + data.responseJSON.message + "</p>");
-                        //$(".modal-body").html("<p>" + data.message + "</p>");
-                        $("#myModal").modal('show');
-                    }
-                });
+                post("/merchant/branch/upload", "Upload Branch", "upload_csv", formData, "/merchant/branch")
             });
         });
     </script>

@@ -81,7 +81,7 @@
                                         <select class="form-control select2" name="campaign_type" id="campaign_type" style="width: 100%;">
                                             <option value="">Select One</option>
                                             @foreach ($campaign_type as $ct)
-                                            <option value="{{$ct->task_classification_id}}">{{$ct->name}}</option>
+                                            <option value="{{$ct->campaign_type_id}}">{{$ct->name}}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -107,59 +107,6 @@
                                 </div>
                             </div>
                         </div>
-                        <!--
-                        <div class="row">
-                            <div class="col col-lg-6">
-                                <div class="card-body">
-                                    <div class="form-group row">
-                                        <div class="col col-lg-8 ">
-                                            <h2>Tasks</h2><span>(Pre-defined based on Campaign Type)</span>
-                                        </div>
-                                        <div class="col col-lg-4 ">
-                                            <a href="/task/create" type="button" class="btn btn-primary btn-lg pull-right">Add Custom</a>
-                                        </div>
-                                    </div>
-                                    <table class="table table-bordered" id="table_tasks">
-                                        <thead>                  
-                                        <tr>
-                                            <th style="width: 40%">Task Name</th>
-                                            <th style="width: 50%">Task</th>
-                                            <th>Action?</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach ($tasks as $t)
-                                            <tr>
-                                                <td> {{ $t->task_action_name }}</td>
-                                                <td> {{ $t->task_action_description }}</td>
-                                                <td>
-                                                    <input type="hidden" name="task_action_id[]" value="{{$t->task_action_id}}"/>
-                                                    <input type='hidden' name='task_action_name[]' value="{{$t->task_action_name}}"/>
-                                                    <input type='hidden' name='task_action_description[]' value="{{$t->task_action_description}}"/>
-                                                    <input type="checkbox" name="" id=""/>
-                                                </td>
-                                            </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="card-body">
-                                    <table class="table table-bordered" id="table_selected">
-                                        <thead>                  
-                                        <tr>
-                                            <th style="width: 40%">Task Name</th>
-                                            <th style="width: 50%">Task</th>
-                                            <th>Action?</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                        -->
-
                         <div class="row">
                             <div class="col col-lg-12">
                                 <h2>Tasks</h2>
@@ -172,7 +119,7 @@
                                     <div class="col-sm-10">
                                         <select class="form-control select2 task_type" name="task_type[]" style="width: 100%;">
                                             <option value="">Select One</option>
-                                            @foreach ($campaign_type as $ct)
+                                            @foreach ($task_type as $ct)
                                             <option value="{{$ct->task_classification_id}}">{{$ct->name}}</option>
                                             @endforeach
                                         </select>
@@ -202,7 +149,10 @@
                     
                     <div class="card-footer">
                         <div class="btn-group float-lg-right" role="group" aria-label="Basic example">
-                            <button type="submit" class="btn btn-block btn-primary btn-lg pull-right" id="submit">Save Details</button>  
+                            <button class="btn btn-primary btn-lg" type="submit" value="submit" id="submit">
+                                <span class="spinner-border spinner-border-sm" role="status" id="loader_submit" aria-hidden="true" disabled> </span>
+                                Create Campaign
+                            </button>    
                             <button type="button" class="btn btn-danger btn-lg pull-right" id="back">Back</button>
                         </div>
                     </div>
@@ -218,8 +168,31 @@
 @stop
 
 @section('js')
+    <script type="text/javascript" src="/vendor/trckr/trckr.js"></script>
     <script type="text/javascript">
-        $('.date').datepicker({ dateFormat: 'yy-mm-dd' });
+        //input_end_date
+        $('#input_start_date').datepicker({ 
+            dateFormat: 'yy-mm-dd', 
+            minDate: 0,
+            onSelect: function(date) {
+                var selectedDate = new Date(date);
+                //var msecsInADay = 86400000;
+                var endDate = new Date(selectedDate.getTime());
+                $("#input_end_date").datepicker( "option", "minDate", endDate );
+                //$("#input_end_date").datepicker( "option", "maxDate", '+y' );
+            }    
+        });
+        $('#input_end_date').datepicker({ 
+            minDate: 0,
+            dateFormat: 'yy-mm-dd', 
+            onSelect: function(date) {
+                var selectedDate = new Date(date);
+                //var msecsInADay = 86400000;
+                var startDate = new Date(selectedDate.getTime());
+                $("#input_start_date").datepicker( "option", "maxDate", startDate );
+                //$("#input_start_date").datepicker( "option", "minDate", '-y' );
+            }
+        });
 
         $(document).on("click", ".remove_task" , function() {
             $(this).parent().parent().parent().remove();
@@ -255,6 +228,7 @@
         });
 
         $(document).ready(function (e) { 
+
             $('.select2').select2();
 
             /*
@@ -293,7 +267,7 @@
                 html += '<div class="col-sm-10">';
                 html += '<select class="form-control select2 task_type" name="task_type[]" style="width: 100%;">';
                 html += '<option value="">Select One</option>';
-                @foreach ($campaign_type as $ct)
+                @foreach ($task_type as $ct)
                     html += '<option value="{{$ct->task_classification_id}}">{{$ct->name}}</option>'
                 @endforeach
                 html += '</select>';
@@ -321,65 +295,12 @@
                 $(".task_actions").select2();
             });
 
-            /*
-            $("#campaign_type").change(function(){
-                //alert(this.value);
-                $.ajax({
-                    type:'GET',
-                    url: "/campaign/campaign_type/task?task_id=" + this.value,
-                    cache:false,
-                    contentType: false,
-                    processData: false,
-                    success: (data) => {
-                        $(".temp_tasks").each(function(){
-                            $(this).remove();
-                        });
-
-                        $(data.file).each(function(){
-                            console.log(data);
-                            var html = "<tr class='temp_tasks'><td>" + this.task_action_name + "</td>";
-                            html += "<td>" + this.task_action_description + "</td>";
-                            html += "<td><input type='checkbox' name='' id=''/>";
-                            html += "<input type='hidden' name='task_action_id[]' value='" + this.task_action_id + "'/>";
-                            html += "<input type='hidden' name='task_action_name[]' value='" + this.task_action_name + "'/>";
-                            html += "<input type='hidden' name='task_action_description[]' value='" + this.task_action_description + "'/>";
-                            html += "<input type='hidden' name='data_type[]' value='" + this.data_type + "'/>";
-                            html += "<input type='hidden' name='data_source[]' value='" + this.data_source + "'/>";
-                            
-                            $('#table_tasks tbody').append(html);
-                        });
-                    },
-                    error: function(data){
-                        console.log(data);
-                    }
-                });
-            });
-            */
-
             $("#create_campaign").submit(function(e){
                 e.preventDefault();
 
                 var formData = new FormData(this);
 
-                $.ajax({
-                    type:'POST',
-                    url: "/campaign/create_campaign",
-                    data: formData,
-                    cache:false,
-                    contentType: false,
-                    processData: false,
-                    success: (data) => {
-                        $(".modal-title").text("Campaign Creation Successful!");
-                        $(".modal-body").html("<p>" + data.message + "</p>");
-                        $("#myModal").modal('show');
-                    },
-                    error: function(data){
-                        $(".modal-title").text("Campaign Creation Failed!");
-                        //$(".modal-body").html("<p>" + data.responseText + "</p>");
-                        $(".modal-body").html("<p>" + data.responseJSON.message + "</p>");
-                        $("#myModal").modal('show');
-                    }
-                });
+                post("/campaign/create_campaign", "Create Campaign", "submit", formData, "/campaign/view");
             });
 
             $("#back").click(function(){

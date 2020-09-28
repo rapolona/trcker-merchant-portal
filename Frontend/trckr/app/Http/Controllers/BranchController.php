@@ -58,13 +58,40 @@ class BranchController extends Controller
                     ]);
                 }
 
-                $branches[] = array(
+                $temp_branches = array(
                     $header[0] => $temp[0], 
                     $header[1] => $temp[1],
                     $header[2] => $temp[2],
                     $header[3] => $temp[3],
                     $header[4] => $temp[4]
                 );
+
+                $validator = Validator::make($temp_branches, [
+                    'name' => 'required|max:64',
+                    'address' => 'required|max:64',
+                    'city' => 'required|max:64',
+                    'longitude' => array('required','regex:/^(\+|-)?(?:180(?:(?:\.0{1,8})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]{1,8})?))$/'),
+                    'latitude' => array('required','regex:/^(\+|-)?(?:90(?:(?:\.0{1,8})?)|(?:[0-9]|[1-8][0-9])(?:(?:\.[0-9]{1,8})?))$/'),
+                ]);
+        
+                if ($validator->fails())
+                {
+                    $error_string = "<b>Row {$count}: Fields with Errors</b><br/>";
+                    foreach ($validator->errors()->messages() as $k => $v)
+                    {
+                        $error_string .= "{$k}: <br/>";
+                        foreach ($v as $l)
+                            $error_string .= "{$l}<br/>";
+                    }
+        
+                    return Response()->json([
+                        "success" => false,
+                        "message" => $error_string,
+                        "file" => $temp_branches,
+                    ], 422);
+                }
+
+                $branches[] = $temp_branches;
             }
 
             $api_endpoint = Config::get('trckr.backend_url') . "merchant/branch";
@@ -171,8 +198,8 @@ class BranchController extends Controller
             'name' => 'required|max:64',
             'address' => 'required|max:64',
             'city' => 'required|max:64',
-            'longitude' => 'required',
-            'latitude' => 'required'
+            'longitude' => array('required','regex:/^(\+|-)?(?:180(?:(?:\.0{1,8})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]{1,8})?))$/'),
+            'latitude' => array('required','regex:/^(\+|-)?(?:90(?:(?:\.0{1,8})?)|(?:[0-9]|[1-8][0-9])(?:(?:\.[0-9]{1,8})?))$/'),
         ]);
 
         if ($validator->fails())
@@ -211,7 +238,7 @@ class BranchController extends Controller
 
         return Response()->json([
             "success" => true,
-            "message" => "Add Branch successfully saved!", // . $response->body(),
+            "message" => "Add Branch successful!", // . $response->body(),
             "file" => $data,
         ]);
     }
@@ -278,8 +305,8 @@ class BranchController extends Controller
             'name' => 'required|max:64',
             'address' => 'required|max:64',
             'city' => 'required|max:64',
-            'longitude' => 'required',
-            'latitude' => 'required'
+            'longitude' => array('required','regex:/^(\+|-)?(?:180(?:(?:\.0{1,8})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]{1,8})?))$/'),
+            'latitude' => array('required','regex:/^(\+|-)?(?:90(?:(?:\.0{1,8})?)|(?:[0-9]|[1-8][0-9])(?:(?:\.[0-9]{1,8})?))$/'),
         ]);
 
         if ($validator->fails())
@@ -354,7 +381,7 @@ class BranchController extends Controller
 
         return Response()->json([
             "success" => true,
-            "message" => "Deleted Branches successfully", //. $response->body(),
+            "message" => "Deleted Branches successful!", //. $response->body(),
             "file" => $data['branches']
         ]);
     }

@@ -33,10 +33,20 @@
                         <input type="file" name="file" id="file" accept=".csv" style="display:none">                
 
                         <div class="btn-group float-lg-right" role="group" aria-label="Basic example">
-                            <button type="button" id="upload_csv" class="btn btn-block btn-primary btn-lg pull-right">Upload CSV</button>  
-                            <a href="/merchant/product/add" type="button" class="btn btn-primary btn-lg pull-right">Add</a>
-                            <button type="button" class="btn btn-primary btn-lg" id="edit">Edit</button>    
-                            <button type="button" class="btn btn-primary btn-lg" id="delete">Delete</button>
+                            <button class="btn btn-primary btn-lg" type="button" value="Upload CSV" id="upload_csv">
+                                <span class="spinner-border spinner-border-sm" role="status" id="loader_upload_csv" aria-hidden="true" disabled> </span>
+                                Upload CSV
+                            </button> 
+                            <a href="/merchant/product/add" type="button" class="btn btn-primary btn-lg pull-right" id="add">
+                                Add
+                            </a>   
+                            <button class="btn btn-primary btn-lg" type="button" value="Edit" id="edit">
+                                Edit
+                            </button>   
+                            <button class="btn btn-primary btn-lg" type="button" value="Delete" id="delete">
+                                <span class="spinner-border spinner-border-sm" role="status" id="loader_delete" aria-hidden="true" disabled> </span>
+                                Delete
+                            </button>
                         </div>
                     </form>
                 </div>
@@ -74,18 +84,14 @@
 @stop
 
 @section('js')
+    <script type="text/javascript" src="/vendor/trckr/trckr.js"></script>
     <script type="text/javascript">
 
         $(document).ready(function (e) {
-            $('#myModal').on('hidden.bs.modal', function () {
-                location.reload();
-            });
-
             $('#delete').click(function(e){
                 var formData = new FormData();
                 var products = [];
 
-                console.log(products);
                 $.each($("input[name='product']:checked"), function(){
                     products.push($(this).attr("id"));
                 });
@@ -97,30 +103,10 @@
                     return;
                 }
 
-                console.log(products);
-
                 formData.append('products', products);
                 formData.append('_token', "{{ csrf_token() }}");
 
-                $.ajax({
-                    type:'POST',
-                    url: "/merchant/product/delete",
-                    data: formData,
-                    cache:false,
-                    contentType: false,
-                    processData: false,
-                    success: (data) => {
-                        $(".modal-title").text("Delete Product Successful!");
-                        $(".modal-body").html("<p>" + data.message + "</p>");
-                        $("#myModal").modal('show');
-                    },
-                    error: function(data){
-                        $(".modal-title").text("Delete Product Failed!");
-                        $(".modal-body").html("<p>" + data.responseJSON.message + "</p>");
-                        //$(".modal-body").html("<p>" + data.message + "</p>");
-                        $("#myModal").modal('show');
-                    }
-                });
+                post("/merchant/product/delete", "Delete Product", "delete", formData, "/product");
             });
 
             $('#edit').click(function(e){
@@ -147,29 +133,9 @@
             });
 
             $('#file_upload').submit(function(e) {
-                //e.preventDefault();
-
                 var formData = new FormData(this);
                 
-                $.ajax({
-                    type:'POST',
-                    url: "/merchant/product/upload",
-                    data: formData,
-                    cache:false,
-                    contentType: false,
-                    processData: false,
-                    success: (data) => {
-                        $(".modal-title").text("Upload Product Successful!");
-                        $(".modal-body").html("<p>" + data.message + "</p>");
-                        $("#myModal").modal('show');
-                    },
-                    error: function(data){
-                        $(".modal-title").text("Upload Product Failed!");
-                        $(".modal-body").html("<p>" + data.responseJSON.message + "</p>");
-                        //$(".modal-body").html("<p>" + data.message + "</p>");
-                        $("#myModal").modal('show');
-                    }
-                });
+                post("/merchant/product/upload", "Upload CSV", "upload_csv", formData, "/merchant/product");
             });
         });
   </script>

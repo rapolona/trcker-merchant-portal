@@ -34,14 +34,14 @@ class UsersController extends Controller
                 "action" => 1,
             ),
             array(
-                "no" => 1,
+                "no" => 2,
                 'name' => 'Camille San Antonio',
                 "email_address" => "camille.sanantonio@gmail.com",
                 "type" => "Tracker",
                 "action" => 0,
             ),
             array(
-                "no" => 1,
+                "no" => 3,
                 'name' => 'Celine Yap',
                 "email_address" => "celine.yap@gmail.com",
                 "type" => "Operations",

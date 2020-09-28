@@ -30,7 +30,7 @@
         <form method="POST" id="handle_ticket" action="javascript:void(0)" >
             <div class="card-body">           
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">  
-                <input type="hidden" name="task_ticket_id[]" value="{{ $tickets->task_ticket_id }}">
+                <input type="hidden" name="task_ticket_id" value="{{ $tickets->task_ticket_id }}">
                 <input type="hidden" name="action" id="action" value="">             
                 <div class="form-group row">
                     <label for="company_name" class="col-sm-2 col-form-label">Campaign Name</label>
@@ -93,9 +93,15 @@
                 </div>
                 <div class="form-group row">
                     <label for="company_name" class="col-sm-2 col-form-label">Task Answer</label>
+                    @if (substr($tix->response, 0, 11) == "data:image/")
+                    <div class="col-sm-10">
+                        <img src="{{ ($tix->response) ? $tix->response : ''}}"/>
+                    </div>
+                    @else
                     <div class="col-sm-10">
                         <span>{{ ($tix->response) ? $tix->response : ''}}</span>
                     </div>
+                    @endif
                 </div>
 
                 @php 
@@ -121,11 +127,16 @@
 @stop
 
 @section('js')
+    <script type="text/javascript" src="/vendor/trckr/trckr.js"></script>
     <script type="text/javascript" src="/vendor/form-builder/form-builder.min.js"></script>
     <script type="text/javascript" src="/vendor/form-builder/form-render.min.js"></script>
     <script type="text/javascript">
         
-        $(document).ready(function (e) { 
+        $(document).ready(function (e) {
+            $('#myModal').on('hidden.bs.modal', function () {
+                window.location.href = "/ticket/view";
+            });
+
             $("#back").click(function(){
                 window.location.href = "/ticket/view";
             });

@@ -23,22 +23,34 @@
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
     <p>Insert text here</p>
+    
     <div class="row">
-        <div class="col col-lg-12">
+        <div class="col col-md-12">
             <form method="POST" id="handle_ticket" action="javascript:void(0)" >
                 <div class="card" style="width:100%">
                     <div class="card-header">
                         
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                         <input type="file" name="file" id="file" style="display:none">                
-
-                        <div class="btn-group float-lg-right" role="group" aria-label="Basic example">
-                            <button type="button" id="upload_csv" class="btn btn-block btn-primary btn-lg pull-right">Export List</button>  
-                            <input type="submit" class="btn btn-primary btn-lg" id="approve" value="Approve">
-                            <input type="submit" class="btn btn-primary btn-lg" id="reject" value="Reject">
+                            <div class="btn-group float-lg-right">
+                        
+                            <button type="button" id="export" class="btn btn-primary btn-lg">
+                                <span class="spinner-border spinner-border-sm" role="status" id="loader_export" aria-hidden="true" disabled> </span>
+                                Export CSV
+                            </button>  
+                            <button class="btn btn-primary btn-lg" type="submit" value="Approve" id="approve">
+                                <span class="spinner-border spinner-border-sm" role="status" id="loader_approve" aria-hidden="true" disabled> </span>
+                                Approve
+                            </button>
+                            <button class="btn btn-primary btn-lg" type="submit" value="Reject" id="reject">
+                                <span class="spinner-border spinner-border-sm" role="status" id="loader_reject" aria-hidden="true" disabled> </span>
+                                Reject
+                            </button>
                             <input type="hidden" name="action" id="action" value="">
-                        </div>
+                            </div>
+
                     </div>
+                    
                     <div class="card-body">
                         <table class="table table-bordered">
                             <thead>                  
@@ -58,7 +70,7 @@
                             <tbody>
                                 @foreach ($tickets as $t)
                             <tr>
-                                <input class="view_id" type="hidden" name="task_ticket_id[]" value="{{ $t->task_ticket_id }}"/>
+                                <input class="view_id" type="hidden" name="row_task_ticket_id[]" value="{{ $t->task_ticket_id }}"/>
                                 <td class="view"> {{ $t->user_detail->first_name . " " . $t->user_detail->last_name }}</td>
                                 <td class="view"> {{ $t->user_detail->email }}</td>
                                 <td class="view"> No info available (not in capability/tasktickets schema yet) </td>
@@ -68,12 +80,12 @@
                                         {{ $d->task_question->question}} <br/>
                                     @endforeach    
                                 </td>
-                                <td class="view"> {{ $t->updatedAt }}</td>
+                                <td class="view"> {{ $t->createdAt }}</td>
                                 <td class="view"> {{ $t->device_id}} </td>
                                 <td class="view"> No info avaialable (not in capability/tasktickets schema yet)</td>
                                 <td class="view"> {{ $t->approval_status }}</td>
                                 <td>
-                                    <input type="checkbox" name="task_ticket_id[]" value="{{ $t->task_ticket_id }}"> 
+                                    <input type="checkbox" name="task_ticket_id" value="{{ $t->task_ticket_id }}"> 
                                 </td>
                             </tr>
                             @endforeach
@@ -91,8 +103,17 @@
 @stop
 
 @section('js')
+    <script type="text/javascript" src="/vendor/trckr/trckr.js"></script>
+    <script type="text/javascript" src="/vendor/trckr/trckr.js"></script>
     <script type="text/javascript">
-        $(document).ready(function (e) { 
+        $(document).ready(function (e) {
+            $("#export").click(function(){
+                window.location.href = "/ticket/export_csv";                
+            });
+
+            $('#myModal').on('hidden.bs.modal', function (e) {
+                window.location.href = "/ticket/view";
+            });
 
             $('.view').click(function(){
                 var ticket_id = $(this).siblings('.view_id').val();
@@ -108,55 +129,34 @@
                 $("#action").val('reject');
             });
 
-            $('#handle_ticket').submit(function(e){
+            $('#handle_ticket').submit(function(e){                
                 var formData = new FormData(this);
+
                 var action = formData.get('action');
 
-                $.ajax({
-                    type:'POST',
-                    url: "/ticket/" + action + "_ticket",
-                    data: formData,
-                    cache:false,
-                    contentType: false,
-                    processData: false,
-                    success: (data) => {
-                        $(".modal-title").val(action + "Ticket Successful!");
-                        $(".modal-body").html("<p>" + data.message + "</p>");
-                        $("#myModal").modal('show');
-                    },
-                    error: function(data){
-                        $(".modal-title").val(action + "Ticket Failed!");
-                        $(".modal-body").html("<p>" + data.responseText + "</p>");
-                        //$(".modal-body").html("<p>" + data.message + "</p>");
-                        $("#myModal").modal('show');
-                    }
-                });
-            });
+                var task_ticket_id = [];
 
-            $('#reject').click(function(e){
-                var formData = new FormData(this);
-
-                $.ajax({
-                    type:'POST',
-                    url: "/ticket/reject_ticket",
-                    data: formData,
-                    cache:false,
-                    contentType: false,
-                    processData: false,
-                    success: (data) => {
-                        $(".modal-title").val("Approve Ticket Successful!");
-                        $(".modal-body").html("<p>" + data.message + "</p>");
-                        $("#myModal").modal('show');
-                    },
-                    error: function(data){
-                        $(".modal-title").val("Approve Ticket Failed!");
-                        $(".modal-body").html("<p>" + data.responseText + "</p>");
-                        //$(".modal-body").html("<p>" + data.message + "</p>");
-                        $("#myModal").modal('show');
-                    }
+                console.log(task_ticket_id);
+                $.each($("input[name='task_ticket_id']:checked"), function(){
+                    task_ticket_id.push($(this).attr("value"));
                 });
-            });
-            
+
+                if (task_ticket_id.length < 1){
+                    $(".modal-title").text("Invalid Delete Selection!");
+                    $(".modal-body").html("<p>Please check at least one product!</p>");
+                    $("#myModal").modal('show');
+                    return;
+                }
+
+                console.log(task_ticket_id);
+
+                formData.append('task_ticket_id', task_ticket_id);
+                formData.append('_token', "{{ csrf_token() }}");
+
+                var actiontext = action.charAt(0).toUpperCase() + action.slice(1);
+
+                post("/ticket/" + action + "_ticket", actiontext + " Ticket(s)", action, formData, '/ticket/view');
+            });            
         });
   </script>
 @stop

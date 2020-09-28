@@ -59,7 +59,6 @@ class TaskController extends Controller
         }
 
         $temp_tasks = json_decode($response->body());
-        
 
         $tasks = [];
         foreach($temp_tasks as $t)
@@ -75,15 +74,14 @@ class TaskController extends Controller
     {
         $task_id = $request->query('task_id');
 
-        $api_endpoint = Config::get('trckr.backend_url') . "merchant/task";
+        $api_endpoint = Config::get('trckr.backend_url') . "merchant/task?task_id=$task_id";
 
         $session = $request->session()->get('session_merchant');
 
         $merchant_id = $session->merchant_id;
         $token = ( ! empty($session->token)) ? $session->token : "";
 
-        $response = Http::withToken($token)->get($api_endpoint, []);
-
+        $response = Http::withToken($token)->get($api_endpoint);
         if ($response->status() !== 200)
         {
             if ($response->status() === 403) {
@@ -149,10 +147,12 @@ class TaskController extends Controller
         
         $task_config = array();
         
+        /*
         foreach($edit_tasks->task_questions as $questions) {
             if($questions->required_inputs == "TRUE OR FALSE" OR $questions->required_inputs == "true_or_false boolean" )
                 $questions->required_inputs = "true_or_false";
         }
+        */
 
         return view('task.view', ['task' => $edit_tasks, 'task_id' => $task_id, 'task_config' => $task_config, 'task_classification' => $task_classification]);
     }
@@ -216,7 +216,7 @@ class TaskController extends Controller
                 "data_type" => "Text"
             ],
             [
-                "data_source" => "DATEFIELD",
+                "data_source" => "DATETIME",
                 "data_type" => "Date"
             ],
             [
@@ -240,7 +240,7 @@ class TaskController extends Controller
         $validator = Validator::make($request->all(), [
             'task_name' => 'required|max:64',
             'task_description' => 'required|max:255',
-            'subject_level' => 'required|max:64',
+            //'subject_level' => 'required|max:64',
             'task_classification_id' => 'required',
             'banner_image' => 'required',
             'form_builder' => 'required|min:3'
@@ -263,12 +263,16 @@ class TaskController extends Controller
             ], 422);
         }
 
+        //echo 'data:' . $data['banner_image']->getMimeType() . ';base64,' . base64_encode(file_get_contents($data['banner_image']));
+        //var_dump($data['banner_image']->getMimeType());
+        //exit;
+
         $request_data = array(
             'task_name' => $data['task_name'],
             'task_description' => $data['task_description'],
-            'subject_level' => $data['subject_level'],
+            //'subject_level' => $data['subject_level'],
             'task_classification_id' => $data['task_classification_id'],
-            'banner_image' => base64_encode(file_get_contents($data['banner_image'])),
+            'banner_image' => 'data:' . $data['banner_image']->getMimeType() . ';base64,' . base64_encode(file_get_contents($data['banner_image'])),
             'task_questions' => array()
         );
 
@@ -292,64 +296,13 @@ class TaskController extends Controller
             $request_data['task_questions'][] = $temp;
         }
 
-        /*
-        $temp = explode("-", $data['data_source']);
-        $data['data_source'] = $temp[0];
-        $data['data_type'] = $temp[1];
-
-        $task_config = [
-            [
-                'data_source' => "PHOTO",
-                "data_type" => "Image"
-            ],
-            [
-                "data_source" => "INTEGER",
-                "data_type" => "Integer"
-            ],
-            [
-                "data_source" => "TRUE OR FALSE",
-                "data_type" => "Boolean"
-            ],
-            [
-                "data_source" => "Single Select Dropdown",
-                "data_type" => "Text"
-            ],
-            [
-                "data_source" => "Calculated Value",
-                "data_type" => "Percentage"
-            ],
-            [
-                "data_source" => "FLOAT",
-                "data_type" => "Currency"
-            ],
-            [
-                "data_source" => "TEXT",
-                "data_type" => "Text"
-            ],
-            [
-                "data_source" => "DATEFIELD",
-                "data_type" => "Date"
-            ],
-            [
-                "data_source" => "FLOAT",
-                "data_type" => "Percentage"
-            ]
-        ];
-
-        $custom_request = [
-            "task_action_name" => $data['task_action_name'],
-            "task_action_description" => $data['task_action_description'],
-            "subject_level" => $data['subject_level'],
-            "data_type" => $data['data_type'],
-            "data_source" => $data['data_source'],
-
-        ];
-        */
         $api_endpoint = Config::get('trckr.backend_url') . "merchant/task";
 
         $session = $request->session()->get('session_merchant');
         $token = ( ! empty($session->token)) ? $session->token : "";
 
+
+        //var_dump($request_data);exit;
         $response = Http::withToken($token)->post($api_endpoint, $request_data);
 
         if ($response->status() !== 200)
@@ -399,7 +352,7 @@ class TaskController extends Controller
 
         return Response()->json([
             "success" => true,
-            "message" => "Deleted Tasks successfully", //. $response->body(),
+            "message" => "Deleted Tasks successful!", //. $response->body(),
             "file" => $data['tasks']
         ]);
     }
@@ -408,14 +361,14 @@ class TaskController extends Controller
     {
         $task_id = $request->query('task_action_id');
 
-        $api_endpoint = Config::get('trckr.backend_url') . "merchant/task";
+        $api_endpoint = Config::get('trckr.backend_url') . "merchant/task?task_id=$task_id";
 
         $session = $request->session()->get('session_merchant');
 
         $merchant_id = $session->merchant_id;
         $token = ( ! empty($session->token)) ? $session->token : "";
 
-        $response = Http::withToken($token)->get($api_endpoint, []);
+        $response = Http::withToken($token)->get($api_endpoint);
 
         if ($response->status() !== 200)
         {
@@ -479,52 +432,15 @@ class TaskController extends Controller
         }
         
         $task_classification = json_decode($task_classification->body());
-        /*
-        $task_config = [
-            [
-                'data_source' => "PHOTO",
-                "data_type" => "Image"
-            ],
-            [
-                "data_source" => "INTEGER",
-                "data_type" => "Integer"
-            ],
-            [
-                "data_source" => "TRUE OR FALSE",
-                "data_type" => "Boolean"
-            ],
-            [
-                "data_source" => "Single Select Dropdown",
-                "data_type" => "Text"
-            ],
-            [
-                "data_source" => "Calculated Value",
-                "data_type" => "Percentage"
-            ],
-            [
-                "data_source" => "FLOAT",
-                "data_type" => "Currency"
-            ],
-            [
-                "data_source" => "TEXT",
-                "data_type" => "Text"
-            ],
-            [
-                "data_source" => "DATEFIELD",
-                "data_type" => "Date"
-            ],
-            [
-                "data_source" => "FLOAT",
-                "data_type" => "Percentage"
-            ]
-        ];
-        */
+        
         $task_config = array();
 
+        /*
         foreach($edit_tasks->task_questions as $questions) {
             if($questions->required_inputs == "TRUE OR FALSE" OR $questions->required_inputs == "true_or_false boolean" )
                 $questions->required_inputs = "true_or_false";
         }
+        */
 
         return view('task.edit', ['task' => $edit_tasks, 'task_id' => $task_id, 'task_config' => $task_config, 'task_classification' => $task_classification]);
     }
@@ -536,7 +452,7 @@ class TaskController extends Controller
         $validator = Validator::make($request->all(), [
             'task_name' => 'required|max:64',
             'task_description' => 'required|max:255',
-            'subject_level' => 'required|max:64',
+            //'subject_level' => 'required|max:64',
             'task_classification_id' => 'required',
             //'banner_image' => 'required',
             'form_builder' => 'required|min:3'
@@ -559,18 +475,16 @@ class TaskController extends Controller
             ], 422);
         }
 
-
-
         $request_data = array(
             'task_name' => $data['task_name'],
             'task_description' => $data['task_description'],
-            'subject_level' => $data['subject_level'],
+            //'subject_level' => $data['subject_level'],
             'task_classification_id' => $data['task_classification_id'],
             'task_questions' => array(),
             'task_id' => $data['task_id']
         );
 
-        if ( ! empty($data['banner_image'])) $request_data['banner_image'] = base64_encode(file_get_contents($data['banner_image']));
+        if ( ! empty($data['banner_image'])) $request_data['banner_image'] = 'data:' . $data['banner_image']->getMimeType() . ';base64,' . base64_encode(file_get_contents($data['banner_image']));
 
         $temp_task_questions = json_decode($data['form_builder']);
         $temp = array();
@@ -593,10 +507,6 @@ class TaskController extends Controller
             $request_data['task_questions'][] = $temp;
         }
 
-        //echo "<pre>";
-        //var_dump($data);
-        //var_dump($request_data);
-        //echo "</pre>";
         $api_endpoint = Config::get('trckr.backend_url') . "merchant/task";
 
         $session = $request->session()->get('session_merchant');

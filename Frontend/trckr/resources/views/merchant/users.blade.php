@@ -60,6 +60,7 @@
 @stop
 
 @section('js')
+    <script type="text/javascript" src="/vendor/trckr/trckr.js"></script>
     <script> 
         $(document).ready(function (e) { 
             $('#file_upload').submit(function(e) {

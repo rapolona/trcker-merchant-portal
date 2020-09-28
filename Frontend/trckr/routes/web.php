@@ -58,9 +58,12 @@ Route::get('/merchant/rewards', 'MerchantController@rewards');
 Route::get('/campaign/view ', 'CampaignController@view');
 Route::get('/campaign/view_campaign ', 'CampaignController@view_campaign');
 Route::get('/campaign/create ', 'CampaignController@create');
+Route::get('/campaign/edit ', 'CampaignController@edit');
 //Ajax for Campaign Creation
+Route::post('/campaign/edit_campaign ', 'CampaignController@edit_campaign');
 Route::post('/campaign/create_campaign ', 'CampaignController@create_campaign');
 Route::get('/campaign/campaign_type/task ', 'CampaignController@campaign_type');
+Route::post('/campaign/delete ', 'CampaignController@delete_campaign');
 
 
 Route::get('/task/view ', 'TaskController@view');
@@ -81,4 +84,4 @@ Route::get('/ticket/create', 'TicketController@create');
 Route::post('/ticket/approve_ticket', 'TicketController@approve_ticket');
 Route::post('/ticket/reject_ticket', 'TicketController@reject_ticket');
 //Ajax for Save Details
-Route::get('/ticket/create_ticket', 'TicketController@create_ticket');
+Route::get('/ticket/export_csv', 'TicketController@export_csv');
