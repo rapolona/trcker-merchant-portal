@@ -310,13 +310,13 @@ exports.delete = (req, res) => {
         });
       } else {
         res.send({
-          message: `Cannot delete Campaign with id=${id}. Maybe Campaign was not found!`
+          message: `Cannot delete Campaign with id=${campaign_id}. Maybe Campaign was not found!`
         });
       }
     })
     .catch(err => {
       res.status(500).send({
-        message: "Could not delete Campaign with id=" + id
+        message: "Could not delete Campaign with id=" + campaign_id
       });
     });
 };
