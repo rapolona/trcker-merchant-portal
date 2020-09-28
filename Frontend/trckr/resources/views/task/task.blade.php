@@ -46,7 +46,6 @@
                         <tr>
                             <th>Task Name</th>
                             <th>Description</th>
-                            <th>Subject Level</th>
                             <th style="width: 40px">Action?</th>
                         </tr>
                         </thead>
@@ -56,7 +55,6 @@
                             <input class="view_id" type="hidden" name="row_task_id[]" value="{{$t->task_id}}"/>
                             <td class="view"> {{ $t->task_name }}</td>
                             <td class="view"> {{ $t->task_description }}</td>
-                            <td class="view"> {{ $t->subject_level }}</td>
                             <td><input type="checkbox" name="task" id="{{$t->task_id}}"></td>
                         </tr>
                         @endforeach
@@ -73,6 +71,7 @@
 @stop
 
 @section('js')
+    <script type="text/javascript" src="/vendor/trckr/trckr.js"></script>
     <script type="text/javascript">
       
         $(document).ready(function (e) {

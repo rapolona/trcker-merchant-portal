@@ -44,12 +44,6 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="company_name" class="col-sm-2 col-form-label">Subject Level</label>
-                    <div class="col-sm-10">
-                        <span>{{ ($task->subject_level) ? $task->subject_level : ''}}</span>
-                    </div>
-                </div>
-                <div class="form-group row">
                     <label for="company_name" class="col-sm-2 col-form-label">Task Classification</label>
                     <div class="col-sm-10">
                         <span>
@@ -65,10 +59,7 @@
                     <label for="company_name" class="col-sm-2 col-form-label">Banner Image</label>
                     <div class="col-sm-10">
                         <input type="hidden" class="custom-file-input" id="image" name="banner_image" value="{{ ($task->banner_image) ? $task->banner_image : ''}}" >
-                        @php
-                            $temp = $task->banner_image;
-                            echo '<img src="' . $temp . '" />';
-                        @endphp
+                        <img src="{{ ($task->banner_image) ? $task->banner_image : ''}}"/>
                     </div>
                 </div>
 
@@ -90,11 +81,15 @@
 @stop
 
 @section('js')
+    <script type="text/javascript" src="/vendor/trckr/trckr.js"></script>
     <script type="text/javascript" src="/vendor/form-builder/form-builder.min.js"></script>
     <script type="text/javascript" src="/vendor/form-builder/form-render.min.js"></script>
     <script type="text/javascript">
         
-        $(document).ready(function (e) { 
+        $(document).ready(function (e) {
+            $('#myModal').on('hidden.bs.modal', function () {
+                window.location.href = "/task/view";
+            });
             /*
             var image = new Image();
             image.src = $("#image").val();
@@ -104,7 +99,7 @@
 
             let fields = [{
                     label: 'True or False',
-                    className: 'true_or_false',
+                    className: 'TRUE OR FALSE',
                     placeholder: 'True or False',
                     type: 'radio-group',
                     subType: 'true-or-false',
@@ -160,7 +155,7 @@
                     icon: '🌟',
                 },{
                     label: 'Date',
-                    className: 'DATEFIELD',
+                    className: 'DATETIME',
                     placeholder: 'date',
                     type: 'date',
                     icon: '🌟',
@@ -175,7 +170,10 @@
 
             var addField = new Array();
             //never mix javascript with laravel data :) zzz
+
+
             @foreach($task->task_questions as $question)
+
                 var temp = findObjectInArrayByProperty(fields, "className", "{{$question->required_inputs}}");
                 temp.name = "{{$question->task_question_id}}";
                 temp.label = "{{$question->question}}";
@@ -233,12 +231,5 @@
             $(container).formRender(formRenderOpts);
 
         });
-
-
-        function findObjectInArrayByProperty(array, propertyName, propertyValue) {
-            return array.find((o) => { return o[propertyName] === propertyValue });
-        }
-
-        
     </script>
 @stop

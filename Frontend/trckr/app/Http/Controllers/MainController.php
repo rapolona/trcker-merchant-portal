@@ -37,7 +37,7 @@ class MainController extends Controller
         $users = array('Jet');
 
 
-        $api_endpoint = Config::get('trckr.backend_url') . "merchant/dashboard/totalrespondents";
+        $api_endpoint = Config::get('trckr.backend_url') . "merchant/dashboard/activecampaign";
 
         $session = $request->session()->get('session_merchant');
         $token = ( ! empty($session->token)) ? $session->token : "";
@@ -74,7 +74,7 @@ class MainController extends Controller
 
         $data['activecampaigns'] = json_decode($activecampaigns->body());
 
-        $data['activecampaigns_count'] = count($data['activecampaigns']);
+        $data['activecampaigns_count'] = ($data['activecampaigns'][0]->active_campaigns);
 
         $api_endpoint = Config::get('trckr.backend_url') . "merchant/dashboard/totalrespondents";
 

@@ -62,7 +62,10 @@
                         <input type="file" name="file" id="file" style="display:none">                
 
                         <div class="btn-group float-lg-right" role="group" aria-label="Basic example">
-                            <button type="submit" class="btn btn-block btn-primary btn-lg pull-right" id="submit">Save Details</button>  
+                            <button class="btn btn-primary btn-lg" type="submit" value="submit" id="submit">
+                                <span class="spinner-border spinner-border-sm" role="status" id="loader_submit" aria-hidden="true" disabled> </span>
+                                Edit Branch
+                            </button>  
                             <button type="button" class="btn btn-danger btn-lg pull-right" id="back">Back</button>
                         </div>
                     </div>
@@ -78,6 +81,7 @@
 @stop
 
 @section('js')
+    <script type="text/javascript" src="/vendor/trckr/trckr.js"></script>
     <script type="text/javascript">
         
         $(document).ready(function (e) { 
@@ -87,25 +91,7 @@
                 var formData = new FormData(this);
                 formData.append("branch_id", "{{ $branch_id }}");
         
-                $.ajax({
-                    type:'POST',
-                    url: "/merchant/branch/edit?{{ $branch_id }}",
-                    data: formData,
-                    cache:false,
-                    contentType: false,
-                    processData: false,
-                    success: (data) => {
-                        $(".modal-title").text("Edit Branch Successful!");
-                        $(".modal-body").html("<p>" + data.message + "</p>");
-                        $("#myModal").modal('show');
-                    },
-                    error: function(data){
-                        $(".modal-title").text("Edit Branch Failed!");
-                        //$(".modal-body").html("<p>" + data.responseText + "</p>");
-                        $(".modal-body").html("<p>" + data.responseJSON.message + "</p>");
-                        $("#myModal").modal('show');
-                    }
-                });
+                post("/merchant/branch/edit?{{ $branch_id }}", "Edit Branch", "submit", formData, "/merchant/branch");
             });
 
             $("#back").click(function(){

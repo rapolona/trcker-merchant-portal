@@ -72,10 +72,11 @@ class AuthController extends Controller
         $session = $request->session()->get('session_merchant');
         $token = ( ! empty($session->token)) ? $session->token : "";
 
-        $response = Http::withToken($token)->get($api_endpoint, []);
+        $response = Http::withToken($token)->post($api_endpoint);
         
         if ($response->status() !== 200)
         {
+            //var_dump($response->status());exit;
             if ($response->status() === 403) {
                 $validator = Validator::make($request->all(), []);
                 $validator->getMessageBag()->add('email', "Session Expired. Please login again. {$response->body()}");
@@ -106,6 +107,6 @@ class AuthController extends Controller
 
         $profile = json_decode($response);
 
-        return view('auth.login');
+        return redirect ('/');
     }
 }

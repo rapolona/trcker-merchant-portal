@@ -58,10 +58,34 @@ class ProductController extends Controller
                     ]);
                 }
 
-                $products[] = array(
+                $temp_products = array(
                     $header[0] => $temp[0], 
                     $header[1] => $temp[1]
                 );
+
+                $validator = Validator::make($temp_products, [
+                    'product_name' => 'required|max:64',
+                    'product_description' => 'required|max:255'
+                ]);
+        
+                if ($validator->fails())
+                {
+                    $error_string = "<b>Row {$count}: Fields with Errors</b><br/>";
+                    foreach ($validator->errors()->messages() as $k => $v)
+                    {
+                        $error_string .= "{$k}: <br/>";
+                        foreach ($v as $l)
+                            $error_string .= "{$l}<br/>";
+                    }
+        
+                    return Response()->json([
+                        "success" => false,
+                        "message" => $error_string,
+                        "file" => $temp_products,
+                    ], 422);
+                }
+
+                $products[] = $temp_products;
             }
 
             $api_endpoint = Config::get('trckr.backend_url') . "merchant/product";
@@ -209,7 +233,7 @@ class ProductController extends Controller
 
         return Response()->json([
             "success" => true,
-            "message" => "Add Product successfully saved!", //. $response->body(),
+            "message" => "Add Product successful!", //. $response->body(),
             "file" => $data,
         ]);
     }
@@ -352,7 +376,7 @@ class ProductController extends Controller
 
         return Response()->json([
             "success" => true,
-            "message" => "Deleted Products successfully", //. $response->body(),
+            "message" => "Deleted Products successful!", //. $response->body(),
             "file" => $data['products']
         ]);
     }

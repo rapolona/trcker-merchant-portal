@@ -86,6 +86,7 @@
 @stop
 
 @section('js')
+<script type="text/javascript" src="/vendor/trckr/trckr.js"></script>
 <!-- page script -->
 <script>
   $(document).ready(function (e) { 

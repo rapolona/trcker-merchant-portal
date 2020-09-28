@@ -116,7 +116,10 @@
                         <input type="file" name="file" id="file" style="display:none">                
 
                         <div class="btn-group float-lg-right" role="group" aria-label="Basic example">
-                            <button type="submit" class="btn btn-block btn-primary btn-lg pull-right" id="submit">Save Details</button>  
+                            <button class="btn btn-primary btn-lg" type="submit" value="Save Details" id="submit">
+                                <span class="spinner-border spinner-border-sm" role="status" id="loader_submit" aria-hidden="true" disabled> </span>
+                                Save Details
+                            </button> 
                             <button type="button" class="btn btn-danger btn-lg pull-right" id="back">Back</button>
                         </div>
                     </div>
@@ -132,6 +135,7 @@
 @stop
 
 @section('js')
+    <script type="text/javascript" src="/vendor/trckr/trckr.js"></script>
     <script type="text/javascript">
         
         $(document).ready(function (e) { 
@@ -139,31 +143,13 @@
                 e.preventDefault();
 
                 var formData = new FormData(this);
+
+                post("/merchant/modify_profile", "Update Merchant", "submit", formData, "/dashboard");
         
-                $.ajax({
-                    type:'POST',
-                    url: "/merchant/modify_profile",
-                    data: formData,
-                    cache:false,
-                    contentType: false,
-                    processData: false,
-                    success: (data) => {
-                        $(".modal-title").text("Update Merchant Information Successful");
-                        $(".modal-body").html("<p>" + data.message + "</p>");
-                        $("#myModal").modal('show');
-                    },
-                    error: function(data){
-                        console.log(JSON.stringify(data));
-                        //alert(JSON.stringfy(data));
-                        $(".modal-title").text("Failed to Update Merchant Information");
-                        $(".modal-body").html("<p>" + data.responseJSON.message + "</p>");
-                        $("#myModal").modal('show');
-                    }
-                });
             });
 
             $("#back").click(function(){
-                window.location.href = "/main";
+                window.location.href = "/dashboard";
             });
         });
     </script>
