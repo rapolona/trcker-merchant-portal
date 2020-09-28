@@ -19,7 +19,7 @@ module.exports = app => {
     // router.get("/:id", campaigns.findOne);
   
     // Update a Campaign with id
-    router.put("/campaign/update", campaigns.update);
+    router.put("/campaign/update", adminMiddleware.isAuthenticated,campaigns.update);
   
     // Delete a Campaign with id
     router.delete("/campaign",adminMiddleware.isAuthenticated ,campaigns.delete);
