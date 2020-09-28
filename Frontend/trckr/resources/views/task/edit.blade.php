@@ -111,7 +111,7 @@
                     }]
                 },{
                     label: 'Take a Photo',
-                    className: 'PHOTO',
+                    className: 'IMAGE',
                     placeholder: 'Take a Photo',
                     type: 'file'
                 },{
