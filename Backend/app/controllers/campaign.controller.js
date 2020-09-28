@@ -281,8 +281,11 @@ exports.update = (req, res) => {
       ])
     })
     .then(data => {
-      console.log(data)
-      res.send(data)
+      if(data){
+        res.send({
+          message: "Campaign, Tasks, Rewards, and Branches are updated succesfully"
+        })
+      }
     })
     .catch(err => {
       res.status(500).send({
