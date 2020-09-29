@@ -95,6 +95,9 @@
             $('#myModal').on('hidden.bs.modal', function () {
                 window.location.href = "/task/view";
             });
+            var disabledFieldButtons = {textarea: ['remove', 'copy'], select: ['remove','copy'], radio: ['remove', 'copy'], checkbox: ['remove', 'copy'], file: ['remove', 'copy'], date: ['remove', 'copy'], number: ['remove', 'copy']};
+            disabledFieldButtons['radio-group'] = ['remove', 'copy'];
+            disabledFieldButtons['checkbox-group'] = ['remove', 'copy'];
             
             let fields = [{
                     label: 'True or False',
@@ -158,7 +161,9 @@
             ];
             let options = {
                 disableFields: ['autocomplete', 'radio-group', 'checkbox-group','button','hidden','paragraph','header','select','text','textarea','file','date','number'],
+                disabledFieldButtons: disabledFieldButtons,
                 disabledAttrs: ['access','other','placeholder','required','value','description','inline','max','maxlength','min','multiple','rows','step','style','subtype','toggle'],
+                disabledActionButtons: ['data', 'clear', 'save'],
                 fields: fields,
             };
 
