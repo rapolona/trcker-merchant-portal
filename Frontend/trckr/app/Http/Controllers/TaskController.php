@@ -263,10 +263,6 @@ class TaskController extends Controller
             ], 422);
         }
 
-        //echo 'data:' . $data['banner_image']->getMimeType() . ';base64,' . base64_encode(file_get_contents($data['banner_image']));
-        //var_dump($data['banner_image']->getMimeType());
-        //exit;
-
         $request_data = array(
             'task_name' => $data['task_name'],
             'task_description' => $data['task_description'],
@@ -277,12 +273,14 @@ class TaskController extends Controller
         );
 
         $temp_task_questions = json_decode($data['form_builder']);
-        $temp = array();
+        
     
         foreach ($temp_task_questions as $k)
         {
+            $temp = array();
             $temp['question'] = $k->label;
             $temp['required_inputs'] = $k->className;
+
             if (in_array($k->className, array('CHECKBOX', 'SINGLE SELECT DROPDOWN')))
             {
                 $temp['task_question_choices'] = array();
@@ -301,8 +299,6 @@ class TaskController extends Controller
         $session = $request->session()->get('session_merchant');
         $token = ( ! empty($session->token)) ? $session->token : "";
 
-
-        //var_dump($request_data);exit;
         $response = Http::withToken($token)->post($api_endpoint, $request_data);
 
         if ($response->status() !== 200)
@@ -487,10 +483,10 @@ class TaskController extends Controller
         if ( ! empty($data['banner_image'])) $request_data['banner_image'] = 'data:' . $data['banner_image']->getMimeType() . ';base64,' . base64_encode(file_get_contents($data['banner_image']));
 
         $temp_task_questions = json_decode($data['form_builder']);
-        $temp = array();
-    
+        
         foreach ($temp_task_questions as $k)
         {
+            $temp = array();
             $temp['task_question_id'] = $k->name;
             $temp['question'] = $k->label;
             $temp['required_inputs'] = $k->className;
@@ -500,7 +496,8 @@ class TaskController extends Controller
                 foreach ($k->values as $j)
                 {
                     $temp['task_question_choices'][] = array(
-                        "choices_value" => $j->label
+                        "choices_value" => $j->label,
+                        "choices_id" => $j->value
                     );
                 }
             }
