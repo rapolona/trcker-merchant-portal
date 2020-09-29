@@ -105,7 +105,7 @@ class ProductController extends Controller
                     //provide handling for failed merchant profile modification
                     return Response()->json([
                         "success" => false,
-                        "message" => "Failed Adding Product {$count} with error: [{$response->status()}] {$response->body()}",
+                        "message" => "Failed Adding Product {$count}", // with error: [{$response->status()}] {$response->body()}",
                         "file" => json_encode($response),
                         "data" => json_encode($p)
                     ], 422);
@@ -226,7 +226,7 @@ class ProductController extends Controller
             //provide handling for failed merchant profile modification
             return Response()->json([
                 "success" => false,
-                "message" => "Failed to Add Product with error:" . $response->body(),
+                "message" => "Failed to Add Product.", // with error:" . $response->body(),
                 "file" => $data,
             ], 422);
         }
@@ -333,7 +333,7 @@ class ProductController extends Controller
             //provide handling for failed Edit product
             return Response()->json([
                 "success" => false,
-                "message" => "Failed to Edit Product with error:" . $response->body(),
+                "message" => "Failed to Edit Product.", // with error:" . $response->body(),
                 "file" => $data,
             ], 422);
         }
@@ -366,7 +366,7 @@ class ProductController extends Controller
                 //provide handling for failed merchant profile modification
                 return Response()->json([
                     "success" => false,
-                    "message" => "Failed Deleting Product {$count} with error: [{$response->status()}] {$response->body()}",
+                    "message" => "Failed Deleting Product {$count}.", // with error: [{$response->status()}] {$response->body()}",
                     "file" => json_encode($response),
                     "data" => json_encode($p)
                 ], 422);

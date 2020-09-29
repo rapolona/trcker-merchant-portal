@@ -125,7 +125,7 @@ class MerchantController extends Controller
             //provide handling for failed merchant profile modification
             return Response()->json([
                 "success" => false,
-                "message" => "Failed updating Merchant Information with error:" . $response->body(),
+                "message" => "Failed updating Merchant Information.", // with error:" . $response->body(),
                 "file" => $data,
             ], 422);
         }

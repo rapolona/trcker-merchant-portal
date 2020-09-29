@@ -21,28 +21,30 @@
                         </div>
                     </form>
                 </div>
-                <table class="table table-bordered">
-                    <thead>                  
-                    <tr>
-                        <th style="width: 10px">#</th>
-                        <th>Campaign Name</th>
-                        <th>Budget</th>
-                        <th>Duration</th>
-                        <th>Status</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    @foreach ($rewards as $r)
-                    <tr>
-                        <td> {{ $r['no'] }}</td>
-                        <td> {{ $r['budget'] }}</td>
-                        <td> {{ $r['campaign_name'] }}</td>
-                        <td> {{ $r['duration'] }}</td>
-                        <td> {{ $r['status'] }}</td>
-                    </tr>
-                    @endforeach
-                    </tbody>
-                </table>
+                <div class="card-header">
+                    <table class="table table-bordered table-striped mydatatable">
+                        <thead>                  
+                        <tr>
+                            <th style="width: 10px">#</th>
+                            <th>Campaign Name</th>
+                            <th>Budget</th>
+                            <th>Duration</th>
+                            <th>Status</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach ($rewards as $r)
+                        <tr>
+                            <td> {{ $r['no'] }}</td>
+                            <td> {{ $r['budget'] }}</td>
+                            <td> {{ $r['campaign_name'] }}</td>
+                            <td> {{ $r['duration'] }}</td>
+                            <td> {{ $r['status'] }}</td>
+                        </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

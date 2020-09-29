@@ -52,7 +52,7 @@
                     </div>
                     
                     <div class="card-body">
-                        <table class="table table-bordered">
+                        <table class="table table-bordered table-striped mydatatable">
                             <thead>                  
                             <tr>
                                 <th>Trckr Username</th>
@@ -61,10 +61,10 @@
                                 <th>Campaign Name</th>
                                 <th>Task</th>
                                 <th>Date Submitted</th>
-                                <th style="width: 5%">Device ID</th>
-                                <th style="width: 5%">Location</th>
-                                <th style="width: 5%">Status</th>
-                                <th style="width: 5%">Action?</th>
+                                <th>Device ID</th>
+                                <th>Location</th>
+                                <th>Status</th>
+                                <th>Action?</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -103,7 +103,6 @@
 @stop
 
 @section('js')
-    <script type="text/javascript" src="/vendor/trckr/trckr.js"></script>
     <script type="text/javascript" src="/vendor/trckr/trckr.js"></script>
     <script type="text/javascript">
         $(document).ready(function (e) {
