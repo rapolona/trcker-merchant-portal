@@ -103,9 +103,13 @@ class TicketController extends Controller
             foreach ($response as $j) {
                 $j->campaign_name = $k->campaign_name;
                 $j->updatedAt = new DateTime($j->updatedAt);
-                $j->updatedAt = $j->updatedAt->format("Y-m-d H:i:s");
-                $tickets[] = $j;
+                $j->updatedAt = $j->updatedAt->format("F d, Y");
+                $j->createdAt = new DateTime($j->createdAt);
+                $j->createdAt = $j->createdAt->format("F d, Y");
+                $tickets[] = $j;                
             }
+
+            
         }
 
         return view('ticket.ticket', ['tickets' => $tickets]);
@@ -227,7 +231,7 @@ class TicketController extends Controller
                 //provide handling for failed ticket approval
                 return Response()->json([
                     "success" => false,
-                    "message" => "Failed Ticket Approval {$count} with error: [{$response->status()}] {$response->body()}",
+                    "message" => "Failed Ticket Approval {$count}", // with error: [{$response->status()}] {$response->body()}",
                     "file" => json_encode($response),
                     "data" => json_encode($t)
                 ], 422);
@@ -265,7 +269,7 @@ class TicketController extends Controller
                 //provide handling for failed ticket approval
                 return Response()->json([
                     "success" => false,
-                    "message" => "Failed Ticket Approval {$count} with error: [{$response->status()}] {$response->body()}",
+                    "message" => "Failed Ticket Approval {$count}.", // with error: [{$response->status()}] {$response->body()}",
                     "file" => json_encode($response),
                     "data" => json_encode($t)
                 ], 422);

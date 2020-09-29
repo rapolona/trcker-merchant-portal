@@ -111,7 +111,7 @@ class BranchController extends Controller
                     //provide handling for failed merchant profile modification
                     return Response()->json([
                         "success" => false,
-                        "message" => "Failed Adding Branch {$count} with error: [{$response->status()}] {$response->body()}",
+                        "message" => "Failed Adding Branch {$count}", //with error: [{$response->status()}] {$response->body()}",
                         "file" => json_encode($response),
                         "data" => json_encode($b)
                     ], 422);
@@ -338,7 +338,7 @@ class BranchController extends Controller
             //provide handling for failed Edit branch
             return Response()->json([
                 "success" => false,
-                "message" => "Failed to Edit Branch with error:" . $response->body(),
+                "message" => "Failed to Edit Branch. ", //with error:" . $response->body(),
                 "file" => $data,
             ], 422);
         }
@@ -371,7 +371,7 @@ class BranchController extends Controller
                 //provide handling for failed merchant profile modification
                 return Response()->json([
                     "success" => false,
-                    "message" => "Failed Deleting Branch {$count} with error: [{$response->status()}] {$response->body()}",
+                    "message" => "Failed Deleting Branch {$count}", //with error: [{$response->status()}] {$response->body()}",
                     "file" => json_encode($response),
                     "data" => json_encode($b)
                 ], 422);

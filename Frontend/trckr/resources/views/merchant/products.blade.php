@@ -52,7 +52,7 @@
                 </div>
                 <div class="card-body">
                     <form id="products_table" action="javascript:void(0)" >
-                        <table class="table table-bordered">
+                        <table class="table table-bordered table-striped mydatatable">
                             <thead>                  
                             <tr>
                                 <th style="width: 10px">#</th>

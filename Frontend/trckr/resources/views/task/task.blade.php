@@ -41,7 +41,7 @@
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
-                    <table class="table table-bordered">
+                    <table class="table table-bordered table-striped mydatatable">
                         <thead>                  
                         <tr>
                             <th>Task Name</th>

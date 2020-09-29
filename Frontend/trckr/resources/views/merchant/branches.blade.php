@@ -52,31 +52,29 @@
                 </div>
                 <div class="card-body">
                     <form id="branches_table" action="javascript:void(0)" >
-                        <div class="row">
-                            <table class="table table-bordered">
-                                <thead>                  
-                                <tr>
-                                    <th style="width: 10px">#</th>
-                                    <th>Name</th>
-                                    <th>Address</th>
-                                    <th>Coordinates</th>
-                                    <th style="width: 40px">Action?</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                @foreach ($branches as $b)
-                                <tr>
-                                    <input type="hidden" name="row_branch_id[]" value="{{ $b->branch_id}}"/>
-                                    <td> {{ $b->no }}</td>
-                                    <td> {{ $b->name }}</td>
-                                    <td> {{ $b->address }}</td>
-                                    <td> {{ $b->latitude }} {{ $b->longitude }}</td>
-                                    <td><input type="checkbox" name="branch" id="{{$b->branch_id}}"></td>
-                                </tr>
-                                @endforeach
-                                </tbody>
-                            </table>
-                        </div>
+                        <table class="table table-bordered table-striped mydatatable">
+                            <thead>                  
+                            <tr>
+                                <th style="width: 10px">#</th>
+                                <th>Name</th>
+                                <th>Address</th>
+                                <th>Coordinates</th>
+                                <th style="width: 40px">Action?</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach ($branches as $b)
+                            <tr>
+                                <input type="hidden" name="row_branch_id[]" value="{{ $b->branch_id}}"/>
+                                <td> {{ $b->no }}</td>
+                                <td> {{ $b->name }}</td>
+                                <td> {{ $b->address }}</td>
+                                <td> {{ $b->latitude }} {{ $b->longitude }}</td>
+                                <td><input type="checkbox" name="branch" id="{{$b->branch_id}}"></td>
+                            </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
                     </form>
                 </div>
             </div>

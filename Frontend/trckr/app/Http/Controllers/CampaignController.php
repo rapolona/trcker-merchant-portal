@@ -463,7 +463,7 @@ class CampaignController extends Controller
             //provide handling for failed merchant profile modification
             return Response()->json([
                 "success" => false,
-                "message" => "Failed to Create Campaign with error:" . $response->body(),
+                "message" => "Failed to Create Campaign", // with error:" . $response->body(),
                 "file" => $request_data,
             ], 422);
         }
@@ -970,7 +970,7 @@ class CampaignController extends Controller
             //provide handling for failed merchant profile modification
             return Response()->json([
                 "success" => false,
-                "message" => "Failed to Edit Campaign with error:" . $response->body(),
+                "message" => "Failed to Edit Campaign.", // with error:" . $response->body(),
                 "file" => $request_data,
             ], 422);
         }
@@ -1004,7 +1004,7 @@ class CampaignController extends Controller
                 //provide handling for failed merchant profile modification
                 return Response()->json([
                     "success" => false,
-                    "message" => "Failed Deleting Task {$count} with error: [{$response->status()}] {$response->body()}",
+                    "message" => "Failed Deleting Task {$count}", // with error: [{$response->status()}] {$response->body()}",
                     "file" => json_encode($response),
                     "data" => json_encode($c)
                 ], 422);

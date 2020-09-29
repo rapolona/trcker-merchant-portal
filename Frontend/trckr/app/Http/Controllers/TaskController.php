@@ -305,7 +305,7 @@ class TaskController extends Controller
         {
             return Response()->json([
                 "success" => false,
-                "message" => "Failed to Create New Task with error:" . $response->body(),
+                "message" => "Failed to Create New Task.", // with error:" . $response->body(),
                 "file" => $data,
             ], 422);
         }
@@ -338,7 +338,7 @@ class TaskController extends Controller
                 //provide handling for failed merchant profile modification
                 return Response()->json([
                     "success" => false,
-                    "message" => "Failed Deleting Task {$count} with error: [{$response->status()}] {$response->body()}",
+                    "message" => "Failed Deleting Task {$count}.", // with error: [{$response->status()}] {$response->body()}",
                     "file" => json_encode($response),
                     "data" => json_encode($t)
                 ], 422);
@@ -516,7 +516,7 @@ class TaskController extends Controller
         {
             return Response()->json([
                 "success" => false,
-                "message" => "Failed to Modify Task with error:" . $response->body(),
+                "message" => "Failed to Modify Task.", // with error:" . $response->body(),
                 "file" => $request_data,
             ], 422);
         }

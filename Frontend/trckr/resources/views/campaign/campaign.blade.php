@@ -39,7 +39,7 @@
                     </form>
                 </div>
                 <div class="card-body">
-                    <table class="table table-bordered">
+                    <table class="table table-bordered table-striped mydatatable">
                         <thead>                  
                         <tr>
                             <th style="width: 10px">#</th>
@@ -78,7 +78,8 @@
     <script type="text/javascript" src="/vendor/trckr/trckr.js"></script>
     <script type="text/javascript">
       
-        $(document).ready(function (e) { 
+        $(document).ready(function (e) {
+
             $('.view').click(function(){
                 var campaign_id = $(this).siblings('.view_id').val();
                 
