@@ -8,6 +8,13 @@ $(document).ready(function (e) {
         $(".mydatatable").DataTable({
         "responsive": true,
         "autoWidth": false,
+        "paging": true,
+        "lengthChange": false,
+        "searching": false,
+        "ordering": true,
+        "info": true,
+        "autoWidth": false,
+        "scrollX": true,
         });
         $('#example2').DataTable({
         "paging": true,
@@ -17,6 +24,7 @@ $(document).ready(function (e) {
         "info": true,
         "autoWidth": false,
         "responsive": true,
+        "scrollX": true,
         });
     });
 });
@@ -35,7 +43,8 @@ function post(url, activity, button, payload, redirect = "/dashboard")
         contentType: false,
         processData: false,
         success: (data) => {
-            $(".modal-title").text(activity + " Successful!");
+            var status = (data.status) ? "Successful!" : "Failed!";
+            $(".modal-title").text(activity + " " + status);
             $(".modal-body").html("<p>" + data.message + "</p>");
             $("#myModal").modal('show');
             $('#loader_' + button).hide();

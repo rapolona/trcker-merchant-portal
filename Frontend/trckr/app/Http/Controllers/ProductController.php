@@ -86,6 +86,7 @@ class ProductController extends Controller
                 }
 
                 $products[] = $temp_products;
+                $count+=1;
             }
 
             $api_endpoint = Config::get('trckr.backend_url') . "merchant/product";

@@ -92,6 +92,7 @@ class BranchController extends Controller
                 }
 
                 $branches[] = $temp_branches;
+                $count+=1;
             }
 
             $api_endpoint = Config::get('trckr.backend_url') . "merchant/branch";
