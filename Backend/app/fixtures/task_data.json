@@ -139,6 +139,7 @@
           "model": "task_questions",  
           "data":{
                "task_question_id": "9244bcda-00c8-4406-89f1-829f2b1193a8",
+               "index": 1,
                "question":"What are the types of activation did you see in the area?",              
                "required_inputs":"SINGLE SELECT DROPDOWN",
                "task_id": "971b1e88-05cf-41b6-87b6-596f30cbc99a"
@@ -172,6 +173,7 @@
           "model": "task_questions",  
           "data":{
                "task_question_id": "b1a6d921-ef5a-4cde-8698-08af1666d5b0",
+               "index": 1,
                "question":"How many personnel did you see offering the product?",              
                "required_inputs":"INTEGER",
                "task_id": "92b22406-218a-4451-adbc-69e334cdbdce"
@@ -191,6 +193,7 @@
           "model": "task_questions",  
           "data":{
                "task_question_id": "188a9c4a-fba4-4c61-9d51-682a568bfe39",
+               "index": 1,
                "question":"Please upload image of the main shelf of the [category]",
                "required_inputs":"IMAGE",
                "task_id": "dbbb9fed-6110-4364-bc2d-06103567715e"
@@ -210,6 +213,7 @@
           "model": "task_questions",  
           "data":{
                "task_question_id": "d8e2ef5e-d4c6-4e8d-84c2-5ffd13499d5d",
+               "index": 1,
                "question":"Does this brand have an end-shelf display?",
                "required_inputs":"TRUE OR FALSE",
                "task_id": "7dbbea91-3bb4-4706-b8eb-46657a66509a"
@@ -229,6 +233,7 @@
           "model": "task_questions",  
           "data":{
                "task_question_id": "3c422993-27ab-40e5-b538-f3dedcd9ecb7",
+               "index": 1,
                "question":"How much is the discount in Peso for our product?",
                "required_inputs":"FLOAT",
                "task_id": "7e88f006-0c8f-464d-9fc4-6ad4c11dca30"
@@ -248,6 +253,7 @@
           "model": "task_questions",  
           "data":{
                "task_question_id": "ff808734-afa9-4cc1-8b07-d6d319743088",
+               "index": 1,
                "question":"What time did you leave the restaurant?",
                "required_inputs":"TIMESTAMP",
                "task_id": "a7784b00-f094-4b57-ae8b-c8a5945cdb6a"
