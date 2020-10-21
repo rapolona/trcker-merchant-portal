@@ -91,7 +91,7 @@
                 var formData = new FormData(this);
                 formData.append("branch_id", "{{ $branch_id }}");
         
-                post("{{url('/merchant/branch/edit?' + $branch_id)}}", "Edit Branch", "submit", formData, "{{url('/merchant/branch')}}");
+                post("{{url('/merchant/branch/edit?branch_id='.$branch_id)}}", "Edit Branch", "submit", formData, "{{url('/merchant/branch')}}");
             });
 
             $("#back").click(function(){
