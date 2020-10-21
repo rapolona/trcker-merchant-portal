@@ -154,7 +154,7 @@
 
                 var actiontext = action.charAt(0).toUpperCase() + action.slice(1);
 
-                post("{{url('/ticket/')}}" + action + "_ticket", actiontext + " Ticket(s)", action, formData, '{{url('/ticket/view')}}');
+                post("{{url('/ticket/')}}/" + action + "_ticket", actiontext + " Ticket(s)", action, formData, "{{url('/ticket/view')}}");
             });            
         });
   </script>
