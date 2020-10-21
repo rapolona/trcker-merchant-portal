@@ -84,9 +84,9 @@
 @stop
 
 @section('js')
-    <script type="text/javascript" src="/vendor/trckr/trckr.js"></script>
-    <script type="text/javascript" src="/vendor/form-builder/form-builder.min.js"></script>
-    <script type="text/javascript" src="/vendor/form-builder/form-render.min.js"></script>
+    <script type="text/javascript" src="{{url('/vendor/trckr/trckr.js')}}"></script>
+    <script type="text/javascript" src="{{url('/vendor/form-builder/form-builder.min.js')}}"></script>
+    <script type="text/javascript" src="{{url('/vendor/form-builder/form-render.min.js')}}"></script>
     <script type="text/javascript">
         
         $(document).ready(function (e) { 
@@ -158,11 +158,11 @@
                 //formData.append('data_type', "custom");
                 formData.append('form_builder', myFormBuilder);
 
-                post("/task/create", "Add Task", "submit", formData, "/task/view");
+                post("{{url('/task/create')}}", "Add Task", "submit", formData, "{{url('/task/view')}}");
             });
 
             $("#back").click(function(){
-                window.location.href = "/task/view";
+                window.location.href = "{{url('/task/view')}}";
             });
         });
     </script>

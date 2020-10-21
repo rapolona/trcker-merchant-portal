@@ -86,14 +86,14 @@
 @stop
 
 @section('js')
-    <script type="text/javascript" src="/vendor/trckr/trckr.js"></script>
-    <script type="text/javascript" src="/vendor/form-builder/form-builder.min.js"></script>
-    <script type="text/javascript" src="/vendor/form-builder/form-render.min.js"></script>
+    <script type="text/javascript" src="{{url('/vendor/trckr/trckr.js')}}"></script>
+    <script type="text/javascript" src="{{url('/vendor/form-builder/form-builder.min.js')}}"></script>
+    <script type="text/javascript" src="{{url('/vendor/form-builder/form-render.min.js')}}"></script>
     <script type="text/javascript">
         
         $(document).ready(function (e) {
             $('#myModal').on('hidden.bs.modal', function () {
-                window.location.href = "/task/view";
+                window.location.href = "{{url('/task/view')}}";
             });
             var disabledFieldButtons = {textarea: ['remove', 'copy'], select: ['remove','copy'], radio: ['remove', 'copy'], checkbox: ['remove', 'copy'], file: ['remove', 'copy'], date: ['remove', 'copy'], number: ['remove', 'copy']};
             disabledFieldButtons['radio-group'] = ['remove', 'copy'];
@@ -213,11 +213,11 @@
 
                 formData.append("task_id", "{{ $task_id }}");
 
-                post("/task/edit", "Edit Task", "submit", formData, "/task/view");
+                post("{{url('/task/edit')}}", "Edit Task", "submit", formData, "{{url('/task/view')}}");
             });
 
             $("#back").click(function(){
-                window.location.href = "/task/view";
+                window.location.href = "{{url('/task/view')}}";
             });
         });
     </script>

@@ -84,7 +84,7 @@
 @stop
 
 @section('js')
-    <script type="text/javascript" src="/vendor/trckr/trckr.js"></script>
+    <script type="text/javascript" src="{{url('/vendor/trckr/trckr.js')}}"></script>
     <script type="text/javascript">
 
         $(document).ready(function (e) {
@@ -106,7 +106,7 @@
                 formData.append('products', products);
                 formData.append('_token', "{{ csrf_token() }}");
 
-                post("/merchant/product/delete", "Delete Product", "delete", formData, "/product");
+                post("{{url('/merchant/product/delete')}}", "Delete Product", "delete", formData, "{{url('/product')}}");
             });
 
             $('#edit').click(function(e){
@@ -121,7 +121,7 @@
                     return;
                 }
 
-                window.location.href = "/merchant/product/edit?product_id=" + products[0];
+                window.location.href = "{{url('/merchant/product/edit?product_id=')}}" + products[0];
             });
 
             $('#upload_csv').click(function(e){
@@ -135,7 +135,7 @@
             $('#file_upload').submit(function(e) {
                 var formData = new FormData(this);
                 
-                post("/merchant/product/upload", "Upload CSV", "upload_csv", formData, "/merchant/product");
+                post("{{url('/merchant/product/upload')}}", "Upload CSV", "upload_csv", formData, "{{url('/merchant/product')}}");
             });
         });
   </script>

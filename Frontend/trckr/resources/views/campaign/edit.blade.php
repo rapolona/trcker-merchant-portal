@@ -180,7 +180,7 @@
 @stop
 
 @section('js')
-    <script type="text/javascript" src="/vendor/trckr/trckr.js"></script>
+    <script type="text/javascript" src="{{url('/vendor/trckr/trckr.js')}}"></script>
     <script type="text/javascript">
         //input_end_date
         $('#input_start_date').datepicker({ 
@@ -221,7 +221,7 @@
         
             $.ajax({
                 type:'GET',
-                url: "/campaign/campaign_type/task?task_id=" + this.value,
+                url: "{{url('/campaign/campaign_type/task?task_id=')}}" + this.value,
                 cache:false,
                 contentType: false,
                 processData: false,
@@ -292,11 +292,11 @@
 
                 var formData = new FormData(this);
 
-                post("/campaign/edit_campaign?campaign_id={{$campaign->campaign_id}}", "Edit Campaign", "submit",formData, "/campaign/view");
+                post("{{url('/campaign/edit_campaign?campaign_id=' . $campaign->campaign_id)}}", "Edit Campaign", "submit",formData, "{{url('/campaign/view')}}");
             });
 
             $("#back").click(function(){
-                window.location.href = "/campaign/view";
+                window.location.href = "{{url('/campaign/view')}}";
             });
         });
 

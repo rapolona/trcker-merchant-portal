@@ -103,21 +103,21 @@
 @stop
 
 @section('js')
-    <script type="text/javascript" src="/vendor/trckr/trckr.js"></script>
+    <script type="text/javascript" src="{{url('/vendor/trckr/trckr.js')}}"></script>
     <script type="text/javascript">
         $(document).ready(function (e) {
             $("#export").click(function(){
-                window.location.href = "/ticket/export_csv";                
+                window.location.href = "{{url('/ticket/export_csv')}}";                
             });
 
             $('#myModal').on('hidden.bs.modal', function (e) {
-                window.location.href = "/ticket/view";
+                window.location.href = "{{url('/ticket/view')}}";
             });
 
             $('.view').click(function(){
                 var ticket_id = $(this).siblings('.view_id').val();
                 
-                window.location.href = "/ticket/view_ticket?ticket_id=" + ticket_id;
+                window.location.href = "{{url('/ticket/view_ticket?ticket_id=')}}" + ticket_id;
             });
 
             $("#approve").click(function(){
@@ -154,7 +154,7 @@
 
                 var actiontext = action.charAt(0).toUpperCase() + action.slice(1);
 
-                post("/ticket/" + action + "_ticket", actiontext + " Ticket(s)", action, formData, '/ticket/view');
+                post("{{url('/ticket/')}}" + action + "_ticket", actiontext + " Ticket(s)", action, formData, '{{url('/ticket/view')}}');
             });            
         });
   </script>
