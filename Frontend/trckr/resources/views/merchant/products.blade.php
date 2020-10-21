@@ -37,7 +37,7 @@
                                 <span class="spinner-border spinner-border-sm" role="status" id="loader_upload_csv" aria-hidden="true" disabled> </span>
                                 Upload CSV
                             </button> 
-                            <a href="/merchant/product/add" type="button" class="btn btn-primary btn-lg pull-right" id="add">
+                            <a href="{{url('/merchant/product/add')}}" type="button" class="btn btn-primary btn-lg pull-right" id="add">
                                 Add
                             </a>   
                             <button class="btn btn-primary btn-lg" type="button" value="Edit" id="edit">

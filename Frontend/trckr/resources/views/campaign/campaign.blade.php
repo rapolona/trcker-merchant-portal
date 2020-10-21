@@ -29,7 +29,7 @@
                 <div class="card-header">
                     <form method="POST" enctype="multipart/form-data" id="file_upload" action="javascript:void(0)" >
                         <div class="btn-group float-lg-right" role="group" aria-label="Basic example">
-                            <a href="/campaign/create" type="button" class="btn btn-primary btn-lg pull-right">Add</a>
+                            <a href="{{url('/campaign/create')}}" type="button" class="btn btn-primary btn-lg pull-right">Add</a>
                             <button type="button" class="btn btn-primary btn-lg" id="edit">Edit</button>    
                             <button class="btn btn-primary btn-lg" type="button" value="button" id="delete">
                                 <span class="spinner-border spinner-border-sm" role="status" id="loader_delete" aria-hidden="true" disabled> </span>
