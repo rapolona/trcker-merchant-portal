@@ -33,7 +33,7 @@
                         <input type="file" name="file" id="file" style="display:none">                
 
                         <div class="btn-group float-lg-right" role="group" aria-label="Basic example">
-                            <a href="/task/create" type="button" class="btn btn-primary btn-lg pull-right">Add</a>
+                            <a href="{{url('/task/create')}}" type="button" class="btn btn-primary btn-lg pull-right">Add</a>
                             <button type="button" class="btn btn-primary btn-lg" id="edit">Edit</button>    
                             <button type="button" class="btn btn-primary btn-lg" id="delete">Delete</button>
                         </div>
