@@ -75,7 +75,7 @@
 @stop
 
 @section('js')
-    <script type="text/javascript" src="/vendor/trckr/trckr.js"></script>
+    <script type="text/javascript" src="{{url('/vendor/trckr/trckr.js')}}"></script>
     <script type="text/javascript">
       
         $(document).ready(function (e) {
@@ -83,7 +83,7 @@
             $('.view').click(function(){
                 var campaign_id = $(this).siblings('.view_id').val();
                 
-                window.location.href = "/campaign/view_campaign?campaign_id=" + campaign_id;
+                window.location.href = "{{url('/campaign/view_campaign?campaign_id=')}}" + campaign_id;
             });
 
             $('#delete').click(function(e){
@@ -101,12 +101,10 @@
                     return;
                 }
 
-                console.log(campaigns);
-
                 formData.append('campaigns', campaigns);
                 formData.append('_token', "{{ csrf_token() }}");
 
-                post("/campaign/delete", "Delete Campaign", "delete", formData, "/cmpaign/view");
+                post("{{url('/campaign/delete')}}", "Delete Campaign", "delete", formData, "{{url('/cmpaign/view')}}");
             });
             
             $('#edit').click(function(e){
@@ -122,7 +120,7 @@
                     $("#myModal").modal('show');
                     return;
                 }
-                window.location.href = "/campaign/edit?campaign_id=" + campaigns[0];
+                window.location.href = "{{url('/campaign/edit?campaign_id=')}}" + campaigns[0];
             });
         });
   </script>

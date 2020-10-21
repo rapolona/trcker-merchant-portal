@@ -81,14 +81,14 @@
 @stop
 
 @section('js')
-    <script type="text/javascript" src="/vendor/trckr/trckr.js"></script>
-    <script type="text/javascript" src="/vendor/form-builder/form-builder.min.js"></script>
-    <script type="text/javascript" src="/vendor/form-builder/form-render.min.js"></script>
+    <script type="text/javascript" src="{{url('/vendor/trckr/trckr.js')}}"></script>
+    <script type="text/javascript" src="{{url('/vendor/form-builder/form-builder.min.js')}}"></script>
+    <script type="text/javascript" src="{{url('/vendor/form-builder/form-render.min.js')}}"></script>
     <script type="text/javascript">
         
         $(document).ready(function (e) {
             $('#myModal').on('hidden.bs.modal', function () {
-                window.location.href = "/task/view";
+                window.location.href = "{{url('/task/view')}}";
             });
             /*
             var image = new Image();
@@ -208,11 +208,11 @@
             //$(container).formRender(options);
 
             $("#back").click(function(){
-                window.location.href = "/task/view";
+                window.location.href = "{{url('/task/view')}}";
             });
 
             $("#edit").click(function(){
-                window.location.href = "/task/edit?task_action_id={{$task->task_id}}";
+                window.location.href = "{{url('/task/edit?task_action_id=')}}{{$task->task_id}}";
             });
         
             var formData = JSON.stringify(addField);

@@ -135,7 +135,7 @@
 @stop
 
 @section('js')
-    <script type="text/javascript" src="/vendor/trckr/trckr.js"></script>
+    <script type="text/javascript" src="{{url('/vendor/trckr/trckr.js')}}"></script>
     <script type="text/javascript">
         
         $(document).ready(function (e) { 
@@ -144,12 +144,12 @@
 
                 var formData = new FormData(this);
 
-                post("/merchant/modify_profile", "Update Merchant", "submit", formData, "/dashboard");
+                post("{{url('/merchant/modify_profile')}}", "Update Merchant", "submit", formData, "{{url('/dashboard')}}");
         
             });
 
             $("#back").click(function(){
-                window.location.href = "/dashboard";
+                window.location.href = "{{url('/dashboard')}}";
             });
         });
     </script>

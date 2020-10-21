@@ -71,7 +71,7 @@
 @stop
 
 @section('js')
-    <script type="text/javascript" src="/vendor/trckr/trckr.js"></script>
+    <script type="text/javascript" src="{{url('/vendor/trckr/trckr.js')}}"></script>
     <script type="text/javascript">
       
         $(document).ready(function (e) {
@@ -79,7 +79,7 @@
             $('.view').click(function(){
                 var task_id = $(this).siblings('.view_id').val();
                 
-                window.location.href = "/task/view_task?task_id=" + task_id;
+                window.location.href = "{{url('/task/view_task?task_id=')}}" + task_id;
             });
 
             $('#myModal').on('hidden.bs.modal', function () {
@@ -108,7 +108,7 @@
 
                 $.ajax({
                     type:'POST',
-                    url: "/task/delete",
+                    url: "{{url('/task/delete')}}",
                     data: formData,
                     cache:false,
                     contentType: false,
@@ -140,7 +140,7 @@
                     return;
                 }
 
-                window.location.href = "/task/edit?task_action_id=" + tasks[0];
+                window.location.href = "{{url('/task/edit?task_action_id=')}}" + tasks[0];
             });
         });
     </script>

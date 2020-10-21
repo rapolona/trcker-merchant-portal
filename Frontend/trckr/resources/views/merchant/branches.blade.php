@@ -87,7 +87,7 @@
 @stop
 
 @section('js')
-    <script type="text/javascript" src="/vendor/trckr/trckr.js"></script>
+    <script type="text/javascript" src="{{url('/vendor/trckr/trckr.js')}}"></script>
     <script type="text/javascript">
 
         $(document).ready(function (e) {
@@ -113,7 +113,7 @@
                 formData.append('branches', branches);
                 formData.append('_token', "{{ csrf_token() }}");
 
-                post("/merchant/branch/delete", "Delete Branch", "delete", formData, "/merchant/branch");
+                post("{{url('/merchant/branch/delete')}}", "Delete Branch", "delete", formData, "{{url('/merchant/branch')}}");
             });
             
             $('#edit').click(function(e){
@@ -129,7 +129,7 @@
                     return;
                 }
 
-                window.location.href = "/merchant/branch/edit?branch_id=" + branches[0];
+                window.location.href = "{{url('/merchant/branch/edit?branch_id=')}}" + branches[0];
             });
 
             $('#upload_csv').click(function(e){
@@ -145,7 +145,7 @@
 
                 var formData = new FormData(this);
                 
-                post("/merchant/branch/upload", "Upload Branch", "upload_csv", formData, "/merchant/branch")
+                post("{{url('/merchant/branch/upload')}}", "Upload Branch", "upload_csv", formData, "{{url('/merchant/branch')}}")
             });
         });
     </script>

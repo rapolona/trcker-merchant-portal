@@ -70,7 +70,7 @@
 @stop
 
 @section('js')
-    <script type="text/javascript" src="/vendor/trckr/trckr.js"></script>
+    <script type="text/javascript" src="{{url('/vendor/trckr/trckr.js')}}"></script>
     <script type="text/javascript">
         
         $(document).ready(function (e) { 
@@ -79,11 +79,11 @@
 
                 var formData = new FormData(this);
         
-                post("/merchant/product/add", "Add Product", "add", formData, "/merchant/product");
+                post("{{url('/merchant/product/add')}}", "Add Product", "add", formData, "{{url('/merchant/product')}}");
             });
 
             $("#back").click(function(){
-                window.location.href = "/merchant/product";
+                window.location.href = "{{url('/merchant/product')}}";
             });
         });
     </script>

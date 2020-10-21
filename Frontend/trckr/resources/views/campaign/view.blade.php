@@ -171,20 +171,20 @@
 @stop
 
 @section('js')
-    <script type="text/javascript" src="/vendor/trckr/trckr.js"></script>
+    <script type="text/javascript" src="{{url('/vendor/trckr/trckr.js')}}"></script>
     <script type="text/javascript">
         $(document).ready(function (e) { 
 
             $("#edit").click(function(){
-                window.location.href = "/campaign/edit?campaign_id={{$campaign->campaign_id}}";
+                window.location.href = "{{url('/campaign/edit?campaign_id=' . $campaign->campaign_id)}}";
             });
             $("#back").click(function(){
-                window.location.href = "/campaign/view";
+                window.location.href = "{{url('/campaign/view')}}";
             });
         });
     </script>
-    <script type="text/javascript" src="/vendor/form-builder/form-builder.min.js"></script>
-    <script type="text/javascript" src="/vendor/form-builder/form-render.min.js"></script>
+    <script type="text/javascript" src="{{url('/vendor/form-builder/form-builder.min.js')}}"></script>
+    <script type="text/javascript" src="{{url('/vendor/form-builder/form-render.min.js')}}"></script>
     <script type="text/javascript">
         
         $(document).ready(function (e) { 
