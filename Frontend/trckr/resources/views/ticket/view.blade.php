@@ -127,18 +127,18 @@
 @stop
 
 @section('js')
-    <script type="text/javascript" src="/vendor/trckr/trckr.js"></script>
-    <script type="text/javascript" src="/vendor/form-builder/form-builder.min.js"></script>
-    <script type="text/javascript" src="/vendor/form-builder/form-render.min.js"></script>
+    <script type="text/javascript" src="{{url('/vendor/trckr/trckr.js')}}"></script>
+    <script type="text/javascript" src="{{url('/vendor/form-builder/form-builder.min.js')}}"></script>
+    <script type="text/javascript" src="{{url('/vendor/form-builder/form-render.min.js')}}"></script>
     <script type="text/javascript">
         
         $(document).ready(function (e) {
             $('#myModal').on('hidden.bs.modal', function () {
-                window.location.href = "/ticket/view";
+                window.location.href = "{{url('/ticket/view')}}";
             });
 
             $("#back").click(function(){
-                window.location.href = "/ticket/view";
+                window.location.href = "{{url('/ticket/view')}}";
             });
 
             $("#approve").click(function(){
@@ -153,25 +153,7 @@
                 var formData = new FormData(this);
                 var action = formData.get('action');
 
-                $.ajax({
-                    type:'POST',
-                    url: "/ticket/" + action + "_ticket",
-                    data: formData,
-                    cache:false,
-                    contentType: false,
-                    processData: false,
-                    success: (data) => {
-                        $(".modal-title").val(action + "Ticket Successful!");
-                        $(".modal-body").html("<p>" + data.message + "</p>");
-                        $("#myModal").modal('show');
-                    },
-                    error: function(data){
-                        $(".modal-title").val(action + "Ticket Failed!");
-                        $(".modal-body").html("<p>" + data.responseText + "</p>");
-                        //$(".modal-body").html("<p>" + data.message + "</p>");
-                        $("#myModal").modal('show');
-                    }
-                });
+                post("{{url('/ticket/')}}/" + action + "_ticket", actiontext + " Ticket(s)", action, formData, "{{url('/ticket/view')}}");
             });
         });        
     </script>

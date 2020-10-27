@@ -107,6 +107,6 @@ class AuthController extends Controller
 
         $profile = json_decode($response);
 
-        return redirect ('/');
+        return redirect ('/login');
     }
 }
