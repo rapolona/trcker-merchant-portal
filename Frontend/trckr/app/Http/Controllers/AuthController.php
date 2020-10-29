@@ -13,15 +13,15 @@ use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
- 
+
     public function index()
     {
-        return view('auth.login');
-    }  
- 
+        return view('vendor.adminlte.auth.login');
+    }
+
     public function login_get()
-    {      
-        return view ('auth.login');
+    {
+        return view ('vendor.adminlte.auth.login');
     }
 
     public function login_post(Request $request) {
@@ -39,7 +39,7 @@ class AuthController extends Controller
                 ->withInput();
 
         //api call for login
-        //http://localhost:6001/merchant/auth       
+        //http://localhost:6001/merchant/auth
         $api_endpoint = Config::get('trckr.backend_url') . "merchant/auth";
 
         $response = Http::post($api_endpoint,  [
@@ -51,12 +51,12 @@ class AuthController extends Controller
         {
             //$validator->addFailure('email', 'Invalid user credentials.', 'email');
             $validator->getMessageBag()->add('email', "Invalid User Credentials. {$response->body()}");
-            
+
             return redirect('/')
                 ->withErrors($validator)
-                ->withInput();            
+                ->withInput();
         }
-        
+
         $response = json_decode($response);
 
         //setting up session variables
@@ -73,30 +73,30 @@ class AuthController extends Controller
         $token = ( ! empty($session->token)) ? $session->token : "";
 
         $response = Http::withToken($token)->post($api_endpoint);
-        
+
         if ($response->status() !== 200)
         {
             //var_dump($response->status());exit;
             if ($response->status() === 403) {
                 $validator = Validator::make($request->all(), []);
                 $validator->getMessageBag()->add('email', "Session Expired. Please login again. {$response->body()}");
-            
+
                 return redirect('/')
                     ->withErrors($validator)
-                    ->withInput();      
+                    ->withInput();
             }
 
             if ($response->status() === 500) {
                 $handler = json_decode($response->body());
-                
+
                 if ($handler->message->name == "JsonWebTokenError")
 
                 $validator = Validator::make($request->all(), []);
                 $validator->getMessageBag()->add('email', "Session Expired. Please login again. {$response->body()}");
-            
+
                 return redirect('/')
                     ->withErrors($validator)
-                    ->withInput();      
+                    ->withInput();
             }
 
             //general handling
