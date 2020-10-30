@@ -16,12 +16,12 @@ class AuthController extends Controller
 
     public function index()
     {
-        return view('vendor.adminlte.auth.login');
+        return view('concrete.login');
     }
 
     public function login_get()
     {
-        return view ('vendor.adminlte.auth.login');
+        return view ('concrete.login');
     }
 
     public function login_post(Request $request) {
