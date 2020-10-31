@@ -20,69 +20,85 @@ Route::post('/login', 'AuthController@login_post');
 Route::get('/logout', 'AuthController@logout');
 
 // AUTH
-Route::group(["middleware" => ["auth"]], function() {
+Route::group(["middleware" => ["merchantAuth"]], function() {
     Route::get('/dashboard', 'MainController@index');
+
+    // MERCHANT
+    Route::group(['prefix' => 'merchant'], function() {
+        Route::get('/debug', 'MerchantController@debug');
+        Route::get('/', 'MerchantController@view_profile');
+        Route::get('/view_profile', 'MerchantController@view_profile');
+
+        //Ajax for Save Details
+        Route::post('/modify_profile', 'MerchantController@modify_profile');
+
+        Route::get('/product', 'ProductController@product');
+        Route::get('/product/add', 'ProductController@add_product_get');
+        Route::post('/product/add', 'ProductController@add_product_post');
+        Route::get('/product/edit', 'ProductController@edit_product_get');
+        Route::post('/product/edit', 'ProductController@edit_product_post');
+        Route::post('/product/delete', 'ProductController@delete_product');
+
+        //Ajax for Uploader
+        Route::post('/product/upload', 'ProductController@upload_product');
+
+        Route::get('/branch', 'BranchController@branch');
+        Route::get('/branch/add', 'BranchController@add_branch_get');
+        Route::post('/branch/add', 'BranchController@add_branch_post');
+        Route::get('/branch/edit', 'BranchController@edit_branch_get');
+        Route::post('/branch/edit', 'BranchController@edit_branch_post');
+        Route::post('/branch/delete', 'BranchController@delete_branch');
+
+        //Ajax for Uploader
+        Route::post('/branch/upload', 'BranchController@upload_branch');
+
+        Route::get('/users', 'UsersController@users');
+
+        //Ajax for Uploader
+        Route::post('/users/upload', 'MerchantController@upload_users');
+
+        Route::get('/rewards', 'MerchantController@rewards');
+    });
+
+    // CAMPAIGN
+    Route::group(['prefix' => 'campaign'], function() {
+        Route::get('/view ', 'CampaignController@view');
+        Route::get('/view_campaign ', 'CampaignController@view_campaign');
+        Route::get('/create ', 'CampaignController@create');
+        Route::get('/edit ', 'CampaignController@edit');
+        //Ajax for Campaign Creation
+        Route::post('/edit_campaign ', 'CampaignController@edit_campaign');
+        Route::post('/create_campaign ', 'CampaignController@create_campaign');
+        Route::get('/campaign_type/task ', 'CampaignController@campaign_type');
+        Route::post('/delete ', 'CampaignController@delete_campaign');
+    });
+
+    // TASK
+    Route::group(['prefix' => 'task'], function() {
+        Route::get('/view ', 'TaskController@view');
+        Route::get('/view_task ', 'TaskController@view_task');
+        Route::get('/create ', 'TaskController@create_task_get');
+        Route::post('/create ', 'TaskController@create_task_post');
+        Route::post('/delete', 'TaskController@delete_task');
+        Route::get('/edit', 'TaskController@edit_task_get');
+        Route::post('/edit', 'TaskController@edit_task_post');
+    });
+
+    /*
+    Route::get('/file', 'FileController@index');
+    Route::post('/file/store', 'FileController@store');
+    */
+
+    // TICKET
+    Route::group(['prefix' => 'ticket'], function() {
+        Route::get('/view', 'TicketController@view');
+        Route::get('/view_ticket', 'TicketController@view_ticket');
+        Route::get('/create', 'TicketController@create');
+        Route::post('/approve_ticket', 'TicketController@approve_ticket');
+        Route::post('/reject_ticket', 'TicketController@reject_ticket');
+        //Ajax for Save Details
+        Route::get('/export_csv', 'TicketController@export_csv');
+    });
+
+
 });
-
-
-Route::get('/merchant/debug', 'MerchantController@debug');
-Route::get('/merchant', 'MerchantController@view_profile');
-Route::get('/merchant/view_profile', 'MerchantController@view_profile');
-//Ajax for Save Details
-Route::post('/merchant/modify_profile', 'MerchantController@modify_profile');
-
-Route::get('/merchant/product', 'ProductController@product');
-Route::get('/merchant/product/add', 'ProductController@add_product_get');
-Route::post('/merchant/product/add', 'ProductController@add_product_post');
-Route::get('/merchant/product/edit', 'ProductController@edit_product_get');
-Route::post('/merchant/product/edit', 'ProductController@edit_product_post');
-Route::post('/merchant/product/delete', 'ProductController@delete_product');
-
-//Ajax for Uploader
-Route::post('/merchant/product/upload', 'ProductController@upload_product');
-
-Route::get('/merchant/branch', 'BranchController@branch');
-Route::get('/merchant/branch/add', 'BranchController@add_branch_get');
-Route::post('/merchant/branch/add', 'BranchController@add_branch_post');
-Route::get('/merchant/branch/edit', 'BranchController@edit_branch_get');
-Route::post('/merchant/branch/edit', 'BranchController@edit_branch_post');
-Route::post('/merchant/branch/delete', 'BranchController@delete_branch');
-//Ajax for Uploader
-Route::post('/merchant/branch/upload', 'BranchController@upload_branch');
-
-Route::get('/merchant/users', 'UsersController@users');
-//Ajax for Uploader
-Route::post('/merchant/users/upload', 'MerchantController@upload_users');
-
-Route::get('/merchant/rewards', 'MerchantController@rewards');
-
-Route::get('/campaign/view ', 'CampaignController@view');
-Route::get('/campaign/view_campaign ', 'CampaignController@view_campaign');
-Route::get('/campaign/create ', 'CampaignController@create');
-Route::get('/campaign/edit ', 'CampaignController@edit');
-//Ajax for Campaign Creation
-Route::post('/campaign/edit_campaign ', 'CampaignController@edit_campaign');
-Route::post('/campaign/create_campaign ', 'CampaignController@create_campaign');
-Route::get('/campaign/campaign_type/task ', 'CampaignController@campaign_type');
-Route::post('/campaign/delete ', 'CampaignController@delete_campaign');
-
-
-Route::get('/task/view ', 'TaskController@view');
-Route::get('/task/view_task ', 'TaskController@view_task');
-Route::get('/task/create ', 'TaskController@create_task_get');
-Route::post('/task/create ', 'TaskController@create_task_post');
-Route::post('/task/delete', 'TaskController@delete_task');
-Route::get('/task/edit', 'TaskController@edit_task_get');
-Route::post('/task/edit', 'TaskController@edit_task_post');
-/*
-Route::get('/file', 'FileController@index');
-Route::post('/file/store', 'FileController@store');
-*/
-
-Route::get('/ticket/view', 'TicketController@view');
-Route::get('/ticket/view_ticket', 'TicketController@view_ticket');
-Route::get('/ticket/create', 'TicketController@create');
-Route::post('/ticket/approve_ticket', 'TicketController@approve_ticket');
-Route::post('/ticket/reject_ticket', 'TicketController@reject_ticket');
-//Ajax for Save Details
-Route::get('/ticket/export_csv', 'TicketController@export_csv');
