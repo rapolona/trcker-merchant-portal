@@ -43,29 +43,29 @@ class MainController extends Controller
         $token = ( ! empty($session->token)) ? $session->token : "";
 
         $activecampaigns = Http::withToken($token)->get($api_endpoint, []);
-        
+
         if ($activecampaigns->status() !== 200)
         {
             if ($activecampaigns->status() === 403) {
                 $validator = Validator::make($request->all(), []);
                 $validator->getMessageBag()->add('email', "Session Expired. Please login again. {$activecampaigns->body()}");
-            
+
                 return redirect('/')
                     ->withErrors($validator)
-                    ->withInput();      
+                    ->withInput();
             }
 
             if ($activecampaigns->status() === 500) {
                 $handler = json_decode($activecampaigns->body());
-                
+
                 if ($handler->message->name == "JsonWebTokenError")
 
                 $validator = Validator::make($request->all(), []);
                 $validator->getMessageBag()->add('email', "Session Expired. Please login again. {$activecampaigns->body()}");
-            
+
                 return redirect('/')
                     ->withErrors($validator)
-                    ->withInput();      
+                    ->withInput();
             }
 
             //general handling
@@ -82,29 +82,29 @@ class MainController extends Controller
         $token = ( ! empty($session->token)) ? $session->token : "";
 
         $totalrespondents = Http::withToken($token)->get($api_endpoint, []);
-        
+
         if ($totalrespondents->status() !== 200)
         {
             if ($totalrespondents->status() === 403) {
                 $validator = Validator::make($request->all(), []);
                 $validator->getMessageBag()->add('email', "Session Expired. Please login again. {$totalrespondents->body()}");
-            
+
                 return redirect('/')
                     ->withErrors($validator)
-                    ->withInput();      
+                    ->withInput();
             }
 
             if ($totalrespondents->status() === 500) {
                 $handler = json_decode($totalrespondents->body());
-                
+
                 if ($handler->message->name == "JsonWebTokenError")
 
                 $validator = Validator::make($request->all(), []);
                 $validator->getMessageBag()->add('email', "Session Expired. Please login again. {$totalrespondents->body()}");
-            
+
                 return redirect('/')
                     ->withErrors($validator)
-                    ->withInput();      
+                    ->withInput();
             }
 
             //general handling
@@ -113,6 +113,6 @@ class MainController extends Controller
 
         $data['totalrespondents'] = json_decode($totalrespondents->body());
 
-        return view('main', $data);
+        return view('concrete.layouts.main', $data);
     }
 }

@@ -49,9 +49,9 @@ class AuthController extends Controller
 
         if ($response->status() !== 200)
         {
+            $response = json_decode($response);
             //$validator->addFailure('email', 'Invalid user credentials.', 'email');
-            $responseBody = json_decode($response->body());
-            $validator->getMessageBag()->add('email', "Invalid User Credentials. {$responseBody->message}");
+            $validator->getMessageBag()->add('email', "Invalid User Credentials. {$response->message}");
 
             return redirect('/')
                 ->withErrors($validator)

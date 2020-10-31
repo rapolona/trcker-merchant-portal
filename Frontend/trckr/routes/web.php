@@ -15,13 +15,14 @@ use Illuminate\Http\Request;
 */
 
 Route::get('/', 'AuthController@index');
-Route::get('/login', 'AuthController@login_get');
+Route::get('/login', 'AuthController@login_get')->name('login');
 Route::post('/login', 'AuthController@login_post');
 Route::get('/logout', 'AuthController@logout');
 
-
-Route::get('/dashboard', 'MainController@index');
-
+// AUTH
+Route::group(["middleware" => ["auth"]], function() {
+    Route::get('/dashboard', 'MainController@index');
+});
 
 
 Route::get('/merchant/debug', 'MerchantController@debug');
@@ -37,7 +38,7 @@ Route::get('/merchant/product/edit', 'ProductController@edit_product_get');
 Route::post('/merchant/product/edit', 'ProductController@edit_product_post');
 Route::post('/merchant/product/delete', 'ProductController@delete_product');
 
-//Ajax for Uploader 
+//Ajax for Uploader
 Route::post('/merchant/product/upload', 'ProductController@upload_product');
 
 Route::get('/merchant/branch', 'BranchController@branch');
@@ -46,11 +47,11 @@ Route::post('/merchant/branch/add', 'BranchController@add_branch_post');
 Route::get('/merchant/branch/edit', 'BranchController@edit_branch_get');
 Route::post('/merchant/branch/edit', 'BranchController@edit_branch_post');
 Route::post('/merchant/branch/delete', 'BranchController@delete_branch');
-//Ajax for Uploader 
+//Ajax for Uploader
 Route::post('/merchant/branch/upload', 'BranchController@upload_branch');
 
 Route::get('/merchant/users', 'UsersController@users');
-//Ajax for Uploader 
+//Ajax for Uploader
 Route::post('/merchant/users/upload', 'MerchantController@upload_users');
 
 Route::get('/merchant/rewards', 'MerchantController@rewards');
