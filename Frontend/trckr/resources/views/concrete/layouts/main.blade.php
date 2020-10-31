@@ -6,10 +6,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" href="components/base/base.css">
-    <link rel="stylesheet" href="components/trcker-login.css">
-    <script src="components/base/script.js"></script>
+    <link rel="icon" href="{{ url('images/favicon.ico') }}" type="image/x-icon">
+    <link rel="stylesheet" href="{{ url('components/base/base.css') }}">
+    <link rel="stylesheet" href="{{ url('components/trcker-login.css') }}">
+    <script src="{{ url('components/base/script.js') }}"></script>
+    @yield('css')
+    @yield('js')
 </head>
 <body>
 <div class="page">

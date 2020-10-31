@@ -6,7 +6,7 @@ Use App\User;
 use App\Document;
 use Illuminate\Http\Request;
 use Illuminate\Http\Client\Response;
-use Illuminate\Http\UploadedFile;   
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
@@ -47,9 +47,9 @@ class UsersController extends Controller
                 "type" => "Operations",
                 "action" => 1,
             ),
-            
+
         );
-        return view('merchant.users', ['users' => $users]);
+        return view('concrete.merchant.users', ['users' => $users]);
     }
 
     public function upload_users(Request $request)
@@ -57,7 +57,7 @@ class UsersController extends Controller
         request()->validate([
             'file'  => 'required|mimes:csv,txt|max:2048',
         ]);
-  
+
         if ($files = $request->file('file')) {
             //store file
             $file = $request->file->store('public/documents');
@@ -74,7 +74,7 @@ class UsersController extends Controller
             foreach ($content as $c) {
                 $temp = explode(";", $c);
                 $users[] = array(
-                    $header[0] => $temp[0], 
+                    $header[0] => $temp[0],
                     $header[1] => $temp[1],
                     $header[2] => $temp[2]
                 );
@@ -87,9 +87,9 @@ class UsersController extends Controller
                 "messaGE" => "Uploaded file successfully",
                 "file" => $users
             ]);
-            
+
         }
-  
+
         return Response()->json([
             "success" => false,
             "message" => "Failed to Upload the file",

@@ -6,7 +6,7 @@ Use App\User;
 use App\Document;
 use Illuminate\Http\Request;
 use Illuminate\Http\Client\Response;
-use Illuminate\Http\UploadedFile;   
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
@@ -35,23 +35,23 @@ class TaskController extends Controller
             if ($response->status() === 403) {
                 $validator = Validator::make($request->all(), []);
                 $validator->getMessageBag()->add('email', "Session Expired. Please login again. {$response->body()}");
-            
+
                 return redirect('/')
                     ->withErrors($validator)
-                    ->withInput();      
+                    ->withInput();
             }
 
             if ($response->status() === 500) {
                 $handler = json_decode($response->body());
-                
+
                 if ($handler->message->name == "JsonWebTokenError")
 
                 $validator = Validator::make($request->all(), []);
                 $validator->getMessageBag()->add('email', "Session Expired. Please login again. {$response->body()}");
-            
+
                 return redirect('/')
                     ->withErrors($validator)
-                    ->withInput();      
+                    ->withInput();
             }
 
             //general handling
@@ -67,7 +67,7 @@ class TaskController extends Controller
                 $tasks[] = $t;
         }
 
-        return view('task.task', ['tasks' => $tasks]);
+        return view('concrete.task.task', ['tasks' => $tasks]);
     }
 
     public function view_task(Request $request)
@@ -87,23 +87,23 @@ class TaskController extends Controller
             if ($response->status() === 403) {
                 $validator = Validator::make($request->all(), []);
                 $validator->getMessageBag()->add('email', "Session Expired. Please login again. {$response->body()}");
-            
+
                 return redirect('/')
                     ->withErrors($validator)
-                    ->withInput();      
+                    ->withInput();
             }
 
             if ($response->status() === 500) {
                 $handler = json_decode($response->body());
-                
+
                 if ($handler->message->name == "JsonWebTokenError")
 
                 $validator = Validator::make($request->all(), []);
                 $validator->getMessageBag()->add('email', "Session Expired. Please login again. {$response->body()}");
-            
+
                 return redirect('/')
                     ->withErrors($validator)
-                    ->withInput();      
+                    ->withInput();
             }
 
             //general handling
@@ -127,26 +127,26 @@ class TaskController extends Controller
         $token = ( ! empty($session->token)) ? $session->token : "";
 
         $task_classification = Http::withToken($token)->get($api_endpoint, []);
-        
+
         if ($task_classification->status() !== 200)
         {
             if ($task_classification->status() === 403) {
                 $validator = Validator::make($request->all(), []);
                 $validator->getMessageBag()->add('email', "Session Expired. Please login again. {$response->body()}");
-            
+
                 return redirect('/')
                     ->withErrors($validator)
-                    ->withInput();      
+                    ->withInput();
             }
 
             //provide handling for failed branch retrieval
             return redirect('/dashboard');
         }
-        
+
         $task_classification = json_decode($task_classification->body());
-        
+
         $task_config = array();
-        
+
         /*
         foreach($edit_tasks->task_questions as $questions) {
             if($questions->required_inputs == "TRUE OR FALSE" OR $questions->required_inputs == "true_or_false boolean" )
@@ -154,7 +154,7 @@ class TaskController extends Controller
         }
         */
 
-        return view('task.view', ['task' => $edit_tasks, 'task_id' => $task_id, 'task_config' => $task_config, 'task_classification' => $task_classification]);
+        return view('concrete.task.view', ['task' => $edit_tasks, 'task_id' => $task_id, 'task_config' => $task_config, 'task_classification' => $task_classification]);
     }
 
     public function create_task_get(Request $request)
@@ -167,22 +167,22 @@ class TaskController extends Controller
         $token = ( ! empty($session->token)) ? $session->token : "";
 
         $task_classification = Http::withToken($token)->get($api_endpoint, []);
-        
+
         if ($task_classification->status() !== 200)
         {
             if ($task_classification->status() === 403) {
                 $validator = Validator::make($request->all(), []);
                 $validator->getMessageBag()->add('email', "Session Expired. Please login again. {$response->body()}");
-            
+
                 return redirect('/')
                     ->withErrors($validator)
-                    ->withInput();      
+                    ->withInput();
             }
 
             //provide handling for failed branch retrieval
             return redirect('/dashboard');
         }
-        
+
         $data['task_classification'] = json_decode($task_classification->body());
 
         /*
@@ -229,7 +229,7 @@ class TaskController extends Controller
         */
         $data['task_config'] = array();
 
-        return view('task.create', $data);
+        return view('concrete.task.create', $data);
     }
 
     //AJAX for Save Details task.task.blade.php
@@ -273,8 +273,8 @@ class TaskController extends Controller
         );
 
         $temp_task_questions = json_decode($data['form_builder']);
-        
-    
+
+
         foreach ($temp_task_questions as $k)
         {
             $temp = array();
@@ -324,7 +324,7 @@ class TaskController extends Controller
         $api_endpoint = Config::get('trckr.backend_url') . "merchant/task";
         $session = $request->session()->get('session_merchant');
         $token = ( ! empty($session->token)) ? $session->token : "";
-        
+
         $count = 1;
         $debug = array();
 
@@ -371,23 +371,23 @@ class TaskController extends Controller
             if ($response->status() === 403) {
                 $validator = Validator::make($request->all(), []);
                 $validator->getMessageBag()->add('email', "Session Expired. Please login again. {$response->body()}");
-            
+
                 return redirect('/')
                     ->withErrors($validator)
-                    ->withInput();      
+                    ->withInput();
             }
 
             if ($response->status() === 500) {
                 $handler = json_decode($response->body());
-                
+
                 if ($handler->message->name == "JsonWebTokenError")
 
                 $validator = Validator::make($request->all(), []);
                 $validator->getMessageBag()->add('email', "Session Expired. Please login again. {$response->body()}");
-            
+
                 return redirect('/')
                     ->withErrors($validator)
-                    ->withInput();      
+                    ->withInput();
             }
 
             //general handling
@@ -411,24 +411,24 @@ class TaskController extends Controller
         $token = ( ! empty($session->token)) ? $session->token : "";
 
         $task_classification = Http::withToken($token)->get($api_endpoint, []);
-        
+
         if ($task_classification->status() !== 200)
         {
             if ($task_classification->status() === 403) {
                 $validator = Validator::make($request->all(), []);
                 $validator->getMessageBag()->add('email', "Session Expired. Please login again. {$response->body()}");
-            
+
                 return redirect('/')
                     ->withErrors($validator)
-                    ->withInput();      
+                    ->withInput();
             }
 
             //provide handling for failed branch retrieval
             return redirect('/dashboard');
         }
-        
+
         $task_classification = json_decode($task_classification->body());
-        
+
         $task_config = array();
 
         /*
@@ -438,7 +438,7 @@ class TaskController extends Controller
         }
         */
 
-        return view('task.edit', ['task' => $edit_tasks, 'task_id' => $task_id, 'task_config' => $task_config, 'task_classification' => $task_classification]);
+        return view('concrete.task.edit', ['task' => $edit_tasks, 'task_id' => $task_id, 'task_config' => $task_config, 'task_classification' => $task_classification]);
     }
 
     public function edit_task_post(Request $request)
@@ -483,7 +483,7 @@ class TaskController extends Controller
         if ( ! empty($data['banner_image'])) $request_data['banner_image'] = 'data:' . $data['banner_image']->getMimeType() . ';base64,' . base64_encode(file_get_contents($data['banner_image']));
 
         $temp_task_questions = json_decode($data['form_builder']);
-        
+
         foreach ($temp_task_questions as $k)
         {
             $temp = array();

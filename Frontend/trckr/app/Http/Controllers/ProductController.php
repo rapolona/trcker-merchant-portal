@@ -6,7 +6,7 @@ Use App\User;
 use App\Document;
 use Illuminate\Http\Request;
 use Illuminate\Http\Client\Response;
-use Illuminate\Http\UploadedFile;   
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
@@ -20,7 +20,7 @@ class ProductController extends Controller
         request()->validate([
             'file'  => 'required|mimes:csv,txt|max:2048',
         ]);
-  
+
         if ($files = $request->file('file')) {
             //store file
             $file = $request->file->store('public/documents');
@@ -59,7 +59,7 @@ class ProductController extends Controller
                 }
 
                 $temp_products = array(
-                    $header[0] => $temp[0], 
+                    $header[0] => $temp[0],
                     $header[1] => $temp[1]
                 );
 
@@ -67,7 +67,7 @@ class ProductController extends Controller
                     'product_name' => 'required|max:64',
                     'product_description' => 'required|max:255'
                 ]);
-        
+
                 if ($validator->fails())
                 {
                     $error_string = "<b>Row {$count}: Fields with Errors</b><br/>";
@@ -77,7 +77,7 @@ class ProductController extends Controller
                         foreach ($v as $l)
                             $error_string .= "{$l}<br/>";
                     }
-        
+
                     return Response()->json([
                         "success" => false,
                         "message" => $error_string,
@@ -92,7 +92,7 @@ class ProductController extends Controller
             $api_endpoint = Config::get('trckr.backend_url') . "merchant/product";
             $session = $request->session()->get('session_merchant');
             $token = ( ! empty($session->token)) ? $session->token : "";
-            
+
             $count = 1;
             $debug = array();
             foreach($products as $p)
@@ -100,7 +100,7 @@ class ProductController extends Controller
                 $response = Http::withToken($token)->post($api_endpoint, $p);
                 $debug[] = $response;
 
-   
+
                 if ($response->status() !== 200)
                 {
                     //provide handling for failed merchant profile modification
@@ -119,9 +119,9 @@ class ProductController extends Controller
                 "message" => "Uploaded file successfully", //. $response->body(),
                 "file" => $products
             ]);
-            
+
         }
-  
+
         return Response()->json([
             "success" => false,
             "message" => "Failed to Upload the file",
@@ -140,29 +140,29 @@ class ProductController extends Controller
         $token = ( ! empty($session->token)) ? $session->token : "";
 
         $response = Http::withToken($token)->get($api_endpoint, []);
-        
+
         if ($response->status() !== 200)
         {
             if ($response->status() === 403) {
                 $validator = Validator::make($request->all(), []);
                 $validator->getMessageBag()->add('email', "Session Expired. Please login again. {$response->body()}");
-            
+
                 return redirect('/')
                     ->withErrors($validator)
-                    ->withInput();      
+                    ->withInput();
             }
 
             if ($response->status() === 500) {
                 $handler = json_decode($response->body());
-                
+
                 if ($handler->message->name == "JsonWebTokenError")
 
                 $validator = Validator::make($request->all(), []);
                 $validator->getMessageBag()->add('email', "Session Expired. Please login again. {$response->body()}");
-            
+
                 return redirect('/')
                     ->withErrors($validator)
-                    ->withInput();      
+                    ->withInput();
             }
 
             //general handling
@@ -179,14 +179,14 @@ class ProductController extends Controller
             //hotfix - removed
             //$p->description = ( ! empty($p->description)) ? $p->description : $p->product_price;
             $count+=1;
-        } 
+        }
 
-        return view('merchant.products', ['products' => $products]);
+        return view('concrete.merchant.products', ['products' => $products]);
     }
 
     public function add_product_get()
     {
-        return view('product.add', []);
+        return view('concrete.product.add', []);
     }
 
     public function add_product_post(Request $request)
@@ -219,9 +219,9 @@ class ProductController extends Controller
 
         $session = $request->session()->get('session_merchant');
         $token = ( ! empty($session->token)) ? $session->token : "";
-        
+
         $response = Http::withToken($token)->post($api_endpoint, $data);
-        
+
         if ($response->status() !== 200)
         {
             //provide handling for failed merchant profile modification
@@ -249,29 +249,29 @@ class ProductController extends Controller
         $token = ( ! empty($session->token)) ? $session->token : "";
 
         $response = Http::withToken($token)->get($api_endpoint, []);
-        
+
         if ($response->status() !== 200)
         {
             if ($response->status() === 403) {
                 $validator = Validator::make($request->all(), []);
                 $validator->getMessageBag()->add('email', "Session Expired. Please login again. {$response->body()}");
-            
+
                 return redirect('/')
                     ->withErrors($validator)
-                    ->withInput();      
+                    ->withInput();
             }
 
             if ($response->status() === 500) {
                 $handler = json_decode($response->body());
-                
+
                 if ($handler->message->name == "JsonWebTokenError")
 
                 $validator = Validator::make($request->all(), []);
                 $validator->getMessageBag()->add('email', "Session Expired. Please login again. {$response->body()}");
-            
+
                 return redirect('/')
                     ->withErrors($validator)
-                    ->withInput();      
+                    ->withInput();
             }
 
             //general handling
@@ -288,7 +288,7 @@ class ProductController extends Controller
             }
         }
 
-        return view('product.edit', ['product' => $edit_product, 'product_id' => $product_id]);
+        return view('concrete.product.edit', ['product' => $edit_product, 'product_id' => $product_id]);
     }
 
     public function edit_product_post(Request $request)
@@ -353,7 +353,7 @@ class ProductController extends Controller
         $api_endpoint = Config::get('trckr.backend_url') . "merchant/product";
         $session = $request->session()->get('session_merchant');
         $token = ( ! empty($session->token)) ? $session->token : "";
-        
+
         $count = 1;
         $debug = array();
 

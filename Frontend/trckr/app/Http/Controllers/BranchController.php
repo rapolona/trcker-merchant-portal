@@ -6,7 +6,7 @@ Use App\User;
 use App\Document;
 use Illuminate\Http\Request;
 use Illuminate\Http\Client\Response;
-use Illuminate\Http\UploadedFile;   
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
@@ -20,7 +20,7 @@ class BranchController extends Controller
         request()->validate([
             'file'  => 'required|mimes:csv,txt|max:2048',
         ]);
-  
+
         if ($files = $request->file('file')) {
             //store file
             $file = $request->file->store('public/documents');
@@ -59,7 +59,7 @@ class BranchController extends Controller
                 }
 
                 $temp_branches = array(
-                    $header[0] => $temp[0], 
+                    $header[0] => $temp[0],
                     $header[1] => $temp[1],
                     $header[2] => $temp[2],
                     $header[3] => $temp[3],
@@ -73,7 +73,7 @@ class BranchController extends Controller
                     'longitude' => array('required','regex:/^(\+|-)?(?:180(?:(?:\.0{1,8})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]{1,8})?))$/'),
                     'latitude' => array('required','regex:/^(\+|-)?(?:90(?:(?:\.0{1,8})?)|(?:[0-9]|[1-8][0-9])(?:(?:\.[0-9]{1,8})?))$/'),
                 ]);
-        
+
                 if ($validator->fails())
                 {
                     $error_string = "<b>Row {$count}: Fields with Errors</b><br/>";
@@ -83,7 +83,7 @@ class BranchController extends Controller
                         foreach ($v as $l)
                             $error_string .= "{$l}<br/>";
                     }
-        
+
                     return Response()->json([
                         "success" => false,
                         "message" => $error_string,
@@ -98,7 +98,7 @@ class BranchController extends Controller
             $api_endpoint = Config::get('trckr.backend_url') . "merchant/branch";
             $session = $request->session()->get('session_merchant');
             $token = ( ! empty($session->token)) ? $session->token : "";
-            
+
             $count = 1;
             $debug = array();
             foreach($branches as $b)
@@ -106,7 +106,7 @@ class BranchController extends Controller
                 $response = Http::withToken($token)->post($api_endpoint, $b);
                 $debug[] = $response;
 
-   
+
                 if ($response->status() !== 200)
                 {
                     //provide handling for failed merchant profile modification
@@ -126,7 +126,7 @@ class BranchController extends Controller
                 "file" => $branches
             ]);
         }
-  
+
         return Response()->json([
             "success" => false,
             "message" => "Failed to Upload the file",
@@ -145,29 +145,29 @@ class BranchController extends Controller
         $token = ( ! empty($session->token)) ? $session->token : "";
 
         $response = Http::withToken($token)->get($api_endpoint, []);
-        
+
         if ($response->status() !== 200)
         {
             if ($response->status() === 403) {
                 $validator = Validator::make($request->all(), []);
                 $validator->getMessageBag()->add('email', "Session Expired. Please login again. {$response->body()}");
-            
+
                 return redirect('/')
                     ->withErrors($validator)
-                    ->withInput();      
+                    ->withInput();
             }
 
             if ($response->status() === 500) {
                 $handler = json_decode($response->body());
-                
+
                 if ($handler->message->name == "JsonWebTokenError")
 
                 $validator = Validator::make($request->all(), []);
                 $validator->getMessageBag()->add('email', "Session Expired. Please login again. {$response->body()}");
-            
+
                 return redirect('/')
                     ->withErrors($validator)
-                    ->withInput();      
+                    ->withInput();
             }
 
             //general handling
@@ -181,14 +181,14 @@ class BranchController extends Controller
         {
             $b->no = $count+1;
             $count+=1;
-        } 
-        
-        return view('merchant.branches', ['branches' => $branches]);
+        }
+
+        return view('concrete.merchant.branches', ['branches' => $branches]);
     }
 
     public function add_branch_get()
     {
-        return view('branch.add', []);
+        return view('concrete.branch.add', []);
     }
 
     public function add_branch_post(Request $request)
@@ -226,7 +226,7 @@ class BranchController extends Controller
         $token = ( ! empty($session->token)) ? $session->token : "";
 
         $response = Http::withToken($token)->post($api_endpoint, $data);
-        
+
         if ($response->status() !== 200)
         {
             //provide handling for failed merchant profile modification
@@ -254,29 +254,29 @@ class BranchController extends Controller
         $token = ( ! empty($session->token)) ? $session->token : "";
 
         $response = Http::withToken($token)->get($api_endpoint, []);
-        
+
         if ($response->status() !== 200)
         {
             if ($response->status() === 403) {
                 $validator = Validator::make($request->all(), []);
                 $validator->getMessageBag()->add('email', "Session Expired. Please login again. {$response->body()}");
-            
+
                 return redirect('/')
                     ->withErrors($validator)
-                    ->withInput();      
+                    ->withInput();
             }
 
             if ($response->status() === 500) {
                 $handler = json_decode($response->body());
-                
+
                 if ($handler->message->name == "JsonWebTokenError")
 
                 $validator = Validator::make($request->all(), []);
                 $validator->getMessageBag()->add('email', "Session Expired. Please login again. {$response->body()}");
-            
+
                 return redirect('/')
                     ->withErrors($validator)
-                    ->withInput();      
+                    ->withInput();
             }
 
             //general handling
@@ -293,7 +293,7 @@ class BranchController extends Controller
             }
         }
 
-        return view('branch.edit', ['branch' => $edit_branch, 'branch_id' => $branch_id]);
+        return view('concrete.branch.edit', ['branch' => $edit_branch, 'branch_id' => $branch_id]);
     }
 
     public function edit_branch_post(Request $request)
@@ -333,7 +333,7 @@ class BranchController extends Controller
         $token = ( ! empty($session->token)) ? $session->token : "";
 
         $response = Http::withToken($token)->put($api_endpoint, $data);
-        
+
         if ($response->status() !== 200)
         {
             //provide handling for failed Edit branch
@@ -358,7 +358,7 @@ class BranchController extends Controller
         $api_endpoint = Config::get('trckr.backend_url') . "merchant/branch";
         $session = $request->session()->get('session_merchant');
         $token = ( ! empty($session->token)) ? $session->token : "";
-        
+
         $count = 1;
         $debug = array();
 

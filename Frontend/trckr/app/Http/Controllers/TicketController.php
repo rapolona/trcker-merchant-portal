@@ -6,7 +6,7 @@ Use App\User;
 use App\Document;
 use Illuminate\Http\Request;
 use Illuminate\Http\Client\Response;
-use Illuminate\Http\UploadedFile;   
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
@@ -27,40 +27,40 @@ class TicketController extends Controller
         $api_endpoint = Config::get('trckr.capability_url') . "capability/campaign";
 
         $session = $request->session()->get('session_merchant');
-        
+
         if ( ! $session) return redirect('/');
         $token = ( ! empty($session->token)) ? $session->token : "";
 
         $response = Http::withToken($token)->get($api_endpoint, []);
-        
+
         if ($response->status() !== 200)
         {
             if ($response->status() === 403) {
                 $validator = Validator::make($request->all(), []);
                 $validator->getMessageBag()->add('email', "Session Expired. Please login again. {$response->body()}");
-            
+
                 return redirect('/')
                     ->withErrors($validator)
-                    ->withInput();      
+                    ->withInput();
             }
 
             if ($response->status() === 500) {
                 $handler = json_decode($response->body());
-                
+
                 if ($handler->message->name == "JsonWebTokenError")
 
                 $validator = Validator::make($request->all(), []);
                 $validator->getMessageBag()->add('email', "Session Expired. Please login again. {$response->body()}");
-            
+
                 return redirect('/')
                     ->withErrors($validator)
-                    ->withInput();      
+                    ->withInput();
             }
 
             //general handling
             return redirect('/dashboard');
         }
-        
+
         $campaign = json_decode($response);
 
         $tickets = array();
@@ -73,7 +73,7 @@ class TicketController extends Controller
             $api_endpoint = Config::get('trckr.capability_url') . "capability/tasktickets";
 
             $session = $request->session()->get('session_merchant');
-            
+
             if ( ! $session) return redirect('/');
             $token = ( ! empty($session->token)) ? $session->token : "";
 
@@ -84,7 +84,7 @@ class TicketController extends Controller
 
             //switched to native curl because laravel HTTP library cannot attach JSON on get request
             //no error handling yet
-            
+
             $headers = array(
                 'Content-Type:application/json',
                 'Authorization:Bearer ' . $token
@@ -106,13 +106,13 @@ class TicketController extends Controller
                 $j->updatedAt = $j->updatedAt->format("F d, Y");
                 $j->createdAt = new DateTime($j->createdAt);
                 $j->createdAt = $j->createdAt->format("F d, Y");
-                $tickets[] = $j;                
+                $tickets[] = $j;
             }
 
-            
+
         }
 
-        return view('ticket.ticket', ['tickets' => $tickets]);
+        return view('concrete.ticket.ticket', ['tickets' => $tickets]);
     }
 
     public function view_ticket(Request $request)
@@ -122,40 +122,40 @@ class TicketController extends Controller
         $api_endpoint = Config::get('trckr.capability_url') . "capability/campaign";
 
         $session = $request->session()->get('session_merchant');
-        
+
         if ( ! $session) return redirect('/');
         $token = ( ! empty($session->token)) ? $session->token : "";
 
         $response = Http::withToken($token)->get($api_endpoint, []);
-        
+
         if ($response->status() !== 200)
         {
             if ($response->status() === 403) {
                 $validator = Validator::make($request->all(), []);
                 $validator->getMessageBag()->add('email', "Session Expired. Please login again. {$response->body()}");
-            
+
                 return redirect('/')
                     ->withErrors($validator)
-                    ->withInput();      
+                    ->withInput();
             }
 
             if ($response->status() === 500) {
                 $handler = json_decode($response->body());
-                
+
                 if ($handler->message->name == "JsonWebTokenError")
 
                 $validator = Validator::make($request->all(), []);
                 $validator->getMessageBag()->add('email', "Session Expired. Please login again. {$response->body()}");
-            
+
                 return redirect('/')
                     ->withErrors($validator)
-                    ->withInput();      
+                    ->withInput();
             }
 
             //general handling
             return redirect('/dashboard');
         }
-        
+
         $campaign = json_decode($response);
 
         $tickets = array();
@@ -168,7 +168,7 @@ class TicketController extends Controller
             $api_endpoint = Config::get('trckr.capability_url') . "capability/tasktickets";
 
             $session = $request->session()->get('session_merchant');
-            
+
             if ( ! $session) return redirect('/');
             $token = ( ! empty($session->token)) ? $session->token : "";
 
@@ -205,7 +205,7 @@ class TicketController extends Controller
             }
         }
 
-        return view('ticket.view', ['tickets' => $tickets[0]]);
+        return view('concrete.ticket.view', ['tickets' => $tickets[0]]);
     }
 
     //AJAX for Accept Ticket ticket.ticket.blade.php
@@ -216,13 +216,13 @@ class TicketController extends Controller
         $api_endpoint = Config::get('trckr.backend_url') . "merchant/approve";
         $session = $request->session()->get('session_merchant');
         $token = ( ! empty($session->token)) ? $session->token : "";
-        
+
         $count = 1;
         $tickets = array();
         $data['task_ticket_id'] = explode(",", $data['task_ticket_id']);
         foreach($data['task_ticket_id'] as $t)
         {
-            $request = ["task_ticket_id" => $t]; 
+            $request = ["task_ticket_id" => $t];
             $response = Http::withToken($token)->put($api_endpoint, $request);
             $tickets[] = $response->body();
 
@@ -254,13 +254,13 @@ class TicketController extends Controller
         $api_endpoint = Config::get('trckr.backend_url') . "merchant/reject";
         $session = $request->session()->get('session_merchant');
         $token = ( ! empty($session->token)) ? $session->token : "";
-        
+
         $count = 1;
         $tickets = array();
         $data['task_ticket_id'] = explode(",", $data['task_ticket_id']);
         foreach($data['task_ticket_id'] as $t)
         {
-            $request = ["task_ticket_id" => $t]; 
+            $request = ["task_ticket_id" => $t];
             $response = Http::withToken($token)->put($api_endpoint, $request);
             $tickets[] = $response;
 
@@ -289,41 +289,41 @@ class TicketController extends Controller
         $api_endpoint = Config::get('trckr.capability_url') . "capability/campaign";
 
         $session = $request->session()->get('session_merchant');
-        
+
         if ( ! $session) return redirect('/');
         $token = ( ! empty($session->token)) ? $session->token : "";
 
         //pull all campaign info
         $response = Http::withToken($token)->get($api_endpoint, []);
-        
+
         if ($response->status() !== 200)
         {
             if ($response->status() === 403) {
                 $validator = Validator::make($request->all(), []);
                 $validator->getMessageBag()->add('email', "Session Expired. Please login again. {$response->body()}");
-            
+
                 return redirect('/')
                     ->withErrors($validator)
-                    ->withInput();      
+                    ->withInput();
             }
 
             if ($response->status() === 500) {
                 $handler = json_decode($response->body());
-                
+
                 if ($handler->message->name == "JsonWebTokenError")
 
                 $validator = Validator::make($request->all(), []);
                 $validator->getMessageBag()->add('email', "Session Expired. Please login again. {$response->body()}");
-            
+
                 return redirect('/')
                     ->withErrors($validator)
-                    ->withInput();      
+                    ->withInput();
             }
 
             //general handling
             return redirect('/dashboard');
         }
-        
+
         $campaign = json_decode($response);
 
         $tickets = array();
@@ -337,7 +337,7 @@ class TicketController extends Controller
             $api_endpoint = Config::get('trckr.capability_url') . "capability/tasktickets";
 
             $session = $request->session()->get('session_merchant');
-            
+
             if ( ! $session) return redirect('/');
             $token = ( ! empty($session->token)) ? $session->token : "";
 
@@ -438,12 +438,12 @@ class TicketController extends Controller
         header("Expires: Tue, 03 Jul 2001 06:00:00 GMT");
         header("Cache-Control: max-age=0, no-cache, must-revalidate, proxy-revalidate");
         header("Last-Modified: {$now} GMT");
-    
-        // force download  
+
+        // force download
         header("Content-Type: application/force-download");
         header("Content-Type: application/octet-stream");
         header("Content-Type: application/download");
-    
+
         // disposition / encoding on response body
         header("Content-Disposition: attachment;filename={$filename}");
         header("Content-Transfer-Encoding: binary");

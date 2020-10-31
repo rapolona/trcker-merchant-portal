@@ -6,7 +6,7 @@ Use App\User;
 use App\Document;
 use Illuminate\Http\Request;
 use Illuminate\Http\Client\Response;
-use Illuminate\Http\UploadedFile;   
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
@@ -28,7 +28,7 @@ class MerchantController extends Controller
               'ID' => 1
             ]
           ];
-          
+
           echo array_search(1, array_column($arr, 'ID')); // prints 0 (!== false)
 
         $session = $request->session()->get('session_merchant');
@@ -37,7 +37,7 @@ class MerchantController extends Controller
     }
 
     public function view_profile(Request $request)
-    {        
+    {
         //api call for merchant information - no api endpoint yet
         //http://localhost:6001/merchant/profile
 
@@ -47,29 +47,29 @@ class MerchantController extends Controller
         $token = ( ! empty($session->token)) ? $session->token : "";
 
         $response = Http::withToken($token)->get($api_endpoint, []);
-        
+
         if ($response->status() !== 200)
         {
             if ($response->status() === 403) {
                 $validator = Validator::make($request->all(), []);
                 $validator->getMessageBag()->add('email', "Session Expired. Please login again. {$response->body()}");
-            
+
                 return redirect('/')
                     ->withErrors($validator)
-                    ->withInput();      
+                    ->withInput();
             }
 
             if ($response->status() === 500) {
                 $handler = json_decode($response->body());
-                
+
                 if ($handler->message->name == "JsonWebTokenError")
 
                 $validator = Validator::make($request->all(), []);
                 $validator->getMessageBag()->add('email', "Session Expired. Please login again. {$response->body()}");
-            
+
                 return redirect('/')
                     ->withErrors($validator)
-                    ->withInput();      
+                    ->withInput();
             }
 
             //general handling
@@ -78,7 +78,7 @@ class MerchantController extends Controller
 
         $profile = json_decode($response);
 
-        return view('merchant.merchant', ['profile' => $profile]);
+        return view('concrete.merchant.profile', ['profile' => $profile]);
     }
 
     public function modify_profile(Request $request)
@@ -119,7 +119,7 @@ class MerchantController extends Controller
         $token = ( ! empty($session->token)) ? $session->token : "";
 
         $response = Http::withToken($token)->put($api_endpoint, $data);
-        
+
         if ($response->status() !== 200)
         {
             //provide handling for failed merchant profile modification
@@ -169,8 +169,8 @@ class MerchantController extends Controller
                 "duration" => "07/13/2020 to 08/25/2020",
                 "status" => "Completed",
             ),
-            
+
         );
-        return view('merchant.rewards', ['rewards' => $rewards, 'remaining_budget' => $remaining_budget]);
+        return view('concrete.merchant.rewards', ['rewards' => $rewards, 'remaining_budget' => $remaining_budget]);
     }
 }
