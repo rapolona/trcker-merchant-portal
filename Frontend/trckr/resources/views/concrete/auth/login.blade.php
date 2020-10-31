@@ -32,6 +32,11 @@
                         <div class="panel-body">
                             <div class="row row-30">
                                 <div class="col-lg-12 order-lg-1">
+                                    @if($errors->has('email'))
+                                        <div class="alert alert-dismissible alert-danger alert-sm" role="alert"><span class="alert-icon fa-remove"></span><span>{{ $errors->first('email') }}</span>
+                                            <button class="close" type="button" data-dismiss="alert" aria-label="Close"><span class="fa-close" aria-hidden="true"></span></button>
+                                        </div>
+                                    @endif
                                     <div class="form-group">
                                         <label for="user">Username</label>
                                         <div class="input-group">

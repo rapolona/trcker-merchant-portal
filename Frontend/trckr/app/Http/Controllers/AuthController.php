@@ -16,12 +16,12 @@ class AuthController extends Controller
 
     public function index()
     {
-        return view('concrete.login');
+        return view('concrete.auth.login');
     }
 
     public function login_get()
     {
-        return view ('concrete.login');
+        return view ('concrete.auth.login');
     }
 
     public function login_post(Request $request) {
@@ -50,7 +50,8 @@ class AuthController extends Controller
         if ($response->status() !== 200)
         {
             //$validator->addFailure('email', 'Invalid user credentials.', 'email');
-            $validator->getMessageBag()->add('email', "Invalid User Credentials. {$response->body()}");
+            $responseBody = json_decode($response->body());
+            $validator->getMessageBag()->add('email', "Invalid User Credentials. {$responseBody->message}");
 
             return redirect('/')
                 ->withErrors($validator)
