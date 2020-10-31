@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,6 +11,7 @@
     <meta property="og:url" content="http://digipunk.netii.net">
     <link rel="icon" href="images/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="components/base/base.css">
+    <link rel="stylesheet" href="components/trcker-login.css">
     <script src="components/base/script.js"></script>
 </head>
 <body>
@@ -20,23 +20,23 @@
     <section class="section-lg section-one-screen">
         <div class="container">
             <div class="row justify-content-center">
-                <div class="col-lg-8">
+                <div class="col-lg-4">
                     <div class="row row-10 align-items-end">
-                        <div class="col-6 col-sm-7"><a href="index.html"><img src="images/logo-1-white-230x35.png" alt=""></a></div>
-                        <div class="col-6 col-sm-5 text-right"><a class="font-weight-bold" href="login.html">Sign In</a><span class="px-2">|</span><a href="register.html">Register</a></div>
+                        <div class="col-6 col-sm-7 logo"><a  href="#"><img src="{{ config('concreteadmin.logo_img', 'logo_img')  }}" alt=""> <b>Trackr</b></a></div>
                     </div>
-                    <form class="panel" method="post">
+                    <form class="panel" action="{{ config('concreteadmin.login_url', 'login')  }}" method="post">
+                        {{ csrf_field() }}
                         <div class="panel-header">
                             <h3>Sign in to start your session</h3>
                         </div>
                         <div class="panel-body">
                             <div class="row row-30">
-                                <div class="col-lg-8 order-lg-1">
+                                <div class="col-lg-12 order-lg-1">
                                     <div class="form-group">
                                         <label for="user">Username</label>
                                         <div class="input-group">
                                             <div class="input-group-prepend"><span class="input-group-text fa fa-user"></span></div>
-                                            <input class="form-control" id="user" type="text" name="user" placeholder="Enter username">
+                                            <input class="form-control" id="email" type="text" name="email" placeholder="Enter username">
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -53,7 +53,7 @@
                             <div class="row row-10">
                                 <div class="col-sm-6">
                                     <div class="custom-control custom-switch custom-switch-lg custom-switch-primary">
-                                        <input class="custom-control-input" type="checkbox" id="yooedpuq"/>
+                                        <input class="custom-control-input" type="checkbox" id="yooedpuq" name="remember"/>
                                         <label class="custom-control-label" for="yooedpuq">Remember me
                                         </label>
                                     </div>
