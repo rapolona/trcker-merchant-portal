@@ -113,6 +113,6 @@ class MainController extends Controller
 
         $data['totalrespondents'] = json_decode($totalrespondents->body());
 
-        return view('concrete.layouts.main', $data);
+        return view('concrete.dashboard.dashboard', $data);
     }
 }

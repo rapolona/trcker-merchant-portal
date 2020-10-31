@@ -19,22 +19,22 @@
         <li class="rd-navbar-nav-item">
             <div class="rd-navbar-title"><span class="rd-navbar-title-icon"><span class="fa-ellipsis-h"></span></span><span class="rd-navbar-title-text">Merchant</span></div>
         </li>
-        <li class="rd-navbar-nav-item">
+        <li class="rd-navbar-nav-item {{ Request::is('merchant/product/*')? 'active' : '' }}">
             <a class="rd-navbar-link" href="{{ url('merchant/product') }}">
                 <span class="rd-navbar-icon mdi-apps"></span><span class="rd-navbar-link-text">Products</span>
             </a>
         </li>
-        <li class="rd-navbar-nav-item">
+        <li class="rd-navbar-nav-item {{ Request::is('merchant/branch/*')? 'active' : '' }}">
             <a class="rd-navbar-link" href="{{ url('merchant/branch') }}">
                 <span class="rd-navbar-icon mdi-sitemap"></span><span class="rd-navbar-link-text">Branches</span>
             </a>
         </li>
-        <li class="rd-navbar-nav-item">
+        <li class="rd-navbar-nav-item {{ Request::is('merchant/users/*')? 'active' : '' }}">
             <a class="rd-navbar-link" href="{{ url('merchant/users') }}">
                 <span class="rd-navbar-icon mdi-account-multiple"></span><span class="rd-navbar-link-text">Users</span>
             </a>
         </li>
-        <li class="rd-navbar-nav-item">
+        <li class="rd-navbar-nav-item {{ Request::is('merchant/rewards/*')? 'active' : '' }}">
             <a class="rd-navbar-link" href="{{ url('merchant/rewards') }}">
                 <span class="rd-navbar-icon mdi-wallet-giftcard"></span><span class="rd-navbar-link-text">Rewards</span>
             </a>
@@ -42,12 +42,12 @@
         <li class="rd-navbar-nav-item">
             <div class="rd-navbar-title"><span class="rd-navbar-title-icon"><span class="fa-ellipsis-h"></span></span><span class="rd-navbar-title-text">Campaigns</span></div>
         </li>
-        <li class="rd-navbar-nav-item">
+        <li class="rd-navbar-nav-item {{ Request::is('campaign/create/*')? 'active' : '' }}">
             <a class="rd-navbar-link" href="{{ url('campaign/create') }}">
                 <span class="rd-navbar-icon mdi-table-row-plus-after"></span><span class="rd-navbar-link-text">Campaign Creation</span>
             </a>
         </li>
-        <li class="rd-navbar-nav-item">
+        <li class="rd-navbar-nav-item {{ Request::is('campaign/view/*')? 'active' : '' }}">
             <a class="rd-navbar-link" href="{{ url('campaign/view') }}">
                 <span class="rd-navbar-icon mdi-table-large"></span><span class="rd-navbar-link-text">Campaign List</span>
             </a>
@@ -55,12 +55,12 @@
         <li class="rd-navbar-nav-item">
             <div class="rd-navbar-title"><span class="rd-navbar-title-icon"><span class="fa-ellipsis-h"></span></span><span class="rd-navbar-title-text">Tasks</span></div>
         </li>
-        <li class="rd-navbar-nav-item">
+        <li class="rd-navbar-nav-item {{ Request::is('task/create/*')? 'active' : '' }}">
             <a class="rd-navbar-link" href="{{ url('task/create') }}">
                 <span class="rd-navbar-icon mdi-playlist-plus"></span><span class="rd-navbar-link-text">Task Creation</span>
             </a>
         </li>
-        <li class="rd-navbar-nav-item">
+        <li class="rd-navbar-nav-item {{ Request::is('task/view/*')? 'active' : '' }}">
             <a class="rd-navbar-link" href="{{ url('task/view') }}">
                 <span class="rd-navbar-icon mdi-format-list-numbers"></span><span class="rd-navbar-link-text">Task List</span>
             </a>
@@ -68,7 +68,7 @@
         <li class="rd-navbar-nav-item">
             <div class="rd-navbar-title"><span class="rd-navbar-title-icon"><span class="fa-ellipsis-h"></span></span><span class="rd-navbar-title-text">Ticketing</span></div>
         </li>
-        <li class="rd-navbar-nav-item">
+        <li class="rd-navbar-nav-item {{ Request::is('ticket/view/*')? 'active' : '' }}">
             <a class="rd-navbar-link" href="{{ url('ticket/view') }}">
                 <span class="rd-navbar-icon mdi-ticket-account"></span><span class="rd-navbar-link-text">Ticket Management</span>
             </a>
