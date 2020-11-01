@@ -1,10 +1,4 @@
-@extends('adminlte::page')
-
-@section('title', 'Tasks')
-
-@section('content_header')
-    <h1>Tasks</h1>
-@stop
+@extends('concrete.layouts.main')
 
 @section('content')
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog">
@@ -30,11 +24,11 @@
                 <div class="card-header">
                     <form method="POST" enctype="multipart/form-data" id="file_upload" action="javascript:void(0)" >
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                        <input type="file" name="file" id="file" style="display:none">                
+                        <input type="file" name="file" id="file" style="display:none">
 
                         <div class="btn-group float-lg-right" role="group" aria-label="Basic example">
                             <a href="{{url('/task/create')}}" type="button" class="btn btn-primary btn-lg pull-right">Add</a>
-                            <button type="button" class="btn btn-primary btn-lg" id="edit">Edit</button>    
+                            <button type="button" class="btn btn-primary btn-lg" id="edit">Edit</button>
                             <button type="button" class="btn btn-primary btn-lg" id="delete">Delete</button>
                         </div>
                     </form>
@@ -42,7 +36,7 @@
                 <!-- /.card-header -->
                 <div class="card-body">
                     <table class="table table-bordered table-striped mydatatable">
-                        <thead>                  
+                        <thead>
                         <tr>
                             <th>Task Name</th>
                             <th>Description</th>
@@ -73,19 +67,19 @@
 @section('js')
     <script type="text/javascript" src="{{url('/vendor/trckr/trckr.js')}}"></script>
     <script type="text/javascript">
-      
+
         $(document).ready(function (e) {
 
             $('.view').click(function(){
                 var task_id = $(this).siblings('.view_id').val();
-                
+
                 window.location.href = "{{url('/task/view_task?task_id=')}}" + task_id;
             });
 
             $('#myModal').on('hidden.bs.modal', function () {
                 location.reload();
             });
-             
+
             $('#delete').click(function(e){
                 var formData = new FormData();
                 var task = [];
@@ -126,7 +120,7 @@
                     }
                 });
             });
-            
+
             $('#edit').click(function(e){
                 var tasks = [];
                 $.each($("input[name='task']:checked"), function(){

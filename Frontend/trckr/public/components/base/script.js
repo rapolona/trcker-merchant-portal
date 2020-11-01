@@ -1,6 +1,8 @@
 'use strict';
 
 // Global components list
+let baseUrl = document.getElementsByTagName("html")[0].getAttribute("url");
+    baseUrl = (baseUrl)? baseUrl : '';
 let components = {
 	nprogress: {
 		selector: 'html',
@@ -774,7 +776,7 @@ let components = {
 				$( node ).colorpicker({
 					fallbackColor: '#000', ...parseJSON( node.getAttribute( 'data-colorpick' ) )
 				})
-				
+
 			});
 		}
 	},
@@ -1488,7 +1490,7 @@ let components = {
 				}
 			} );
 		}
-	}, 
+	},
 	driver: {
 		selector: '[data-driver]',
 		styles: './components/driver/driver.css',
@@ -2509,12 +2511,13 @@ function makeSync ( params, cb ) {
  */
 function includeStyles ( path ) {
 	return new Promise( function ( resolve ) {
+	    let newUrl = (path=='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap')? path : baseUrl;
 		if ( document.querySelector( `link[href="${path}"]` ) ) {
 			resolve();
 		} else {
 			let link = document.createElement( 'link' );
 			link.setAttribute( 'rel', 'stylesheet' );
-			link.setAttribute( 'href', path );
+			link.setAttribute( 'href', newUrl + path );
 			link.addEventListener( 'load', resolve );
 			document.querySelector( 'head' ).appendChild( link );
 		}
@@ -2538,7 +2541,7 @@ function includeScript ( path ) {
 			}
 		} else {
 			let script = document.createElement( 'script' );
-			script.src = path;
+			script.src = baseUrl + path;
 
 			script.addEventListener( 'load', function () {
 				script.setAttribute( 'data-loaded', 'true' );

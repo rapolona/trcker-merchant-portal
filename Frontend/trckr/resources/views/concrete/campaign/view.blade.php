@@ -1,11 +1,4 @@
-
-@extends('adminlte::page')
-
-@section('title', 'Trckr | View Campaign')
-
-@section('content_header')
-    <h1>View Campaign</h1>
-@stop
+@extends('concrete.layouts.main')
 
 @section('content')
 @section('plugins.Select2', true)
@@ -36,12 +29,12 @@
                         <div class="row">
                             <div class="col col-lg-12">
                                 <h2>Campaign Information</h2>
-                            </div>    
+                            </div>
                         </div>
                         <div class="row">
                             <div class="col col-lg-6">
-                                <input type="hidden" name="_token" value="{{ csrf_token() }}">                
-                                
+                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+
                                 <div class="form-group row">
                                     <label for="campaign_name" class="col-sm-4 col-form-label">Campaign Name</label>
                                     <div class="col-sm-8">
@@ -79,10 +72,10 @@
                             <div class="form-group row">
                                     <label for="campaign_type" class="col-sm-4 col-form-label">Campaign Status</label>
                                     <div class="col-sm-8">
-                                        @if ($campaign->status == 1) 
+                                        @if ($campaign->status == 1)
                                             <span>Ongoing</span>
                                         @endif
-                                        @if ($campaign->status == 0) 
+                                        @if ($campaign->status == 0)
                                             <span>Completed</span>
                                         @endif
                                     </div>
@@ -108,19 +101,19 @@
                                 <div class="form-group row">
                                     <label for="duration" class="col-sm-4 col-form-label">Duration</label>
                                     <div class="col-sm-8">
-                                        <span>{{$campaign->start_date}} to {{$campaign->end_date}}</span>                                
+                                        <span>{{$campaign->start_date}} to {{$campaign->end_date}}</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                      
+
                 </form>
             </div>
 
             @foreach ($campaign_detail->campaign_tasks as $campaign_task)
             <div class="card">
-                <div class="card-body">  
+                <div class="card-body">
                     <div class="row">
                         <label for="company_name" class="col-sm-2 col-form-label">Task Classification Name</label>
                         <span class="col-sm-10  col-form-label">{{ ($campaign_task->task_classification_name) ? $campaign_task->task_classification_name : ''}}</span>
@@ -129,9 +122,9 @@
             </div>
             @foreach ($campaign_task->tasks as $task)
             <div class="card">
-                <div class="card-body">           
-                    <input type="hidden" name="_token" value="{{ csrf_token() }}">                
-                    
+                <div class="card-body">
+                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+
                     <div class="form-group row">
                         <label for="company_name" class="col-sm-2 col-form-label">Task Name</label>
                         <div class="col-sm-10">
@@ -149,7 +142,7 @@
                         <div class="col-sm-10">
                             <img src="{{ ! empty($task->task_banner_image) ? $task->task_banner_image : ''}}"/>
                         </div>
-                    </div> 
+                    </div>
                     <div id="{{$task->task_id}}"></div>
                 </div>
             </div>
@@ -157,23 +150,23 @@
             @endforeach
             <div class="card-footer">
                 <div class="btn-group float-lg-right" role="group" aria-label="Basic example">
-                    <button type="edit" class="btn btn-block btn-primary btn-lg pull-right" id="edit">Edit</button>  
+                    <button type="edit" class="btn btn-block btn-primary btn-lg pull-right" id="edit">Edit</button>
                     <button type="button" class="btn btn-danger btn-lg pull-right" id="back">Back</button>
                 </div>
-            </div>  
+            </div>
         </div>
     </div>
-    
+
 @stop
 
 @section('css')
-    
+
 @stop
 
 @section('js')
     <script type="text/javascript" src="{{url('/vendor/trckr/trckr.js')}}"></script>
     <script type="text/javascript">
-        $(document).ready(function (e) { 
+        $(document).ready(function (e) {
 
             $("#edit").click(function(){
                 window.location.href = "{{url('/campaign/edit?campaign_id=' . $campaign->campaign_id)}}";
@@ -186,8 +179,8 @@
     <script type="text/javascript" src="{{url('/vendor/form-builder/form-builder.min.js')}}"></script>
     <script type="text/javascript" src="{{url('/vendor/form-builder/form-render.min.js')}}"></script>
     <script type="text/javascript">
-        
-        $(document).ready(function (e) { 
+
+        $(document).ready(function (e) {
             let fields = [{
                     label: 'True or False',
                     className: 'TRUE OR FALSE',
@@ -257,7 +250,7 @@
                     @foreach ($task->task_questions as $question)
 
                         var temp = findObjectInArrayByProperty(fields, "className", "{{$question->required_inputs}}");
-                        
+
                         temp.name = "{{$question->task_question_id}}";
                         temp.label = "{{$question->question}}";
                         console.log("{{json_encode($question->task_question_choices)}}");
@@ -275,10 +268,10 @@
                             temp.values = tempvalues;
                         @endif
                         console.log(temp);
-                        
+
                         addField.push(temp);
                     @endforeach
-                
+
                     var options = {
                         container,
                         addField,
@@ -286,7 +279,7 @@
                         fields: fields,
                     };
                     //$(container).formRender(options);
-                
+
                     var formData = JSON.stringify(addField);
 
                     var container = $('#{{$task->task_id}}');

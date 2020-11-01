@@ -1,10 +1,4 @@
-@extends('adminlte::page')
-
-@section('title', 'Trckr | Edit Product')
-
-@section('content_header')`
-    <h1>Edit Product</h1>
-@stop
+@extends('concrete.layouts.main')
 
 @section('content')
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog">
@@ -28,7 +22,7 @@
         <div class="col col-lg-12" >
             <div class="card">
                 <form class="form-vertical" id="edit_product">
-                    <input type="hidden" name="_token" value="{{ csrf_token() }}">                
+                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
                     <div class="card-body">
                         <div class="form-group row">
                             <label for="company_name" class="col-sm-2 col-form-label">Product Name</label>
@@ -47,7 +41,7 @@
                     <div class="card-footer">
                         <form method="POST" enctype="multipart/form-data" id="file_upload" action="javascript:void(0)" >
                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                            <input type="file" name="file" id="file" style="display:none">                
+                            <input type="file" name="file" id="file" style="display:none">
                             <div class="btn-group float-lg-right" role="group" aria-label="Basic example">
                                 <button class="btn btn-primary btn-lg" type="submit" value="Edit Product" id="edit">
                                     <span class="spinner-border spinner-border-sm" role="status" id="loader_edit" aria-hidden="true" disabled> </span>
@@ -61,7 +55,7 @@
             </div>
         </div>
     </div>
-    
+
 @stop
 
 @section('css')
@@ -71,15 +65,15 @@
 @section('js')
     <script type="text/javascript" src="{{url('/vendor/trckr/trckr.js')}}"></script>
     <script type="text/javascript">
-        
-        $(document).ready(function (e) { 
+
+        $(document).ready(function (e) {
             $('#edit_product').submit(function(e) {
                 e.preventDefault();
 
                 var formData = new FormData(this);
                 formData.append("product_id", "{{ $product_id }}");
-        
-                post("{{url('/merchant/product/edit')}}", "Edit Product", "edit", formData, "{{url('/merchant/product')}}");                
+
+                post("{{url('/merchant/product/edit')}}", "Edit Product", "edit", formData, "{{url('/merchant/product')}}");
             });
 
             $("#back").click(function(){

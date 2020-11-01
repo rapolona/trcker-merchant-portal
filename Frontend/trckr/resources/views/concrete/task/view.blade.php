@@ -1,10 +1,4 @@
-@extends('adminlte::page')
-
-@section('title', 'Trckr | View Task')
-
-@section('content_header')
-    <h1>View Task</h1>
-@stop
+@extends('concrete.layouts.main')
 
 @section('content')
 @section('plugins.JqueryUI', true)
@@ -28,9 +22,9 @@
 
     <div class="card">
         <form class="form-vertical" id="create_task">
-            <div class="card-body">           
-                <input type="hidden" name="_token" value="{{ csrf_token() }}">                
-                
+            <div class="card-body">
+                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+
                 <div class="form-group row">
                     <label for="company_name" class="col-sm-2 col-form-label">Task Name</label>
                     <div class="col-sm-10">
@@ -67,13 +61,13 @@
             </div>
             <div class="card-footer">
                 <div class="btn-group float-lg-right" role="group" aria-label="Basic example">
-                    <button type="button" class="btn btn-block btn-primary btn-lg pull-right" id="edit">Edit Details</button>  
+                    <button type="button" class="btn btn-block btn-primary btn-lg pull-right" id="edit">Edit Details</button>
                     <button type="button" class="btn btn-danger btn-lg pull-right" id="back">Back</button>
                 </div>
             </div>
         </form>
     </div>
-    
+
 @stop
 
 @section('css')
@@ -85,7 +79,7 @@
     <script type="text/javascript" src="{{url('/vendor/form-builder/form-builder.min.js')}}"></script>
     <script type="text/javascript" src="{{url('/vendor/form-builder/form-render.min.js')}}"></script>
     <script type="text/javascript">
-        
+
         $(document).ready(function (e) {
             $('#myModal').on('hidden.bs.modal', function () {
                 window.location.href = "{{url('/task/view')}}";
@@ -192,12 +186,12 @@
                     temp.values = tempvalues;
                 @endif
                 console.log(temp);
-                
+
                 addField.push(temp);
             @endforeach
 
             console.log(JSON.stringify(options));
-            
+
 
             var options = {
                 container,
@@ -214,7 +208,7 @@
             $("#edit").click(function(){
                 window.location.href = "{{url('/task/edit?task_action_id=')}}{{$task->task_id}}";
             });
-        
+
             var formData = JSON.stringify(addField);
 
             var container = $('.build-wrap');

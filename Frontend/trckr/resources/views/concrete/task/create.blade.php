@@ -1,10 +1,4 @@
-@extends('adminlte::page')
-
-@section('title', 'Trckr | Create New Task')
-
-@section('content_header')`
-    <h1>Create New Task</h1>
-@stop
+@extends('concrete.layouts.main')
 
 @section('content')
 @section('plugins.JqueryUI', true)
@@ -28,9 +22,9 @@
 
     <div class="card">
         <form class="form-vertical" id="create_task" enctype="multipart/form-data">
-            <div class="card-body">           
-                <input type="hidden" name="_token" value="{{ csrf_token() }}">                
-                
+            <div class="card-body">
+                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+
                 <div class="form-group row">
                     <label for="company_name" class="col-sm-2 col-form-label">Task Name</label>
                     <div class="col-sm-10">
@@ -63,20 +57,20 @@
                 </div>
 
                 <div class="build-wrap"></div>
-                
+
             </div>
             <div class="card-footer">
                 <div class="btn-group float-lg-right" role="group" aria-label="Basic example">
                     <button class="btn btn-primary btn-lg" type="submit" value="submit" id="submit">
                         <span class="spinner-border spinner-border-sm" role="status" id="loader_submit" aria-hidden="true" disabled> </span>
                         Add Task
-                    </button>    
+                    </button>
                     <button type="button" class="btn btn-danger btn-lg pull-right" id="back">Back</button>
                 </div>
             </div>
         </form>
     </div>
-    
+
 @stop
 
 @section('css')
@@ -88,8 +82,8 @@
     <script type="text/javascript" src="{{url('/vendor/form-builder/form-builder.min.js')}}"></script>
     <script type="text/javascript" src="{{url('/vendor/form-builder/form-render.min.js')}}"></script>
     <script type="text/javascript">
-        
-        $(document).ready(function (e) { 
+
+        $(document).ready(function (e) {
             let options = {
                 disableFields: ['autocomplete', 'radio-group', 'checkbox-group','button','hidden','paragraph','header','select','text','textarea','file','date','number'],
                 disabledAttrs: ['access','other','placeholder','required','value','description','inline','max','maxlength','min','multiple','rows','step','style','subtype','toggle'],
@@ -151,7 +145,7 @@
             $('#create_task').submit(function(e) {
                 e.preventDefault();
                 var myFormBuilder = formBuilder.actions.getData('json', true);
-                
+
 
                 var formData = new FormData(this);
 

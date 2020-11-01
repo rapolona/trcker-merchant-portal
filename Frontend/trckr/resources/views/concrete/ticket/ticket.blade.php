@@ -1,10 +1,4 @@
-@extends('adminlte::page')
-
-@section('title', 'Ticket Management')
-
-@section('content_header')
-    <h1>Ticket Management</h1>
-@stop
+@extends('concrete.layouts.main')
 
 @section('content')
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog">
@@ -23,21 +17,21 @@
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
     <p>Insert text here</p>
-    
+
     <div class="row">
         <div class="col col-md-12">
             <form method="POST" id="handle_ticket" action="javascript:void(0)" >
                 <div class="card" style="width:100%">
                     <div class="card-header">
-                        
+
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                        <input type="file" name="file" id="file" style="display:none">                
+                        <input type="file" name="file" id="file" style="display:none">
                             <div class="btn-group float-lg-right">
-                        
+
                             <button type="button" id="export" class="btn btn-primary btn-lg">
                                 <span class="spinner-border spinner-border-sm" role="status" id="loader_export" aria-hidden="true" disabled> </span>
                                 Export CSV
-                            </button>  
+                            </button>
                             <button class="btn btn-primary btn-lg" type="submit" value="Approve" id="approve">
                                 <span class="spinner-border spinner-border-sm" role="status" id="loader_approve" aria-hidden="true" disabled> </span>
                                 Approve
@@ -50,10 +44,10 @@
                             </div>
 
                     </div>
-                    
+
                     <div class="card-body">
                         <table class="table table-bordered table-striped mydatatable">
-                            <thead>                  
+                            <thead>
                             <tr>
                                 <th>Trckr Username</th>
                                 <th>Email</th>
@@ -75,17 +69,17 @@
                                 <td class="view"> {{ $t->user_detail->email }}</td>
                                 <td class="view"> No info available (not in capability/tasktickets schema yet) </td>
                                 <td class="view"> {{ $t->campaign_name }}</td>
-                                <td class="view"> 
+                                <td class="view">
                                     @foreach ($t->task_details as $d )
                                         {{ $d->task_question->question}} <br/>
-                                    @endforeach    
+                                    @endforeach
                                 </td>
                                 <td class="view"> {{ $t->createdAt }}</td>
                                 <td class="view"> {{ $t->device_id}} </td>
                                 <td class="view"> No info avaialable (not in capability/tasktickets schema yet)</td>
                                 <td class="view"> {{ $t->approval_status }}</td>
                                 <td>
-                                    <input type="checkbox" name="task_ticket_id" value="{{ $t->task_ticket_id }}"> 
+                                    <input type="checkbox" name="task_ticket_id" value="{{ $t->task_ticket_id }}">
                                 </td>
                             </tr>
                             @endforeach
@@ -107,7 +101,7 @@
     <script type="text/javascript">
         $(document).ready(function (e) {
             $("#export").click(function(){
-                window.location.href = "{{url('/ticket/export_csv')}}";                
+                window.location.href = "{{url('/ticket/export_csv')}}";
             });
 
             $('#myModal').on('hidden.bs.modal', function (e) {
@@ -116,7 +110,7 @@
 
             $('.view').click(function(){
                 var ticket_id = $(this).siblings('.view_id').val();
-                
+
                 window.location.href = "{{url('/ticket/view_ticket?ticket_id=')}}" + ticket_id;
             });
 
@@ -128,7 +122,7 @@
                 $("#action").val('reject');
             });
 
-            $('#handle_ticket').submit(function(e){                
+            $('#handle_ticket').submit(function(e){
                 var formData = new FormData(this);
 
                 var action = formData.get('action');
@@ -155,7 +149,7 @@
                 var actiontext = action.charAt(0).toUpperCase() + action.slice(1);
 
                 post("{{url('/ticket/')}}/" + action + "_ticket", actiontext + " Ticket(s)", action, formData, "{{url('/ticket/view')}}");
-            });            
+            });
         });
   </script>
 @stop

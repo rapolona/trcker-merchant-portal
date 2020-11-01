@@ -1,10 +1,4 @@
-@extends('adminlte::page')
-
-@section('title', 'Trckr | Edit Campaign')
-
-@section('content_header')
-    <h1>Edit Campaign</h1>
-@stop
+@extends('concrete.layouts.main')
 
 @section('content')
 @section('plugins.Select2', true)
@@ -35,12 +29,12 @@
                         <div class="row">
                             <div class="col col-lg-12">
                                 <h2>Campaign Information</h2>
-                            </div>    
+                            </div>
                         </div>
                         <div class="row">
                             <div class="col col-lg-6">
-                                <input type="hidden" name="_token" value="{{ csrf_token() }}">                
-                                
+                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+
                                 <div class="form-group row">
                                     <label for="campaign_name" class="col-sm-2 col-form-label">Campaign Name</label>
                                     <div class="col-sm-10">
@@ -105,7 +99,7 @@
                                     <label for="duration" class="col-sm-2 col-form-label">Duration</label>
                                     <div class="col-sm-10">
                                         <input type="text" class="form-control date" id="input_start_date" name="start_date" value="{{ ! empty($campaign->start_date) ? $campaign->start_date: ''}}" placeholder="Enter Duration From">
-                                        <input type="text" class="form-control date" id="input_end_date" name="end_date" value="{{ ! empty($campaign->end_date) ? $campaign->end_date: ''}}" placeholder="Enter Duration To">                                    
+                                        <input type="text" class="form-control date" id="input_end_date" name="end_date" value="{{ ! empty($campaign->end_date) ? $campaign->end_date: ''}}" placeholder="Enter Duration To">
                                     </div>
                                 </div>
                             </div>
@@ -113,7 +107,7 @@
                         <div class="row">
                             <div class="col col-lg-12">
                                 <h2>Tasks</h2>
-                            </div>    
+                            </div>
                         </div>
                         @foreach($campaign_detail->campaign_tasks as $campaign_tasks)
                         <div class="row task_container">
@@ -147,20 +141,20 @@
                                 </div>
                             </div>
                             <div class="col col-lg-2">
-                                <div class="btn-group" role="group" aria-label="Basic example">  
+                                <div class="btn-group" role="group" aria-label="Basic example">
                                     <button type="button" class="btn btn-danger btn-md pull-right remove_task" id="remove_task_0">Remove Task</button>
                                 </div>
                             </div>
                         </div>
                         @endforeach
-                        <div class="btn-group" role="group" aria-label="Basic example">  
+                        <div class="btn-group" role="group" aria-label="Basic example">
                             <button type="button" class="btn btn-info btn-md pull-right" id="add_task">Add New Task</button>
                         </div>
                     </div>
-                    
+
                     <div class="card-footer">
                         <div class="btn-group float-lg-right" role="group" aria-label="Basic example">
-                            <!--<button type="submit" class="btn btn-block btn-primary btn-lg pull-right" id="submit">Edit Details</button> --> 
+                            <!--<button type="submit" class="btn btn-block btn-primary btn-lg pull-right" id="submit">Edit Details</button> -->
                             <button class="btn btn-primary btn-lg" type="submit" value="Submit" id="submit">
                                 <span class="spinner-border spinner-border-sm" role="status" id="loader_submit" aria-hidden="true" disabled> </span>
                                 Edit Details
@@ -172,19 +166,19 @@
             </div>
         </div>
     </div>
-    
+
 @stop
 
 @section('css')
-    
+
 @stop
 
 @section('js')
     <script type="text/javascript" src="{{url('/vendor/trckr/trckr.js')}}"></script>
     <script type="text/javascript">
         //input_end_date
-        $('#input_start_date').datepicker({ 
-            dateFormat: 'yy-mm-dd', 
+        $('#input_start_date').datepicker({
+            dateFormat: 'yy-mm-dd',
             minDate: 0,
             onSelect: function(date) {
                 var selectedDate = new Date(date);
@@ -192,11 +186,11 @@
                 var endDate = new Date(selectedDate.getTime());
                 $("#input_end_date").datepicker( "option", "minDate", endDate );
                 //$("#input_end_date").datepicker( "option", "maxDate", '+y' );
-            }    
+            }
         });
-        $('#input_end_date').datepicker({ 
+        $('#input_end_date').datepicker({
             minDate: 0,
-            dateFormat: 'yy-mm-dd', 
+            dateFormat: 'yy-mm-dd',
             onSelect: function(date) {
                 var selectedDate = new Date(date);
                 //var msecsInADay = 86400000;
@@ -218,7 +212,7 @@
 
             var task_action = $(this).parent().parent().parent().parent().find($(".task_actions"));
             $(task_action).empty();
-        
+
             $.ajax({
                 type:'GET',
                 url: "{{url('/campaign/campaign_type/task?task_id=')}}" + this.value,
@@ -226,7 +220,7 @@
                 contentType: false,
                 processData: false,
                 success: (data) => {
-                    
+
 
                     $(data.file).each(function(){
 
@@ -239,7 +233,7 @@
             });
         });
 
-        $(document).ready(function (e) { 
+        $(document).ready(function (e) {
             $('.select2').select2();
 
             $("#add_task").click(function(){
@@ -316,7 +310,7 @@
             }
         });
 
-        
+
 
     </script>
 @stop
