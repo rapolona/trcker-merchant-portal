@@ -3,7 +3,7 @@
 @section('content')
 <div class="col-lg-5">
     <div class="row row-10 align-items-end">
-        <div class="col-6 col-sm-7 logo"><a  href="#"><img src="{{ config('concreteadmin.logo_img', 'logo_img')  }}" alt=""> <b>Trackr</b></a></div>
+        <div class="col-6 col-sm-7 logo"><a  href="#"><img src="{{ config('concreteadmin.logo_img', 'logo_img')  }}" alt=""></a></div>
     </div>
 
     <form class="panel" action="{{ config('concreteadmin.login_url', 'login')  }}" method="post">
