@@ -15,7 +15,7 @@ class AdminRepository
         $this->api = Config::get('trckr.backend_url') . "admin/";
     }
 
-    public function create()
+    public function create($request)
     {
         try {
             return Http::withToken(Config::get('gbl_profile')->token)->post($this->api . 'create', []);

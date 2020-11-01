@@ -6,20 +6,20 @@ use App\Repositories\DashboardRepository;
 
 class DashboardService
 {
-    protected $dashboardRepository;
+    protected $repository;
 
-    public function __construct(DashboardRepository $dashboardRepository)
+    public function __construct(DashboardRepository $repository)
     {
-        $this->dashboardRepository = $dashboardRepository;
+        $this->repository = $repository;
     }
 
     public function getActiveCampaign()
     {
-        return $this->dashboardRepository->listActiveCampaigns();
+        return $this->repository->listActiveCampaigns();
     }
 
     public function getTotalRespondents()
     {
-        return $this->dashboardRepository->getTotalRespondents();
+        return $this->repository->getTotalRespondents();
     }
 }

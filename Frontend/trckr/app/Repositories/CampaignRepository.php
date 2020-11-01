@@ -15,7 +15,7 @@ class CampaignRepository
         $this->api = Config::get('trckr.backend_url') . "merchant/campaign/";
     }
 
-    public function create()
+    public function create($request)
     {
         try {
             return Http::withToken(Config::get('gbl_profile')->token)->post($this->api . 'create', []);
@@ -24,7 +24,7 @@ class CampaignRepository
         }
     }
 
-    public function update()
+    public function update($request)
     {
         try {
             return Http::withToken(Config::get('gbl_profile')->token)->put($this->api . 'update', []);
