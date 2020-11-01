@@ -1,10 +1,4 @@
-@extends('adminlte::page')
-
-@section('title', 'Trckr | View Campaigns')
-
-@section('content_header')
-    <h1>Campaign</h1>
-@stop
+@extends('concrete.layouts.main')
 
 @section('content')
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog">
@@ -30,7 +24,7 @@
                     <form method="POST" enctype="multipart/form-data" id="file_upload" action="javascript:void(0)" >
                         <div class="btn-group float-lg-right" role="group" aria-label="Basic example">
                             <a href="{{url('/campaign/create')}}" type="button" class="btn btn-primary btn-lg pull-right">Add</a>
-                            <button type="button" class="btn btn-primary btn-lg" id="edit">Edit</button>    
+                            <button type="button" class="btn btn-primary btn-lg" id="edit">Edit</button>
                             <button class="btn btn-primary btn-lg" type="button" value="button" id="delete">
                                 <span class="spinner-border spinner-border-sm" role="status" id="loader_delete" aria-hidden="true" disabled> </span>
                                 Delete
@@ -40,7 +34,7 @@
                 </div>
                 <div class="card-body">
                     <table class="table table-bordered table-striped mydatatable">
-                        <thead>                  
+                        <thead>
                         <tr>
                             <th style="width: 10px">#</th>
                             <th >Campaign Name</th>
@@ -77,12 +71,12 @@
 @section('js')
     <script type="text/javascript" src="{{url('/vendor/trckr/trckr.js')}}"></script>
     <script type="text/javascript">
-      
+
         $(document).ready(function (e) {
 
             $('.view').click(function(){
                 var campaign_id = $(this).siblings('.view_id').val();
-                
+
                 window.location.href = "{{url('/campaign/view_campaign?campaign_id=')}}" + campaign_id;
             });
 
@@ -106,7 +100,7 @@
 
                 post("{{url('/campaign/delete')}}", "Delete Campaign", "delete", formData, "{{url('/cmpaign/view')}}");
             });
-            
+
             $('#edit').click(function(e){
                 var campaigns = [];
                 $.each($("input[name='campaigns']:checked"), function(){
@@ -114,7 +108,7 @@
                 });
 
                 if (campaigns.length != 1){
-                    
+
                     $(".modal-title").text("Invalid Edit Selection!");
                     $(".modal-body").html("<p>Please check one task only!</p>");
                     $("#myModal").modal('show');

@@ -1,10 +1,4 @@
-@extends('adminlte::page')
-
-@section('title', 'Trckr | Add Branch')
-
-@section('content_header')`
-    <h1>Add Branch</h1>
-@stop
+@extends('concrete.layouts.main')
 
 @section('content')
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog">
@@ -28,7 +22,7 @@
         <div class="col col-lg-12" >
             <div class="card">
                 <form class="form-vertical" id="add_branch">
-                    <input type="hidden" name="_token" value="{{ csrf_token() }}">                
+                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
                     <div class="card-body">
                         <div class="form-group row">
                             <label for="company_name" class="col-sm-2 col-form-label">Branch Name</label>
@@ -59,7 +53,7 @@
 
                     <div class="card-footer">
                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                            <input type="file" name="file" id="file" style="display:none">                
+                            <input type="file" name="file" id="file" style="display:none">
 
                             <div class="btn-group float-lg-right" role="group" aria-label="Basic example">
                                 <button class="btn btn-primary btn-lg" type="submit" value="submit" id="submit">
@@ -73,7 +67,7 @@
             </div>
         </div>
     </div>
-    
+
 @stop
 
 @section('css')
@@ -83,8 +77,8 @@
 @section('js')
     <script type="text/javascript" src="{{url('/vendor/trckr/trckr.js')}}"></script>
     <script type="text/javascript">
-        
-        $(document).ready(function (e) { 
+
+        $(document).ready(function (e) {
             $('#add_branch').submit(function(e) {
                 e.preventDefault();
 
