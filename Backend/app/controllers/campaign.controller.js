@@ -106,6 +106,7 @@ exports.createCustom = (req, res) => {
     // }
 
   // Create a campaign
+  
   const branches_container = []
   for(i=0;i<req.body.tasks.length; i++){
     req.body.tasks[i].index = i+1;
@@ -114,11 +115,11 @@ exports.createCustom = (req, res) => {
   for(i=0;i<req.body.branches.length;i++){
     branches_container.push(req.body.branches[i])
   }
-  console.log(req.body.tasks)
+  
   const campaign = {
       merchant_id: req.body.merchantid,
       start_date: req.body.start_date,
-      end_date: req.body.end_date,
+      end_date: req.body.end_date + ' 23:59:00.000Z',
       budget: req.body.budget,
       campaign_name: req.body.campaign_name,
       campaign_description: req.body.campaign_description,
@@ -140,22 +141,7 @@ exports.createCustom = (req, res) => {
 
   console.log(campaign)
 
-  //Save Campaign in the database
-//   Campaign.create(campaign, {include: [
-//     {model:Task_Questions, as:"task_questions", include:[{model:Task_Questions}]},
-//     {model:Campaign_Branch_Association, as:"campaign_branch_associations"},
-//     {model:Campaign_Reward, as:"campaign_reward"}
-//   ]})
-//     .then(data => {
-//       res.send(data);
-//     })
-//     .catch(err => {
-//       res.status(500).send({
-//         message:
-//           err.message || "Some error occurred while creating the Campaign."
-//       });
-//     });
-// };
+
 
 db.sequelize.transaction(transaction =>
   Campaign.create(campaign, {include: [
