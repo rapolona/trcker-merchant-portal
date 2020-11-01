@@ -13,38 +13,26 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Config, Session;
+use App\Services\DashboardService;
 use Illuminate\Support\Facades\Validator;
 
 class MainController extends Controller
 {
-    public function adminlte_image()
+
+    private $service;
+
+    public function __construct(DashboardService $service)
     {
-        return 'https://picsum.photos/300/300';
+        $this->service = $service;
     }
 
-    public function adminlte_desc()
-    {
-        return 'That\'s a nice guy';
-    }
-
-    public function adminlte_profile_url()
-    {
-        return 'profile/username';
-    }
     public function index(request $request)
     {
         $data = array();
-        $users = array('Jet');
 
+        $activeCampaigns = $this->service->getActivecampaign();
 
-        $api_endpoint = Config::get('trckr.backend_url') . "merchant/dashboard/activecampaign";
-
-        $session = $request->session()->get('session_merchant');
-        $token = ( ! empty($session->token)) ? $session->token : "";
-
-        $activecampaigns = Http::withToken($token)->get($api_endpoint, []);
-
-        if ($activecampaigns->status() !== 200)
+        if ($activeCampaigns->status() !== 200)
         {
             if ($activecampaigns->status() === 403) {
                 $validator = Validator::make($request->all(), []);
@@ -55,7 +43,7 @@ class MainController extends Controller
                     ->withInput();
             }
 
-            if ($activecampaigns->status() === 500) {
+            if ($activeCampaigns->status() === 500) {
                 $handler = json_decode($activecampaigns->body());
 
                 if ($handler->message->name == "JsonWebTokenError")
@@ -72,16 +60,11 @@ class MainController extends Controller
             return redirect('/dashboard');
         }
 
-        $data['activecampaigns'] = json_decode($activecampaigns->body());
+        $data['activecampaigns'] = json_decode($activeCampaigns->body());
 
         $data['activecampaigns_count'] = ($data['activecampaigns'][0]->active_campaigns);
 
-        $api_endpoint = Config::get('trckr.backend_url') . "merchant/dashboard/totalrespondents";
-
-        $session = $request->session()->get('session_merchant');
-        $token = ( ! empty($session->token)) ? $session->token : "";
-
-        $totalrespondents = Http::withToken($token)->get($api_endpoint, []);
+        $totalrespondents = $this->service->getTotalRespondents();
 
         if ($totalrespondents->status() !== 200)
         {

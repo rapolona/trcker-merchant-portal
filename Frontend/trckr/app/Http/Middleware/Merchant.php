@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Auth;
 
 class Merchant
 {
@@ -19,7 +20,9 @@ class Merchant
         $session = $request->session()->get('session_merchant');
 
         if( ! empty($session->token)){
-            Config::set('gbl_profile', $session->adminDetails);
+            $admin = $session->adminDetails;
+            $admin->token = $session->token;
+            Config::set('gbl_profile', $admin);
             return $next($request);
         }
         return redirect()->route('login');

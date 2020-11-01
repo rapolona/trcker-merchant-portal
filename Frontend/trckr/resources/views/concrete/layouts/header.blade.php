@@ -18,7 +18,7 @@
 
                 <div class="rd-navbar-panel-cell rd-navbar-panel-cell-user">
                     <div class="btn btn-navbar-panel" data-multi-switch='{"targets":"#subpanel-user","scope":"#subpanel-user","isolate":"[data-multi-switch]"}'>
-                        <div class="media align-items-center"><img class="rounded-circle" src="images/users/user-03-50x50.jpg" width="30" height="30" alt=""/>
+                        <div class="media align-items-center"><img class="rounded-circle" src="{{ asset('images/users/user-03-50x50.jpg') }}" width="30" height="30" alt=""/>
                             <div class="media-body ml-2">
                                 <p>{{ Config::get('gbl_profile')->first_name }} {{ Config::get('gbl_profile')->last_name }}</p>
                             </div>
@@ -27,7 +27,7 @@
                     <div class="rd-navbar-subpanel" id="subpanel-user">
                         <div class="panel">
                             <div class="panel-header">
-                                <div class="group-5 d-flex flex-wrap align-items-center"><img class="rounded mr-2" src="images/users/user-03-50x50.jpg" width="50" height="50" alt=""/>
+                                <div class="group-5 d-flex flex-wrap align-items-center"><img class="rounded mr-2" src="{{ asset('images/users/user-03-50x50.jpg') }}" width="50" height="50" alt=""/>
                                     <div class="panel-title">{{ Config::get('gbl_profile')->first_name }} {{ Config::get('gbl_profile')->last_name }}</div>
                                 </div>
                             </div>
@@ -42,6 +42,7 @@
                                         </div>
                                     </a>
                                 </div>
+
                             </div>
                             <div class="panel-footer p-2">
                                 <div class="d-flex align-items-center justify-content-between"><a class="btn btn-danger btn-sm" href="{{ url('logout') }}">Sing Out</a></div>

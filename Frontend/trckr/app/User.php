@@ -10,6 +10,8 @@ class User extends Authenticatable
 {
     use Notifiable;
 
+    protected $appends = [ 'merchant' ];
+
     /**
      * The attributes that are mass assignable.
      *
