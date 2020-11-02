@@ -131,52 +131,15 @@ class ProductController extends Controller
         ]);
     }
 
+    /**
+     * List controller instance
+     *
+     * @return View
+     */
     public function product(Request $request)
     {
-
         $response = $this->productService->getAll();
-
-        if ($response->status() !== 200)
-        {
-            if ($response->status() === 403) {
-                $validator = Validator::make($request->all(), []);
-                $validator->getMessageBag()->add('email', "Session Expired. Please login again. {$response->body()}");
-
-                return redirect('/')
-                    ->withErrors($validator)
-                    ->withInput();
-            }
-
-            if ($response->status() === 500) {
-                $handler = json_decode($response->body());
-
-                if ($handler->message->name == "JsonWebTokenError")
-
-                $validator = Validator::make($request->all(), []);
-                $validator->getMessageBag()->add('email', "Session Expired. Please login again. {$response->body()}");
-
-                return redirect('/')
-                    ->withErrors($validator)
-                    ->withInput();
-            }
-
-            //general handling
-            return redirect('/dashboard');
-        }
-
-        $products = json_decode($response);
-
-        $count = 0;
-
-        foreach ($products as &$p)
-        {
-            $p->no = $count+1;
-            //hotfix - removed
-            //$p->description = ( ! empty($p->description)) ? $p->description : $p->product_price;
-            $count+=1;
-        }
-
-        return view('concrete.merchant.products', ['products' => $products]);
+        return view('concrete.merchant.products', ['products' => json_decode($response)]);
     }
 
     public function add_product_get()

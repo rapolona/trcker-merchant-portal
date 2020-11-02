@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Log;
 use Config;
 
-class ProductRepository
+class ProductRepository extends Repository
 {
 
     private $api;
@@ -18,7 +18,7 @@ class ProductRepository
     public function getAll()
     {
         try {
-            return Http::withToken(Config::get('gbl_profile')->token)->get($this->api , []);
+            return $this->validateResponse(Http::withToken(Config::get('gbl_profile')->token)->get($this->api , []));
         } catch(\Exception $e) {
             return false;
         }
@@ -27,7 +27,7 @@ class ProductRepository
     public function create($request)
     {
         try {
-            return Http::withToken(Config::get('gbl_profile')->token)->post($this->api, []);
+            return $this->validateResponse(Http::withToken(Config::get('gbl_profile')->token)->post($this->api, []));
         } catch(\Exception $e) {
             return false;
         }
@@ -36,7 +36,7 @@ class ProductRepository
     public function update($request)
     {
         try {
-            return Http::withToken(Config::get('gbl_profile')->token)->put($this->api, []);
+            return $this->validateResponse(Http::withToken(Config::get('gbl_profile')->token)->put($this->api, []));
         } catch(\Exception $e) {
             return false;
         }
@@ -45,7 +45,7 @@ class ProductRepository
     public function delete($request)
     {
         try {
-            return Http::withToken(Config::get('gbl_profile')->token)->delete($this->api, []);
+            return $this->validateResponse(Http::withToken(Config::get('gbl_profile')->token)->delete($this->api, []));
         } catch(\Exception $e) {
             return false;
         }

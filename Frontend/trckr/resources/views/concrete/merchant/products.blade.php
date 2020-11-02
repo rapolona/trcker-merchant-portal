@@ -1,46 +1,56 @@
 @extends('concrete.layouts.main')
 
 @section('content')
-
     <div class="col-12">
         <div class="panel">
             <div class="panel-header">
-                <div class="panel-title"><span class="panel-icon fa-tasks"></span> <span>Merchant Products</span>
+                <div class="panel-title">
+                    <span class="panel-icon fa-tasks"></span> <span>Merchant Products</span>
                 </div>
             </div>
             <div class="panel-body p-0">
-
-                <div class="btn-group float-lg-right" role="group" aria-label="Basic example">
-                    <button class="btn btn-primary btn-lg" type="button" value="Upload CSV" id="upload_csv">
+                <div class="btn-group" style="margin-top: 10px">
+                    <button class="btn btn-primary btn-sm" type="button" value="Upload CSV" id="upload_csv">
+                        <span class="fa-upload"></span>
                         <span class="spinner-border spinner-border-sm" role="status" id="loader_upload_csv" aria-hidden="true" disabled> </span>
                         Upload CSV
                     </button>
-                    <a href="{{url('/merchant/product/add')}}" type="button" class="btn btn-primary btn-lg pull-right" id="add">
+                    <a href="{{url('/merchant/product/add')}}" type="button" class="btn btn-primary btn-sm pull-right" id="add">
+                        <span class="fa-plus"></span>
                         Add
                     </a>
                 </div>
-
                 <div class="table-responsive scroller scroller-horizontal py-3">
-                    <table class="table table-striped table-hover data-table" style="min-width: 800px">
+                    <table class="table table-striped table-hover" style="min-width: 800px">
                         <thead>
                         <tr>
-                            <th style="width: 40px"><input type="checkbox"></th>
+                            <th style="width: 40px">
+                                <div class="custom-control custom-checkbox custom-checkbox-success">
+                                    <input class="custom-control-input" type="checkbox" id="chkAll"/>
+                                    <label class="custom-control-label" for="chkAll"></label>
+                                </div>
+                            </th>
                             <th>Brand</th>
                             <th>Description</th>
-                            <th>Action</th>
+                            <th style="with:100px">Action</th>
                         </tr>
                         </thead>
                         <tbody>
 
-                        @foreach ($products as $p)
+                        @foreach ($products as $product)
                             <tr>
-                                <td style="width: 40px"><input type="checkbox" name="productId[]" value="{{$p->product_id}}"></td>
-                                <td> {{ $p->product_name }}</td>
-                                <td> {{ $p->product_description }}</td>
+                                <td style="width: 40px">
+                                    <div class="custom-control custom-checkbox custom-checkbox-success">
+                                        <input class="custom-control-input" type="checkbox" id="{{ $product->product_id }}" />
+                                        <label class="custom-control-label" for="{{ $product->product_id }}"></label>
+                                    </div>
+                                </td>
+                                <td> {{ $product->product_name }}</td>
+                                <td> {{ $product->product_description }}</td>
                                 <td>
                                     <div class="btn-group">
-                                        <button class="btn btn-success" type="button"><span class="fa-edit"></span></button>
-                                        <button class="btn btn-success" type="button"><span class="mdi-delete"></span></button>
+                                        <a class="btn btn-warning btn-sm" type="button" href=""><span class="fa-edit"></span></a>
+                                        <a class="btn btn-danger btn-sm" type="button" href=""><span class="mdi-delete"></span></a>
                                     </div>
                                 </td>
                             </tr>
@@ -51,6 +61,7 @@
             </div>
         </div>
     </div>
+
 @stop
 
 

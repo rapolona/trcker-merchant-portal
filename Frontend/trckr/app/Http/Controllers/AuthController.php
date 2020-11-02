@@ -8,7 +8,8 @@ use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
-use Config, Session;
+use Config;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
@@ -16,12 +17,18 @@ class AuthController extends Controller
 
     public function index()
     {
-        return view('concrete.auth.login');
+        $msg = Session::get('login_msg');
+        Session::put('login_msg', '');
+        Session::save();
+        return view('concrete.auth.login', ['expiredMsg' => $msg]);
     }
 
     public function login_get()
     {
-        return view ('concrete.auth.login');
+        $msg = Session::get('login_msg');
+        Session::put('login_msg', '');
+        Session::save();
+        return view ('concrete.auth.login', ['expiredMsg' => $msg]);
     }
 
     public function login_post(Request $request) {
