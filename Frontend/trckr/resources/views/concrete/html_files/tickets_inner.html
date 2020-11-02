@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html class="rd-navbar-sidebar-active" lang="en">
+  <head>
+    <title>Ticket Management</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta property="og:title" content="Template Monster Admin Template">
+    <meta property="og:description" content="brevis, barbatus clabulares aliquando convertam de dexter, peritus capio. devatio clemens habitio est.">
+    <meta property="og:image" content="http://digipunk.netii.net/images/radar.gif">
+    <meta property="og:url" content="http://digipunk.netii.net">
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="components/base/base.css">
+    <script src="components/base/script.js"></script>
+  </head>
+  <body>
+    <div class="page">
+      <header class="section page-header">
+        <!--RD Navbar-->
+        <div class="rd-navbar-wrap">
+           <nav class="rd-navbar">
+            <div class="rd-navbar-panel">
+              <div class="rd-navbar-panel-cell">
+                <button class="btn btn-navbar-panel rd-navbar-sidebar-toggle white" data-navigation-switch="data-navigation-switch"><span class="fa-bars"></span></button>
+              </div>
+              <div class="rd-navbar-panel-cell rd-navbar-panel-cell-fullscreen">
+                <button class="btn btn-navbar-panel" data-fullscreen="html"><span class="fa-arrows-alt"></span></button>
+              </div>
+              <div class="rd-navbar-panel-center"></div>
+              <div class="rd-navbar-panel-cell rd-navbar-panel-cell-user">
+                <div class="btn btn-navbar-panel" data-multi-switch='{"targets":"#subpanel-user","scope":"#subpanel-user","isolate":"[data-multi-switch]"}'>
+                  <div class="media align-items-center"><img class="rounded-circle" src="images/users/user-03-50x50.jpg" width="30" height="30" alt=""/>
+                    <div class="media-body ml-2">
+                      <a href="login.html" class="white">John Doe</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="rd-navbar-panel-cell">
+                <button class="btn btn-navbar-panel"><a href="login.html" class="white"><span class="fa-sign-out"></span></a></button>
+              </div>
+
+              <div class="rd-navbar-panel-cell">
+                <button class="btn btn-navbar-panel" data-multi-switch='{"targets":".sidebar","scope":".sidebar","isolate":"[data-multi-switch]"}'><span class="fa-info-circle"></span></button>
+              </div>
+            </div>
+            <div class="rd-navbar-sidebar scroller scroller-vertical">
+              <div class="rd-navbar-sidebar-panel">
+                <div>
+                  <div class="group-15">
+                    <div class="rd-navbar-brand"><a href="index.html"><img src="images/hustle_logo_white.png" alt="" class="white_logo" /></a></div>
+                    <div class="rd-navbar-sidebar-search"> 
+                      <input class="form-control" type="text" placeholder="Search"/>
+                    </div>
+                  </div>
+                </div>
+                <button class="btn btn-navbar-panel rd-navbar-sidebar-toggle" data-navigation-switch="data-navigation-switch"><span class="fa-bars"></span></button>
+              </div>
+              <ul class="rd-navbar-nav">
+                <li class="rd-navbar-nav-item">
+                  <div class="rd-navbar-title"><span class="rd-navbar-title-icon"><span class="fa-ellipsis-h"></span></span><span class="rd-navbar-title-text">Menu</span></div>
+                </li>
+                <li class="rd-navbar-nav-item"><a class="rd-navbar-link" href="index.html"><span class="rd-navbar-icon fa-home"></span><span class="rd-navbar-link-text">Dashboard</span></a>
+                </li>
+                <li class="rd-navbar-nav-item"><a class="rd-navbar-link" href="#"><span class="rd-navbar-icon fa-sitemap"></span><span class="rd-navbar-link-text">Branches</span></a>
+                </li>
+                <li class="rd-navbar-nav-item"><a class="rd-navbar-link" href="#"><span class="rd-navbar-icon fa-columns"></span><span class="rd-navbar-link-text">Campaign Tasks</span></a>
+                  <ul class="rd-navbar-dropdown">
+                    <li class="rd-navbar-dropdown-item"><a class="rd-navbar-link" href="navbar.html"><span class="rd-navbar-icon mdi-file-presentation-box"></span>Create a task</a>
+                    </li>
+                    <li class="rd-navbar-dropdown-item"><a class="rd-navbar-link" href="#"><span class="rd-navbar-icon fa-wpforms"></span>View all tasks</a>
+                    </li>
+                  </ul>
+                </li>
+                <li class="rd-navbar-nav-item"><a class="rd-navbar-link" href="#"><span class="rd-navbar-icon fa-star"></span><span class="rd-navbar-link-text">Campaigns</span></a>
+                  <ul class="rd-navbar-dropdown">
+                    <li class="rd-navbar-dropdown-item"><a class="rd-navbar-link" href="admin-panels.html"><span class="rd-navbar-icon fa-book"></span>Create a campaign</a>
+                    </li>
+                    <li class="rd-navbar-dropdown-item"><a class="rd-navbar-link" href="admin-modals.html"><span class="rd-navbar-icon fa-window-maximize"></span>View all campaigns</a>
+                    </li>
+                  </ul>
+                </li>
+                <li class="rd-navbar-nav-item active"><a class="rd-navbar-link" href="tickets.html"><span class="rd-navbar-icon fa-server"></span>Ticket Management</a></li>
+              </ul>
+            </div>
+          </nav>
+        </div>
+      </header>
+      <section class="topbar">
+        <div class="container-fluid">
+          <div class="row row-15 align-items-center">
+            <div class="col-md-5">
+              <!-- Breadcrumbs-->
+              <ul class="breadcrumbs">
+                <li class="breadcrumbs-item"><a class="breadcrumbs-link" href="index.html"><span class="breadcrumbs-icon fa-home"></span><span>Dashboard</span></a></li>
+                <li class="breadcrumbs-item">Ticket Management
+                </li>
+                <li class="breadcrumbs-item">Camille San Antonio
+                </li>
+              </ul>
+            </div>
+ 
+          </div>
+      </section>
+
+      <section>
+        <div class="row no-gutters">
+          <div class="col-md-4 col-lg-3 col-xxl-2 bg-100">
+            <div class="px-3 py-4">
+              <div class="panel">
+                <div class="panel-body">
+                  <div class="list-block-container">
+                    <div class="list-block-title">Campaign Details</div>
+                    <div class="list-block">
+                      <span>Camille San Antonio</span>
+                      <span>mcsanantonio@gmail.com</span>
+                      <span>09178478820</span><br />
+                      <span>CEKASJ000121</span><br />
+                    </div>
+                    <br />
+                    <div class="list-block-title">Ticket Details</div>
+                    <div class="list-block">
+                      <span>Ticket ID: 3cbbda87-3052-4520-8eec-d18cdb35bc84</span><br />
+                      <span>Ticket Last Update: 10/10/2020 10:02:01</span><br />
+                      <!-- <span class="text-warning">Pending</span><br /> -->
+                    </div>
+
+                  </div>
+                 
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-8 col-lg-9 col-xxl-10 border-md-left">
+            <div class="bg-white">
+              <div class="group-15 p-3 d-flex flex-wrap justify-content-lg-between">
+                <div class="btn-group">
+                  <button class="btn btn-success"><span class="fa-check"></span></button>
+                  <button class="btn btn-danger"><span class="fa-remove"></span></button>
+                  <!-- <button class="btn btn-primary"><span class="fa-eye"></span></button> -->
+                </div>
+              </div>
+              <div class="table-responsive">
+                <table class="table table-hover table-align-1 table-vertical-align">
+                  <thead>
+                    <tr>
+                      <!-- <th scope="col">Select</th> -->
+                      <th scope="col">Timestamp</th>
+                      <th scope="col">Coordinates</th>
+                      <th scope="col">Task Question</th>
+                      <th scope="col">Task Answer</th>
+                      <th scope="col">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="row-action">
+                      <!-- <th scope="row">
+                        <div class="custom-control custom-checkbox custom-checkbox-primary">
+                          <input class="custom-control-input" type="checkbox" id="check1"/>
+                          <label class="custom-control-label" for="check1">
+                          </label>
+                        </div>
+                      </th> -->
+                      <td>10/10/2020 01:01:01</td>
+                      <td>10.0211 111.20121</td>
+                      <td>Presyo ng Eden Meltsarap 440g</td>
+                      <td>225</td>
+                      <td class="text-success">Approved</td>
+                    </tr>
+                    <tr class="row-action">
+                      <!-- <th scope="row">
+                        <div class="custom-control custom-checkbox custom-checkbox-primary">
+                          <input class="custom-control-input" type="checkbox" id="check1"/>
+                          <label class="custom-control-label" for="check1">
+                          </label>
+                        </div>
+                      </th> -->
+                      <td>10/10/2020 01:01:01</td>
+                      <td>10.0211 111.20121</td>
+                      <td>Upload a photo</td>
+                      <td><span class="list-inline-item"><img src="images/users/user-01-100x100.jpg" alt=""></span></td>
+                      <td class="text-warning">Pending</td>
+                    </tr>
+                    <tr class="row-action">
+                      <!-- <th scope="row">
+                        <div class="custom-control custom-checkbox custom-checkbox-primary">
+                          <input class="custom-control-input" type="checkbox" id="check1"/>
+                          <label class="custom-control-label" for="check1">
+                          </label>
+                        </div>
+                      </th> -->
+                      <td>10/10/2020 01:01:01</td>
+                      <td>10.0211 111.20121</td>
+                      <td>Presyo ng Eden Meltsarap 440g</td>
+                      <td>225</td>
+                      <td class="text-success">Approved</td>
+                    </tr>
+                    <tr class="row-action">
+                      <!-- <th scope="row">
+                        <div class="custom-control custom-checkbox custom-checkbox-primary">
+                          <input class="custom-control-input" type="checkbox" id="check1"/>
+                          <label class="custom-control-label" for="check1">
+                          </label>
+                        </div>
+                      </th> -->
+                      <td>10/10/2020 01:01:01</td>
+                      <td>10.0211 111.20121</td>
+                      <td>Presyo ng Eden Meltsarap 440g</td>
+                      <td>225</td>
+                      <td class="text-success">Approved</td>
+                    </tr>
+                    <tr class="row-action">
+                      <!-- <th scope="row">
+                        <div class="custom-control custom-checkbox custom-checkbox-primary">
+                          <input class="custom-control-input" type="checkbox" id="check1"/>
+                          <label class="custom-control-label" for="check1">
+                          </label>
+                        </div>
+                      </th> -->
+                      <td>10/10/2020 01:01:01</td>
+                      <td>10.0211 111.20121</td>
+                      <td>Presyo ng Eden Meltsarap 440g</td>
+                      <td>225</td>
+                      <td class="text-success">Approved</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <div class="sidebar sidebar-lg scroller scroller-vertical">
+        <div class="p-4">
+          <h3>Find Customer</h3>
+          <hr>
+          <div class="row row-15 align-items-end">
+            <div class="col-12 col-md-4 col-lg-12">
+              <div class="input-group form-group">
+                <div class="input-group-prepend">
+                  <label class="input-group-text" for="basic-addon11"><span class="fa-user"></span></label>
+                </div>
+                <input class="form-control" id="basic-addon11" type="text" name="id" placeholder="Customer ID#">
+              </div>
+            </div>
+            <div class="col-12 col-md-4 col-lg-12">
+              <div class="input-group form-group">
+                <div class="input-group-prepend">
+                  <label class="input-group-text" for="basic-addon12"><span class="fa-user"></span></label>
+                </div>
+                <input class="form-control" id="basic-addon12" type="text" name="cusName" placeholder="Customer Name">
+              </div>
+            </div>
+            <div class="col-12 col-md-4 col-lg-12">
+              <div class="input-group form-group">
+                <div class="input-group-prepend">
+                  <label class="input-group-text" for="basic-addon13"><span class="fa-envelope"></span></label>
+                </div>
+                <input class="form-control" id="basic-addon13" type="email" name="cusEmail" placeholder="Customer Email">
+              </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-12">
+              <p>Search Country</p>
+              <select class="form-control">
+                <option value="0" selected="selected">Filter by Location</option>
+                <option value="1">United States</option>
+                <option value="2">Europe</option>
+                <option value="3">Asia</option>
+                <option value="4">India</option>
+              </select>
+            </div>
+            <div class="col-12 col-md-6 col-lg-12">
+              <p>Search Company</p>
+              <select class="form-control">
+                <option value="0" selected="selected">Filter by Company</option>
+                <option value="1">Apple</option>
+                <option value="2">Sony</option>
+                <option value="3">Envato</option>
+                <option value="4">Microsoft</option>
+                <option value="5">Google</option>
+              </select>
+            </div>
+            <div class="col-12 col-md-4 col-lg-12">
+              <div class="row row-10">
+                <div class="col-12">
+                  <p>Registration Date</p>
+                </div>
+                <div class="col-12">
+                  <div class="input-group">
+                    <div class="input-group-prepend"><span class="input-group-text"><span class="fa-calendar"></span></span></div>
+                    <input class="form-control" type="text" name="datetime" data-datetimepicker='{"widgetPositioning":{"horizontal":"right"}}'>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="input-group">
+                    <div class="input-group-prepend"><span class="input-group-text"><span class="fa-calendar"></span></span></div>
+                    <input class="form-control" type="text" name="datetime" data-datetimepicker='{"widgetPositioning":{"horizontal":"right"}}'>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-12">
+              <hr>
+              <div class="group-10">
+                <button class="btn btn-primary" type="submit">Search</button>
+                <div class="d-inline-block">
+                  <div class="custom-control custom-checkbox">
+                    <input class="custom-control-input" type="checkbox" id="voinhmhw"/>
+                    <label class="custom-control-label" for="voinhmhw">Save Search
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="template-panel">
+        <div class="template-panel-heading">Template Panel
+          <button class="template-panel-switch fa-cog" data-multi-switch='{"targets":".template-panel","scope":".template-panel","isolate":"[data-multi-switch]"}'></button>
+        </div>
+        <div class="template-panel-body">
+          <div class="template-panel-group">
+            <button class="theme-switch fa-check active" title="Navbar Theme" style="border-color: #b5b5b5 #b5b5b5 #4b4a4a #4b4a4a; color: white;" data-theme-switch="concrete-navbar-default" data-theme='{"navbar-color":"#fff","navbar-bg":"#3d3c3c","navbar-hover-color":"#fff","navbar-hover-bg":"#fff","navbar-title-color":"#adb5bd","navbar-panel-bg":"#b5b5b5","navbar-brand-invert":"0%"}'></button>
+            <button class="theme-switch fa-check" title="Navbar Theme" style="border-color: #29d999 #29d999 #1a1f21 #1a1f21; color: white;" data-theme-switch="concrete-navbar-success" data-theme='{"navbar-color":"#fff","navbar-bg":"#1a1f21","navbar-hover-color":"#fff","navbar-hover-bg":"#ededed","navbar-title-color":"#adb5bd","navbar-panel-bg":"#29d999","navbar-brand-invert":"0%"}'></button>
+            <button class="theme-switch fa-check" title="Navbar Theme" style="border-color: #3e84d7 #3e84d7 #1a1f21 #1a1f21; color: white;" data-theme-switch="concrete-navbar-primary" data-theme='{"navbar-color":"#fff","navbar-bg":"#1a1f21","navbar-hover-color":"#fff","navbar-hover-bg":"#ededed","navbar-title-color":"#adb5bd","navbar-panel-bg":"#3e84d7","navbar-brand-invert":"0%"}'></button>
+            <button class="theme-switch fa-check" title="Navbar Theme" style="border-color: #fff #fff #666 #666; color: black;" data-theme-switch="concrete-navbar-light" data-theme='{"navbar-color":"#666","navbar-bg":"#efefef","navbar-hover-color":"#333","navbar-hover-bg":"#333","navbar-title-color":"#333","navbar-panel-bg":"#eee","navbar-brand-invert":"100%"}'></button>
+          </div>
+          <ul class="template-panel-list">
+            <ul class="template-panel-item"><a class="template-panel-link" href="../admindex/index.html">Admindex<span class="template-panel-popup"><img class="template-panel-preview" src="images/templates/template-01-400x174.png"></span></a></ul>
+            <ul class="template-panel-item"><a class="template-panel-link" href="../adminifix/index.html">Adminifix<span class="template-panel-popup"><img class="template-panel-preview" src="images/templates/template-02-400x174.png"></span></a></ul>
+            <ul class="template-panel-item"><a class="template-panel-link" href="../emerald/index.html">Emerald<span class="template-panel-popup"><img class="template-panel-preview" src="images/templates/template-03-400x174.png"></span></a></ul>
+            <ul class="template-panel-item"><a class="template-panel-link" href="../iodashboard/index.html">IoDashboard<span class="template-panel-popup"><img class="template-panel-preview" src="images/templates/template-04-400x174.png"></span></a></ul>
+            <ul class="template-panel-item"><a class="template-panel-link active" href="../concrete/index.html">Concrete<span class="template-panel-popup"><img class="template-panel-preview" src="images/templates/template-05-400x174.png"></span></a></ul>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
