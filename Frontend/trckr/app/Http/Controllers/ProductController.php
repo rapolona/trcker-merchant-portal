@@ -285,39 +285,33 @@ class ProductController extends Controller
         return view('concrete.product.edit', ['formMessage' => $msg, 'product' => $edit_product, 'product_id' => $product_id]);
     }
 
-    public function delete_product(Request $request)
+    public function delete_product($product_id, Request $request)
     {
-        $data = (array) $request->all();
+        $data = [
+            "product_id" => $product_id
+        ];
 
-        $api_endpoint = Config::get('trckr.backend_url') . "merchant/product";
-        $session = $request->session()->get('session_merchant');
-        $token = ( ! empty($session->token)) ? $session->token : "";
+        $response = $this->productService->delete($data);
 
-        $count = 1;
-        $debug = array();
-
-        $products = explode(",", $data['products']);
-        foreach($products as $p) {
-            $response = Http::withToken($token)->delete($api_endpoint, ["product_id" => $p]);
-            $debug[] = $response;
-
-            if ($response->status() !== 200)
-            {
-                //provide handling for failed merchant profile modification
-                return Response()->json([
-                    "success" => false,
-                    "message" => "Failed Deleting Product {$count}.", // with error: [{$response->status()}] {$response->body()}",
-                    "file" => json_encode($response),
-                    "data" => json_encode($p)
-                ], 422);
-            }
-            $count+=1;
+        if ($response->status() !== 200)
+        {
+            //provide handling for failed Edit product
+            $msg = [
+                "success" => false,
+                "message" => "Failed to Delete Product.",
+                "type" => 'error',
+            ];
+        }else {
+            $msg = [
+                "success" => true,
+                "type" => "primary", // success
+                "message" => "Product was successfully deleted!",
+            ];
         }
 
-        return Response()->json([
-            "success" => true,
-            "message" => "Deleted Products successful!", //. $response->body(),
-            "file" => $data['products']
-        ]);
+        $request->session()->flash('formMessage', $msg);
+
+        return redirect('/merchant/product')
+            ->withInput();
     }
 }

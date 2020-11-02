@@ -42,7 +42,7 @@ class ProductRepository extends Repository
         }
     }
 
-    public function delete($request)
+    public function delete($data)
     {
         try {
             return $this->validateResponse(Http::withToken(Config::get('gbl_profile')->token)->delete($this->api, $data));

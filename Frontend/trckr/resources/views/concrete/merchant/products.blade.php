@@ -9,17 +9,23 @@
                     </div>
                 </div>
                 <div class="col-sm-5">
-                    <div class="btn-group pull-right" style="margin-top: 10px">
-                        <button class="btn btn-primary btn-sm" type="button" value="Upload CSV" id="upload_csv">
-                            <span class="fa-upload"></span>
-                            <span class="spinner-border spinner-border-sm" role="status" id="loader_upload_csv" aria-hidden="true" disabled> </span>
-                            Upload CSV
-                        </button>
-                        <a href="{{url('/merchant/product/add')}}" type="button" class="btn btn-primary btn-sm pull-right" id="add">
-                            <span class="fa-plus"></span>
-                            Add
-                        </a>
-                    </div>
+
+                    <form method="POST" enctype="multipart/form-data" id="file_upload" action="javascript:void(0)" >
+                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                        <input type="file" name="file" id="file" style="display:none">
+                        <div class="btn-group pull-right" style="margin-top: 10px">
+                            <button class="btn btn-primary btn-sm" type="button" value="Upload CSV" id="upload_csv">
+                                <span class="fa-upload"></span>
+                                <span class="spinner-border spinner-border-sm" role="status" id="loader_upload_csv" aria-hidden="true" disabled> </span>
+                                Upload CSV
+                            </button>
+                            <a href="{{url('/merchant/product/add')}}" type="button" class="btn btn-primary btn-sm pull-right" id="add">
+                                <span class="fa-plus"></span>
+                                Add
+                            </a>
+                        </div>
+                    </form>
+
                 </div>
             </div>
         </div>
@@ -55,7 +61,7 @@
                             <td>
                                 <div class="btn-group">
                                     <a class="btn btn-warning btn-sm" type="button" href="{{url('/merchant/product/edit/' . $product->product_id )}}"><span class="fa-edit"></span></a>
-                                    <a class="btn btn-danger btn-sm" type="button" data-modal-trigger='{"target":".modal-active","animClass":"rotate-down"}' target-href="{{url('/merchant/product/delete/' . $product->product_id )}}"><span class="mdi-delete"></span></a>
+                                    <a class="btn btn-danger btn-sm deleteProduct" type="button" target-href="{{url('/merchant/product/delete/' . $product->product_id )}}"><span class="mdi-delete"></span></a>
                                 </div>
                             </td>
                         </tr>
@@ -65,28 +71,20 @@
             </div>
         </div>
     </div>
-
-    <div class="modal modal-1 modal-active fade" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3 class="modal-title">Hustle-Portal</h3>
-                    <button class="close" data-dismiss="modal" aria-label="Close"><span>×</span></button>
-                </div>
-                <div class="modal-body">
-                    <div class="text-center"><h3>Are you sure to delete this record?</h3></div>
-                </div>
-            </div>
-        </div>
-    </div>
 @stop
 
 
 @section('js')
-    <script type="text/javascript" src="{{url('/vendor/trckr/trckr.js')}}"></script>
     <script type="text/javascript">
 
         $(document).ready(function (e) {
+
+            $(document).on("click", "a.deleteProduct", function() {
+                if (confirm('Are you sure to delete this record ?')) {
+                    window.location.href = $(this).attr('target-href');
+                }
+            });
+
             $('#delete').click(function(e){
                 var formData = new FormData();
                 var products = [];
