@@ -2,19 +2,21 @@
 
 namespace App\Http\Controllers;
 
-Use App\User;
 use App\Document;
 use Illuminate\Http\Request;
-use Illuminate\Http\Client\Response;
-use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Validator,Redirect,File;
 use Config, Session;
+use App\Services\ProductService;
 
 class ProductController extends Controller
 {
+    private $productService;
+
+    public function __construct(ProductService $productService)
+    {
+        $this->productService = $productService;
+    }
     public function upload_product(Request $request)
     {
         request()->validate([
@@ -131,15 +133,8 @@ class ProductController extends Controller
 
     public function product(Request $request)
     {
-        //api call for products
-        //http://localhost:6001/merchant/products
 
-        $api_endpoint = Config::get('trckr.backend_url') . "merchant/products";
-
-        $session = $request->session()->get('session_merchant');
-        $token = ( ! empty($session->token)) ? $session->token : "";
-
-        $response = Http::withToken($token)->get($api_endpoint, []);
+        $response = $this->productService->getAll();
 
         if ($response->status() !== 200)
         {

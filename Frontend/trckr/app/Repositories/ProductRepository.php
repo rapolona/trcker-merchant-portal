@@ -12,7 +12,7 @@ class ProductRepository
 
     public function __construct()
     {
-        $this->api = Config::get('trckr.backend_url') . "merchant/product/";
+        $this->api = Config::get('trckr.backend_url') . "merchant/products";
     }
 
     public function getAll()

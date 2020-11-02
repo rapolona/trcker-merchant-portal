@@ -3,15 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Contracts\Events\Dispatcher;
-use JeroenNoten\LaravelAdminLte\Events\BuildingMenu;
 
-
-Use App\User;
-use Illuminate\Http\Client\Response;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Http;
 use Config, Session;
 use App\Services\DashboardService;
 use Illuminate\Support\Facades\Validator;
@@ -34,9 +26,9 @@ class MainController extends Controller
 
         if ($activeCampaigns->status() !== 200)
         {
-            if ($activecampaigns->status() === 403) {
+            if ($activeCampaigns->status() === 403) {
                 $validator = Validator::make($request->all(), []);
-                $validator->getMessageBag()->add('email', "Session Expired. Please login again. {$activecampaigns->body()}");
+                $validator->getMessageBag()->add('email', "Session Expired. Please login again. {$activeCampaigns->body()}");
 
                 return redirect('/')
                     ->withErrors($validator)
@@ -44,7 +36,7 @@ class MainController extends Controller
             }
 
             if ($activeCampaigns->status() === 500) {
-                $handler = json_decode($activecampaigns->body());
+                $handler = json_decode($activeCampaigns->body());
 
                 if ($handler->message->name == "JsonWebTokenError")
 
