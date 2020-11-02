@@ -309,9 +309,7 @@ class ProductController extends Controller
             ];
         }
 
-        $request->session()->flash('formMessage', $msg);
-
         return redirect('/merchant/product')
-            ->withInput();
+            ->with("formMessage", $msg);
     }
 }

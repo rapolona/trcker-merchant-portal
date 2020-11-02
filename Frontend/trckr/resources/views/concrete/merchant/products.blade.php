@@ -19,10 +19,15 @@
                                 <span class="spinner-border spinner-border-sm" role="status" id="loader_upload_csv" aria-hidden="true" disabled> </span>
                                 Upload CSV
                             </button>
-                            <a href="{{url('/merchant/product/add')}}" type="button" class="btn btn-primary btn-sm pull-right" id="add">
+                            <a href="{{url('/merchant/product/add')}}" type="button" class="btn btn-success btn-sm pull-right" id="add">
                                 <span class="fa-plus"></span>
                                 Add
                             </a>
+                            <button class="btn btn-danger btn-sm" type="button" id="delete">
+                                <span class="mdi-delete-variant"></span>
+                                <span class="spinner-border spinner-border-sm" role="status" id="loader_upload_csv" aria-hidden="true" disabled> </span>
+                                Bulk Delete
+                            </button>
                         </div>
                     </form>
 
