@@ -64,3 +64,11 @@
         <li class="breadcrumbs-item"><a class="breadcrumbs-link" href="index.html"><span class="breadcrumbs-icon fa-home"></span><span>Dashboard</span></a></li>
     </ul>
 </section>
+
+@if(isset($formMessage))
+<section class="global-message">
+<div class="alert alert-dismissible alert-{{ $formMessage['type'] }} alert-sm" role="alert"><span class="alert-icon fa-warning"></span><span>{{ $formMessage['message'] }}</span>
+    <button class="close" type="button" data-dismiss="alert" aria-label="Close"><span class="fa-close" aria-hidden="true"></span></button>
+</div>
+</section>
+@endif

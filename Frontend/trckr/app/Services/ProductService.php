@@ -18,9 +18,9 @@ class ProductService
         return $this->repository->getAll();
     }
 
-    public function create($request)
+    public function create($data)
     {
-        return $this->repository->create();
+        return $this->repository->create($data);
     }
 
     public function update($request)

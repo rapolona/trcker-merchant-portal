@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="rd-navbar-sidebar-active page-small-footer" lang="en" url="{{ asset('/') }}">
 <head>
-    <title>Dashboard</title>
+    <title>Hustle Portal</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">

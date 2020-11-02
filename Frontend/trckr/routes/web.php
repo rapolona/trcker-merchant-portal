@@ -35,9 +35,9 @@ Route::group(["middleware" => ["merchantAuth"]], function() {
         Route::get('/product', 'ProductController@product');
         Route::get('/product/add', 'ProductController@add_product_get');
         Route::post('/product/add', 'ProductController@add_product_post');
-        Route::get('/product/edit', 'ProductController@edit_product_get');
-        Route::post('/product/edit', 'ProductController@edit_product_post');
-        Route::post('/product/delete', 'ProductController@delete_product');
+        Route::get('/product/edit/{id}', 'ProductController@edit_product_get');
+        Route::post('/product/edit/{id}', 'ProductController@edit_product_post');
+        Route::get('/product/delete/{id}', 'ProductController@delete_product');
 
         //Ajax for Uploader
         Route::post('/product/upload', 'ProductController@upload_product');

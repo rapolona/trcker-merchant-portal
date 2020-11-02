@@ -142,11 +142,21 @@ class ProductController extends Controller
         return view('concrete.merchant.products', ['products' => json_decode($response)]);
     }
 
+    /**
+     * Create controller instance
+     *
+     * @return View
+     */
     public function add_product_get()
     {
         return view('concrete.product.add', []);
     }
 
+    /**
+     * Create controller instance
+     *
+     * @return Json
+     */
     public function add_product_post(Request $request)
     {
         $data = (array) $request->all();
@@ -169,32 +179,22 @@ class ProductController extends Controller
             return Response()->json([
                 "success" => false,
                 "message" => $error_string,
+                "type" => "error",
                 "file" => $data,
             ], 422);
         }
 
-        $api_endpoint = Config::get('trckr.backend_url') . "merchant/product";
+        $response = $this->productService->create($data);
 
-        $session = $request->session()->get('session_merchant');
-        $token = ( ! empty($session->token)) ? $session->token : "";
-
-        $response = Http::withToken($token)->post($api_endpoint, $data);
-
-        if ($response->status() !== 200)
-        {
-            //provide handling for failed merchant profile modification
-            return Response()->json([
-                "success" => false,
-                "message" => "Failed to Add Product.", // with error:" . $response->body(),
-                "file" => $data,
-            ], 422);
-        }
-
-        return Response()->json([
+        $msg = [
             "success" => true,
-            "message" => "Add Product successful!", //. $response->body(),
-            "file" => $data,
-        ]);
+            "type" => "primary", // success
+            "message" => "Add Product successful!",
+        ];
+
+
+        return view('concrete.product.add', ['formMessage' => $msg ]);
+
     }
 
     public function edit_product_get(Request $request)

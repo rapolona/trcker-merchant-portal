@@ -12,7 +12,7 @@ class ProductRepository extends Repository
 
     public function __construct()
     {
-        $this->api = Config::get('trckr.backend_url') . "merchant/products";
+        $this->api = Config::get('trckr.backend_url') . "merchant/product";
     }
 
     public function getAll()
@@ -24,19 +24,19 @@ class ProductRepository extends Repository
         }
     }
 
-    public function create($request)
+    public function create($data)
     {
         try {
-            return $this->validateResponse(Http::withToken(Config::get('gbl_profile')->token)->post($this->api, []));
+            return $this->validateResponse(Http::withToken(Config::get('gbl_profile')->token)->post($this->api, $data));
         } catch(\Exception $e) {
             return false;
         }
     }
 
-    public function update($request)
+    public function update($data)
     {
         try {
-            return $this->validateResponse(Http::withToken(Config::get('gbl_profile')->token)->put($this->api, []));
+            return $this->validateResponse(Http::withToken(Config::get('gbl_profile')->token)->put($this->api, $data));
         } catch(\Exception $e) {
             return false;
         }
