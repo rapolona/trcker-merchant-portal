@@ -23,13 +23,13 @@ class ProductService
         return $this->repository->create($data);
     }
 
-    public function update($request)
+    public function update($data)
     {
-        return $this->repository->update($request);
+        return $this->repository->update($data);
     }
 
-    public function delete($request)
+    public function delete($data)
     {
-        return $this->repository->delete($request);
+        return $this->repository->delete($data);
     }
 }

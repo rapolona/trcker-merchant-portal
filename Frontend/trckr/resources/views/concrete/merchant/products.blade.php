@@ -55,13 +55,27 @@
                             <td>
                                 <div class="btn-group">
                                     <a class="btn btn-warning btn-sm" type="button" href="{{url('/merchant/product/edit/' . $product->product_id )}}"><span class="fa-edit"></span></a>
-                                    <a class="btn btn-danger btn-sm" type="button" href="{{url('/merchant/product/delete/' . $product->product_id )}}"><span class="mdi-delete"></span></a>
+                                    <a class="btn btn-danger btn-sm" type="button" data-modal-trigger='{"target":".modal-active","animClass":"rotate-down"}' target-href="{{url('/merchant/product/delete/' . $product->product_id )}}"><span class="mdi-delete"></span></a>
                                 </div>
                             </td>
                         </tr>
                     @endforeach
                     </tbody>
                 </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal modal-1 modal-active fade" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">Hustle-Portal</h3>
+                    <button class="close" data-dismiss="modal" aria-label="Close"><span>×</span></button>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center"><h3>Are you sure to delete this record?</h3></div>
+                </div>
             </div>
         </div>
     </div>

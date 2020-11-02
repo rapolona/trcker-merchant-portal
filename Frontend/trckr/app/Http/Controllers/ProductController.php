@@ -197,49 +197,19 @@ class ProductController extends Controller
 
     }
 
-    public function edit_product_get(Request $request)
+    /**
+     * Edit forms controller instance
+     *
+     * @return Json
+     */
+    public function edit_product_get($product_id)
     {
-        $product_id = $request->query('product_id');
+        $response = $this->productService->getAll();
 
-        $api_endpoint = Config::get('trckr.backend_url') . "merchant/product";
-
-        $session = $request->session()->get('session_merchant');
-        $token = ( ! empty($session->token)) ? $session->token : "";
-
-        $response = Http::withToken($token)->get($api_endpoint, []);
-
-        if ($response->status() !== 200)
-        {
-            if ($response->status() === 403) {
-                $validator = Validator::make($request->all(), []);
-                $validator->getMessageBag()->add('email', "Session Expired. Please login again. {$response->body()}");
-
-                return redirect('/')
-                    ->withErrors($validator)
-                    ->withInput();
-            }
-
-            if ($response->status() === 500) {
-                $handler = json_decode($response->body());
-
-                if ($handler->message->name == "JsonWebTokenError")
-
-                $validator = Validator::make($request->all(), []);
-                $validator->getMessageBag()->add('email', "Session Expired. Please login again. {$response->body()}");
-
-                return redirect('/')
-                    ->withErrors($validator)
-                    ->withInput();
-            }
-
-            //general handling
-            return redirect('/dashboard');
-        }
-
-        $productes = json_decode($response->body());
+        $products = json_decode($response->body());
 
         $edit_product = array();
-        foreach($productes as $b)
+        foreach($products as $b)
         {
             if ($b->product_id == $product_id) {
                 $edit_product = $b;
@@ -249,15 +219,13 @@ class ProductController extends Controller
         return view('concrete.product.edit', ['product' => $edit_product, 'product_id' => $product_id]);
     }
 
-    public function edit_product_post(Request $request)
+    /**
+     * Update Product
+     *
+     * @return Json
+     */
+    public function edit_product_post($product_id, Request $request)
     {
-        $product_id = $request->query('product_id');
-
-        //TODO: Field validation, will throw error on hit as response
-        $data = (array) $request->all();
-        //$data['id'] = $product_id;
-        //$data['product_id'] = $product_id;
-
         $validator = Validator::make($request->all(), [
             'product_name' => 'required|max:64',
             'product_description' => 'required|max:255'
@@ -280,28 +248,41 @@ class ProductController extends Controller
             ], 422);
         }
 
-        $api_endpoint = Config::get('trckr.backend_url') . "merchant/product";
 
-        $session = $request->session()->get('session_merchant');
-        $token = ( ! empty($session->token)) ? $session->token : "";
-
-        $response = Http::withToken($token)->put($api_endpoint, $data);
+        $data = (array) $request->all();
+        $response = $this->productService->update($data);
 
         if ($response->status() !== 200)
         {
             //provide handling for failed Edit product
-            return Response()->json([
+            $msg = [
                 "success" => false,
-                "message" => "Failed to Edit Product.", // with error:" . $response->body(),
-                "file" => $data,
-            ], 422);
+                "message" => "Failed to Edit Product. {$data}",
+                "type" => 'error',
+            ];
+        }else {
+            $msg = [
+                "success" => true,
+                "type" => "primary", // success
+                "message" => "Product was successfully modified!",
+            ];
+
+
         }
 
-        return Response()->json([
-            "success" => true,
-            "message" => "Product was successfully modified!",
-            "file" => $data,
-        ]);
+        $response = $this->productService->getAll();
+
+        $products = json_decode($response->body());
+
+        $edit_product = array();
+        foreach($products as $b)
+        {
+            if ($b->product_id == $product_id) {
+                $edit_product = $b;
+            }
+        }
+
+        return view('concrete.product.edit', ['formMessage' => $msg, 'product' => $edit_product, 'product_id' => $product_id]);
     }
 
     public function delete_product(Request $request)

@@ -7,14 +7,15 @@
             <div class="panel-title">Product Details</div>
         </div>
         <div class="panel-body">
-            <form class="form-vertical" id="add_product" method="post">
+            <form class="form-vertical" method="post">
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                <input type="hidden" name="product_id" value="{{ $product->product_id }}" />
                 <div class="row form-group">
                     <div class="col-sm-2 text-sm-right">
                         <label class="col-form-label" for="standardInput">Product Name:</label>
                     </div>
                     <div class="col-sm-10">
-                        <input required type="text" class="form-control" id="input_product_name" name="product_name" value="" placeholder="Enter Product Name">
+                        <input required type="text" class="form-control" id="input_product_name" name="product_name" value="{{ $product->product_name }}" placeholder="Enter Product Name">
                     </div>
                 </div>
 
@@ -23,7 +24,7 @@
                         <label class="col-form-label" for="standardInput">Product Description:</label>
                     </div>
                     <div class="col-sm-10">
-                        <input type="text" required class="form-control" id="input_product_description" name="product_description" value="" placeholder="Enter Product Description">
+                        <input type="text" required class="form-control" id="input_product_description" name="product_description" value="{{ $product->product_description }}" placeholder="Enter Product Description">
                     </div>
                 </div>
 
