@@ -9,28 +9,30 @@
                     </div>
                 </div>
                 <div class="col-sm-5">
-
-                    <form method="POST" enctype="multipart/form-data" id="file_upload" action="javascript:void(0)" >
-                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                        <input type="file" name="file" id="file" style="display:none">
-                        <div class="btn-group pull-right" style="margin-top: 10px">
+                    <div class="btn-group pull-right" style="margin-top: 10px">
+                        <form method="POST" enctype="multipart/form-data" id="file_upload" action="javascript:void(0)" >
+                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                            <input type="file" name="file" id="file" style="display:none">
                             <button class="btn btn-primary btn-sm" type="button" value="Upload CSV" id="upload_csv">
                                 <span class="fa-upload"></span>
                                 <span class="spinner-border spinner-border-sm" role="status" id="loader_upload_csv" aria-hidden="true" disabled> </span>
                                 Upload CSV
                             </button>
-                            <a href="{{url('/merchant/product/add')}}" type="button" class="btn btn-success btn-sm pull-right" id="add">
-                                <span class="fa-plus"></span>
-                                Add
-                            </a>
+                        </form>
+                        <a href="{{url('/merchant/product/add')}}" type="button" class="btn btn-success btn-sm pull-right" id="add">
+                            <span class="fa-plus"></span>
+                            Add
+                        </a>
+                        <form method="POST" id="deleteForm" action="{{ url('merchant/product/bulkdelete')  }}" >
+                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                            <input type="hidden" name="delete_ids" id="delete_ids"  value="">
                             <button class="btn btn-danger btn-sm" type="button" id="delete">
                                 <span class="mdi-delete-variant"></span>
                                 <span class="spinner-border spinner-border-sm" role="status" id="loader_upload_csv" aria-hidden="true" disabled> </span>
                                 Bulk Delete
                             </button>
-                        </div>
-                    </form>
-
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -91,24 +93,17 @@
             });
 
             $('#delete').click(function(e){
-                var formData = new FormData();
-                var products = [];
+                let products = [];
 
                 $.each($("input[name='product_id']:checked"), function(){
                     products.push($(this).attr("id"));
                 });
 
-                if (products.length < 1){
-                    $(".modal-title").text("Invalid Delete Selection!");
-                    $(".modal-body").html("<p>Please check at least one product!</p>");
-                    $("#myModal").modal('show');
-                    return;
+                $('#delete_ids').val(JSON.stringify(products));
+
+                if (confirm('Are you sure to delete this records ?')) {
+                    $("#deleteForm").submit();
                 }
-
-                formData.append('products', products);
-                formData.append('_token', "{{ csrf_token() }}");
-
-                post("{{url('/merchant/product/delete')}}", "Delete Product", "delete", formData, "{{url('/product')}}");
             });
 
             $('#upload_csv').click(function(e){

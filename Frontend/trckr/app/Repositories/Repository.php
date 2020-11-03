@@ -8,8 +8,8 @@ Class Repository
 {
     public function validateResponse($response)
     {
-        return $response; // REMOVE THIS AFTER TEST
-        if ($response->status() !== 200)
+        $expiredHttpCodes = ['500', '403'];
+        if (in_array($response->status(), $expiredHttpCodes))
         {
             $message = json_decode($response->body());
             $message = "Session Expired. Please login again. {$message->message}";

@@ -139,7 +139,7 @@ class ProductController extends Controller
     public function product(Request $request)
     {
         $response = $this->productService->getAll();
-        return view('concrete.merchant.products', ['products' => json_decode($response)]);
+        return view('concrete.merchant.products', ['products' => $response]);
     }
 
     /**
@@ -188,35 +188,22 @@ class ProductController extends Controller
 
         $msg = [
             "success" => true,
-            "type" => "primary", // success
+            "type" => "success",
             "message" => "Add Product successful!",
         ];
 
-
         return view('concrete.product.add', ['formMessage' => $msg ]);
-
     }
 
     /**
      * Edit forms controller instance
      *
-     * @return Json
+     * @return View
      */
-    public function edit_product_get($product_id)
+    public function edit_product_get($productId)
     {
-        $response = $this->productService->getAll();
-
-        $products = json_decode($response->body());
-
-        $edit_product = array();
-        foreach($products as $b)
-        {
-            if ($b->product_id == $product_id) {
-                $edit_product = $b;
-            }
-        }
-
-        return view('concrete.product.edit', ['product' => $edit_product, 'product_id' => $product_id]);
+        $product = $this->productService->get($productId);
+        return view('concrete.product.edit', ['product' => $product, 'product_id' => $productId]);
     }
 
     /**
@@ -224,7 +211,7 @@ class ProductController extends Controller
      *
      * @return Json
      */
-    public function edit_product_post($product_id, Request $request)
+    public function edit_product_post($productId, Request $request)
     {
         $validator = Validator::make($request->all(), [
             'product_name' => 'required|max:64',
@@ -252,39 +239,21 @@ class ProductController extends Controller
         $data = (array) $request->all();
         $response = $this->productService->update($data);
 
-        if ($response->status() !== 200)
-        {
-            //provide handling for failed Edit product
-            $msg = [
-                "success" => false,
-                "message" => "Failed to Edit Product. {$data}",
-                "type" => 'error',
-            ];
-        }else {
-            $msg = [
-                "success" => true,
-                "type" => "primary", // success
-                "message" => "Product was successfully modified!",
-            ];
+        $msg = [
+            "success" => true,
+            "type" => "success",
+            "message" => "Product was successfully modified!",
+        ];
 
-
-        }
-
-        $response = $this->productService->getAll();
-
-        $products = json_decode($response->body());
-
-        $edit_product = array();
-        foreach($products as $b)
-        {
-            if ($b->product_id == $product_id) {
-                $edit_product = $b;
-            }
-        }
-
-        return view('concrete.product.edit', ['formMessage' => $msg, 'product' => $edit_product, 'product_id' => $product_id]);
+        $product = $this->productService->get($productId);
+        return view('concrete.product.edit', ['formMessage' => $msg, 'product' => $product, 'product_id' => $productId]);
     }
 
+    /**
+     * Delete Single Product
+     *
+     * @return Redirect
+     */
     public function delete_product($product_id, Request $request)
     {
         $data = [
@@ -293,21 +262,39 @@ class ProductController extends Controller
 
         $response = $this->productService->delete($data);
 
-        if ($response->status() !== 200)
-        {
-            //provide handling for failed Edit product
-            $msg = [
-                "success" => false,
-                "message" => "Failed to Delete Product.",
-                "type" => 'error',
+        $msg = [
+            "success" => true,
+            "type" => "success",
+            "message" => "Product was successfully deleted!",
+        ];
+
+        return redirect('/merchant/product')
+            ->with("formMessage", $msg);
+    }
+
+    /**
+     * Delete Multiple Product
+     *
+     * @return Redirect
+     */
+    public function bulkDelete(Request $request)
+    {
+
+        $ids = json_decode($request->delete_ids);
+
+        foreach($ids as $product_id){
+            $data = [
+                "product_id" => $product_id
             ];
-        }else {
-            $msg = [
-                "success" => true,
-                "type" => "primary", // success
-                "message" => "Product was successfully deleted!",
-            ];
+
+            $response = $this->productService->delete($data);
         }
+
+        $msg = [
+            "success" => true,
+            "type" => "success",
+            "message" => "Products were successfully deleted!",
+        ];
 
         return redirect('/merchant/product')
             ->with("formMessage", $msg);
