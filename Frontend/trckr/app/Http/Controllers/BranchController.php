@@ -172,19 +172,7 @@ class BranchController extends Controller
 
         if ($validator->fails())
         {
-            $error_string = "<b>Fields with Errors</b><br/>";
-            foreach ($validator->errors()->messages() as $k => $v)
-            {
-                $error_string .= "{$k}: <br/>";
-                foreach ($v as $l)
-                    $error_string .= "{$l}<br/>";
-            }
-
-            return Response()->json([
-                "success" => false,
-                "message" => $error_string,
-                "file" => $data,
-            ], 422);
+            return view('concrete.branch.add', [ 'errors' => $validator->errors()->messages()]);
         }
 
         $api_endpoint = Config::get('trckr.backend_url') . "merchant/branch";

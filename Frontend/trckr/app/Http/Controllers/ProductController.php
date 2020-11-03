@@ -155,7 +155,7 @@ class ProductController extends Controller
     /**
      * Create controller instance
      *
-     * @return Json
+     * @return View
      */
     public function add_product_post(Request $request)
     {
@@ -168,20 +168,7 @@ class ProductController extends Controller
 
         if ($validator->fails())
         {
-            $error_string = "<b>Fields with Errors</b><br/>";
-            foreach ($validator->errors()->messages() as $k => $v)
-            {
-                $error_string .= "{$k}: <br/>";
-                foreach ($v as $l)
-                    $error_string .= "{$l}<br/>";
-            }
-
-            return Response()->json([
-                "success" => false,
-                "message" => $error_string,
-                "type" => "error",
-                "file" => $data,
-            ], 422);
+            return redirect()->back()->withErrors($validator)->withInput();
         }
 
         $response = $this->productService->create($data);
@@ -220,21 +207,8 @@ class ProductController extends Controller
 
         if ($validator->fails())
         {
-            $error_string = "<b>Fields with Errors</b><br/>";
-            foreach ($validator->errors()->messages() as $k => $v)
-            {
-                $error_string .= "{$k}: <br/>";
-                foreach ($v as $l)
-                    $error_string .= "{$l}<br/>";
-            }
-
-            return Response()->json([
-                "success" => false,
-                "message" => $error_string,
-                "file" => $data,
-            ], 422);
+            return redirect()->back()->withErrors($validator)->withInput();
         }
-
 
         $data = (array) $request->all();
         $response = $this->productService->update($data);
