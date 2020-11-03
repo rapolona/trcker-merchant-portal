@@ -13,13 +13,23 @@ class TaskService
         $this->repository = $repository;
     }
 
-    public function create($request)
+    public function create($data)
     {
-        return $this->repository->create();
+        return json_decode($this->repository->create($data));
     }
 
-    public function update($request)
+    public function update($data)
     {
-        return $this->repository->update($request);
+        return json_decode($this->repository->update($data));
+    }
+
+    public function getTaskByMerchant($data)
+    {
+        return json_decode($this->repository->get($data));
+    }
+
+    public function getTaskById($data)
+    {
+        return json_decode($this->repository->get($data));
     }
 }

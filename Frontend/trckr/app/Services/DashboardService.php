@@ -15,11 +15,11 @@ class DashboardService
 
     public function getActiveCampaign()
     {
-        return $this->repository->listActiveCampaigns();
+        return json_decode($this->repository->listActiveCampaigns());
     }
 
     public function getTotalRespondents()
     {
-        return $this->repository->getTotalRespondents();
+        return json_decode($this->repository->getTotalRespondents());
     }
 }

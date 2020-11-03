@@ -18,16 +18,16 @@ class ProductRepository extends Repository
     public function getAll()
     {
         try {
-            return $this->validateResponse(Http::withToken(Config::get('gbl_profile')->token)->get($this->api . 'products' , []));
+            return $this->validateResponse(Http::withToken($this->token())->get($this->api . 'products' , []));
         } catch(\Exception $e) {
             return false;
         }
     }
 
-    public function get($productId)
+    public function get($id)
     {
         try {
-            return $this->validateResponse(Http::withToken(Config::get('gbl_profile')->token)->get($this->api . 'product/' . $productId , []));
+            return $this->validateResponse(Http::withToken($this->token())->get($this->api . 'product/' . $id , []));
         } catch(\Exception $e) {
             return false;
         }
@@ -36,7 +36,7 @@ class ProductRepository extends Repository
     public function create($data)
     {
         try {
-            return $this->validateResponse(Http::withToken(Config::get('gbl_profile')->token)->post($this->api . 'product', $data));
+            return $this->validateResponse(Http::withToken($this->token())->post($this->api . 'product', $data));
         } catch(\Exception $e) {
             return false;
         }
@@ -45,7 +45,7 @@ class ProductRepository extends Repository
     public function update($data)
     {
         try {
-            return $this->validateResponse(Http::withToken(Config::get('gbl_profile')->token)->put($this->api . 'product', $data));
+            return $this->validateResponse(Http::withToken($this->token())->put($this->api . 'product', $data));
         } catch(\Exception $e) {
             return false;
         }
@@ -54,7 +54,7 @@ class ProductRepository extends Repository
     public function delete($data)
     {
         try {
-            return $this->validateResponse(Http::withToken(Config::get('gbl_profile')->token)->delete($this->api . 'product', $data));
+            return $this->validateResponse(Http::withToken($this->token())->delete($this->api . 'product', $data));
         } catch(\Exception $e) {
             return false;
         }

@@ -15,19 +15,37 @@ class TaskRepository
         $this->api = Config::get('trckr.backend_url') . "merchant/task/";
     }
 
-    public function create()
+    public function create($data)
     {
         try {
-            return Http::withToken(Config::get('gbl_profile')->token)->post($this->api, []);
+            return $this->validateResponse(Http::withToken($this->token())->post($this->api, $data));
         } catch(\Exception $e) {
             return false;
         }
     }
 
-    public function update()
+    public function update($data)
     {
         try {
-            return Http::withToken(Config::get('gbl_profile')->token)->put($this->api, []);
+            return $this->validateResponse(Http::withToken($this->token())->put($this->api, $data));
+        } catch(\Exception $e) {
+            return false;
+        }
+    }
+
+    public function get($data)
+    {
+        try {
+            return $this->validateResponse(Http::withToken($this->token())->get($this->api , $data));
+        } catch(\Exception $e) {
+            return false;
+        }
+    }
+
+    public function getAll()
+    {
+        try {
+            return $this->validateResponse(Http::withToken($this->token())->get($this->api , []));
         } catch(\Exception $e) {
             return false;
         }

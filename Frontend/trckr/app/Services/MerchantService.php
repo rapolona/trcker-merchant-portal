@@ -13,28 +13,28 @@ class MerchantService
         $this->repository = $repository;
     }
 
-    public function getProfile($request)
+    public function getProfile($data)
     {
-        return $this->repository->get($request);
+        return json_decode($this->repository->get($data));
     }
 
-    public function update($request)
+    public function update($data)
     {
-        return $this->repository->update($request);
+        return json_decode($this->repository->update($data));
     }
 
-    public function campaign($request)
+    public function campaign($data)
     {
-        return $this->repository->campaign();
+        return json_decode($this->repository->campaign($data));
     }
 
-    public function login($request)
+    public function login($data)
     {
-        return $this->repository->login($request);
+        return json_decode($this->repository->login($data));
     }
 
-    public function logout($request)
+    public function logout($data)
     {
-        return $this->repository->logout($request);
+        return json_decode($this->repository->logout($data));
     }
 }

@@ -3,6 +3,7 @@ namespace App\Repositories;
 
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
+use Config;
 
 Class Repository
 {
@@ -19,5 +20,10 @@ Class Repository
         }
 
         return $response;
+    }
+
+    public function token()
+    {
+        return Config::get('gbl_profile')->token;
     }
 }

@@ -13,9 +13,9 @@ class AdminService
         $this->repository = $repository;
     }
 
-    public function create($request)
+    public function create($data)
     {
-        return $this->dashboardRepository->create($request);
+        return json_decode($this->dashboardRepository->create($data));
     }
 
 }
