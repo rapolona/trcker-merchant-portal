@@ -1,8 +1,6 @@
 'use strict';
 
 // Global components list
-let baseUrl = document.getElementsByTagName("html")[0].getAttribute("url");
-    baseUrl = (baseUrl)? baseUrl : '';
 let components = {
 	nprogress: {
 		selector: 'html',
@@ -332,7 +330,10 @@ let components = {
 	},
 	button: {
 		selector: '.btn',
-		styles: './components/button/button.css'
+		styles: [
+			'./components/button/button.css',
+			'./style.css'
+		]
 	},
 	table: {
 		selector: '.table',
@@ -776,7 +777,7 @@ let components = {
 				$( node ).colorpicker({
 					fallbackColor: '#000', ...parseJSON( node.getAttribute( 'data-colorpick' ) )
 				})
-
+				
 			});
 		}
 	},
@@ -1490,7 +1491,7 @@ let components = {
 				}
 			} );
 		}
-	},
+	}, 
 	driver: {
 		selector: '[data-driver]',
 		styles: './components/driver/driver.css',
@@ -2451,6 +2452,9 @@ function parseJSON ( str ) {
 		if ( str )  return JSON.parse( str );
 		else return {};
 	} catch ( error ) {
+		//{DEL DIST}
+		console.warn( error );
+		//{DEL}
 		return {};
 	}
 }
@@ -2511,13 +2515,12 @@ function makeSync ( params, cb ) {
  */
 function includeStyles ( path ) {
 	return new Promise( function ( resolve ) {
-	    let newUrl = (path=='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap')? path : baseUrl;
 		if ( document.querySelector( `link[href="${path}"]` ) ) {
 			resolve();
 		} else {
 			let link = document.createElement( 'link' );
 			link.setAttribute( 'rel', 'stylesheet' );
-			link.setAttribute( 'href', newUrl + path );
+			link.setAttribute( 'href', path );
 			link.addEventListener( 'load', resolve );
 			document.querySelector( 'head' ).appendChild( link );
 		}
@@ -2541,7 +2544,7 @@ function includeScript ( path ) {
 			}
 		} else {
 			let script = document.createElement( 'script' );
-			script.src = baseUrl + path;
+			script.src = path;
 
 			script.addEventListener( 'load', function () {
 				script.setAttribute( 'data-loaded', 'true' );
@@ -2560,6 +2563,10 @@ function initComponent( component ) {
 	let
 		stylesState = Promise.resolve(),
 		scriptsState = Promise.resolve();
+
+	//{DEL DIST}
+	console.log( `%c[${component.name}] init:`, 'color: lightgreen; font-weight: 900;', component.nodes.length );
+	//{DEL}
 	component.state = 'load';
 
 	if ( component.styles ) {
