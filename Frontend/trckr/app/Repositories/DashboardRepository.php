@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Log;
 use Config;
 
-class DashboardRepository
+class DashboardRepository extends Repository
 {
 
     private $api;
@@ -18,7 +18,7 @@ class DashboardRepository
     public function listActiveCampaigns()
     {
         try {
-            return Http::withToken(Config::get('gbl_profile')->token)->get($this->api . 'activecampaign', []);
+            return $this->validateResponse(Http::withToken($this->token())->get($this->api . 'activecampaign', []));
         } catch(\Exception $e) {
             return false;
         }
@@ -27,7 +27,7 @@ class DashboardRepository
     public function getTotalRespondents()
     {
         try {
-            return Http::withToken(Config::get('gbl_profile')->token)->get($this->api . 'totalrespondents', []);
+            return $this->validateResponse(Http::withToken($this->token())->get($this->api . 'totalrespondents', []));
         } catch(\Exception $e) {
             return false;
         }

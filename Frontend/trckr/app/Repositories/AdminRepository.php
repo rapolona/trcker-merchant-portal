@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Log;
 use Config;
 
-class AdminRepository
+class AdminRepository extends Repository
 {
 
     private $api;
@@ -15,10 +15,10 @@ class AdminRepository
         $this->api = Config::get('trckr.backend_url') . "admin/";
     }
 
-    public function create($request)
+    public function create($data)
     {
         try {
-            return Http::withToken(Config::get('gbl_profile')->token)->post($this->api . 'create', []);
+            return $this->validateResponse(Http::withToken($this->token())->post($this->api . 'create', $data));
         } catch(\Exception $e) {
             return false;
         }

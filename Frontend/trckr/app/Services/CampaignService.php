@@ -13,15 +13,24 @@ class CampaignService
         $this->repository = $repository;
     }
 
-
-    public function create($request)
+    public function getAll()
     {
-        return $this->repository->create();
+        return json_decode($this->repository->getAll());
     }
 
-    public function update($request)
+    public function get($id)
     {
-        return $this->repository->update($request);
+        return json_decode($this->repository->get($id));
+    }
+
+    public function create($data)
+    {
+        return json_decode($this->repository->create($data));
+    }
+
+    public function update($data)
+    {
+        return json_decode($this->repository->update($data));
     }
 
 }

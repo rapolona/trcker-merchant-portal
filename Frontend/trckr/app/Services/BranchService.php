@@ -15,21 +15,26 @@ class BranchService
 
     public function getAll()
     {
-        return $this->repository->getAll();
+        return json_decode($this->repository->getAll());
     }
 
-    public function create($request)
+    public function get($id)
     {
-        return $this->repository->create();
+        return json_decode($this->repository->get($id));
     }
 
-    public function update($request)
+    public function create($data)
     {
-        return $this->repository->update($request);
+        return json_decode($this->repository->create($data));
     }
 
-    public function delete($request)
+    public function update($data)
     {
-        return $this->repository->delete($request);
+        return json_decode($this->repository->update($data));
+    }
+
+    public function delete($data)
+    {
+        return json_decode($this->repository->delete($data));
     }
 }

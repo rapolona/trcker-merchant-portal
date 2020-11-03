@@ -5,47 +5,56 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Log;
 use Config;
 
-class BranchRepository
+class BranchRepository extends Repository
 {
 
     private $api;
 
     public function __construct()
     {
-        $this->api = Config::get('trckr.backend_url') . "merchant/branch/";
+        $this->api = Config::get('trckr.backend_url') . "merchant/";
     }
 
     public function getAll()
     {
         try {
-            return Http::withToken(Config::get('gbl_profile')->token)->get($this->api , []);
+            return $this->validateResponse(Http::withToken($this->token())->get($this->api . 'branches' , []));
         } catch(\Exception $e) {
             return false;
         }
     }
 
-    public function create($request)
+    public function get($id)
     {
         try {
-            return Http::withToken(Config::get('gbl_profile')->token)->post($this->api, []);
+            return $this->validateResponse(Http::withToken($this->token())->get($this->api . 'branch/' . $id , []));
         } catch(\Exception $e) {
             return false;
         }
     }
 
-    public function update($request)
+    public function create($data)
     {
         try {
-            return Http::withToken(Config::get('gbl_profile')->token)->put($this->api, []);
+            return $this->validateResponse(Http::withToken($this->token())->post($this->api. 'branch/' , $data));
         } catch(\Exception $e) {
             return false;
         }
     }
 
-    public function delete($request)
+    public function update($data)
     {
         try {
-            return Http::withToken(Config::get('gbl_profile')->token)->delete($this->api, []);
+            return $this->validateResponse(Http::withToken($this->token())->put($this->api. 'branch/' , $data));
+        } catch(\Exception $e) {
+            return false;
+        }
+    }
+
+    public function delete($data)
+    {
+        try {
+            return $this->validateResponse(Http::withToken($this->token())->delete($this->api. 'branch/' , $data));
         } catch(\Exception $e) {
             return false;
         }

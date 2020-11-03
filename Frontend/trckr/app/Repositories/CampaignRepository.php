@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Log;
 use Config;
 
-class CampaignRepository
+class CampaignRepository extends Repository
 {
 
     private $api;
@@ -15,19 +15,37 @@ class CampaignRepository
         $this->api = Config::get('trckr.backend_url') . "merchant/campaign/";
     }
 
-    public function create($request)
+    public function create($data)
     {
         try {
-            return Http::withToken(Config::get('gbl_profile')->token)->post($this->api . 'create', []);
+            return $this->validateResponse(Http::withToken($this->token())->post($this->api . 'create', $data));
         } catch(\Exception $e) {
             return false;
         }
     }
 
-    public function update($request)
+    public function update($data)
     {
         try {
-            return Http::withToken(Config::get('gbl_profile')->token)->put($this->api . 'update', []);
+            return $this->validateResponse(Http::withToken($this->token())->put($this->api . 'update', $data));
+        } catch(\Exception $e) {
+            return false;
+        }
+    }
+
+    public function get($id)
+    {
+        try {
+            return $this->validateResponse(Http::withToken($this->token())->get($this->api . $id , []));
+        } catch(\Exception $e) {
+            return false;
+        }
+    }
+
+    public function getAll()
+    {
+        try {
+            return $this->validateResponse(Http::withToken($this->token())->get($this->api , []));
         } catch(\Exception $e) {
             return false;
         }
