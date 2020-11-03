@@ -2,19 +2,22 @@
 
 namespace App\Http\Controllers;
 
-Use App\User;
 use App\Document;
 use Illuminate\Http\Request;
-use Illuminate\Http\Client\Response;
-use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Validator,Redirect,File;
 use Config, Session;
+use App\Services\BranchService;
 
 class BranchController extends Controller
 {
+    private $branchService;
+
+    public function __construct(BranchService $branchService)
+    {
+        $this->branchService = $branchService;
+    }
+
     public function upload_branch(Request $request)
     {
         request()->validate([
@@ -134,58 +137,22 @@ class BranchController extends Controller
         ]);
     }
 
+    /**
+     * List controller instance
+     *
+     * @return View
+     */
     public function branch(Request $request)
     {
-        //api call for bramches
-        //http://localhost:6001/merchant/branches
-
-        $api_endpoint = Config::get('trckr.backend_url') . "merchant/branches";
-
-        $session = $request->session()->get('session_merchant');
-        $token = ( ! empty($session->token)) ? $session->token : "";
-
-        $response = Http::withToken($token)->get($api_endpoint, []);
-
-        if ($response->status() !== 200)
-        {
-            if ($response->status() === 403) {
-                $validator = Validator::make($request->all(), []);
-                $validator->getMessageBag()->add('email', "Session Expired. Please login again. {$response->body()}");
-
-                return redirect('/')
-                    ->withErrors($validator)
-                    ->withInput();
-            }
-
-            if ($response->status() === 500) {
-                $handler = json_decode($response->body());
-
-                if ($handler->message->name == "JsonWebTokenError")
-
-                $validator = Validator::make($request->all(), []);
-                $validator->getMessageBag()->add('email', "Session Expired. Please login again. {$response->body()}");
-
-                return redirect('/')
-                    ->withErrors($validator)
-                    ->withInput();
-            }
-
-            //general handling
-            return redirect('/dashboard');
-        }
-
-        $branches = json_decode($response);
-
-        $count = 0;
-        foreach ($branches as &$b)
-        {
-            $b->no = $count+1;
-            $count+=1;
-        }
-
+        $branches = $this->branchService->getAll();
         return view('concrete.merchant.branches', ['branches' => $branches]);
     }
 
+    /**
+     * Add form view
+     *
+     * @return View
+     */
     public function add_branch_get()
     {
         return view('concrete.branch.add', []);

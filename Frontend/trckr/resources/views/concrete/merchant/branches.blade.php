@@ -1,76 +1,82 @@
 @extends('concrete.layouts.main')
 
 @section('content')
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-            <div class="modal-header" style="display:auto;">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Modal title</h4>
-            </div>
-            <div class="modal-body">
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
-
-    <p>Branch Management</p>
-    </div>
-    <div class="row">
-        <div class="col col-lg-12">
-            <div class="card" style="width:100%">
-                <div class="card-header">
-                    <form method="POST" enctype="multipart/form-data" id="file_upload" action="javascript:void(0)" >
-                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                        <input type="file" name="file" id="file" style="display:none">
-                        <div class="btn-group float-lg-right" role="group" aria-label="Basic example">
-                            <button class="btn btn-primary btn-lg" type="button" value="Upload CSV" id="upload_csv">
+    <div class="panel">
+        <div class="panel-header">
+            <div class="row">
+                <div class="col-sm-7">
+                    <div class="panel-title"><span class="panel-icon fa-tasks"></span> <span>Merchant Branches</span>
+                    </div>
+                </div>
+                <div class="col-sm-5">
+                    <div class="btn-group pull-right" style="margin-top: 10px">
+                        <form method="POST" enctype="multipart/form-data" id="file_upload" action="javascript:void(0)" >
+                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                            <input type="file" name="file" id="file" style="display:none">
+                            <button class="btn btn-primary btn-sm" type="button" value="Upload CSV" id="upload_csv">
+                                <span class="fa-upload"></span>
                                 <span class="spinner-border spinner-border-sm" role="status" id="loader_upload_csv" aria-hidden="true" disabled> </span>
                                 Upload CSV
                             </button>
-                            <a href="{{url('/merchant/branch/add')}}" type="button" class="btn btn-primary btn-lg pull-right" id="add">
-                                Add
-                            </a>
-                            <button class="btn btn-primary btn-lg" type="button" value="Edit" id="edit">
-                                Edit
+                        </form>
+                        <a href="{{url('/merchant/branch/add')}}" type="button" class="btn btn-success btn-sm pull-right" id="add">
+                            <span class="fa-plus"></span>
+                            Add
+                        </a>
+                        <form method="POST" id="deleteForm" action="{{ url('merchant/branch/bulkdelete')  }}" >
+                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                            <input type="hidden" name="delete_ids" id="delete_ids"  value="">
+                            <button class="btn btn-danger btn-sm" type="button" id="delete">
+                                <span class="mdi-delete-variant"></span>
+                                <span class="spinner-border spinner-border-sm" role="status" id="loader_upload_csv" aria-hidden="true" disabled> </span>
+                                Bulk Delete
                             </button>
-                            <button class="btn btn-primary btn-lg" type="button" value="Delete" id="delete">
-                                <span class="spinner-border spinner-border-sm" role="status" id="loader_delete" aria-hidden="true" disabled> </span>
-                                Delete
-                            </button>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <form id="branches_table" action="javascript:void(0)" >
-                        <table class="table table-bordered table-striped mydatatable">
-                            <thead>
-                            <tr>
-                                <th style="width: 10px">#</th>
-                                <th>Name</th>
-                                <th>Address</th>
-                                <th>Coordinates</th>
-                                <th style="width: 40px">Action?</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            @foreach ($branches as $b)
-                            <tr>
-                                <input type="hidden" name="row_branch_id[]" value="{{ $b->branch_id}}"/>
-                                <td> {{ $b->no }}</td>
-                                <td> {{ $b->name }}</td>
-                                <td> {{ $b->address }}</td>
-                                <td> {{ $b->latitude }} {{ $b->longitude }}</td>
-                                <td><input type="checkbox" name="branch" id="{{$b->branch_id}}"></td>
-                            </tr>
-                            @endforeach
-                            </tbody>
-                        </table>
-                    </form>
-                </div>
+            </div>
+        </div>
+
+
+        <div class="panel-body p-0">
+            <div class="table-responsive scroller scroller-horizontal py-3">
+                <table class="table table-striped table-hover data-table" style="min-width: 800px">
+                    <thead>
+                    <tr>
+                        <td style="width: 40px">
+                            <div class="custom-control custom-checkbox custom-checkbox-success">
+                                <input class="custom-control-input" type="checkbox" id="chkAll"/>
+                                <label class="custom-control-label" for="chkAll"></label>
+                            </div>
+                        </td>
+                        <th>Name</th>
+                        <th>Address</th>
+                        <th>Coordinates</th>
+                        <th style="with:100px">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach ($branches as $branch)
+                        <tr>
+                            <td style="width: 40px">
+                                <div class="custom-control custom-checkbox custom-checkbox-success">
+                                    <input class="custom-control-input" type="checkbox" name="branch_id" id="{{ $branch->branch_id }}" />
+                                    <label class="custom-control-label" for="{{ $branch->branch_id }}"></label>
+                                </div>
+                            </td>
+                            <td> {{ $branch->name }}</td>
+                            <td> {{ $branch->address }}</td>
+                            <td> {{ $branch->latitude }} {{ $branch->longitude }}</td>
+                            <td>
+                                <div class="btn-group">
+                                    <a class="btn btn-warning btn-sm" type="button" href="{{url('/merchant/branch/edit/' . $branch->branch_id )}}"><span class="fa-edit"></span></a>
+                                    <a class="btn btn-danger btn-sm deleteProduct" type="button" target-href="{{url('/merchant/branch/delete/' . $branch->branch_id )}}"><span class="mdi-delete"></span></a>
+                                </div>
+                            </td>
+                        </tr>
+                    @endforeach
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
