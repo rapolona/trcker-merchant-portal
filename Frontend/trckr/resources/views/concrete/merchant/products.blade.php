@@ -57,7 +57,7 @@
                         <tr>
                             <td style="width: 40px">
                                 <div class="custom-control custom-checkbox custom-checkbox-success">
-                                    <input class="custom-control-input" type="checkbox" id="{{ $product->product_id }}" />
+                                    <input class="custom-control-input" type="checkbox" name="product_id" id="{{ $product->product_id }}" />
                                     <label class="custom-control-label" for="{{ $product->product_id }}"></label>
                                 </div>
                             </td>
@@ -94,7 +94,7 @@
                 var formData = new FormData();
                 var products = [];
 
-                $.each($("input[name='product']:checked"), function(){
+                $.each($("input[name='product_id']:checked"), function(){
                     products.push($(this).attr("id"));
                 });
 

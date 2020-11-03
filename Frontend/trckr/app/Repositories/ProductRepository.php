@@ -17,11 +17,11 @@ class ProductRepository extends Repository
 
     public function getAll()
     {
-        try {
-            return $this->validateResponse(Http::withToken(Config::get('gbl_profile')->token)->get($this->api , []));
-        } catch(\Exception $e) {
-            return false;
-        }
+        //try {
+            return $this->validateResponse(Http::withToken(Config::get('gbl_profile')->token)->get($this->api . 's' , []));
+       // } catch(\Exception $e) {
+        //    return false;
+        //}
     }
 
     public function create($data)

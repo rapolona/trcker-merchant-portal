@@ -8,7 +8,7 @@ Class Repository
 {
     public function validateResponse($response)
     {
-        //return $response; // REMOVE THIS AFTER TEST
+        return $response; // REMOVE THIS AFTER TEST
         if ($response->status() !== 200)
         {
             $message = json_decode($response->body());
