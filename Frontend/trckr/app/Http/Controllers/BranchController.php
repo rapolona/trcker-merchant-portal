@@ -158,6 +158,11 @@ class BranchController extends Controller
         return view('concrete.branch.add', []);
     }
 
+    /**
+     * Add form POSt
+     *
+     * @return View
+     */
     public function add_branch_post(Request $request)
     {
         $data = (array) $request->all();
@@ -172,88 +177,33 @@ class BranchController extends Controller
 
         if ($validator->fails())
         {
-            return view('concrete.branch.add', [ 'errors' => $validator->errors()->messages()]);
+            return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $api_endpoint = Config::get('trckr.backend_url') . "merchant/branch";
+        $response = $this->branchService->create($data);
 
-        $session = $request->session()->get('session_merchant');
-        $token = ( ! empty($session->token)) ? $session->token : "";
-
-        $response = Http::withToken($token)->post($api_endpoint, $data);
-
-        if ($response->status() !== 200)
-        {
-            //provide handling for failed merchant profile modification
-            return Response()->json([
-                "success" => false,
-                "message" => "Failed to Add Branch with error:" . $response->body(),
-                "file" => $data,
-            ], 422);
-        }
-
-        return Response()->json([
+        $msg = [
             "success" => true,
-            "message" => "Add Branch successful!", // . $response->body(),
-            "file" => $data,
-        ]);
+            "type" => "success",
+            "message" => "Add branch successful!",
+        ];
+
+        return view('concrete.branch.add', ['formMessage' => $msg ]);
     }
 
-    public function edit_branch_get(Request $request)
+    /**
+     * Edit form get
+     *
+     * @return View
+     */
+    public function edit_branch_get($branchId)
     {
-        $branch_id = $request->query('branch_id');
-
-        $api_endpoint = Config::get('trckr.backend_url') . "merchant/branches";
-
-        $session = $request->session()->get('session_merchant');
-        $token = ( ! empty($session->token)) ? $session->token : "";
-
-        $response = Http::withToken($token)->get($api_endpoint, []);
-
-        if ($response->status() !== 200)
-        {
-            if ($response->status() === 403) {
-                $validator = Validator::make($request->all(), []);
-                $validator->getMessageBag()->add('email', "Session Expired. Please login again. {$response->body()}");
-
-                return redirect('/')
-                    ->withErrors($validator)
-                    ->withInput();
-            }
-
-            if ($response->status() === 500) {
-                $handler = json_decode($response->body());
-
-                if ($handler->message->name == "JsonWebTokenError")
-
-                $validator = Validator::make($request->all(), []);
-                $validator->getMessageBag()->add('email', "Session Expired. Please login again. {$response->body()}");
-
-                return redirect('/')
-                    ->withErrors($validator)
-                    ->withInput();
-            }
-
-            //general handling
-            return redirect('/dashboard');
-        }
-
-        $branches = json_decode($response->body());
-
-        $edit_branch = array();
-        foreach($branches as $b)
-        {
-            if ($b->branch_id == $branch_id) {
-                $edit_branch = $b;
-            }
-        }
-
-        return view('concrete.branch.edit', ['branch' => $edit_branch, 'branch_id' => $branch_id]);
+        $branch = $this->branchService->get($branchId);
+        return view('concrete.branch.edit', ['branch' => $branch, 'branch_id' => $branchId]);
     }
 
-    public function edit_branch_post(Request $request)
+    public function edit_branch_post($branchId, Request $request)
     {
-        //$branch_id = $request->query('branch_id');
         $data = (array) $request->all();
 
         $validator = Validator::make($request->all(), [
@@ -267,43 +217,20 @@ class BranchController extends Controller
 
         if ($validator->fails())
         {
-            $error_string = "<b>Fields with Errors</b><br/>";
-            foreach ($validator->errors()->messages() as $k => $v)
-            {
-                $error_string .= "{$k}: <br/>";
-                foreach ($v as $l)
-                    $error_string .= "{$l}<br/>";
-            }
-
-            return Response()->json([
-                "success" => false,
-                "message" => $error_string,
-                "file" => $data,
-            ], 422);
+            print_r($validator->errors()); exit();
+            return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $api_endpoint = Config::get('trckr.backend_url') . "merchant/branch";
+        $response = $this->branchService->update($data);
 
-        $session = $request->session()->get('session_merchant');
-        $token = ( ! empty($session->token)) ? $session->token : "";
-
-        $response = Http::withToken($token)->put($api_endpoint, $data);
-
-        if ($response->status() !== 200)
-        {
-            //provide handling for failed Edit branch
-            return Response()->json([
-                "success" => false,
-                "message" => "Failed to Edit Branch. ", //with error:" . $response->body(),
-                "file" => $data,
-            ], 422);
-        }
-
-        return Response()->json([
+        $msg = [
             "success" => true,
+            "type" => "success",
             "message" => "Branch was successfully modified!",
-            "file" => $data,
-        ]);
+        ];
+
+        $branch = $this->branchService->get($branchId);
+        return view('concrete.branch.edit', ['formMessage' => $msg, 'branch' => $branch, 'branch_id' => $branchId]);
     }
 
     public function delete_branch(Request $request)
@@ -340,5 +267,33 @@ class BranchController extends Controller
             "message" => "Deleted Branches successful!", //. $response->body(),
             "file" => $data['branches']
         ]);
+    }
+
+    /**
+     * Delete Multiple Product
+     *
+     * @return Redirect
+     */
+    public function bulkDelete(Request $request)
+    {
+
+        $ids = json_decode($request->delete_ids);
+
+        foreach($ids as $branch_id){
+            $data = [
+                "branch_id" => $branch_id
+            ];
+
+            $response = $this->branchService->delete($data);
+        }
+
+        $msg = [
+            "success" => true,
+            "type" => "success",
+            "message" => "Branches were successfully deleted!",
+        ];
+
+        return redirect('/merchant/branch')
+            ->with("formMessage", $msg);
     }
 }

@@ -46,9 +46,10 @@ Route::group(["middleware" => ["merchantAuth"]], function() {
         Route::get('/branch', 'BranchController@branch');
         Route::get('/branch/add', 'BranchController@add_branch_get');
         Route::post('/branch/add', 'BranchController@add_branch_post');
-        Route::get('/branch/edit', 'BranchController@edit_branch_get');
-        Route::post('/branch/edit', 'BranchController@edit_branch_post');
-        Route::post('/branch/delete', 'BranchController@delete_branch');
+        Route::get('/branch/edit/{id}', 'BranchController@edit_branch_get');
+        Route::post('/branch/edit/{id}', 'BranchController@edit_branch_post');
+        Route::post('/branch/delete{id}', 'BranchController@delete_branch');
+        Route::post('/branch/bulkdelete', 'BranchController@bulkDelete');
 
         //Ajax for Uploader
         Route::post('/branch/upload', 'BranchController@upload_branch');

@@ -1,95 +1,79 @@
 @extends('concrete.layouts.main')
 
 @section('content')
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-            <div class="modal-header" style="display:auto;">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Modal title</h4>
+<input type="hidden" name="_token" value="{{ csrf_token() }}">
+<input type="file" name="file" id="file" style="display:none">
+
+<section class="topbar">
+    <div class="container-fluid">
+        <div class="row row-15 align-items-center">
+            <div class="col-md-5">
+              <!-- Breadcrumbs-->
+              <ul class="breadcrumbs">
+                <li class="breadcrumbs-item"><a class="breadcrumbs-link" href="index.html"><span class="breadcrumbs-icon fa-home"></span><span>Dashboard</span></a></li>
+                <li class="breadcrumbs-item">Ticket Management
+                </li>
+              </ul>
             </div>
-            <div class="modal-body">
+            <div class="col-md-7 text-md-right">
+              <div class="group-10">
+                <button class="btn btn-light" type="button"><span class="fa-cloud-download"></span><span class="pl-2">Download Report</span></button>
+              </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
-    <p>Insert text here</p>
-
-    <div class="row">
-        <div class="col col-md-12">
-            <form method="POST" id="handle_ticket" action="javascript:void(0)" >
-                <div class="card" style="width:100%">
-                    <div class="card-header">
-
-                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                        <input type="file" name="file" id="file" style="display:none">
-                            <div class="btn-group float-lg-right">
-
-                            <button type="button" id="export" class="btn btn-primary btn-lg">
-                                <span class="spinner-border spinner-border-sm" role="status" id="loader_export" aria-hidden="true" disabled> </span>
-                                Export CSV
-                            </button>
-                            <button class="btn btn-primary btn-lg" type="submit" value="Approve" id="approve">
-                                <span class="spinner-border spinner-border-sm" role="status" id="loader_approve" aria-hidden="true" disabled> </span>
-                                Approve
-                            </button>
-                            <button class="btn btn-primary btn-lg" type="submit" value="Reject" id="reject">
-                                <span class="spinner-border spinner-border-sm" role="status" id="loader_reject" aria-hidden="true" disabled> </span>
-                                Reject
-                            </button>
-                            <input type="hidden" name="action" id="action" value="">
-                            </div>
-
-                    </div>
-
-                    <div class="card-body">
-                        <table class="table table-bordered table-striped mydatatable">
-                            <thead>
-                            <tr>
-                                <th>Trckr Username</th>
-                                <th>Email</th>
-                                <th>Mobile number</th>
-                                <th>Campaign Name</th>
-                                <th>Task</th>
-                                <th>Date Submitted</th>
-                                <th>Device ID</th>
-                                <th>Location</th>
-                                <th>Status</th>
-                                <th>Action?</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($tickets as $t)
-                            <tr>
-                                <input class="view_id" type="hidden" name="row_task_ticket_id[]" value="{{ $t->task_ticket_id }}"/>
-                                <td class="view"> {{ $t->user_detail->first_name . " " . $t->user_detail->last_name }}</td>
-                                <td class="view"> {{ $t->user_detail->email }}</td>
-                                <td class="view"> No info available (not in capability/tasktickets schema yet) </td>
-                                <td class="view"> {{ $t->campaign_name }}</td>
-                                <td class="view">
-                                    @foreach ($t->task_details as $d )
-                                        {{ $d->task_question->question}} <br/>
-                                    @endforeach
-                                </td>
-                                <td class="view"> {{ $t->createdAt }}</td>
-                                <td class="view"> {{ $t->device_id}} </td>
-                                <td class="view"> No info avaialable (not in capability/tasktickets schema yet)</td>
-                                <td class="view"> {{ $t->approval_status }}</td>
-                                <td>
-                                    <input type="checkbox" name="task_ticket_id" value="{{ $t->task_ticket_id }}">
-                                </td>
-                            </tr>
-                            @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </form>
         </div>
     </div>
+</section>
+
+<section class="section-sm">
+    <div class="col-12">
+      <div class="panel">
+        <div class="panel-body p-0">
+          <div class="table-responsive scroller scroller-horizontal py-3">
+            <table class="table table-striped table-hover data-table" data-table-searching="true" data-table-lengthChange="true" data-page-length="5" >
+              <thead>
+                <tr>
+                  <th class="no-sort"></th>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Mobile</th>
+                  <th>Device ID</th>
+                  <th>Campaign Name</th>
+                  <th>Date Submitted</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                @foreach ($tickets as $t)
+                <tr>
+                    <input class="view_id" type="hidden" name="row_task_ticket_id[]" value="{{ $t->task_ticket_id }}"/>
+                    <td>
+                        <div class="custom-control custom-checkbox custom-checkbox-light">
+                          <input class="custom-control-input" type="checkbox" id="lightCheck">
+                          <label class="custom-control-label" for="lightCheck"></label>
+                        </div>
+                    </td>
+                    <td>{{ $t->user_detail->first_name . " " . $t->user_detail->last_name }}</td>
+                    <td>{{ $t->user_detail->email }}</td>
+                    <td>09178478820 -- add in the API</td>
+                    <td>{{ $t->device_id}}</td>
+                    <td>{{ $t->campaign_name }}</td>
+                    <td>{{ $t->createdAt }}</td>
+                    <td class="text-warning">{{ $t->approval_status }}</td>
+                    <td>
+                        <div class="btn-group">
+                          <a href="tickets_inner.html"><button class="btn btn-light" type="button"><span class="fa-eye"></span></button></a>
+                        </div>
+                    </td>
+                </tr>
+                @endforeach
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+</section>
 @stop
 
 @section('css')
