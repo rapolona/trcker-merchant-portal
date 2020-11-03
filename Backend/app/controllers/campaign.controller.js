@@ -202,10 +202,15 @@ exports.findAll = (req, res) => {
       });
   };
   exports.findAllCustom = (req, res) => {
-    const name = req.query.name;
-    var condition = name ? { name: { [Op.like]: `%${name}%` } } : null;
+    const id = req.body.merchantid;
+    var condition = req.query;
+    
+    if(req.body.merchantid){
+      
+      condition.merchant_id = id;
+    }
   
-    Campaign.findAll({ where: null , include: [Branch]})
+    Campaign.findAll({ where: condition , include: [Branch]})
       .then(data => {
         console.log(data)   
         res.json(data);
@@ -220,15 +225,23 @@ exports.findAll = (req, res) => {
 
 // Find a single Campaign with an id
 exports.findOne = (req, res) => {
-    const id = req.params.id;
+  const campaign_id = req.params.campaign_id;
+  const merchant_id = req.body.merchantid;
   
-    Campaign.findByPk(id)
+    Campaign.findByPk(campaign_id)
       .then(data => {
-        res.send(data);
+        if(data.merchant_id==merchant_id){
+          res.send(data);
+        }
+        else{
+          res.status(500).send({
+            message: "Error retrieving Campaign with id=" + campaign_id + ". Campaign does not belong to merchant."
+          });
+        }
       })
       .catch(err => {
         res.status(500).send({
-          message: "Error retrieving Campaign with id=" + id
+          message: "Error retrieving Campaign with id=" + campaign_id
         });
       });
   };

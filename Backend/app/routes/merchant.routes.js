@@ -21,7 +21,7 @@ module.exports = app => {
 
     router.get("/products",adminMiddleware.isAuthenticated ,products.findAll);
 
-    router.get("/campaign",adminMiddleware.isAuthenticated ,campaigns.findAllMerchant);
+    router.get("/campaign",adminMiddleware.isAuthenticated ,campaigns.findAllCustom);
 
     
     router.post("/campaign/create",adminMiddleware.isAuthenticated, campaigns.createCustom);

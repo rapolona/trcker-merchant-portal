@@ -16,7 +16,7 @@ module.exports = app => {
     router.get("/custom", campaigns.findAllCustom);
   
     // // Retrieve a single Campaign with id
-    // router.get("/:id", campaigns.findOne);
+    router.get("/campaign/:campaign_id",adminMiddleware.isAuthenticated, campaigns.findOne);
   
     // Update a Campaign with id
     router.put("/campaign/update", adminMiddleware.isAuthenticated,campaigns.update);

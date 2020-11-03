@@ -1,8 +1,8 @@
 module.exports = {
   HOST: "localhost",
-  USER: "trckeruser",
-  PASSWORD: "7#uv8VE$",
-  DB: "trckerdb",
+  USER: "root",
+  PASSWORD: "password",
+  DB: "trckerdev",
   dialect: "mysql",
   pool: {
     max: 5,

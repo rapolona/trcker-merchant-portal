@@ -6,11 +6,11 @@ module.exports = app => {
     // Create a new Branch
     router.post("/", adminMiddleware.isAuthenticated,branches.create);
   
-    // Retrieve all branches
-    router.get("/",branches.findAll);
+    // // Retrieve all branches
+    // router.get("/",branches.findAll);
   
-    // // Retrieve a single Branch with id
-    // router.get("/:id", branches.findOne);
+    // Retrieve a single Branch with id
+    router.get("/:branch_id",adminMiddleware.isAuthenticated ,branches.findOne);
   
     // Update a Branch with id
     router.put("/", branches.update);

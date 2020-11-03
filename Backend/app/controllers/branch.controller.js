@@ -42,14 +42,14 @@ exports.create = (req, res) => {
 
 // Retrieve all Branches from the database.
 exports.findAll = (req, res) => {
-
   const id = req.body.merchantid;
-  var condition = null;
+  var condition = req.query;
+  
   if(req.body.merchantid){
-    condition = {merchant_id: id};
+    
+    condition.merchant_id = id;
   }
   console.log(condition)
-
   Branch.findAll({ where: condition })
     .then(data => {
       res.send(data);
@@ -64,11 +64,22 @@ exports.findAll = (req, res) => {
 
 // Find a single Branch with an id
 exports.findOne = (req, res) => {
-    const id = req.params.id;
+    const branch_id = req.params.branch_id;
+    const merchant_id = req.body.merchantid;
+
   
-    Branch.findByPk(id)
+    Branch.findByPk(branch_id)
       .then(data => {
-        res.send(data);
+        console.log(data.merchant_id)
+        if(data.merchant_id==merchant_id){
+          res.send(data);
+        }
+        else{
+          res.status(500).send({
+            message: "Error retrieving Branch with id=" + branch_id + ". Branch does not belong to merchant."
+          });
+        }
+        
       })
       .catch(err => {
         res.status(500).send({

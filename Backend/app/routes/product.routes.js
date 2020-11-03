@@ -6,11 +6,9 @@ module.exports = app => {
     // Create a new Product
     router.post("/",adminMiddleware.isAuthenticated ,products.create);
   
-    // Retrieve all products
-    router.get("/", products.findAll);
   
     // Retrieve a single Product with id
-    router.get("/:id", products.findOne);
+    router.get("/:product_id", adminMiddleware.isAuthenticated , products.findOne);
   
     // Update a Product with id
     router.put("/", products.update);

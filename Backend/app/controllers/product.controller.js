@@ -38,7 +38,12 @@ exports.create = (req, res) => {
 exports.findAll = (req, res) => {
 
   const id = req.body.merchantid;
-  var condition = id ? { merchant_id: { [Op.eq]: `${id}` } } : null;
+  var condition = req.query;
+  
+  if(req.body.merchantid){
+    
+    condition.merchant_id = id;
+  }
 
   Product.findAll({ where: condition })
     .then(data => {
@@ -54,15 +59,23 @@ exports.findAll = (req, res) => {
 
 // Find a single Product with an id
 exports.findOne = (req, res) => {
-    const id = req.params.id;
+  const product_id = req.params.product_id;
+  const merchant_id = req.body.merchantid;
   
-    Product.findByPk(id)
+    Product.findByPk(product_id)
       .then(data => {
-        res.send(data);
+        if(data.merchant_id==merchant_id){
+          res.send(data);
+        }
+        else{
+          res.status(500).send({
+            message: "Error retrieving Product with id=" + product_id + ". Product does not belong to merchant."
+          });
+        }
       })
       .catch(err => {
         res.status(500).send({
-          message: "Error retrieving Product with id=" + id
+          message: "Error retrieving Product with id=" + product_id
         });
       });
   };
