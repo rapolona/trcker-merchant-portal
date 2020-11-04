@@ -4,34 +4,88 @@
     <div class="panel">
         <div class="panel-header">
             <div class="row">
-                <div class="col-sm-7">
+                <div class="col-sm-12">
                     <div class="panel-title"><span class="panel-icon fa-tasks"></span> <span>Merchant Branches</span>
                     </div>
                 </div>
-                <div class="col-sm-5">
-                    <div class="btn-group pull-right" style="margin-top: 10px">
-                        <form method="POST" enctype="multipart/form-data" id="file_upload" action="javascript:void(0)" >
-                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                            <input type="file" name="file" id="file" style="display:none">
-                            <button class="btn btn-primary btn-sm" type="button" value="Upload CSV" id="upload_csv">
-                                <span class="fa-upload"></span>
-                                <span class="spinner-border spinner-border-sm" role="status" id="loader_upload_csv" aria-hidden="true" disabled> </span>
-                                Upload CSV
-                            </button>
-                        </form>
-                        <a href="{{url('/merchant/branch/add')}}" type="button" class="btn btn-success btn-sm pull-right" id="add">
-                            <span class="fa-plus"></span>
-                            Add
-                        </a>
-                        <form method="POST" id="deleteForm" action="{{ url('merchant/branch/bulkdelete')  }}" >
-                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                            <input type="hidden" name="delete_ids" id="delete_ids"  value="">
-                            <button class="btn btn-danger btn-sm" type="button" id="delete">
-                                <span class="mdi-delete-variant"></span>
-                                <span class="spinner-border spinner-border-sm" role="status" id="loader_upload_csv" aria-hidden="true" disabled> </span>
-                                Bulk Delete
-                            </button>
-                        </form>
+            </div>
+            <div class="row row-30">
+                <div class="col-lg-2">
+                    <select class="form-control" name="filter-purchases">
+                        <option value="0">Filter by Business Type</option>
+                        <option value="1">1-49</option>
+                        <option value="2">50-499</option>
+                        <option value="1">500-999</option>
+                        <option value="2">1000+</option>
+                    </select>
+                </div>
+                <div class="col-lg-2">
+                    <select class="form-control" name="filter-group">
+                        <option value="0">Filter by Store Type</option>
+                        <option value="1">Customers</option>
+                        <option value="2">Vendors</option>
+                        <option value="3">Distributors</option>
+                        <option value="4">Employees</option>
+                    </select>
+                </div>
+                <div class="col-lg-2">
+                    <select class="form-control" name="filter-status">
+                        <option value="0">Filter by Brand</option>
+                        <option value="1">Active</option>
+                        <option value="2">Inactive</option>
+                        <option value="3">Suspended</option>
+                        <option value="4">Online</option>
+                        <option value="5">Offline</option>
+                    </select>
+                </div>
+                <div class="col-lg-2">
+                    <select class="form-control" name="filter-status">
+                        <option value="0">Filter by Region</option>
+                        <option value="1">Active</option>
+                        <option value="2">Inactive</option>
+                        <option value="3">Suspended</option>
+                        <option value="4">Online</option>
+                        <option value="5">Offline</option>
+                    </select>
+                </div>
+                <div class="col-lg-2">
+                    <select class="form-control" name="filter-status">
+                        <option value="0">Filter by Province</option>
+                        <option value="1">Active</option>
+                        <option value="2">Inactive</option>
+                        <option value="3">Suspended</option>
+                        <option value="4">Online</option>
+                        <option value="5">Offline</option>
+                    </select>
+                </div>
+                <div class="col-lg-2 text-right">
+                    <div class="dropdown">
+                        <button class="btn dropdown-toggle btn-light btn-sm" data-toggle="dropdown"><span>Branch Action</span>
+                        </button>
+                        <div class="dropdown-menu">
+                            <form method="POST" enctype="multipart/form-data" id="file_upload" action="javascript:void(0)" >
+                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                <input type="file" name="file" id="file" style="display:none">
+                                <button class="btn btn-primary btn-sm dropdown-item" type="button" value="Upload CSV" id="upload_csv">
+                                    <span class="fa-upload"></span>
+                                    <span class="spinner-border spinner-border-sm" role="status" id="loader_upload_csv" aria-hidden="true" disabled> </span>
+                                    Upload CSV
+                                </button>
+                            </form>
+                            <a href="{{url('/merchant/branch/add')}}" type="button" class="dropdown-item btn btn-success btn-sm pull-right" id="add">
+                                <span class="fa-plus"></span>
+                                Add
+                            </a>
+                            <form method="POST" id="deleteForm" action="{{ url('merchant/branch/bulkdelete')  }}" >
+                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                <input type="hidden" name="delete_ids" id="delete_ids"  value="">
+                                <button class="dropdown-item btn btn-danger btn-sm" type="button" id="delete">
+                                    <span class="mdi-delete-variant"></span>
+                                    <span class="spinner-border spinner-border-sm" role="status" id="loader_upload_csv" aria-hidden="true" disabled> </span>
+                                    Bulk Delete
+                                </button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -50,9 +104,13 @@
                             </div>
                         </td>
                         <th>Name</th>
+                        <th>BusinessType</th>
+                        <th>StoreType</th>
+                        <th>Brand</th>
                         <th>Address</th>
-                        <th>Coordinates</th>
-                        <th style="with:100px">Action</th>
+                        <th>City</th>
+                        <th>Region</th>
+                        <th></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -65,12 +123,20 @@
                                 </div>
                             </td>
                             <td> {{ $branch->name }}</td>
-                            <td> {{ $branch->address }}</td>
-                            <td> {{ $branch->latitude }} {{ $branch->longitude }}</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>{{ $branch->address }}</td>
+                            <td>{{ $branch->city }}</td>
+                            <td></td>
                             <td>
-                                <div class="btn-group">
-                                    <a class="btn btn-warning" type="button" href="{{url('/merchant/branch/edit/' . $branch->branch_id )}}"><span class="fa-edit"></span></a>
-                                    <a class="btn btn-danger deleteBranch" type="button" target-href="{{url('/merchant/branch/delete/' . $branch->branch_id )}}"><span class="mdi-delete"></span></a>
+                                <div class="dropdown">
+                                    <button class="btn dropdown-toggle btn-light btn-sm" data-toggle="dropdown"><span>Action</span>
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="{{url('/merchant/branch/edit/' . $branch->branch_id )}}"><span class="fa-edit"></span> Update</a>
+                                        <a class="dropdown-item" target-href="{{url('/merchant/branch/delete/' . $branch->branch_id )}}"><span class="mdi-delete"></span> Delete</a>
+                                    </div>
                                 </div>
                             </td>
                         </tr>
