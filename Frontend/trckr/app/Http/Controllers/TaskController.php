@@ -122,78 +122,16 @@ class TaskController extends Controller
         return view('concrete.task.view', ['task' => $edit_tasks, 'task_id' => $task_id, 'task_config' => $task_config, 'task_classification' => $task_classification]);
     }
 
+    /**
+     * List controller instance
+     *
+     * @return View
+     */
     public function create_task_get(Request $request)
     {
         $data = [];
-
-        $api_endpoint = Config::get('trckr.backend_url') . "api/task_action_classification";
-
-        $session = $request->session()->get('session_merchant');
-        $token = ( ! empty($session->token)) ? $session->token : "";
-
-        $task_classification = Http::withToken($token)->get($api_endpoint, []);
-
-        if ($task_classification->status() !== 200)
-        {
-            if ($task_classification->status() === 403) {
-                $validator = Validator::make($request->all(), []);
-                $validator->getMessageBag()->add('email', "Session Expired. Please login again. {$response->body()}");
-
-                return redirect('/')
-                    ->withErrors($validator)
-                    ->withInput();
-            }
-
-            //provide handling for failed branch retrieval
-            return redirect('/dashboard');
-        }
-
-        $data['task_classification'] = json_decode($task_classification->body());
-
-        /*
-        $task_config = [
-            [
-                'data_source' => "PHOTO",
-                "data_type" => "Image"
-            ],
-            [
-                "data_source" => "INTEGER",
-                "data_type" => "Integer"
-            ],
-            [
-                "data_source" => "TRUE OR FALSE",
-                "data_type" => "Boolean"
-            ],
-            [
-                "data_source" => "Single Select Dropdown",
-                "data_type" => "Text"
-            ],
-            [
-                "data_source" => "Calculated Value",
-                "data_type" => "Percentage"
-            ],
-            [
-                "data_source" => "FLOAT",
-                "data_type" => "Currency"
-            ],
-            [
-                "data_source" => "TEXT",
-                "data_type" => "Text"
-            ],
-            [
-                "data_source" => "DATETIME",
-                "data_type" => "Date"
-            ],
-            [
-                "data_source" => "FLOAT",
-                "data_type" => "Percentage"
-            ]
-        ];
-
-        $data['task_config'] = $task_config;
-        */
+        $data['task_classification'] = $this->taskService->getTaskActionClassification();
         $data['task_config'] = array();
-
         return view('concrete.task.create', $data);
     }
 
@@ -330,34 +268,6 @@ class TaskController extends Controller
         $token = ( ! empty($session->token)) ? $session->token : "";
 
         $response = Http::withToken($token)->get($api_endpoint);
-
-        if ($response->status() !== 200)
-        {
-            if ($response->status() === 403) {
-                $validator = Validator::make($request->all(), []);
-                $validator->getMessageBag()->add('email', "Session Expired. Please login again. {$response->body()}");
-
-                return redirect('/')
-                    ->withErrors($validator)
-                    ->withInput();
-            }
-
-            if ($response->status() === 500) {
-                $handler = json_decode($response->body());
-
-                if ($handler->message->name == "JsonWebTokenError")
-
-                $validator = Validator::make($request->all(), []);
-                $validator->getMessageBag()->add('email', "Session Expired. Please login again. {$response->body()}");
-
-                return redirect('/')
-                    ->withErrors($validator)
-                    ->withInput();
-            }
-
-            //general handling
-            return redirect('/dashboard');
-        }
 
         $tasks = json_decode($response->body());
 

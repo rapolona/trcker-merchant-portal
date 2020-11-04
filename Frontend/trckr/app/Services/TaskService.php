@@ -32,4 +32,10 @@ class TaskService
     {
         return json_decode($this->repository->get($data));
     }
+
+    public function getTaskActionClassification()
+    {
+        return json_decode($this->repository->getTaskActionClassification());
+    }
+
 }

@@ -60,4 +60,15 @@ class TaskRepository extends Repository
             return false;
         }
     }
+
+    public function getTaskActionClassification()
+    {
+        try {
+            return $this->validateResponse(Http::withToken($this->token())->get( Config::get('trckr.backend_url') . 'api/task_action_classification' , []));
+        } catch(\Exception $e) {
+            return false;
+        }
+    }
+
+
 }

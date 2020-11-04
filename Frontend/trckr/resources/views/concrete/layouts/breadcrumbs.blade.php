@@ -14,7 +14,7 @@
                             $list = $list[$uri[1]];
                         }
                     @endphp
-                    <li class="breadcrumbs-item"><a class="breadcrumbs-link" href="{{ $list['url'] }}"><span class="breadcrumbs-icon {{ $list['icon'] }}"></span><span>{{ $list['text'] }}</span></a></li>
+                    <li class="breadcrumbs-item"><a class="breadcrumbs-link" href="{{ url($list['url']) }}"><span class="breadcrumbs-icon {{ $list['icon'] }}"></span><span>{{ $list['text'] }}</span></a></li>
                     @for ($i = $breadKeyStart + 1; $i < count($uri); $i++)
                         @if(!in_array($uri[$i-1], $crud))
                         <li class="breadcrumbs-item">{{ ucwords($uri[$i]) }}</li>

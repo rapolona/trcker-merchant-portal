@@ -40,7 +40,7 @@
 
         <div class="panel-body p-0">
             <div class="table-responsive scroller scroller-horizontal py-3">
-                <table class="table table-striped table-hover data-table" style="min-width: 800px">
+                <table class="table table-striped table-hover data-table" data-table-lengthChange="true" data-page-length="5">
                     <thead>
                     <tr>
                         <td style="width: 40px">

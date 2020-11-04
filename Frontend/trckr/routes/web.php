@@ -78,12 +78,12 @@ Route::group(["middleware" => ["merchantAuth"]], function() {
     // TASK
     Route::group(['prefix' => 'task'], function() {
         Route::get('/view ', 'TaskController@view');
-        Route::get('/view_task ', 'TaskController@view_task');
+        Route::get('/view_task/{id}', 'TaskController@view_task');
         Route::get('/create ', 'TaskController@create_task_get');
         Route::post('/create ', 'TaskController@create_task_post');
-        Route::post('/delete', 'TaskController@delete_task');
-        Route::get('/edit', 'TaskController@edit_task_get');
-        Route::post('/edit', 'TaskController@edit_task_post');
+        Route::post('/delete/{id}', 'TaskController@delete_task');
+        Route::get('/edit/{id}', 'TaskController@edit_task_get');
+        Route::post('/edit/{id}', 'TaskController@edit_task_post');
     });
 
     /*

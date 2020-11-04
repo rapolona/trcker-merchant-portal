@@ -88,7 +88,7 @@ return [
             ],
         ],
         'task' => [
-            'url' => 'merchant/task',
+            'url' => 'task/view',
             'icon' => 'fa-columns',
             'text' => 'Tasks',
             'in_menu' => true,

@@ -40,9 +40,8 @@
                                     <button class="btn dropdown-toggle btn-light btn-sm" data-toggle="dropdown"><span>Action</span>
                                     </button>
                                     <div class="dropdown-menu">
-                                        <a class="dropdown-item" href="#">View</a>
-                                        <a class="dropdown-item" href="#">Edit</a>
-                                        <a class="dropdown-item" href="#">Disable</a>
+                                        <a class="dropdown-item" href="{{ url('task/view_task/' . $t->task_id) }}">View</a>
+                                        <a class="dropdown-item" href="{{ url('task/edit/' . $t->task_id) }}">Edit</a>
                                     </div>
                                 </div>
                             </td>
