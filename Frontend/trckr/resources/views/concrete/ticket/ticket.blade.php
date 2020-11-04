@@ -1,5 +1,9 @@
 @extends('concrete.layouts.main')
 
+@section('breadcrumbs_pull_right')
+    <button class="btn btn-light" type="button"><span class="fa-cloud-download"></span><span class="pl-2">Download Report</span></button>
+@endsection
+
 @section('content')
 
     <section class="section-sm">

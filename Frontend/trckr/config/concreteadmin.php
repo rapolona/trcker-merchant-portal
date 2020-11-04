@@ -49,26 +49,52 @@ return [
     'menu' => [
         'dashboard' => [
             'url' => 'dashboard',
-            'icon' => '',
+            'icon' => 'fa-home',
             'text' => 'Dashboard',
             'in_menu' => true,
             'sub_url'  => null
             ],
-        'branch' => [
-            'url' => 'merchant/branch',
-            'icon' => '',
-            'text' => 'Dashboard',
-            'in_menu' => true,
-            'sub_url'  => null
+        'merchant' => [
+            'branch' => [
+                'url' => 'merchant/branch',
+                'icon' => 'fa-sitemap',
+                'text' => 'Branches',
+                'in_menu' => true,
+                'sub_url'  => [
+                    'add' => [ 'text' => 'Add'],
+                    'edit' => [ 'text' => 'Update']
+                ]
+            ],
         ],
         'task' => [
-
+            'url' => 'merchant/task',
+            'icon' => 'fa-columns',
+            'text' => 'Tasks',
+            'in_menu' => true,
+            'sub_url'  => [
+                'add' => [ 'text' => 'Add'],
+                'edit' => [ 'text' => 'Update']
+            ]
         ],
         'campaign' => [
-
+            'url' => 'merchant/branch',
+            'icon' => 'fa-star',
+            'text' => 'Campaigns',
+            'in_menu' => true,
+            'sub_url'  => [
+                'add' => [ 'text' => 'Add'],
+                'edit' => [ 'text' => 'Update']
+            ]
         ],
         'ticket' => [
-
+            'url' => 'ticket/view',
+            'icon' => 'fa-server',
+            'text' => 'Ticket Management',
+            'in_menu' => true,
+            'sub_url'  => [
+                'add' => [ 'text' => 'Add'],
+                'edit' => [ 'text' => 'Update']
+            ]
         ]
     ],
 
