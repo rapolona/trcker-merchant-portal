@@ -233,7 +233,7 @@ class BranchController extends Controller
         return view('concrete.branch.edit', ['formMessage' => $msg, 'branch' => $branch, 'branch_id' => $branchId]);
     }
 
-    public function delete_branch(Request $request)
+    public function delete_branch($branchId)
     {
         $data = (array) $request->all();
 

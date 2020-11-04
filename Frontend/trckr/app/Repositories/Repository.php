@@ -19,6 +19,14 @@ Class Repository
             Redirect::to(url('/'))->send();
         }
 
+        if($response->status()!==200){
+            echo "THIS IS FOR ROB CATCH NEW STATUS <br />";
+            echo "New STATUS::" . $response->status();
+            $message = json_decode($response->body());
+            var_dump($message);
+            exit();
+        }
+
         return $response;
     }
 

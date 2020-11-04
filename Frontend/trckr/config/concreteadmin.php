@@ -65,6 +65,16 @@ return [
                     'edit' => [ 'text' => 'Update']
                 ]
             ],
+            'product' => [
+                'url' => 'merchant/product',
+                'icon' => 'fa-sitemap',
+                'text' => 'Products',
+                'in_menu' => true,
+                'sub_url'  => [
+                    'add' => [ 'text' => 'Add'],
+                    'edit' => [ 'text' => 'Update']
+                ]
+            ],
         ],
         'task' => [
             'url' => 'merchant/task',
