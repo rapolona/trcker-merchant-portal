@@ -53,7 +53,7 @@ exports.createCustom = (req, res) => {
       return;
     }
     if (!req.body.task_questions) {
-      res.status(400).send({
+      res.status(422).send({
         message: "The Task currently has no questions!"
       });
       return;
@@ -64,7 +64,7 @@ exports.createCustom = (req, res) => {
     for(i=0;i<req.body.task_questions.length;i++){
       var matchedInput = allowedInputValues.find(element => element == req.body.task_questions[i].required_inputs.toUpperCase())
       if(!matchedInput){
-        res.status(400).send({
+        res.status(422).send({
           message: "One of the required Input not supported"
         });
         return;
@@ -199,7 +199,7 @@ exports.update = (req, res) => {
             message: "Task was updated successfully."
           });
         } else {
-          res.send({
+          res.status(422).send({
             message: `Cannot update Task with id=${id}. Maybe Task was not found or req.body is empty!`
           });
         }
@@ -228,7 +228,7 @@ exports.chainedUpdate = (req, res) => {
         }, transaction
     }).then(num => {
       if (num != 1) {
-        res.status(500).send({
+        res.status(422).send({
           message: `Cannot update Task with id=${id}. Maybe task does not belong to merchant or was not found.`
         });
       }
@@ -252,7 +252,7 @@ exports.chainedUpdate = (req, res) => {
             }, transaction
         }).then(num => {
           if (num != 1) {
-            res.status(500).send({
+            res.status(422).send({
               message: `Cannot update Task Question with id=${element.task_question_id}. Maybe task question does not belong to merchant or was not found.`
             });
           }

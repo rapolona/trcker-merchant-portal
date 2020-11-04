@@ -82,7 +82,6 @@ exports.findAll = (req, res) => {
   var condition = req.query;
   
   if(req.body.merchantid){
-    
     condition.merchant_id = id;
   }
   console.log(condition)
@@ -111,7 +110,7 @@ exports.findOne = (req, res) => {
           res.send(data);
         }
         else{
-          res.status(500).send({
+          res.status(422).send({
             message: "Error retrieving Branch with id=" + branch_id + ". Branch does not belong to merchant."
           });
         }
@@ -137,7 +136,7 @@ exports.update = (req, res) => {
             message: "Branch was updated successfully."
           });
         } else {
-          res.send({
+          res.status(422).send({
             message: `Cannot update Branch with id=${id}. Maybe Branch was not found or req.body is empty!`
           });
         }
@@ -163,7 +162,7 @@ exports.delete = (req, res) => {
             message: "Branch was deleted successfully!"
           });
         } else {
-          res.send({
+          res.status(422).send({
             message: `Cannot delete Branch with id=${id}. Maybe Branch was not found!`
           });
         }

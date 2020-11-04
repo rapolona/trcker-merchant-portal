@@ -28,9 +28,16 @@ module.exports = {
         })
       }
       catch(err){
-        res.status(500).send({
-          message: err||"Internal error"
-        })
+        if(err.name == "TokenExpiredError"){
+          res.status(401).send({
+            message: err||"Internal error"
+          })
+        }
+        else{
+          res.status(500).send({
+            message: err||"Internal error"
+          }) 
+        }
       }
     }
     else{

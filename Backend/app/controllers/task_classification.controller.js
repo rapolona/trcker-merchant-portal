@@ -79,7 +79,7 @@ exports.update = (req, res) => {
             message: "Task_Classification was updated successfully."
           });
         } else {
-          res.send({
+          res.status(422).send({
             message: `Cannot update Task_Classification with id=${id}. Maybe Task_Classification was not found or req.body is empty!`
           });
         }
@@ -104,7 +104,7 @@ exports.delete = (req, res) => {
             message: "Task_Classification was deleted successfully!"
           });
         } else {
-          res.send({
+          res.status(422).send({
             message: `Cannot delete Task_Classification with id=${id}. Maybe Task_Classification was not found!`
           });
         }

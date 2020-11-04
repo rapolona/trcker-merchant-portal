@@ -87,7 +87,7 @@ exports.create = (req, res) => {
       return;
     }
     if (moment(req.body.end_date).isBefore(moment(req.body.start_date).subtract(0,'days'))){
-      res.status(400).send({
+      res.status(422).send({
         message: "Cannot create campaign whose end date occurs before the start date"
       });
       return;
@@ -252,7 +252,7 @@ exports.findOne = (req, res) => {
           res.send(data);
         }
         else{
-          res.status(500).send({
+          res.status(422).send({
             message: "Error retrieving Campaign with id=" + campaign_id + ". Campaign does not belong to merchant."
           });
         }
@@ -326,7 +326,7 @@ exports.delete = (req, res) => {
           message: "Campaign was deleted successfully!"
         });
       } else {
-        res.send({
+        res.status(422).send({
           message: `Cannot delete Campaign with id=${campaign_id}. Maybe Campaign was not found!`
         });
       }

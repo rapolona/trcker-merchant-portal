@@ -93,7 +93,7 @@ exports.update = (req, res) => {
             message: "Merchant was updated successfully."
           });
         } else {
-          res.send({
+          res.status(422).send({
             message: `Cannot update Merchant with id=${id}. Maybe Merchant was not found or req.body is empty!`
           });
         }
@@ -118,7 +118,7 @@ exports.delete = (req, res) => {
             message: "Merchant was deleted successfully!"
           });
         } else {
-          res.send({
+          res.status(422).send({
             message: `Cannot delete Merchant with id=${id}. Maybe Merchant was not found!`
           });
         }

@@ -80,7 +80,7 @@ exports.update = (req, res) => {
             message: "Campaign_Branch_Association was updated successfully."
           });
         } else {
-          res.send({
+          res.status(422).send({
             message: `Cannot update Campaign_Branch_Association with id=${id}. Maybe Campaign_Branch_Association was not found or req.body is empty!`
           });
         }
@@ -105,7 +105,7 @@ exports.delete = (req, res) => {
             message: "Campaign_Branch_Association was deleted successfully!"
           });
         } else {
-          res.send({
+          res.status(422).send({
             message: `Cannot delete Campaign_Branch_Association with id=${id}. Maybe Campaign_Branch_Association was not found!`
           });
         }

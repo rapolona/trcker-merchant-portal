@@ -68,7 +68,7 @@ exports.findOne = (req, res) => {
           res.send(data);
         }
         else{
-          res.status(500).send({
+          res.status(422).send({
             message: "Error retrieving Product with id=" + product_id + ". Product does not belong to merchant."
           });
         }
@@ -93,7 +93,7 @@ exports.update = (req, res) => {
             message: "Product was updated successfully."
           });
         } else {
-          res.send({
+          res.status(422).send({
             message: `Cannot update Product with id=${id}. Maybe Product was not found or req.body is empty!`
           });
         }
@@ -119,7 +119,7 @@ exports.delete = (req, res) => {
             message: "Product was deleted successfully!"
           });
         } else {
-          res.send({
+          res.status(422).send({
             message: `Cannot delete Product with id=${id}. Maybe Product was not found!`
           });
         }

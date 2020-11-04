@@ -21,7 +21,7 @@ exports.approve = (req, res) => {
               message: "Task Ticket was updated successfully."
             });
           } else {
-            res.send({
+            res.status(422).send({
               message: `Cannot update Task_Ticket with id=${id}. Maybe Task_Ticket was not found or req.body is empty!`
             });
           }
@@ -33,7 +33,7 @@ exports.approve = (req, res) => {
         });
     }
     else{
-      res.send({
+      res.status(422).send({
         message: "Cannot update the ticket repeatedly"
       })
     }
@@ -60,7 +60,7 @@ exports.approve = (req, res) => {
                 message: "Task Ticket was updated successfully."
               });
             } else {
-              res.send({
+              res.status(422).send({
                 message: `Cannot update Task_Ticket with id=${id}. Maybe Task_Ticket was not found or req.body is empty!`
               });
             }
@@ -72,7 +72,7 @@ exports.approve = (req, res) => {
           });
       }
       else{
-        res.send({
+        res.status(422).send({
           message: "Cannot update the ticket repeatedly"
         })
       }

@@ -38,70 +38,78 @@ exports.findAdminByCredential = (req,res) => {
         .then(data => {
             if(data){
                 req.body.salt = data.get({plain:true}).password_salt
-            PasswordUtils.hash(req.body, (passwordObject) => {
-                const attempt = {
-                    username : req.body.username,
-                    password : passwordObject.hash
-                }
-                Admin.findOne({where: attempt,include: [{model:AdminDetail, as:"adminDetails"}], attributes:{exclude: ['password', 'password_salt']}})
-                .then(data => {
-                    if(data){
-                        var sqlData = data.get({plain:true})
-                        var token = jwt.sign({username: sqlData.username,adminid: sqlData.admin_id, merchantid: sqlData.merchant_id},"TrckerTestSecret", {expiresIn: '1d'})
-                        const adminsession = {
-                            admin_id : sqlData.admin_id,
-                            token : token,
-                        }
-                        console.log(adminsession)
-                        AdminSession.findOne({where: {"admin_id" : sqlData.admin_id}})
-                        .then(data => {
-                            if(data){
-                                AdminSession.update({token: token}, {where: {admin_id : sqlData.admin_id}})
-                                .then(data => {
-                                    sqlData.token = token
-                                    res.cookie("authentication", token)
-                                    res.send(sqlData)
-                                })
-                                .catch(err => {
-                                    res.status(500).send({
-                                        message:
-                                            "Session error"
-                                    })
-                                })
-                            }
-                            else{
-                                AdminSession.create(adminsession)
-                                .then(data => {
-                                    sqlData.token = token
-                                    res.cookie("authentication", token)
-                                    res.send(sqlData)
-                                })
-                                .catch(err => {
-                                    res.status(500).send({
-                                        message:
-                                           err.message || "Session error"
-                                    })
-                                })
-                            }
-                        })
-                    }                        
-                    else{
-                        res.status(403).send({
-                            message:
-                                "Username or password is incorrect"
-                        })
+                PasswordUtils.hash(req.body, (passwordObject) => {
+                    const attempt = {
+                        username : req.body.username,
+                        password : passwordObject.hash
                     }
-                })
-                .catch(err => {
-                    res.status(500).send({
-                        message:
-                            err.message || "Some error occured while retrieveing Users."
-                    });
-                })   
+                    Admin.findOne({where: attempt,include: [{model:AdminDetail, as:"adminDetails"}], attributes:{exclude: ['password', 'password_salt']}})
+                    .then(data => {
+                        if(data){
+                            var sqlData = data.get({plain:true})
+                            var token = jwt.sign({username: sqlData.username,adminid: sqlData.admin_id, merchantid: sqlData.merchant_id},"TrckerTestSecret", {expiresIn: '1d'})
+                            const adminsession = {
+                                admin_id : sqlData.admin_id,
+                                token : token,
+                            }
+                            console.log(adminsession)
+                            AdminSession.findOne({where: {"admin_id" : sqlData.admin_id}})
+                            .then(data => {
+                                if(data){
+                                    AdminSession.update({token: token}, {where: {admin_id : sqlData.admin_id}})
+                                    .then(num => {
+                                        if(num == 1) {
+                                            sqlData.token = token
+                                            res.cookie("authentication", token)
+                                            res.send(sqlData)
+                                        }
+                                        else{
+                                            res.status(422).send({
+                                                message:
+                                                    "Admin session may not have been found"
+                                            })
+                                        }
+                                    })
+                                    .catch(err => {
+                                        res.status(422).send({
+                                            message:
+                                                "Error updating session"
+                                        })
+                                    })
+                                }
+                                else{
+                                    AdminSession.create(adminsession)
+                                    .then(data => {
+                                        sqlData.token = token
+                                        res.cookie("authentication", token)
+                                        res.send(sqlData)
+                                    })
+                                    .catch(err => {
+                                        res.status(500).send({
+                                            message:
+                                            err.message || "Session error"
+                                        })
+                                    })
+                                }
+                            })
+                        }                        
+                        else{
+                            res.status(422).send({
+                                message:
+                                    "Username or password is incorrect"
+                            })
+                        }
+                    })
+                    .catch(err => {
+                        res.status(500).send({
+                            message:
+                                err.message || "Some error occured while retrieveing Users."
+                        });
+                    })   
             })
             } 
             else{
-                res.status(500).send({
+                res.status(422).send({
                     message:
                         "User was not found in the system"
                 });
@@ -123,6 +131,11 @@ exports.refreshToken = (req,res)=>{
         if(num == 1){
             res.cookie("authentication", token)
             res.send({token:token})
+        }
+        else{
+            res.status(422).send({
+                message: "Failed to update session"
+            })
         }
     })
     .catch(err => {

@@ -10,7 +10,7 @@ exports.destroySession = (req,res) => {
             message: "Admin Session was deleted successfully!"
             });
         } else {
-            res.send({
+            res.status(422).send({
             message: `Cannot delete Admin Session with id=${id}. Maybe Admin was not found!`
             });
         }

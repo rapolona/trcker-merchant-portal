@@ -82,7 +82,7 @@ exports.update = (req, res) => {
             message: "Campaign_Reward was updated successfully."
           });
         } else {
-          res.send({
+          res.status(422).send({
             message: `Cannot update Campaign_Reward with id=${id}. Maybe Campaign_Reward was not found or req.body is empty!`
           });
         }
@@ -108,7 +108,7 @@ exports.delete = (req, res) => {
             message: "Campaign_Reward was deleted successfully!"
           });
         } else {
-          res.send({
+          res.status(422).send({
             message: `Cannot delete Campaign_Reward with id=${id}. Maybe Campaign_Reward was not found!`
           });
         }
