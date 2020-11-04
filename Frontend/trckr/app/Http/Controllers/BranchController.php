@@ -168,11 +168,11 @@ class BranchController extends Controller
         $data = (array) $request->all();
 
         $validator = Validator::make($request->all(), [
-            'province' => 'required|max:64',
-            'region' => 'required|max:64',
-            'brand' => 'required|max:64',
-            'store_type' => 'required',
-            'business_type' => 'required',
+            //'province' => 'required',
+           // 'region' => 'required',
+           // 'brand' => 'required',
+           // 'store_type' => 'required',
+           // 'business_type' => 'required',
             'name' => 'required|max:64',
             'address' => 'required|max:64',
             'city' => 'required|max:64',
@@ -212,6 +212,11 @@ class BranchController extends Controller
         $data = (array) $request->all();
 
         $validator = Validator::make($request->all(), [
+            //'province' => 'required',
+            // 'region' => 'required',
+            // 'brand' => 'required',
+            // 'store_type' => 'required',
+            // 'business_type' => 'required',
             'branch_id' => 'required',
             'name' => 'required|max:64',
             'address' => 'required|max:64',
@@ -240,38 +245,20 @@ class BranchController extends Controller
 
     public function delete_branch($branchId)
     {
-        $data = (array) $request->all();
+        $data = [
+            "branch_id" => $branchId
+        ];
 
-        $api_endpoint = Config::get('trckr.backend_url') . "merchant/branch";
-        $session = $request->session()->get('session_merchant');
-        $token = ( ! empty($session->token)) ? $session->token : "";
+        $response = $this->branchService->delete($data);
 
-        $count = 1;
-        $debug = array();
-
-        $branches = explode(",", $data['branches']);
-        foreach($branches as $b) {
-            $response = Http::withToken($token)->delete($api_endpoint, ["branch_id" => $b]);
-            $debug[] = $response;
-
-            if ($response->status() !== 200)
-            {
-                //provide handling for failed merchant profile modification
-                return Response()->json([
-                    "success" => false,
-                    "message" => "Failed Deleting Branch {$count}", //with error: [{$response->status()}] {$response->body()}",
-                    "file" => json_encode($response),
-                    "data" => json_encode($b)
-                ], 422);
-            }
-            $count+=1;
-        }
-
-        return Response()->json([
+        $msg = [
             "success" => true,
-            "message" => "Deleted Branches successful!", //. $response->body(),
-            "file" => $data['branches']
-        ]);
+            "type" => "success",
+            "message" => "Branch was successfully deleted!",
+        ];
+
+        return redirect('/merchant/branch')
+            ->with("formMessage", $msg);
     }
 
     /**
