@@ -61,18 +61,27 @@
 
 @include('concrete.layouts.breadcrumbs')
 
+
 @if(isset($formMessage))
-<section class="global-message">
-<div class="alert alert-dismissible alert-{{ $formMessage['type'] }} alert-sm" role="alert"><span class="alert-icon fa-warning"></span><span>{{ $formMessage['message'] }}</span>
-    <button class="close" type="button" data-dismiss="alert" aria-label="Close"><span class="fa-close" aria-hidden="true"></span></button>
-</div>
-</section>
+    <section class="global-message">
+        <div class="row" style="margin: 1% 1% 0 1%">
+            <div class="col-sm-12">
+                <div class="alert alert-dismissible alert-{{ $formMessage['type'] }} alert-sm" role="alert"><span class="alert-icon fa-check-circle"></span><span>{{ $formMessage['message'] }}</span>
+                    <button class="close" type="button" data-dismiss="alert" aria-label="Close"><span class="fa-close" aria-hidden="true"></span></button>
+                </div>
+            </div>
+        </div>
+    </section>
 @endif
 
 @if (session('formMessage'))
     <section class="global-message">
-        <div class="alert alert-dismissible alert-{{ session('formMessage')['type'] }} alert-sm" role="alert"><span class="alert-icon fa-warning"></span><span>{{ session('formMessage')['message'] }}</span>
-            <button class="close" type="button" data-dismiss="alert" aria-label="Close"><span class="fa-close" aria-hidden="true"></span></button>
+        <div class="row" style="margin: 1% 1% 0 1%">
+            <div class="col-sm-12">
+                <div class="alert alert-dismissible alert-{{ session('formMessage')['type'] }} alert-sm" role="alert"><span class="alert-icon fa-check-circle"></span><span>{{ session('formMessage')['message'] }}</span>
+                    <button class="close" type="button" data-dismiss="alert" aria-label="Close"><span class="fa-close" aria-hidden="true"></span></button>
+                </div>
+            </div>
         </div>
     </section>
 @endif

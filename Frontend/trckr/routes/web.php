@@ -94,13 +94,11 @@ Route::group(["middleware" => ["merchantAuth"]], function() {
     // TICKET
     Route::group(['prefix' => 'ticket'], function() {
         Route::get('/view', 'TicketController@view');
-        Route::get('/view_ticket', 'TicketController@view_ticket');
+        Route::get('/view_ticket/{id}', 'TicketController@view_ticket');
         Route::get('/create', 'TicketController@create');
         Route::post('/approve_ticket', 'TicketController@approve_ticket');
         Route::post('/reject_ticket', 'TicketController@reject_ticket');
         //Ajax for Save Details
         Route::get('/export_csv', 'TicketController@export_csv');
     });
-
-
 });

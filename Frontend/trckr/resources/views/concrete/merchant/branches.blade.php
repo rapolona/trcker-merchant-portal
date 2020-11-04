@@ -69,8 +69,8 @@
                             <td> {{ $branch->latitude }} {{ $branch->longitude }}</td>
                             <td>
                                 <div class="btn-group">
-                                    <a class="btn btn-warning btn-sm" type="button" href="{{url('/merchant/branch/edit/' . $branch->branch_id )}}"><span class="fa-edit"></span></a>
-                                    <a class="btn btn-danger btn-sm deleteProduct" type="button" target-href="{{url('/merchant/branch/delete/' . $branch->branch_id )}}"><span class="mdi-delete"></span></a>
+                                    <a class="btn btn-warning" type="button" href="{{url('/merchant/branch/edit/' . $branch->branch_id )}}"><span class="fa-edit"></span></a>
+                                    <a class="btn btn-danger deleteBranch" type="button" target-href="{{url('/merchant/branch/delete/' . $branch->branch_id )}}"><span class="mdi-delete"></span></a>
                                 </div>
                             </td>
                         </tr>
@@ -92,45 +92,26 @@
 
         $(document).ready(function (e) {
 
+            $(document).on("click", "a.deleteBranch", function() {
+                if (confirm('Are you sure to delete this record ?')) {
+                    window.location.href = $(this).attr('target-href');
+                }
+            });
+
             $('#delete').click(function(e){
-                var formData = new FormData();
-                var branches = [];
+                let products = [];
 
-                console.log(branches);
-                $.each($("input[name='branch']:checked"), function(){
-                    branches.push($(this).attr("id"));
+                $.each($("input[name='branch_id']:checked"), function(){
+                    products.push($(this).attr("id"));
                 });
 
-                if (branches.length < 1){
-                    $(".modal-title").text("Invalid Delete Selection!");
-                    $(".modal-body").html("<p>Please check at least one product!</p>");
-                    $("#myModal").modal('show');
-                    return;
+                $('#delete_ids').val(JSON.stringify(products));
+
+                if (confirm('Are you sure to delete this records ?')) {
+                    $("#deleteForm").submit();
                 }
-
-                console.log(branches);
-
-                formData.append('branches', branches);
-                formData.append('_token', "{{ csrf_token() }}");
-
-                post("{{url('/merchant/branch/delete')}}", "Delete Branch", "delete", formData, "{{url('/merchant/branch')}}");
             });
 
-            $('#edit').click(function(e){
-                var branches = [];
-                $.each($("input[name='branch']:checked"), function(){
-                    branches.push($(this).attr("id"));
-                });
-
-                if (branches.length != 1){
-                    $(".modal-title").text("Invalid Edit Selection!");
-                    $(".modal-body").html("<p>Please check one branch only!</p>");
-                    $("#myModal").modal('show');
-                    return;
-                }
-
-                window.location.href = "{{url('/merchant/branch/edit?branch_id=')}}" + branches[0];
-            });
 
             $('#upload_csv').click(function(e){
                 $("#file").click();
