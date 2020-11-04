@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link rel="icon" href="{{ asset('images/favicon.ico') }}" type="image/x-icon">
     <link rel="stylesheet" href="{{ asset('components/base/base.css') }}">
-    <link rel="stylesheet" href="{{ asset('components/trcker-login.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <script src="{{ asset('components/base/script.js') }}"></script>
 </head>
 <body>
