@@ -138,6 +138,8 @@ exports.create = (req, res) => {
       budget: req.body.budget,
       campaign_name: req.body.campaign_name,
       campaign_description: req.body.campaign_description,
+      thumbnail_url: req.body.thumbnail_url,
+      description_image_url: req.body.description_image_url,
       audience_age_min: req.body.audience_age_min,
       audience_age_max: req.body.audience_age_max,
       audience_gender: req.body.audience_gender,
