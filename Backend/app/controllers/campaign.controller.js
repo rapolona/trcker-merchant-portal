@@ -78,7 +78,7 @@ exports.create = (req, res) => {
   };
 
   // Create and Save a new Campaign
-exports.createCustom = (req, res) => {
+  exports.createCustom = (req, res) => {
     // Validate request
     if (!req.body.start_date) {
       res.status(400).send({
@@ -91,6 +91,24 @@ exports.createCustom = (req, res) => {
         message: "Cannot create campaign whose end date occurs before the start date"
       });
       return;
+    }
+    const branches_container = []
+    var at_home_campaign = req.body.at_home_campaign;
+
+    if(at_home_campaign==true){
+      var at_home_respondent_count=req.body.at_home_respondent_count;
+      var at_home_branch_id = "fbe9b0cf-5a77-4453-a127-9a8567ff3aa7";
+      branches_container.push({"branch_id":at_home_branch_id, "respondent_count":at_home_respondent_count});
+    }
+    else{
+      at_home_campaign=false
+      for(i=0;i<req.body.branches.length;i++){
+        current_item = req.body.branches[i]
+        if(!current_item.branch_id){
+          current_item.branch_id = "fbe9b0cf-5a77-4453-a127-9a8567ff3aa7"
+        }
+        branches_container.push(req.body.branches[i])
+      }
     }
     // if (moment(req.body.end_date).isBefore(moment(Date.now()).subtract(1,'days'))){
     //   res.status(400).send({
@@ -107,14 +125,11 @@ exports.createCustom = (req, res) => {
 
   // Create a campaign
   
-  const branches_container = []
   for(i=0;i<req.body.tasks.length; i++){
     req.body.tasks[i].index = i+1;
   }
   
-  for(i=0;i<req.body.branches.length;i++){
-    branches_container.push(req.body.branches[i])
-  }
+
   
   const campaign = {
       merchant_id: req.body.merchantid,
@@ -129,7 +144,8 @@ exports.createCustom = (req, res) => {
       allowed_account_level: req.body.allowed_account_level,
       super_shoppers: req.body.super_shoppers,
       allow_everyone: req.body.allow_everyone,
-      status: 0,
+      status: "INACTIVE",
+      at_home_campaign: at_home_campaign,
       campaign_type: req.body.campaign_type,
       campaign_task_associations: req.body.tasks,
       campaign_branch_associations: branches_container,
@@ -373,3 +389,59 @@ exports.deleteAll = (req, res) => {
       });
     })
   }
+
+
+    // Find a single Campaign with an id
+exports.enable_campaign = (req, res) => {
+  const campaign_id = req.params.campaign_id;
+  const merchant_id = req.body.merchantid;
+
+  Campaign.update({status:"ONGOING"}, {
+    where: { merchant_id: merchant_id, 
+             campaign_id: campaign_id,
+             status: "DISABLED" }
+  })
+    .then(num => {
+      if (num == 1) {
+        res.send({
+          message: "Campaign was set to ongoing successfully"
+        });
+      } else {
+        res.status(500).send({
+          message: `Cannot update Campaign with id=${campaign_id}. Maybe Campaign has already lapsed or has not been paused yet.`
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: "Error updating Campaign with id=" + campaign_id
+      });
+    });
+};
+
+exports.disable_campaign = (req, res) => {
+  const campaign_id = req.params.campaign_id;
+  const merchant_id = req.body.merchantid;
+
+  Campaign.update({status:"DISABLED"}, {
+    where: { merchant_id: merchant_id, 
+             campaign_id: campaign_id,
+             status: "ONGOING" }
+  })
+    .then(num => {
+      if (num == 1) {
+        res.send({
+          message: "Campaign was set to disabled successfully"
+        });
+      } else {
+        res.status(500).send({
+          message: `Cannot update Campaign with id=${campaign_id}. Maybe Campaign has already lapsed or has not been paused yet.`
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: "Error updating Campaign with id=" + campaign_id
+      });
+    });
+};

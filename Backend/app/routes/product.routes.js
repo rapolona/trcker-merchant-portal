@@ -8,7 +8,7 @@ module.exports = app => {
   
   
     // Retrieve a single Product with id
-    router.get("/:product_id", adminMiddleware.isAuthenticated , products.findOne);
+    router.get("/find_one/:product_id", adminMiddleware.isAuthenticated , products.findOne);
   
     // Update a Product with id
     router.put("/", products.update);

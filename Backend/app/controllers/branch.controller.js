@@ -16,8 +16,13 @@ exports.create = (req, res) => {
     // Create a branch
     const branch = {
       name: req.body.name,
+      business_type: req.body.business_type,
+      store_type: req.body.store_type,
+      brand: req.body.brand,
       address: req.body.address,
       city: req.body.city,
+      region: req.body.region,
+      province: req.body.province,
       latitude: req.body.latitude,
       longitude: req.body.longitude,
       photo_url: req.body.photo_url,
@@ -29,6 +34,37 @@ exports.create = (req, res) => {
   
     // Save Branch in the database
     Branch.create(branch)
+      .then(data => {
+        res.send(data);
+      })
+      .catch(err => {
+        res.status(500).send({
+          message:
+            err.message || "Some error occurred while creating the Branch."
+        });
+      });
+  };
+
+
+  exports.createMany = (req, res) => {
+    // Validate request
+    if (!req.body.branches) {
+      res.status(400).send({
+        message: "Content can not be empty!"
+      });
+      return;
+    }
+    
+    branches_container = req.body.branches;
+    branches_container.forEach((element)=> {
+      element.merchant_id = req.body.merchantid;
+    })
+
+
+    console.log(branches_container)
+  
+    // Save Branch in the database
+    Branch.bulkCreate(branches_container)
       .then(data => {
         res.send(data);
       })
@@ -83,7 +119,7 @@ exports.findOne = (req, res) => {
       })
       .catch(err => {
         res.status(500).send({
-          message: "Error retrieving Branch with id=" + id
+          message: "Error retrieving Branch with id=" + branch_id
         });
       });
   };
@@ -155,4 +191,69 @@ exports.deleteAll = (req, res) => {
         });
       });
   };
+
+  // Retrieve all Branches from the database.
+exports.findDistinctFilters = (req, res) => {
+  const id = req.body.merchantid;
+
+
+  var condition = null;
+  if(req.body.merchantid){
+    condition = {merchant_id: id};
+  }
+  console.log(condition)
+
+  var chainedPromises = [];
+  
+  var columns = ['region','business_type',]
+  var result_data = {
+    region:[],
+    business_type:[],
+    store_type:[],
+    brand:[],
+    city:[],
+    region:[],
+    province:[]
+  }
+
+  db.sequelize.transaction({autocommit:false},transaction => {
+
+  Object.keys(result_data).forEach((element)=> {
+    chainedPromises.push(
+      Branch.findAll({
+        where: {
+            merchant_id: id
+        }, 
+        attributes: [[db.Sequelize.literal(`DISTINCT \`${element}\``), element], element],
+        transaction
+      })
+      .then(data => {
+        data.forEach((item)=>{result_data[element].push(item[element])})
+      })
+      .catch(err => {
+        res.status(500).send({
+          message:
+            err.message || "Some error occurred while retrieving filter values."
+        });
+      })
+
+    
+    );
+
+  })
+  //console.log(chainedPromises)
+  return Promise.all(chainedPromises)
+    .then(data => {
+          res.send(result_data)
+        })
+        .catch(err => {
+          res.status(500).send({
+            message:
+              err.message || "Some error occurred while retrieving Filters."
+          });
+        });
+  })
+
+
+};
 

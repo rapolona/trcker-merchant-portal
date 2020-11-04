@@ -16,7 +16,7 @@ module.exports = app => {
     router.get("/custom", campaigns.findAllCustom);
   
     // // Retrieve a single Campaign with id
-    router.get("/campaign/:campaign_id",adminMiddleware.isAuthenticated, campaigns.findOne);
+    router.get("/campaign/find_one/:campaign_id",adminMiddleware.isAuthenticated, campaigns.findOne);
   
     // Update a Campaign with id
     router.put("/campaign/update", adminMiddleware.isAuthenticated,campaigns.update);
@@ -24,6 +24,12 @@ module.exports = app => {
     // Delete a Campaign with id
     router.delete("/campaign",adminMiddleware.isAuthenticated ,campaigns.delete);
   
+    // Disable a campaign with ID
+    router.put("/campaign/disable/:campaign_id", adminMiddleware.isAuthenticated,campaigns.disable_campaign);
+
+    // Disable a campaign with ID
+    router.put("/campaign/enable/:campaign_id", adminMiddleware.isAuthenticated,campaigns.enable_campaign);
+      
   
     app.use('/merchant/', router);
   };

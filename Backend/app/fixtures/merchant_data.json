@@ -108,6 +108,19 @@
             "description": "Create your own Task",
             "task_type": "Custom"
         }   
+    },
+    {
+        "model": "branches",
+        "data": {
+            "branch_id": "fbe9b0cf-5a77-4453-a127-9a8567ff3aa7",
+            "name": "At-Home Tasks",
+            "address":null,
+            "city": null,
+            "latitude":null,
+            "longitude":null,
+            "photo_url":null,
+            "merchant_id":null
+        }
     }
 
     
