@@ -58,12 +58,8 @@
         </nav>
     </div>
 </header>
-<section class="topbar">
-    <!-- Breadcrumbs-->
-    <ul class="breadcrumbs">
-        <li class="breadcrumbs-item"><a class="breadcrumbs-link" href="index.html"><span class="breadcrumbs-icon fa-home"></span><span>Dashboard</span></a></li>
-    </ul>
-</section>
+
+@include('concrete.layouts.breadcrumbs')
 
 @if(isset($formMessage))
 <section class="global-message">

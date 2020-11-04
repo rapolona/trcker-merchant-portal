@@ -2,13 +2,8 @@
 
 namespace App\Http\Controllers;
 
-Use App\User;
 use App\Document;
 use Illuminate\Http\Request;
-use Illuminate\Http\Client\Response;
-use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Validator,Redirect,File;
 use Config, Session;

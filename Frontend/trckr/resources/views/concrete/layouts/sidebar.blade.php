@@ -2,7 +2,7 @@
     <div class="rd-navbar-sidebar-panel">
         <div>
             <div class="group-15">
-                <div class="rd-navbar-brand logo2"><a href="{{ url('dashboard') }}"><img src="{{ asset(config('concreteadmin.logo_img', 'logo_img'))  }}" alt=""></a></div>
+                <div class="rd-navbar-brand logo2"><a href="{{ url('dashboard') }}"><img src="{{ asset(config('concreteadmin.logo_img_white', 'logo_img'))  }}" alt=""></a></div>
                 <div class="rd-navbar-sidebar-search">
                     <input class="form-control" type="text" placeholder="Search"/>
                 </div>
