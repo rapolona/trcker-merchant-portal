@@ -1,64 +1,63 @@
 @extends('concrete.layouts.main')
 
+@section('breadcrumbs_pull_right')
+    <div class="group-10">
+        <!-- <button class="btn btn-secondary" type="button"><span class="fa-plus"></span><span class="pl-2">Add New Branch</span></button> -->
+        <a class="btn btn-light" href="{{ url('campaign/create') }}"><span class="fa-plus"></span><span class="pl-2">Add New Campaign</span></a>
+        <!-- <button class="btn btn-secondary" type="button"><span class="fa-user"></span><span class="pl-2">Button Link</span></button> -->
+    </div>
+@endsection
+
 @section('content')
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-            <div class="modal-header" style="display:auto;">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Modal title</h4>
-            </div>
-            <div class="modal-body">
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
-    <p>Insert text here</p>
-    <div class="row">
-        <div class="card" style="width:100%">
-            <div class="col col-lg-12">
-                <div class="card-header">
-                    <form method="POST" enctype="multipart/form-data" id="file_upload" action="javascript:void(0)" >
-                        <div class="btn-group float-lg-right" role="group" aria-label="Basic example">
-                            <a href="{{url('/campaign/create')}}" type="button" class="btn btn-primary btn-lg pull-right">Add</a>
-                            <button type="button" class="btn btn-primary btn-lg" id="edit">Edit</button>
-                            <button class="btn btn-primary btn-lg" type="button" value="button" id="delete">
-                                <span class="spinner-border spinner-border-sm" role="status" id="loader_delete" aria-hidden="true" disabled> </span>
-                                Delete
-                            </button>
-                        </div>
-                    </form>
+    <div class="panel">
+        <div class="panel-header">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="panel-title"><span class="panel-icon fa-tasks"></span> <span>Campaigns</span>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <table class="table table-bordered table-striped mydatatable">
-                        <thead>
-                        <tr>
-                            <th style="width: 10px">#</th>
-                            <th >Campaign Name</th>
-                            <th >Budget</th>
-                            <th >Duration</th>
-                            <th >Status</th>
-                            <th style="width: 40px">Action?</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        @foreach ($campaigns as $c)
-                        <tr>
-                            <input class="view_id" type="hidden" name="row_campaign_id[]" value="{{$c->campaign_id}}"/>
-                            <td class="view"> {{ $c->no }}</td>
-                            <td class="view"> {{ $c->campaign_name }}</td>
-                            <td class="view"> {{ $c->budget }}</td>
-                            <td class="view"> {{ $c->duration }}</td>
-                            <td class="view"> {{ $c->status }}</td>
-                            <td><input type="checkbox" name="campaigns" id="{{$c->campaign_id}}" value="{{$c->campaign_id}}"></td>
-                        </tr>
-                        @endforeach
-                        </tbody>
-                    </table>
-                </div>
+            </div>
+        </div>
+        <div class="panel-body p-0">
+            <div class="table-responsive scroller scroller-horizontal py-3">
+                <table class="table table-striped table-hover data-table" data-table-searching="true" data-table-lengthChange="true" data-page-length="5">
+                    <thead>
+                    <tr>
+                        <th>Campaign Name</th>
+                        <th>Budget</th>
+                        <th>Reward</th>
+                        <th>No. of tasks</th>
+                        <th>Start date</th>
+                        <th>End date</th>
+                        <th>Status</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach ($campaigns as $campaign)
+                    <tr>
+                        <td>{{ $campaign->campaign_name }}</td>
+                        <td>{{ $campaign->budget }}</td>
+                        <td>N/A</td>
+                        <td>N/A</td>
+                        <td>{{ date('Y-m-d', strtotime($campaign->start_date)) }}</td>
+                        <td>{{ date('Y-m-d', strtotime($campaign->end_date)) }}</td>
+                        <td class="text-success">N/A</td>
+                        <td class="text-right">
+                            <div class="dropdown">
+                                <button class="btn dropdown-toggle btn-light btn-sm" data-toggle="dropdown"><span>Action</span>
+                                </button>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="#">View</a>
+                                    <a class="dropdown-item" href="#">Edit</a>
+                                    <a class="dropdown-item" href="#">Disable</a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    @endforeach
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

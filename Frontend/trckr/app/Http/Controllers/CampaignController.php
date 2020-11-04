@@ -2,94 +2,37 @@
 
 namespace App\Http\Controllers;
 
-Use App\User;
 use App\Document;
 use Illuminate\Http\Request;
-use Illuminate\Http\Client\Response;
-use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Validator,Redirect,File;
 use Config, Session;
 use DateTime;
+use App\Services\CampaignService;
 
 class CampaignController extends Controller
 {
+    private $campaignService;
+
+    public function __construct(CampaignService $campaignService)
+    {
+        $this->campaignService = $campaignService;
+    }
+
     public function index()
     {
         $this->view();
     }
 
+    /**
+     * List controller instance
+     *
+     * @return View
+     */
     public function view(Request $request)
     {
-        //api call for campaigns
-        //http://localhost:6001/merchant/campaign
-        /*
-        $api_endpoint = "http://localhost:6001/merchant/campaign";
-        $campaigns = Http::withToken($this->$_backend_token)->get($api_endpoint,  []);
-        $campaigns = json_decode($campaigns);
-        */
-
-        $api_endpoint = Config::get('trckr.backend_url') . "merchant/campaign";
-
-        $session = $request->session()->get('session_merchant');
-
-        if ( ! $session) return redirect('/');
-        $token = ( ! empty($session->token)) ? $session->token : "";
-
-        $response = Http::withToken($token)->get($api_endpoint, []);
-
-        if ($response->status() !== 200)
-        {
-            if ($response->status() === 403) {
-                $validator = Validator::make($request->all(), []);
-                $validator->getMessageBag()->add('email', "Session Expired. Please login again. {$response->body()}");
-
-                return redirect('/')
-                    ->withErrors($validator)
-                    ->withInput();
-            }
-
-            if ($response->status() === 500) {
-                $handler = json_decode($response->body());
-
-                if ($handler->message->name == "JsonWebTokenError")
-
-                $validator = Validator::make($request->all(), []);
-                $validator->getMessageBag()->add('email', "Session Expired. Please login again. {$response->body()}");
-
-                return redirect('/')
-                    ->withErrors($validator)
-                    ->withInput();
-            }
-
-            //general handling
-            return redirect('/dashboard');
-        }
-
-        $response = json_decode($response);
-
-        $campaigns = array();
-        $count = 0;
-        foreach ($response as $k)
-        {
-            $start_date = new DateTime($k->start_date);
-            $start_date = $start_date->format("F d, Y");
-            $end_date = new DateTime($k->end_date);
-            $end_date = $end_date->format("F d, Y");
-            $campaigns[] = (object) [
-                'no' => $count+1,
-                'campaign_id' => $k->campaign_id,
-                'campaign_name' => ( ! empty($k->campaign_name)) ? $k->campaign_name : "{$k->campaign_id}-No Campaign Name",
-                'budget' => ( ! empty($k->budget)) ? $k->budget : "{$k->campaign_id}-No Budget",
-                'duration' => "{$start_date} to {$end_date}",
-                'status' => ($k->status) ? "Ongoing" : "Completed"
-            ];
-            $count+=1;
-        }
-
-        return view('concrete.campaign.campaign', ['campaigns' => (object) $campaigns]);
+        $campaigns = $this->campaignService->getAll();
+        return view('concrete.campaign.campaign', ['campaigns' => $campaigns]);
     }
 
     public function view_campaign(Request $request)
