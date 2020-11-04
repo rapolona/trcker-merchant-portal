@@ -1,71 +1,61 @@
 @extends('concrete.layouts.main')
 
+@section('breadcrumbs_pull_right')
+    <div class="group-10">
+        <!-- <button class="btn btn-secondary" type="button"><span class="fa-plus"></span><span class="pl-2">Add New Branch</span></button> -->
+        <a class="btn btn-light" href="{{ url('task/create') }}"><span class="fa-plus"></span><span class="pl-2">Add New Task</span></a>
+        <!-- <button class="btn btn-secondary" type="button"><span class="fa-user"></span><span class="pl-2">Button Link</span></button> -->
+    </div>
+@endsection
+
 @section('content')
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-            <div class="modal-header" style="display:auto;">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Modal title</h4>
-            </div>
-            <div class="modal-body">
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
-
-    <p>Insert text here</p>
-    <div class="row">
-        <div class="col col-lg-12">
-            <div class="card" style="width:100%">
-                <div class="card-header">
-                    <form method="POST" enctype="multipart/form-data" id="file_upload" action="javascript:void(0)" >
-                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                        <input type="file" name="file" id="file" style="display:none">
-
-                        <div class="btn-group float-lg-right" role="group" aria-label="Basic example">
-                            <a href="{{url('/task/create')}}" type="button" class="btn btn-primary btn-lg pull-right">Add</a>
-                            <button type="button" class="btn btn-primary btn-lg" id="edit">Edit</button>
-                            <button type="button" class="btn btn-primary btn-lg" id="delete">Delete</button>
-                        </div>
-                    </form>
+    <div class="panel">
+        <div class="panel-header">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="panel-title"><span class="panel-icon fa-tasks"></span> <span>Tasks</span>
+                    </div>
                 </div>
-                <!-- /.card-header -->
-                <div class="card-body">
-                    <table class="table table-bordered table-striped mydatatable">
-                        <thead>
+            </div>
+        </div>
+        <div class="panel-body p-0">
+            <div class="table-responsive scroller scroller-horizontal py-3">
+                <table class="table table-striped table-hover data-table" data-table-searching="true" data-table-lengthChange="true" data-page-length="5">
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th>Task Name</th>
+                        <th>Task Description</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach ($tasks as $t)
                         <tr>
-                            <th>Task Name</th>
-                            <th>Description</th>
-                            <th style="width: 40px">Action?</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        @foreach ($tasks as $t)
-                        <tr>
-                            <input class="view_id" type="hidden" name="row_task_id[]" value="{{$t->task_id}}"/>
+                            <td></td>
                             <td class="view"> {{ $t->task_name }}</td>
                             <td class="view"> {{ $t->task_description }}</td>
-                            <td><input type="checkbox" name="task" id="{{$t->task_id}}"></td>
+                            <td>
+                                <div class="dropdown">
+                                    <button class="btn dropdown-toggle btn-light btn-sm" data-toggle="dropdown"><span>Action</span>
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="#">View</a>
+                                        <a class="dropdown-item" href="#">Edit</a>
+                                        <a class="dropdown-item" href="#">Disable</a>
+                                    </div>
+                                </div>
+                            </td>
                         </tr>
-                        @endforeach
-                        </tbody>
-                    </table>
-                </div>
+                    @endforeach
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
 @stop
 
-@section('css')
-    <link rel="stylesheet" href="/css/admin_custom.css">
-@stop
-
 @section('js')
-    <script type="text/javascript" src="{{url('/vendor/trckr/trckr.js')}}"></script>
     <script type="text/javascript">
 
         $(document).ready(function (e) {

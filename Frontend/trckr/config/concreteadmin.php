@@ -75,6 +75,17 @@ return [
                     'edit' => [ 'text' => 'Update']
                 ]
             ],
+
+            'users' => [
+                'url' => 'merchant/users',
+                'icon' => 'fa-sitemap',
+                'text' => 'User',
+                'in_menu' => true,
+                'sub_url'  => [
+                    'add' => [ 'text' => 'Add'],
+                    'edit' => [ 'text' => 'Update']
+                ]
+            ],
         ],
         'task' => [
             'url' => 'merchant/task',

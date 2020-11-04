@@ -2,71 +2,36 @@
 
 namespace App\Http\Controllers;
 
-Use App\User;
 use App\Document;
 use Illuminate\Http\Request;
-use Illuminate\Http\Client\Response;
-use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Validator,Redirect,File;
 use Config, Session;
+use App\Services\TaskService;
 
 class TaskController extends Controller
 {
+
+    private $taskService;
+
+    public function __construct(TaskService $taskService)
+    {
+        $this->taskService = $taskService;
+    }
+
     public function index()
     {
         $this->view();
     }
 
+    /**
+     * List controller instance
+     *
+     * @return View
+     */
     public function view(Request $request)
     {
-        $api_endpoint = Config::get('trckr.backend_url') . "merchant/task";
-
-        $session = $request->session()->get('session_merchant');
-        $token = ( ! empty($session->token)) ? $session->token : "";
-        $merchant_id = $session->merchant_id;
-
-        $response = Http::withToken($token)->get($api_endpoint, []);
-
-        if ($response->status() !== 200)
-        {
-            if ($response->status() === 403) {
-                $validator = Validator::make($request->all(), []);
-                $validator->getMessageBag()->add('email', "Session Expired. Please login again. {$response->body()}");
-
-                return redirect('/')
-                    ->withErrors($validator)
-                    ->withInput();
-            }
-
-            if ($response->status() === 500) {
-                $handler = json_decode($response->body());
-
-                if ($handler->message->name == "JsonWebTokenError")
-
-                $validator = Validator::make($request->all(), []);
-                $validator->getMessageBag()->add('email', "Session Expired. Please login again. {$response->body()}");
-
-                return redirect('/')
-                    ->withErrors($validator)
-                    ->withInput();
-            }
-
-            //general handling
-            return redirect('/dashboard');
-        }
-
-        $temp_tasks = json_decode($response->body());
-
-        $tasks = [];
-        foreach($temp_tasks as $t)
-        {
-            if ($t->merchant_id == $merchant_id)
-                $tasks[] = $t;
-        }
-
+        $tasks = $this->taskService->getTaskByMerchant();
         return view('concrete.task.task', ['tasks' => $tasks]);
     }
 

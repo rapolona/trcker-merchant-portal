@@ -23,9 +23,9 @@ class TaskService
         return json_decode($this->repository->update($data));
     }
 
-    public function getTaskByMerchant($data)
+    public function getTaskByMerchant()
     {
-        return json_decode($this->repository->get($data));
+        return json_decode($this->repository->getTaskByCurrentMerchant());
     }
 
     public function getTaskById($data)

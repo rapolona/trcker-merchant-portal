@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Log;
 use Config;
 
-class TaskRepository
+class TaskRepository extends Repository
 {
 
     private $api;
@@ -46,6 +46,16 @@ class TaskRepository
     {
         try {
             return $this->validateResponse(Http::withToken($this->token())->get($this->api , []));
+        } catch(\Exception $e) {
+            return false;
+        }
+    }
+
+    public function getTaskByCurrentMerchant()
+    {
+        try {
+            $data = ['task_type'=>'Merchandising'];
+            return $this->validateResponse(Http::withToken($this->token())->get($this->api , $data));
         } catch(\Exception $e) {
             return false;
         }
