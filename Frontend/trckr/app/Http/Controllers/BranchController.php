@@ -168,6 +168,11 @@ class BranchController extends Controller
         $data = (array) $request->all();
 
         $validator = Validator::make($request->all(), [
+            'province' => 'required|max:64',
+            'region' => 'required|max:64',
+            'brand' => 'required|max:64',
+            'store_type' => 'required',
+            'business_type' => 'required',
             'name' => 'required|max:64',
             'address' => 'required|max:64',
             'city' => 'required|max:64',
