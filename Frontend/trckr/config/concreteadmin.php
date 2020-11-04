@@ -19,7 +19,7 @@ return [
     */
 
     'logo' => '<b>Trackr</b>',
-    'logo_img' => 'images/hustle_logo.png',
+    'logo_img' => 'images/hustle_logo_white.png',
     'logo_img_xl' => null,
     'logo_img_xl_class' => 'brand-image-xs',
     'logo_img_alt' => 'Trckr',
