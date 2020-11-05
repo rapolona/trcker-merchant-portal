@@ -73,14 +73,11 @@
 
 @stop
 
-@section('css')
-    <link rel="stylesheet" href="/css/admin_custom.css">
-@stop
 
 @section('js')
-    <script type="text/javascript" src="{{url('/vendor/trckr/trckr.js')}}"></script>
-    <script type="text/javascript" src="{{url('/vendor/form-builder/form-builder.min.js')}}"></script>
-    <script type="text/javascript" src="{{url('/vendor/form-builder/form-render.min.js')}}"></script>
+    <script type="text/javascript" src="{{asset('/vendor/trckr/trckr.js')}}"></script>
+    <script type="text/javascript" src="{{asset('/vendor/form-builder/form-builder.min.js')}}"></script>
+    <script type="text/javascript" src="{{asset('/vendor/form-builder/form-render.min.js')}}"></script>
     <script type="text/javascript">
 
         $(document).ready(function (e) {
