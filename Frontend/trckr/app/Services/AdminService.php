@@ -15,7 +15,7 @@ class AdminService
 
     public function create($data)
     {
-        return json_decode($this->dashboardRepository->create($data));
+        return $this->dashboardRepository->create($data);
     }
 
 }

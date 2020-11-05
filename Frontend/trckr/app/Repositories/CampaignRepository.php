@@ -1,8 +1,6 @@
 <?php
 namespace App\Repositories;
 
-use Illuminate\Support\Facades\Http;
-use Illuminate\Log;
 use Config;
 
 class CampaignRepository extends Repository
@@ -18,7 +16,7 @@ class CampaignRepository extends Repository
     public function create($data)
     {
         try {
-            return $this->validateResponse(Http::withToken($this->token())->post($this->api . 'create', $data));
+            return $this->trackerApi('post', $this->api . 'create', $data);
         } catch(\Exception $e) {
             return false;
         }
@@ -27,7 +25,7 @@ class CampaignRepository extends Repository
     public function update($data)
     {
         try {
-            return $this->validateResponse(Http::withToken($this->token())->put($this->api . 'update', $data));
+            return $this->trackerApi('put', $this->api . 'update', $data);
         } catch(\Exception $e) {
             return false;
         }
@@ -36,7 +34,7 @@ class CampaignRepository extends Repository
     public function get($id)
     {
         try {
-            return $this->validateResponse(Http::withToken($this->token())->get($this->api . $id , []));
+            return $this->trackerApi('get', $this->api . $id, []);
         } catch(\Exception $e) {
             return false;
         }
@@ -45,7 +43,7 @@ class CampaignRepository extends Repository
     public function getAll()
     {
         try {
-            return $this->validateResponse(Http::withToken($this->token())->get($this->api , []));
+            return $this->trackerApi('get', $this->api, []);
         } catch(\Exception $e) {
             return false;
         }

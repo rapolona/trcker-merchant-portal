@@ -1,8 +1,6 @@
 <?php
 namespace App\Repositories;
 
-use Illuminate\Support\Facades\Http;
-use Illuminate\Log;
 use Config;
 
 class TaskRepository extends Repository
@@ -17,8 +15,8 @@ class TaskRepository extends Repository
 
     public function create($data)
     {
-        try {
-            return $this->validateResponse(Http::withToken($this->token())->post($this->api, $data));
+            try {
+            return $this->trackerApi('post', $this->api, $data);
         } catch(\Exception $e) {
             return false;
         }
@@ -27,7 +25,7 @@ class TaskRepository extends Repository
     public function update($data)
     {
         try {
-            return $this->validateResponse(Http::withToken($this->token())->put($this->api, $data));
+            return $this->trackerApi('put', $this->api, $data);
         } catch(\Exception $e) {
             return false;
         }
@@ -36,7 +34,7 @@ class TaskRepository extends Repository
     public function get($data)
     {
         try {
-            return $this->validateResponse(Http::withToken($this->token())->get($this->api , $data));
+            return $this->trackerApi('get', $this->api, $data);
         } catch(\Exception $e) {
             return false;
         }
@@ -45,7 +43,7 @@ class TaskRepository extends Repository
     public function getAll()
     {
         try {
-            return $this->validateResponse(Http::withToken($this->token())->get($this->api , []));
+            return $this->trackerApi('get', $this->api , []);
         } catch(\Exception $e) {
             return false;
         }
@@ -55,7 +53,7 @@ class TaskRepository extends Repository
     {
         try {
             $data = ['task_type'=>'Merchandising'];
-            return $this->validateResponse(Http::withToken($this->token())->get($this->api , $data));
+            return $this->trackerApi('get', $this->api, $data);
         } catch(\Exception $e) {
             return false;
         }
@@ -64,7 +62,7 @@ class TaskRepository extends Repository
     public function getTaskActionClassification()
     {
         try {
-            return $this->validateResponse(Http::withToken($this->token())->get( Config::get('trckr.backend_url') . 'api/task_action_classification' , []));
+            return $this->trackerApi('get', Config::get('trckr.backend_url') . 'api/task_action_classification' , []);
         } catch(\Exception $e) {
             return false;
         }

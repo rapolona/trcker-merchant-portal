@@ -1,8 +1,6 @@
 <?php
 namespace App\Repositories;
 
-use Illuminate\Support\Facades\Http;
-use Illuminate\Log;
 use Config;
 
 class AdminRepository extends Repository
@@ -18,7 +16,7 @@ class AdminRepository extends Repository
     public function create($data)
     {
         try {
-            return $this->validateResponse(Http::withToken($this->token())->post($this->api . 'create', $data));
+            return $this->trackerApi('post', $this->api . 'create', $data);
         } catch(\Exception $e) {
             return false;
         }

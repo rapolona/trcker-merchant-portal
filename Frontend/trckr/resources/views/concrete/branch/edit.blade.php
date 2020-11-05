@@ -8,7 +8,7 @@
         <div class="panel-body">
             <form method="post">
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                <input type="hidden" name="branch_id" value="{{ $branch->branch_id }}">
+                <input type="hidden" name="branch_id" value="{{ $branch_id }}">
                 <div class="row row-30">
                     <div class="col-md-6">
                         <div class="input-group form-group">

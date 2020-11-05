@@ -8,103 +8,48 @@ use Illuminate\Support\Facades\Http;
 use Validator,Redirect,File;
 use Config, Session;
 use DateTime;
+use App\Services\CapabilityService;
 
 class TicketController extends Controller
 {
+
+    private $capabilityService;
+
+    public function __construct(CapabilityService $capabilityService)
+    {
+        $this->capabilityService = $capabilityService;
+    }
     public function index()
     {
         $this->view();
     }
 
-    //Display method for ticket.blade.php
+    /**
+     * List instance
+     *
+     * @return View
+     */
     public function view(Request $request)
     {
-        $api_endpoint = Config::get('trckr.capability_url') . "capability/campaign";
-
-        $session = $request->session()->get('session_merchant');
-
-        if ( ! $session) return redirect('/');
-        $token = ( ! empty($session->token)) ? $session->token : "";
-
-        $response = Http::withToken($token)->get($api_endpoint, []);
-
-        if ($response->status() !== 200)
-        {
-            if ($response->status() === 403) {
-                $validator = Validator::make($request->all(), []);
-                $validator->getMessageBag()->add('email', "Session Expired. Please login again. {$response->body()}");
-
-                return redirect('/')
-                    ->withErrors($validator)
-                    ->withInput();
-            }
-
-            if ($response->status() === 500) {
-                $handler = json_decode($response->body());
-
-                if ($handler->message->name == "JsonWebTokenError")
-
-                $validator = Validator::make($request->all(), []);
-                $validator->getMessageBag()->add('email', "Session Expired. Please login again. {$response->body()}");
-
-                return redirect('/')
-                    ->withErrors($validator)
-                    ->withInput();
-            }
-
-            //general handling
-            return redirect('/dashboard');
-        }
-
-        $campaign = json_decode($response);
-
+        $campaigns = $this->capabilityService->getCampaigns();
         $tickets = array();
 
-        foreach($campaign as $k)
+        foreach($campaigns as $k)
         {
             //skip completed campaigns
             if ( ! $k->campaign_id) continue;
 
-            $api_endpoint = Config::get('trckr.capability_url') . "capability/tasktickets";
-
-            $session = $request->session()->get('session_merchant');
-
-            if ( ! $session) return redirect('/');
-            $token = ( ! empty($session->token)) ? $session->token : "";
-
-            $data = array('campaign_id' => $k->campaign_id);
-            /*
-            $response = Http::withToken($token)->withBody(json_encode($data), 'application/json')->get($api_endpoint);
-            */
-
-            //switched to native curl because laravel HTTP library cannot attach JSON on get request
-            //no error handling yet
-
-            $headers = array(
-                'Content-Type:application/json',
-                'Authorization:Bearer ' . $token
-            );
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, $api_endpoint);
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
-            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
-
-            $response = json_decode(curl_exec($ch));
-            curl_close($ch);
-
+            $data = ['campaign_id' => $k->campaign_id];
+            $response = $this->capabilityService->getTicket($data);
             foreach ($response as $j) {
-                $j->campaign_name = $k->campaign_name;
+                print_r($j); exit();
+                $j->campaign_name = 'KKK';//($k->campaign_name) ? $k->campaign_name : 'NO Campaign Name';
                 $j->updatedAt = new DateTime($j->updatedAt);
                 $j->updatedAt = $j->updatedAt->format("F d, Y");
                 $j->createdAt = new DateTime($j->createdAt);
                 $j->createdAt = $j->createdAt->format("F d, Y");
                 $tickets[] = $j;
             }
-
-
         }
 
         return view('concrete.ticket.ticket', ['tickets' => $tickets]);

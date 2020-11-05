@@ -1,8 +1,6 @@
 <?php
 namespace App\Repositories;
 
-use Illuminate\Support\Facades\Http;
-use Illuminate\Log;
 use Config;
 
 class MerchantRepository extends Repository
@@ -18,7 +16,7 @@ class MerchantRepository extends Repository
     public function get($request)
     {
         try {
-            return $this->validateResponse(Http::withToken($this->token())->get($this->api . 'profile', []));
+            return $this->trackerApi('get', $this->api . 'profile', []);
         } catch(\Exception $e) {
             return false;
         }
@@ -27,7 +25,7 @@ class MerchantRepository extends Repository
     public function update($request)
     {
         try {
-            return $this->validateResponse(Http::withToken($this->token())->put($this->api . 'profile', []));
+            return $this->trackerApi('put', $this->api . 'profile', []);
         } catch(\Exception $e) {
             return false;
         }
@@ -36,16 +34,16 @@ class MerchantRepository extends Repository
     public function campaign($request)
     {
         try {
-            return $this->validateResponse(Http::withToken($this->token())->get($this->api .'campaign', []));
+            return $this->trackerApi('get', $this->api . 'campaign', []);
         } catch(\Exception $e) {
             return false;
         }
     }
 
-    public function login($request)
+    public function login($data)
     {
         try {
-            return $this->validateResponse(Http::withToken($this->token())->post($this->api .'auth', []));
+            return $this->trackerApi('post', $this->api . 'auth', $data);
         } catch(\Exception $e) {
             return false;
         }
@@ -54,7 +52,7 @@ class MerchantRepository extends Repository
     public function logout($request)
     {
         try {
-            return $this->validateResponse(Http::withToken($this->token())->post($this->api .'logout', []));
+            return $this->trackerApi('post', $this->api . 'logout', []);
         } catch(\Exception $e) {
             return false;
         }

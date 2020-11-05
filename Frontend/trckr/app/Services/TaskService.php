@@ -15,27 +15,27 @@ class TaskService
 
     public function create($data)
     {
-        return json_decode($this->repository->create($data));
+        return $this->repository->create($data);
     }
 
     public function update($data)
     {
-        return json_decode($this->repository->update($data));
+        return $this->repository->update($data);
     }
 
     public function getTaskByMerchant()
     {
-        return json_decode($this->repository->getTaskByCurrentMerchant());
+        return $this->repository->getTaskByCurrentMerchant();
     }
 
     public function getTaskById($data)
     {
-        return json_decode($this->repository->get($data));
+        return $this->repository->get($data);
     }
 
     public function getTaskActionClassification()
     {
-        return json_decode($this->repository->getTaskActionClassification());
+        return $this->repository->getTaskActionClassification();
     }
 
 }

@@ -1,8 +1,6 @@
 <?php
 namespace App\Repositories;
 
-use Illuminate\Support\Facades\Http;
-use Illuminate\Log;
 use Config;
 
 class DashboardRepository extends Repository
@@ -18,7 +16,7 @@ class DashboardRepository extends Repository
     public function listActiveCampaigns()
     {
         try {
-            return $this->validateResponse(Http::withToken($this->token())->get($this->api . 'activecampaign', []));
+            return $this->trackerApi('get', $this->api . 'activecampaign', []);
         } catch(\Exception $e) {
             return false;
         }
@@ -27,7 +25,7 @@ class DashboardRepository extends Repository
     public function getTotalRespondents()
     {
         try {
-            return $this->validateResponse(Http::withToken($this->token())->get($this->api . 'totalrespondents', []));
+            return $this->trackerApi('get', $this->api . 'totalrespondents', []);
         } catch(\Exception $e) {
             return false;
         }

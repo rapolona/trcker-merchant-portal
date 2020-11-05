@@ -1,8 +1,6 @@
 <?php
 namespace App\Repositories;
 
-use Illuminate\Support\Facades\Http;
-use Illuminate\Log;
 use Config;
 
 class BranchRepository extends Repository
@@ -18,7 +16,7 @@ class BranchRepository extends Repository
     public function getAll()
     {
         try {
-            return $this->validateResponse(Http::withToken($this->token())->get($this->api . 'branches' , []));
+            return $this->trackerApi('get', $this->api . 'branches', []);
         } catch(\Exception $e) {
             return false;
         }
@@ -27,7 +25,7 @@ class BranchRepository extends Repository
     public function get($id)
     {
         try {
-            return $this->validateResponse(Http::withToken($this->token())->get($this->api . 'branch/' . $id , []));
+            return $this->trackerApi('get', $this->api . 'branch/find_one/' .$id, []);
         } catch(\Exception $e) {
             return false;
         }
@@ -36,7 +34,7 @@ class BranchRepository extends Repository
     public function create($data)
     {
         try {
-            return $this->validateResponse(Http::withToken($this->token())->post($this->api. 'branch/' , $data));
+            return $this->trackerApi('post', $this->api . 'branch/', $data);
         } catch(\Exception $e) {
             return false;
         }
@@ -45,7 +43,7 @@ class BranchRepository extends Repository
     public function update($data)
     {
         try {
-            return $this->validateResponse(Http::withToken($this->token())->put($this->api. 'branch/' , $data));
+            return $this->trackerApi('put', $this->api . 'branch/', $data);
         } catch(\Exception $e) {
             return false;
         }
@@ -54,7 +52,7 @@ class BranchRepository extends Repository
     public function delete($data)
     {
         try {
-            return $this->validateResponse(Http::withToken($this->token())->delete($this->api. 'branch/' , $data));
+            return $this->trackerApi('delete', $this->api . 'branch/', $data);
         } catch(\Exception $e) {
             return false;
         }

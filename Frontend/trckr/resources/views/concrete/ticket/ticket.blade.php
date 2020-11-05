@@ -58,10 +58,6 @@
 </section>
 @stop
 
-@section('css')
-    <link rel="stylesheet" href="/css/admin_custom.css">
-@stop
-
 @section('js')
     <script type="text/javascript" src="{{url('/vendor/trckr/trckr.js')}}"></script>
     <script type="text/javascript">
