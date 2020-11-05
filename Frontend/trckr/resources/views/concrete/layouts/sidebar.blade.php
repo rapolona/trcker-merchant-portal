@@ -34,7 +34,7 @@
                     </a>
                 </li>
                 <li class="rd-navbar-nav-item {{ Request::is('task/create/*')? 'active' : '' }}">
-                    <a class="rd-navbar-link" href="{{ url('task/create') }}">
+                    <a class="rd-navbar-link" href="{{ url('task/view') }}">
                         <span class="rd-navbar-icon fa-wpforms"></span>View all tasks
                     </a>
                 </li>
