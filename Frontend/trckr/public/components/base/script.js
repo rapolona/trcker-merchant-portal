@@ -1,8 +1,9 @@
 'use strict';
 
-// Global components list
 let baseUrl = document.getElementsByTagName("html")[0].getAttribute("url");
-    baseUrl = (baseUrl)? baseUrl : '';
+baseUrl = (baseUrl)? baseUrl : '';
+
+// Global components list
 let components = {
 	nprogress: {
 		selector: 'html',
@@ -332,7 +333,10 @@ let components = {
 	},
 	button: {
 		selector: '.btn',
-		styles: './components/button/button.css'
+		styles: [
+			'./components/button/button.css',
+			'./components/base/style.css'
+		]
 	},
 	table: {
 		selector: '.table',
@@ -2451,6 +2455,9 @@ function parseJSON ( str ) {
 		if ( str )  return JSON.parse( str );
 		else return {};
 	} catch ( error ) {
+		//{DEL DIST}
+		console.warn( error );
+		//{DEL}
 		return {};
 	}
 }
@@ -2511,7 +2518,7 @@ function makeSync ( params, cb ) {
  */
 function includeStyles ( path ) {
 	return new Promise( function ( resolve ) {
-	    let newUrl = (path=='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap')? path : baseUrl;
+        let newUrl = (path=='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap')? path : baseUrl;
 		if ( document.querySelector( `link[href="${path}"]` ) ) {
 			resolve();
 		} else {
@@ -2560,6 +2567,10 @@ function initComponent( component ) {
 	let
 		stylesState = Promise.resolve(),
 		scriptsState = Promise.resolve();
+
+	//{DEL DIST}
+	console.log( `%c[${component.name}] init:`, 'color: lightgreen; font-weight: 900;', component.nodes.length );
+	//{DEL}
 	component.state = 'load';
 
 	if ( component.styles ) {
