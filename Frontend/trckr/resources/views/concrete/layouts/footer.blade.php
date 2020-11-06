@@ -29,13 +29,6 @@
            <!--  <button class="theme-switch fa-check" title="Navbar Theme" style="border-color: #9b82e8 #9b82e8 #fff #fff; color: black;" data-theme-switch="emerald-navbar-tertiary" data-theme='{"navbar-color":"#797b7c","navbar-bg":"#fff","navbar-hover-color":"#797b7c","navbar-hover-bg":"#f5f5f5","navbar-active-color":"#fff","navbar-active-bg":"#9b82e8","navbar-panel-color":"#fff","navbar-panel-bg":"#9b82e8","navbar-title-color":"#797b7c","navbar-brand-invert":"0%"}'></button>
             <button class="theme-switch fa-check" title="Navbar Theme" style="border-color: #fb6820 #fb6820 #fff #fff; color: black;" data-theme-switch="emerald-navbar-danger" data-theme='{"navbar-color":"#797b7c","navbar-bg":"#fff","navbar-hover-color":"#797b7c","navbar-hover-bg":"#f5f5f5","navbar-active-color":"#fff","navbar-active-bg":"#fb6820","navbar-panel-color":"#fff","navbar-panel-bg":"#fb6820","navbar-title-color":"#797b7c","navbar-brand-invert":"0%"}'></button> -->
           </div>
-           <ul class="template-panel-list">
-            <ul class="template-panel-item"><a class="template-panel-link" href="../admindex/index.html">Admindex<span class="template-panel-popup"><img class="template-panel-preview" src="images/templates/template-01-400x174.png"></span></a></ul>
-            <ul class="template-panel-item"><a class="template-panel-link" href="../adminifix/index.html">Adminifix<span class="template-panel-popup"><img class="template-panel-preview" src="images/templates/template-02-400x174.png"></span></a></ul>
-            <ul class="template-panel-item"><a class="template-panel-link active" href="../emerald/index.html">Emerald<span class="template-panel-popup"><img class="template-panel-preview" src="images/templates/template-03-400x174.png"></span></a></ul>
-            <ul class="template-panel-item"><a class="template-panel-link" href="../iodashboard/index.html">IoDashboard<span class="template-panel-popup"><img class="template-panel-preview" src="images/templates/template-04-400x174.png"></span></a></ul>
-            <ul class="template-panel-item"><a class="template-panel-link" href="../concrete/index.html">Concrete<span class="template-panel-popup"><img class="template-panel-preview" src="images/templates/template-05-400x174.png"></span></a></ul>
-          </ul>
         </div>
       </div>
     </div>

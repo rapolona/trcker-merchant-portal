@@ -2538,17 +2538,20 @@ function includeStyles ( path ) {
  */
 function includeScript ( path ) {
 	return new Promise( function ( resolve ) {
-		let node = document.querySelector( `script[src="${path}"]` );
+	    path = baseUrl + path;
+	    let node = document.querySelector( `script[src="${path}"]` );
 
 		if ( node ) {
 			if ( node.getAttribute( 'data-loaded' ) === 'true' ) {
+			    console.log('loaded :: ' + path );
 				resolve();
 			} else {
+                console.log('loading :: ' + path );
 				node.addEventListener( 'load', resolve );
 			}
 		} else {
 			let script = document.createElement( 'script' );
-			script.src = baseUrl + path;
+			script.src = path;
 
 			script.addEventListener( 'load', function () {
 				script.setAttribute( 'data-loaded', 'true' );

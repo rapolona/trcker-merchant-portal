@@ -1,7 +1,6 @@
 @extends('concrete.layouts.main')
 
 @section('content')
-@section('plugins.JqueryUI', true)
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -73,11 +72,13 @@
 
 @stop
 
+@section('css')
+
+@stop
 
 @section('js')
-    <script type="text/javascript" src="{{asset('/vendor/trckr/trckr.js')}}"></script>
-    <script type="text/javascript" src="{{asset('/vendor/form-builder/form-builder.min.js')}}"></script>
-    <script type="text/javascript" src="{{asset('/vendor/form-builder/form-render.min.js')}}"></script>
+
+    <script src="https://formbuilder.online/assets/js/form-builder.min.js"></script>
     <script type="text/javascript">
 
         $(document).ready(function (e) {
@@ -128,7 +129,7 @@
                     values: [{
                         label: 'True',
                         value: 'tof-' + Math.floor((Math.random() * 9999) + 1),
-                        }, {
+                    }, {
                         label: 'False',
                         value: 'tof-' + Math.floor((Math.random() * 9999) + 1),
                     }],
@@ -137,7 +138,7 @@
             };
 
             //$('.build-wrap').formBuilder(options);
-            var formBuilder = $('.build-wrap').formBuilder(options);
+            let formBuilder = jQuery('.build-wrap').formBuilder(options);
 
             $('#create_task').submit(function(e) {
                 e.preventDefault();
