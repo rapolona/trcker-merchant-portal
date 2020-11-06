@@ -135,7 +135,11 @@ class TaskController extends Controller
         return view('concrete.task.create', $data);
     }
 
-    //AJAX for Save Details task.task.blade.php
+    /**
+     * List controller instance
+     *
+     * @return View
+     */
     public function create_task_post(Request $request)
     {
         $data = $request->all();
@@ -151,19 +155,7 @@ class TaskController extends Controller
 
         if ($validator->fails())
         {
-            $error_string = "<b>Fields with Errors</b><br/>";
-            foreach ($validator->errors()->messages() as $k => $v)
-            {
-                $error_string .= "{$k}: <br/>";
-                foreach ($v as $l)
-                    $error_string .= "{$l}<br/>";
-            }
-
-            return Response()->json([
-                "success" => false,
-                "message" => $error_string,
-                "file" => $data,
-            ], 422);
+            return redirect()->back()->withErrors($validator)->withInput();
         }
 
         $request_data = array(
@@ -176,7 +168,6 @@ class TaskController extends Controller
         );
 
         $temp_task_questions = json_decode($data['form_builder']);
-
 
         foreach ($temp_task_questions as $k)
         {
@@ -197,27 +188,19 @@ class TaskController extends Controller
             $request_data['task_questions'][] = $temp;
         }
 
-        $api_endpoint = Config::get('trckr.backend_url') . "merchant/task";
+        $this->taskService->create($request_data);
 
-        $session = $request->session()->get('session_merchant');
-        $token = ( ! empty($session->token)) ? $session->token : "";
+        $data = [];
+        $data['task_classification'] = $this->taskService->getTaskActionClassification();
+        $data['task_config'] = array();
+        $msg = [
+            'success' => true,
+            'type' => "success",
+            'message' => "Add Task successful!"
+        ];
+        $data['formMessage'] = $msg;
 
-        $response = Http::withToken($token)->post($api_endpoint, $request_data);
-
-        if ($response->status() !== 200)
-        {
-            return Response()->json([
-                "success" => false,
-                "message" => "Failed to Create New Task.", // with error:" . $response->body(),
-                "file" => $data,
-            ], 422);
-        }
-
-        return Response()->json([
-            "success" => true,
-            "message" => "Custom Task creation successful!", // . $response->body(),
-            "file" => $data
-        ]);
+        return view('concrete.task.create', $data);
     }
 
     public function delete_task(request $request)

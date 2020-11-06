@@ -1,79 +1,76 @@
 @extends('concrete.layouts.main')
 
 @section('content')
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-            <div class="modal-header" style="display:auto;">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Modal title</h4>
-            </div>
-            <div class="modal-body">
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
-
-    <p>Create Task</p>
-
-    <div class="card">
-        <form class="form-vertical" id="create_task" enctype="multipart/form-data">
-            <div class="card-body">
+    <div class="panel">
+        <div class="panel-header">
+            <div class="panel-title">Please Input Task Details</div>
+        </div>
+        <div class="panel-body">
+            <form method="post" id="create_task" enctype="multipart/form-data">
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                <div class="row row-30">
+                    <div class="col-md-6">
+                        <div class="input-group form-group">
+                            <div class="input-group-prepend"><span class="input-group-text"><span class="fa-institution"></span></span></div>
+                            <input class="form-control  {{ $errors->first('task_name')? 'form-control-danger' : '' }}" type="text" value="{{ old('task_name') }}" name="task_name" placeholder="Task Name">
+                        </div>
+                        @if($errors->first('task_name'))
+                            <div class="tag-manager-container">
+                                <span class="tm-tag badge badge-danger" ><span>{{ $errors->first('task_name') }}</span></span>
+                            </div>
+                        @endif
+                        <div class="input-group form-group">
+                            <div class="input-group-prepend"><span class="input-group-text"><span class="fa-black-tie"></span></span></div>
+                            <input class="form-control {{ $errors->first('task_description')? 'form-control-danger' : '' }}" type="text" value="{{ old('task_description') }}" name="task_description" placeholder="Task Description">
+                        </div>
+                        @if($errors->first('task_description'))
+                            <div class="tag-manager-container">
+                                <span class="tm-tag badge badge-danger" ><span>{{ $errors->first('task_description') }}</span></span>
+                            </div>
+                        @endif
+                    </div>
 
-                <div class="form-group row">
-                    <label for="company_name" class="col-sm-2 col-form-label">Task Name</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" id="input_task_name" name="task_name" value="" placeholder="Enter Task Name">
+                    <div class="col-md-6">
+                        <div class="input-group form-group">
+                            <select class="form-control {{ $errors->first('$task_classification')? 'form-control-danger' : '' }}" name="task_classification_id" id="task_classification_id">
+                                <option value="">Select Task Classification</option>
+                                @foreach ($task_classification as $ta)
+                                    <option value="{{$ta->task_classification_id}}">{{$ta->name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        @if($errors->first('task_classification_id'))
+                            <div class="tag-manager-container">
+                                <span class="tm-tag badge badge-danger" ><span>{{ $errors->first('task_classification_id') }}</span></span>
+                            </div>
+                        @endif
+                        <div class="input-group form-group">
+                            <input type="file" class="form-control {{ $errors->first('banner_image')? 'form-control-danger' : '' }}" id="exampleInputFile" name="banner_image" accept="image/*">
+                        </div>
+                        @if($errors->first('banner_image'))
+                            <div class="tag-manager-container">
+                                <span class="tm-tag badge badge-danger" ><span>{{ $errors->first('banner_image') }}</span></span>
+                            </div>
+                        @endif
+                        <div class="input-group form-group">
+                        </div>
                     </div>
                 </div>
-                <div class="form-group row">
-                    <label for="company_name" class="col-sm-2 col-form-label">Task Description</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" id="input_task_description" name="task_description" value="" placeholder="Enter Task Description">
+                <div class="row row-30">
+                    <div class="col-md-12">
+                        <div class="build-wrap"></div>
+                    </div>
+                    <input type="hidden" id="form_builder_input"  name="form_builder" value="" />
+                </div>
+                <div class="row row-30">
+                    <div class="col-sm-12 text-right">
+                        <button class="btn btn-primary"  type="submit">Save Task</button>
                     </div>
                 </div>
-                <div class="form-group row">
-                    <label for="company_name" class="col-sm-2 col-form-label">Task Classification</label>
-                    <div class="col-sm-10">
-                        <select class="form-control" name="task_classification_id" style="width: 100%;">
-                            <option value="">Select One</option>
-                            @foreach ($task_classification as $ta)
-                            <option value="{{$ta->task_classification_id}}">{{$ta->name}}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="company_name" class="col-sm-2 col-form-label">Banner Image</label>
-                    <div class="col-sm-10">
-                        <input type="file" class="custom-file-input" id="exampleInputFile" name="banner_image" accept="image/*" >
-                        <label class="custom-file-label" for="exampleInputFile">Choose file</label>
-                    </div>
-                </div>
+            </form>
 
-                <div class="build-wrap"></div>
-
-            </div>
-            <div class="card-footer">
-                <div class="btn-group float-lg-right" role="group" aria-label="Basic example">
-                    <button class="btn btn-primary btn-lg" type="submit" value="submit" id="submit">
-                        <span class="spinner-border spinner-border-sm" role="status" id="loader_submit" aria-hidden="true" disabled> </span>
-                        Add Task
-                    </button>
-                    <button type="button" class="btn btn-danger btn-lg pull-right" id="back">Back</button>
-                </div>
-            </div>
-        </form>
+        </div>
     </div>
-
-@stop
-
-@section('css')
-
 @stop
 
 @section('js')
@@ -137,25 +134,19 @@
                 ],
             };
 
-            //$('.build-wrap').formBuilder(options);
             let formBuilder = jQuery('.build-wrap').formBuilder(options);
-
             $('#create_task').submit(function(e) {
-                e.preventDefault();
-                var myFormBuilder = formBuilder.actions.getData('json', true);
-
-
-                var formData = new FormData(this);
-
-                //formData.append('data_type', "custom");
-                formData.append('form_builder', myFormBuilder);
-
-                post("{{url('/task/create')}}", "Add Task", "submit", formData, "{{url('/task/view')}}");
-            });
-
-            $("#back").click(function(){
-                window.location.href = "{{url('/task/view')}}";
+                let myFormBuilder = formBuilder.actions.getData('json', true);
+                jQuery('#form_builder_input').val(myFormBuilder);
+                if(myFormBuilder.length == 2){ //[]
+                    e.preventDefault();
+                    return false;
+                }
             });
         });
+        @if(old('task_classification_id'))
+        $("#task_classification_id option[value={{ old('task_classification_id') }}]").attr('selected','selected');
+        alert('hi');
+        @endif
     </script>
 @stop

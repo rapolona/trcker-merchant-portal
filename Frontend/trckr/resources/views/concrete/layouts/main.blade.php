@@ -7,8 +7,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link rel="icon" href="{{ asset('images/favicon.ico') }}" type="image/x-icon">
     <link rel="stylesheet" href="{{ asset('components/base/base.css') }}">
-    <script data-loaded="true" src="{{ asset('./components/base/jquery-3.4.1.min.js') }}"></script>
-    <script data-loaded="true" src="{{ asset('./components/base/jquery-ui.min.js') }}"></script>
+    <script data-loaded="true" src="{{ asset('./components/base/jquery-3.4.1.min.js') }}"></script> <!-- IMPORTANT DONT CHANGE -->
+    <script data-loaded="true" src="{{ asset('./components/base/jquery-ui.min.js') }}"></script> <!-- IMPORTANT DONT CHANGE -->
     <script src="{{ asset('components/base/script.js') }}"></script>
     @yield('css')
     @yield('js')
