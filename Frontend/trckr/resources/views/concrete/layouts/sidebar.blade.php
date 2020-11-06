@@ -1,12 +1,10 @@
 <div class="rd-navbar-sidebar scroller scroller-vertical">
-
     <div class="rd-navbar-sidebar-panel">
         <div>
             <div class="group-15">
                 <div class="rd-navbar-brand"><a href="{{ url('dashboard') }}"><img src="{{ asset('images/hustle_logo_white.png') }}" alt="" class="white_logo" /></a></div>
                 <div class="rd-navbar-sidebar-search">
                     <input class="form-control" type="text" placeholder="Search"/>
-
                 </div>
             </div>
         </div>
@@ -55,4 +53,3 @@
         </li>
     </ul>
 </div>
-

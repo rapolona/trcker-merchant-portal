@@ -1,6 +1,9 @@
 @extends('concrete.layouts.main')
 
 @section('content')
+<!--
+Should the modal be deleted?
+-->
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -17,7 +20,80 @@
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
 
-    <p>View Merchant Information</p>
+    <div class="panel panel-nav">
+        <div class="panel-header d-flex flex-wrap align-items-center justify-content-between">
+          <div class="panel-title">Merchant Profile</div>
+        </div>
+        <div class="panel-body">
+          <form class="form-horizontal" id="modify_merchant">
+            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+
+            <div class="row row-30">
+              <div class="col-md-2">
+                <p>Company Logo</p>
+                <div class="tower-file mt-3">
+                  <input class="tower-file-input" id="demo1" type="file">
+                  <label class="btn btn-xs btn-success" for="demo1"><span>Upload</span></label>
+                </div>
+              </div>
+
+              <div class="col-md-5">
+                <div class="input-group form-group">
+                  <div class="input-group-prepend"><span class="input-group-text"><span class="fa-institution"></span></span></div>
+                  <input type="text" class="form-control" id="input_name" name="name" value="{{( ! empty($profile->name) ? $profile->name : '')}}" placeholder="Company Name">
+                </div>
+                <div class="input-group form-group">
+                  <div class="input-group-prepend"><span class="input-group-text"><span class="fa-black-tie"></span></span></div>
+                  <input type="text" class="form-control" id="input_address" name="address" value="{{( ! empty($profile->address) ? $profile->address : '')}}" placeholder="Company Address">
+                </div>
+                <div class="input-group form-group">
+                  <div class="input-group-prepend"><span class="input-group-text"><span class="fa-address-card-o"></span></span></div>
+                  <input type="emtextail" class="form-control" id="input_trade_name" name="trade_name" value="{{( ! empty($profile->trade_name) ? $profile->trade_name : '')}}" placeholder="Enter Trade Name">
+                </div>
+                <div class="input-group form-group">
+                    <select class="form-control" id="input_sector" name="sector">
+                        <option value="" selected disabled>Select Sector</option>
+                        <option value="FMCG" {{( ! empty($profile->sector) AND $profile->sector == "FMCG") ? "selected" : ""}}>FMCG</option>
+                        <option value="Pharma" {{( ! empty($profile->sector) AND $profile->sector == "Pharma") ? "selected" : ""}}>Pharma</option>
+                        <option value="Services" {{( ! empty($profile->sector) AND $profile->sector == "Services") ? "selected" : ""}}>Services</option>
+                        <option value="Retail" {{( ! empty($profile->sector) AND $profile->sector == "Retail") ? "selected" : ""}}>Retail</option>
+                        <option value="E-commerce" {{( ! empty($profile->sector) AND $profile->sector == "E-commerce") ? "selected" : ""}}>E-commerce</option>
+                        <option value="Food and Beverage" {{( ! empty($profile->sector) AND $profile->sector == "Food and Beverage") ? "selected" : ""}}>Food and Beverage</option>
+                        <option value="Banking and Finance" {{( ! empty($profile->sector) AND $profile->sector == "Banking and Finance") ? "selected" : ""}}>Banking and Finance</option>
+                        <option value="Healthcare" {{( ! empty($profile->sector) AND $profile->sector == "Healthcare") ? "selected" : ""}}>Healthcare</option>
+                        <option value="Advertising" {{( ! empty($profile->sector) AND $profile->sector == "Advertising") ? "selected" : ""}}>Advertising</option>
+                    </select>
+                </div>
+              </div>
+                  
+              <div class="col-md-5">
+                <div class="input-group form-group">
+                  <div class="input-group-prepend"><span class="input-group-text"><span class="fa-caret-square-o-right"></span></span></div>
+                  <input type="text" class="form-control" id="input_authorized_representative" name="authorized_representative" value="{{( ! empty($profile->authorized_representative) ? $profile->authorized_representative : '')}}"placeholder="Enter Authorized Representative">
+                </div>
+                <div class="input-group form-group">
+                  <div class="input-group-prepend"><span class="input-group-text"><span class="fa-caret-square-o-right"></span></span></div>
+                  <input type="text" class="form-control" id="input_position" name="position" value="{{( ! empty($profile->position) ? $profile->position : '')}}"placeholder="Enter Position">
+                </div>
+                <div class="input-group form-group">
+                  <div class="input-group-prepend"><span class="input-group-text"><span class="fa-caret-square-o-right"></span></span></div>
+                 <input type="emtextail" class="form-control" id="input_contact_number" name="contact_number" value="{{( ! empty($profile->contact_number) ? $profile->contact_number : '')}}" placeholder="Enter Contact Number">
+                </div>
+                <div class="input-group form-group">
+                  <div class="input-group-prepend"><span class="input-group-text"><span class="fa-plus-square"></span></span></div>
+                  <input type="emtextail" class="form-control" id="input_email_address" name="email_address" value="{{( ! empty($profile->email_address) ? $profile->email_address : '')}}"placeholder="Enter Email Address">
+                </div>
+              </div>
+                  
+              <div class="col-sm-12 text-right">
+                <button class="btn btn-primary" type="submit">Save Profile</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+
+    <!--<p>View Merchant Information</p>
     <div class="row">
         <div class="col col-lg-12" >
             <div class="card">
@@ -61,7 +137,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                <!--
+                                
                                 <div class="form-group row">
                                     <label for="business_structure" class="col-sm-2 col-form-label">Business Structure</label>
                                     <div class="col-sm-10">
@@ -75,7 +151,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                -->
+                                
                             </div>
                             <div class="col col-lg-6">
                                 <div class="form-group row">
@@ -120,7 +196,7 @@
                 </form>
             </div>
         </div>
-    </div>
+    </div>-->
 
 @stop
 
