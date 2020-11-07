@@ -35,7 +35,7 @@
                             <select class="form-control {{ $errors->first('$task_classification')? 'form-control-danger' : '' }}" name="task_classification_id" id="task_classification_id">
                                 <option value="">Select Task Classification</option>
                                 @foreach ($task_classification as $ta)
-                                    <option value="{{$ta->task_classification_id}}">{{$ta->name}}</option>
+                                    <option {{ ($ta->task_classification_id==old('task_classification_id'))? 'selected="selected"' : '' }} value="{{$ta->task_classification_id}}">{{$ta->name}}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -143,10 +143,14 @@
                     return false;
                 }
             });
+
+            @if(old('form_builder'))
+            let oldValFb = {!! old('form_builder') !!};
+            console.log(oldValFb);
+            setTimeout(function(){ formBuilder.actions.setData(oldValFb); }, 500);
+            @endif
+
         });
-        @if(old('task_classification_id'))
-        $("#task_classification_id option[value={{ old('task_classification_id') }}]").attr('selected','selected');
-        alert('hi');
-        @endif
+
     </script>
 @stop
