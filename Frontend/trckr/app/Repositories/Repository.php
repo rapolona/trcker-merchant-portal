@@ -19,7 +19,7 @@ Class Repository
     }
     public function validateResponse($response)
     {
-        $expiredHttpCodes = ['403', '413'];
+        $expiredHttpCodes = [403, 401];
         if (in_array($response->getStatusCode(), $expiredHttpCodes))
         {
             $message = json_decode($response->getBody());
@@ -30,7 +30,7 @@ Class Repository
             Redirect::to(url('/'))->send();
         }
 
-        $validationHttpCodes = ['500', '422'];
+        $validationHttpCodes = [500, 422, 413];
         if (in_array($response->getStatusCode(), $validationHttpCodes))
         {
             $message = json_decode($response->getBody());
@@ -67,6 +67,8 @@ Class Repository
             'form_params' => $data
         ]);
         $this->validateResponse($response);
+
+        //print_r(json_decode($response->getStatusCode())); exit();
         return json_decode($response->getBody());
     }
 }

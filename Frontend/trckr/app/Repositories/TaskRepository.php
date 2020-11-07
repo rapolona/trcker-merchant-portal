@@ -15,11 +15,11 @@ class TaskRepository extends Repository
 
     public function create($data)
     {
-        try {
+       // try {
             return $this->trackerApi('post', $this->api, $data);
-        } catch(\Exception $e) {
-            $this->sessionExpired();
-        }
+       // } catch(\Exception $e) {
+       //     $this->sessionExpired();
+       // }
     }
 
     public function update($data)
