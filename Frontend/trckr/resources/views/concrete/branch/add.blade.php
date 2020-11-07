@@ -20,8 +20,14 @@
                             </div>
                         @endif
                         <div class="input-group form-group">
-                            <div class="input-group-prepend"><span class="input-group-text"><span class="fa-black-tie"></span></span></div>
-                            <input class="form-control {{ $errors->first('brand')? 'form-control-danger' : '' }}" type="text" value="{{ old('brand') }}" name="brand" placeholder="Brand">
+                            <select name="brand" data-placeholder="Brand" class="select2 {{ $errors->first('brand')? 'form-control-danger' : '' }}">
+                                <option label="placeholder"></option>
+                                @foreach ($filters->brand as $option)
+                                    @if(!empty($option))
+                                        <option {{ (old('brand')==$option)? 'selected="selected"' : '' }} value="{{ $option }}">{{ $option }}</option>
+                                    @endif
+                                @endforeach
+                            </select>
                         </div>
                         @if($errors->first('brand'))
                             <div class="tag-manager-container">
@@ -38,8 +44,14 @@
                             </div>
                         @endif
                         <div class="input-group form-group">
-                            <div class="input-group-prepend"><span class="input-group-text"><span class="fa-map-signs"></span></span></div>
-                            <input class="form-control {{ $errors->first('region')? 'form-control-danger' : '' }}" type="text" name="region" value="{{ old('region') }}" placeholder="Region">
+                            <select name="region" data-placeholder="Region" class="select2 {{ $errors->first('region')? 'form-control-danger' : '' }}">
+                                <option label="placeholder"></option>
+                                @foreach ($filters->region as $option)
+                                    @if(!empty($option))
+                                        <option {{ (old('region')==$option)? 'selected="selected"' : '' }} value="{{ $option }}">{{ $option }}</option>
+                                    @endif
+                                @endforeach
+                            </select>
                         </div>
                         @if($errors->first('region'))
                             <div class="tag-manager-container">
@@ -59,8 +71,13 @@
 
                     <div class="col-md-6">
                         <div class="input-group form-group">
-                            <select name="business_type" class="form-control {{ $errors->first('business_type')? 'form-control-danger' : '' }}">
-                                <option value="">Business Type</option>
+                            <select name="business_type" data-placeholder="Business Type" class="select2 {{ $errors->first('business_type')? 'form-control-danger' : '' }}">
+                                <option label="placeholder"></option>
+                                @foreach ($filters->business_type as $option)
+                                    @if(!empty($option))
+                                        <option {{ (old('business_type')==$option)? 'selected="selected"' : '' }} value="{{ $option }}">{{ $option }}</option>
+                                    @endif
+                                @endforeach
                             </select>
                         </div>
                         @if($errors->first('business_type'))
@@ -69,8 +86,13 @@
                             </div>
                         @endif
                         <div class="input-group form-group">
-                            <select name="store_type" class="form-control  {{ $errors->first('store_type')? 'form-control-danger' : '' }}">
-                                <option value="">Store Type</option>
+                            <select name="store_type" data-placeholder="Store Type" class="select2 {{ $errors->first('store_type')? 'form-control-danger' : '' }}">
+                                <option label="placeholder"></option>
+                                @foreach ($filters->store_type as $option)
+                                    @if(!empty($option))
+                                        <option {{ (old('store_type')==$option)? 'selected="selected"' : '' }} value="{{ $option }}">{{ $option }}</option>
+                                    @endif
+                                @endforeach
                             </select>
                         </div>
                         @if($errors->first('store_type'))
@@ -79,8 +101,14 @@
                             </div>
                         @endif
                         <div class="input-group form-group">
-                            <div class="input-group-prepend"><span class="input-group-text"><span class="fa-caret-square-o-right"></span></span></div>
-                            <input class="form-control {{ $errors->first('city')? 'form-control-danger' : '' }}" type="text" name="city" value="{{ old('city') }}" placeholder="City">
+                            <select name="city" data-placeholder="City" class="select2 {{ $errors->first('city')? 'form-control-danger' : '' }}">
+                                <option label="placeholder"></option>
+                                @foreach ($filters->city as $option)
+                                    @if(!empty($option))
+                                        <option {{ (old('city')==$option)? 'selected="selected"' : '' }} value="{{ $option }}">{{ $option }}</option>
+                                    @endif
+                                @endforeach
+                            </select>
                         </div>
                         @if($errors->first('city'))
                             <div class="tag-manager-container">
@@ -88,8 +116,14 @@
                             </div>
                         @endif
                         <div class="input-group form-group">
-                            <div class="input-group-prepend"><span class="input-group-text"><span class="fa-plus-square"></span></span></div>
-                            <input class="form-control {{ $errors->first('province')? 'form-control-danger' : '' }}" type="text" name="province" value="{{ old('province') }}" placeholder="Province">
+                            <select name="province" data-placeholder="Province" class="select2 {{ $errors->first('province')? 'form-control-danger' : '' }}">
+                                <option label="placeholder"></option>
+                                @foreach ($filters->province as $option)
+                                    @if(!empty($option))
+                                        <option {{ (old('province')==$option)? 'selected="selected"' : '' }} value="{{ $option }}">{{ $option }}</option>
+                                    @endif
+                                @endforeach
+                            </select>
                         </div>
                         @if($errors->first('province'))
                             <div class="tag-manager-container">
