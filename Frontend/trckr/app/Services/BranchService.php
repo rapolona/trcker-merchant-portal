@@ -13,6 +13,11 @@ class BranchService
         $this->repository = $repository;
     }
 
+    public function getFilters()
+    {
+        return $this->repository->getFilters();
+    }
+
     public function getAll()
     {
         return $this->repository->getAll();

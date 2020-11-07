@@ -145,7 +145,8 @@ class BranchController extends Controller
     public function branch(Request $request)
     {
         $branches = $this->branchService->getAll();
-        return view('concrete.merchant.branches', ['branches' => $branches]);
+        $filters = $this->branchService->getFilters();
+        return view('concrete.merchant.branches', ['branches' => $branches, 'filters' => $filters]);
     }
 
     /**
@@ -155,7 +156,8 @@ class BranchController extends Controller
      */
     public function add_branch_get()
     {
-        return view('concrete.branch.add', []);
+        $filters = $this->branchService->getFilters();
+        return view('concrete.branch.add', ['filters' => $filters]);
     }
 
     /**
@@ -193,7 +195,8 @@ class BranchController extends Controller
             "message" => "Add branch successful!",
         ];
 
-        return view('concrete.branch.add', ['formMessage' => $msg ]);
+        $filters = $this->branchService->getFilters();
+        return view('concrete.branch.add', ['formMessage' => $msg, 'filters' => $filters ]);
     }
 
     /**
@@ -204,7 +207,8 @@ class BranchController extends Controller
     public function edit_branch_get($branchId)
     {
         $branch = $this->branchService->get($branchId);
-        return view('concrete.branch.edit', ['branch' => $branch, 'branch_id' => $branchId]);
+        $filters = $this->branchService->getFilters();
+        return view('concrete.branch.edit', ['branch' => $branch, 'branch_id' => $branchId, 'filters' => $filters]);
     }
 
     public function edit_branch_post($branchId, Request $request)
@@ -239,7 +243,11 @@ class BranchController extends Controller
         ];
 
         $branch = $this->branchService->get($branchId);
-        return view('concrete.branch.edit', ['formMessage' => $msg, 'branch' => $branch, 'branch_id' => $branchId]);
+        $filters = $this->branchService->getFilters();
+        return view('concrete.branch.edit', ['formMessage' => $msg,
+            'branch' => $branch,
+            'branch_id' => $branchId,
+            'filters' => $filters ]);
     }
 
     public function delete_branch($branchId)

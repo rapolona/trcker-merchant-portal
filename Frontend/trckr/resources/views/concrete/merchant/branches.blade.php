@@ -11,52 +11,64 @@
             </div>
             <div class="row row-30">
                 <div class="col-lg-2">
-                    <select class="form-control" name="filter-purchases">
-                        <option value="0">Filter by Business Type</option>
-                        <option value="1">1-49</option>
-                        <option value="2">50-499</option>
-                        <option value="1">500-999</option>
-                        <option value="2">1000+</option>
+                    @if(isset($filters->business_type))
+                    <select class="select2 hustle-filter" data-placeholder="Business Type" name="business_type">
+                        <option label="placeholder"></option>
+                        @foreach ($filters->business_type as $option)
+                            @if(!empty($option))
+                            <option value="{{ $option }}">{{ $option }}</option>
+                            @endif
+                        @endforeach
                     </select>
+                    @endif
                 </div>
                 <div class="col-lg-2">
-                    <select class="form-control" name="filter-group">
-                        <option value="0">Filter by Store Type</option>
-                        <option value="1">Customers</option>
-                        <option value="2">Vendors</option>
-                        <option value="3">Distributors</option>
-                        <option value="4">Employees</option>
-                    </select>
+                    @if(isset($filters->store_type))
+                        <select class="select2 hustle-filter" data-placeholder="Store Type" name="store_type">
+                            <option label="placeholder"></option>
+                            @foreach ($filters->store_type as $option)
+                                @if(!empty($option))
+                                    <option value="{{ $option }}">{{ $option }}</option>
+                                @endif
+                            @endforeach
+                        </select>
+                    @endif
                 </div>
                 <div class="col-lg-2">
-                    <select class="form-control" name="filter-status">
-                        <option value="0">Filter by Brand</option>
-                        <option value="1">Active</option>
-                        <option value="2">Inactive</option>
-                        <option value="3">Suspended</option>
-                        <option value="4">Online</option>
-                        <option value="5">Offline</option>
-                    </select>
+                    @if(isset($filters->brand))
+                        <select class="select2 hustle-filter" data-placeholder="Brand" name="brand">
+                            <option label="placeholder"></option>
+                            @foreach ($filters->brand as $option)
+                                @if(!empty($option))
+                                    <option value="{{ $option }}">{{ $option }}</option>
+                                @endif
+                            @endforeach
+                        </select>
+                    @endif
                 </div>
                 <div class="col-lg-2">
-                    <select class="form-control" name="filter-status">
-                        <option value="0">Filter by Region</option>
-                        <option value="1">Active</option>
-                        <option value="2">Inactive</option>
-                        <option value="3">Suspended</option>
-                        <option value="4">Online</option>
-                        <option value="5">Offline</option>
-                    </select>
+                    @if(isset($filters->business_type))
+                        <select class="select2 hustle-filter" data-placeholder="Province" name="province">
+                            <option label="placeholder"></option>
+                            @foreach ($filters->province as $option)
+                                @if(!empty($option))
+                                    <option value="{{ $option }}">{{ $option }}</option>
+                                @endif
+                            @endforeach
+                        </select>
+                    @endif
                 </div>
                 <div class="col-lg-2">
-                    <select class="form-control" name="filter-status">
-                        <option value="0">Filter by Province</option>
-                        <option value="1">Active</option>
-                        <option value="2">Inactive</option>
-                        <option value="3">Suspended</option>
-                        <option value="4">Online</option>
-                        <option value="5">Offline</option>
-                    </select>
+                    @if(isset($filters->region))
+                        <select class="select2 hustle-filter" data-placeholder="City" name="city">
+                            <option label="placeholder"></option>
+                            @foreach ($filters->city as $option)
+                                @if(!empty($option))
+                                    <option value="{{ $option }}">{{ $option }}</option>
+                                @endif
+                            @endforeach
+                        </select>
+                    @endif
                 </div>
                 <div class="col-lg-2 text-right">
                     <div class="dropdown">
@@ -122,13 +134,13 @@
                                     <label class="custom-control-label" for="{{ $branch->branch_id }}"></label>
                                 </div>
                             </td>
-                            <td> {{ $branch->name }}</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                            <td>{{ $branch->name }}</td>
+                            <td>{{ $branch->business_type }}</td>
+                            <td>{{ $branch->store_type }}</td>
+                            <td>{{ $branch->brand }}</td>
                             <td>{{ $branch->address }}</td>
                             <td>{{ $branch->city }}</td>
-                            <td></td>
+                            <td>{{ $branch->region }}</td>
                             <td>
                                 <div class="dropdown">
                                     <button class="btn dropdown-toggle btn-light btn-sm" data-toggle="dropdown"><span>Action</span>
@@ -163,6 +175,17 @@
                     window.location.href = $(this).attr('target-href');
                 }
             });
+
+            let formFilters = new Object();
+
+            $('select.hustle-filter').on('change', function(e) {
+                let selected = $("select.hustle-filter :selected").map(function(i, el) {
+                    formFilters[$(el).parent().attr('name')] = $(el).val();
+                }).get();
+
+                window.location.href = "{{ url('merchant/branch') }}?" + $.param(formFilters);
+            });
+
 
             $('#delete').click(function(e){
                 let products = [];

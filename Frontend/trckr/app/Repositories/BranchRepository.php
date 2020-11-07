@@ -13,6 +13,15 @@ class BranchRepository extends Repository
         $this->api = Config::get('trckr.backend_url') . "merchant/";
     }
 
+    public function getFilters()
+    {
+        try {
+            return $this->trackerApi('get', $this->api . 'branch/filters', []);
+        } catch(\Exception $e) {
+            $this->sessionExpired();
+        }
+    }
+
     public function getAll()
     {
         try {
