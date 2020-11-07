@@ -18,7 +18,7 @@ class AdminRepository extends Repository
         try {
             return $this->trackerApi('post', $this->api . 'create', $data);
         } catch(\Exception $e) {
-            return false;
+            $this->sessionExpired();
         }
     }
 }

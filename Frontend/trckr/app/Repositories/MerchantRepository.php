@@ -18,7 +18,7 @@ class MerchantRepository extends Repository
         try {
             return $this->trackerApi('get', $this->api . 'profile', []);
         } catch(\Exception $e) {
-            return false;
+            $this->sessionExpired();
         }
     }
 
@@ -27,7 +27,7 @@ class MerchantRepository extends Repository
         try {
             return $this->trackerApi('put', $this->api . 'profile', []);
         } catch(\Exception $e) {
-            return false;
+            $this->sessionExpired();
         }
     }
 
@@ -36,7 +36,7 @@ class MerchantRepository extends Repository
         try {
             return $this->trackerApi('get', $this->api . 'campaign', []);
         } catch(\Exception $e) {
-            return false;
+            $this->sessionExpired();
         }
     }
 
@@ -45,7 +45,7 @@ class MerchantRepository extends Repository
         try {
             return $this->trackerApi('post', $this->api . 'auth', $data);
         } catch(\Exception $e) {
-            return false;
+            $this->sessionExpired();
         }
     }
 
@@ -54,7 +54,7 @@ class MerchantRepository extends Repository
         try {
             return $this->trackerApi('post', $this->api . 'logout', []);
         } catch(\Exception $e) {
-            return false;
+            $this->sessionExpired();
         }
     }
 }

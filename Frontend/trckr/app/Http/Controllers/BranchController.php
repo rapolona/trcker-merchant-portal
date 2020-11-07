@@ -168,11 +168,11 @@ class BranchController extends Controller
         $data = (array) $request->all();
 
         $validator = Validator::make($request->all(), [
-            //'province' => 'required',
-           // 'region' => 'required',
-           // 'brand' => 'required',
-           // 'store_type' => 'required',
-           // 'business_type' => 'required',
+            'province' => 'required',
+            'region' => 'required',
+            'brand' => 'required',
+            'store_type' => 'required',
+            'business_type' => 'required',
             'name' => 'required|max:64',
             'address' => 'required|max:64',
             'city' => 'required|max:64',
@@ -212,11 +212,11 @@ class BranchController extends Controller
         $data = (array) $request->all();
 
         $validator = Validator::make($request->all(), [
-            //'province' => 'required',
-            // 'region' => 'required',
-            // 'brand' => 'required',
-            // 'store_type' => 'required',
-            // 'business_type' => 'required',
+            'province' => 'required',
+            'region' => 'required',
+            'brand' => 'required',
+            'store_type' => 'required',
+            'business_type' => 'required',
             'branch_id' => 'required',
             'name' => 'required|max:64',
             'address' => 'required|max:64',

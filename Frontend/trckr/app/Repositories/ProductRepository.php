@@ -18,7 +18,7 @@ class ProductRepository extends Repository
         try {
             return $this->trackerApi('get', $this->api . 'products', []);
         } catch(\Exception $e) {
-            return false;
+            $this->sessionExpired();
         }
     }
 
@@ -27,7 +27,7 @@ class ProductRepository extends Repository
         try {
             return $this->trackerApi('get', $this->api . 'product/' . $id, []);
         } catch(\Exception $e) {
-            return false;
+            $this->sessionExpired();
         }
     }
 
@@ -36,7 +36,7 @@ class ProductRepository extends Repository
         try {
             return $this->trackerApi('post', $this->api . 'product', $data);
         } catch(\Exception $e) {
-            return false;
+            $this->sessionExpired();
         }
     }
 
@@ -45,7 +45,7 @@ class ProductRepository extends Repository
         try {
             return $this->trackerApi('put', $this->api . 'product', $data);
         } catch(\Exception $e) {
-            return false;
+            $this->sessionExpired();
         }
     }
 
@@ -54,7 +54,7 @@ class ProductRepository extends Repository
         try {
             return $this->trackerApi('delete', $this->api . 'product', $data);
         } catch(\Exception $e) {
-            return false;
+            $this->sessionExpired();
         }
     }
 }

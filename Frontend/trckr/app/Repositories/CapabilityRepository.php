@@ -18,7 +18,7 @@ class CapabilityRepository extends Repository
         try {
             return $this->trackerApi('post', $this->api . 'capability/taskticket', $data);
         } catch(\Exception $e) {
-            return false;
+            $this->sessionExpired();
         }
     }
 
@@ -27,7 +27,7 @@ class CapabilityRepository extends Repository
         try {
             return $this->trackerApi('get', $this->api . 'capability/tasktickets', $data);
         } catch(\Exception $e) {
-            return false;
+            $this->sessionExpired();
         }
     }
 
@@ -36,7 +36,7 @@ class CapabilityRepository extends Repository
         try {
             return $this->trackerApi('put', $this->api . 'merchant/approve', $data);
         } catch(\Exception $e) {
-            return false;
+            $this->sessionExpired();
         }
     }
 
@@ -45,7 +45,7 @@ class CapabilityRepository extends Repository
         try {
             return $this->trackerApi('put', $this->api . 'merchant/reject', $data);
         } catch(\Exception $e) {
-            return false;
+            $this->sessionExpired();
         }
     }
 
@@ -54,7 +54,7 @@ class CapabilityRepository extends Repository
         try {
             return $this->trackerApi('get', $this->api . 'capability/tasktickets', $data);
         } catch(\Exception $e) {
-            return false;
+            $this->sessionExpired();
         }
     }
 
@@ -63,7 +63,7 @@ class CapabilityRepository extends Repository
         try {
             return $this->trackerApi('get', $this->api . 'capability/tasktickets', $data);
         } catch(\Exception $e) {
-            return false;
+            $this->sessionExpired();
         }
     }
 
@@ -72,7 +72,7 @@ class CapabilityRepository extends Repository
         try {
             return $this->trackerApi('get', $this->api . 'capability/campaign', []);
         } catch(\Exception $e) {
-            return false;
+            $this->sessionExpired();
         }
     }
 
@@ -81,7 +81,7 @@ class CapabilityRepository extends Repository
         try {
             return $this->trackerApi('get', $this->api . 'capability/campaign', $data);
         } catch(\Exception $e) {
-            return false;
+            $this->sessionExpired();
         }
     }
 
@@ -90,7 +90,7 @@ class CapabilityRepository extends Repository
         try {
             return $this->trackerApi('get', $this->api . 'capability/campaigndetail', $data);
         } catch(\Exception $e) {
-            return false;
+            $this->sessionExpired();
         }
     }
 }

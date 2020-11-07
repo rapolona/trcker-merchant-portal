@@ -18,7 +18,7 @@ class CampaignRepository extends Repository
         try {
             return $this->trackerApi('post', $this->api . 'create', $data);
         } catch(\Exception $e) {
-            return false;
+            $this->sessionExpired();
         }
     }
 
@@ -27,7 +27,7 @@ class CampaignRepository extends Repository
         try {
             return $this->trackerApi('put', $this->api . 'update', $data);
         } catch(\Exception $e) {
-            return false;
+            $this->sessionExpired();
         }
     }
 
@@ -36,7 +36,7 @@ class CampaignRepository extends Repository
         try {
             return $this->trackerApi('get', $this->api . $id, []);
         } catch(\Exception $e) {
-            return false;
+            $this->sessionExpired();
         }
     }
 
@@ -45,7 +45,7 @@ class CampaignRepository extends Repository
         try {
             return $this->trackerApi('get', $this->api, []);
         } catch(\Exception $e) {
-            return false;
+            $this->sessionExpired();
         }
     }
 }

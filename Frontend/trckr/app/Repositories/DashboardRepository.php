@@ -18,7 +18,7 @@ class DashboardRepository extends Repository
         try {
             return $this->trackerApi('get', $this->api . 'activecampaign', []);
         } catch(\Exception $e) {
-            return false;
+            $this->sessionExpired();
         }
     }
 
@@ -27,7 +27,7 @@ class DashboardRepository extends Repository
         try {
             return $this->trackerApi('get', $this->api . 'totalrespondents', []);
         } catch(\Exception $e) {
-            return false;
+            $this->sessionExpired();
         }
     }
 }

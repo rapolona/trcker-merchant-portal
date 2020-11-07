@@ -11,6 +11,7 @@ Class Repository
 {
     public function sessionExpired()
     {
+        Log::info('SESSION EXPIRED');
         $message = "Session Expired. Please login again";
         Session::put('login_msg', $message);
         Session::save();
