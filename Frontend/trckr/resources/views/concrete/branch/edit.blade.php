@@ -37,7 +37,7 @@
                         @endif
                         <div class="input-group form-group">
                             <div class="input-group-prepend"><span class="input-group-text"><span class="fa-address-card-o"></span></span></div>
-                            <input class="form-control {{ $errors->first('address')? 'form-control-danger' : '' }}" type="text" name="address" value="{{ old('address') }}" placeholder="Address">
+                            <input class="form-control {{ $errors->first('address')? 'form-control-danger' : '' }}" type="text" name="address" value="{{ old('address', $branch->address) }}" placeholder="Address">
                         </div>
                         @if($errors->first('address'))
                             <div class="tag-manager-container">
@@ -61,7 +61,7 @@
                         @endif
                         <div class="input-group form-group">
                             <div class="input-group-prepend"><span class="input-group-text"><span class="fa-map-marker"></span></span></div>
-                            <input class="form-control {{ $errors->first('latitude')? 'form-control-danger' : '' }}" type="text" name="latitude" value="{{ old('latitude') }}" placeholder="Latitude">
+                            <input class="form-control {{ $errors->first('latitude')? 'form-control-danger' : '' }}" type="text" name="latitude" value="{{ old('latitude', $branch->latitude) }}" placeholder="Latitude">
                         </div>
                         @if($errors->first('latitude'))
                             <div class="tag-manager-container">
@@ -133,7 +133,7 @@
                         @endif
                         <div class="input-group form-group">
                             <div class="input-group-prepend"><span class="input-group-text"><span class="fa-map-marker"></span></span></div>
-                            <input class="form-control {{ $errors->first('longitude')? 'form-control-danger' : '' }}" type="text" name="longitude" value="{{ old('longitude') }}" placeholder="Longitude">
+                            <input class="form-control {{ $errors->first('longitude')? 'form-control-danger' : '' }}" type="text" name="longitude" value="{{ old('longitude', $branch->longitude) }}" placeholder="Longitude">
                         </div>
                         @if($errors->first('longitude'))
                             <div class="tag-manager-container">
@@ -143,7 +143,7 @@
                     </div>
 
                     <div class="col-sm-12 text-right">
-                        <button class="btn btn-primary" type="submit">Save Branch</button>
+                        <button class="btn btn-primary" type="submit">Update Branch</button>
                     </div>
                 </div>
             </form>

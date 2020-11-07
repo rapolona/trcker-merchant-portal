@@ -58,7 +58,7 @@ Class Repository
         Log::info('DATA :: ' .json_encode($data));
         $client = new Client();
         $credentials = $this->token();
-        $response = $client->get($url, [
+        $response = $client->$method($url, [
             'decode_content' => false,
             'headers' => [
                 'Authorization' => 'Bearer ' . $credentials,
