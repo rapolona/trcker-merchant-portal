@@ -1,57 +1,42 @@
 @extends('concrete.layouts.main')
 
 @section('content')
-    <p>Users Management - Note, no api available yet to retrieve all users belonging to same merchant.</p>
-
-    <div class="row">
-        <div class="col col-lg-12">
-            <div class="card" style="width:100%">
-                <div class="card-header">
-                    <form method="POST" enctype="multipart/form-data" id="file_upload" action="javascript:void(0)" >
-                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                        <input type="file" name="file" id="file" style="display:none">
-
-                        <div class="btn-group float-lg-right" role="group" aria-label="Basic example">
-                            <button type="button" id="upload_csv" class="btn btn-block btn-primary btn-lg pull-right">Upload CSV</button>
-                            <a href="#" type="button" class="btn btn-primary btn-lg pull-right">Add</a>
-                            <button type="button" class="btn btn-primary btn-lg" id="edit">Edit</button>
-                            <button type="button" class="btn btn-primary btn-lg pull-right">Delete</button>
-                        </div>
-                    </form>
+    <div class="panel">
+        <div class="panel-header">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="panel-title"><span class="panel-icon fa-tasks"></span> <span>Merchant Users</span>
+                    </div>
                 </div>
-                <!-- /.card-header -->
-                <div class="card-body">
-                    <table class="table table-bordered table-striped mydatatable">
-                        <thead>
+            </div>
+        </div>
+
+
+        <div class="panel-body p-0">
+            <div class="table-responsive scroller scroller-horizontal py-3">
+                <table class="table table-striped table-hover data-table" data-table-lengthChange="true" data-page-length="5">
+                    <thead>
+                    <tr>
+                        <th>Brand</th>
+                        <th>Description</th>
+                        <th style="with:100px">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach ($users as $u)
                         <tr>
-                            <th style="width: 10px">#</th>
-                            <th>Brand</th>
-                            <th>Description</th>
-                            <th>Type</th>
-                            <th style="width: 40px">Action?</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        @foreach ($users as $u)
-                        <tr>
-                            <td> {{ $u['no'] }}</td>
                             <td> {{ $u['name'] }}</td>
                             <td> {{ $u['email_address'] }}</td>
                             <td> {{ $u['type'] }}</td>
-                            <td><input type="checkbox" name="{{ $u['no'] }}" id="{{ $u['no'] }}" {{($u['action'] === 1 ? 'checked' : '') }}> </td>
                         </tr>
-                        @endforeach
-                        </tbody>
-                    </table>
-                </div>
+                    @endforeach
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
 @stop
 
-@section('css')
-    <link rel="stylesheet" href="/css/admin_custom.css">
-@stop
 
 @section('js')
     <script type="text/javascript" src="{{url('/vendor/trckr/trckr.js')}}"></script>
