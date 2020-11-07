@@ -144,9 +144,10 @@ class BranchController extends Controller
      */
     public function branch(Request $request)
     {
-        $branches = $this->branchService->getAll();
+        $data = (array) $request->all();
+        $branches = $this->branchService->getAll($data);
         $filters = $this->branchService->getFilters();
-        return view('concrete.merchant.branches', ['branches' => $branches, 'filters' => $filters]);
+        return view('concrete.merchant.branches', ['branches' => $branches, 'filters' => $filters, 'selectedFilter' => $data]);
     }
 
     /**

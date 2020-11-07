@@ -21,8 +21,10 @@
   <component name="ChangeListManager">
     <list default="true" id="332e4564-3d58-4e77-b6ff-3f4e7096ea2e" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Repositories/Repository.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Repositories/Repository.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/concrete/branch/edit.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/concrete/branch/edit.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/BranchController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/BranchController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Repositories/BranchRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Repositories/BranchRepository.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Services/BranchService.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Services/BranchService.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/concrete/merchant/branches.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/concrete/merchant/branches.blade.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -207,7 +209,7 @@
       <workItem from="1604661279612" duration="17252000" />
       <workItem from="1604707822853" duration="1754000" />
       <workItem from="1604714898378" duration="7076000" />
-      <workItem from="1604745380408" duration="16621000" />
+      <workItem from="1604745380408" duration="17453000" />
     </task>
     <servers />
   </component>
@@ -235,6 +237,10 @@
       <screen x="72" y="27" width="1294" height="741" />
     </state>
     <state x="514" y="323" width="399" height="156" key="NewPhpFileDialog/72.27.1294.741/1366.0.1024.768@72.27.1294.741" timestamp="1604497956068" />
+    <state x="100" y="127" width="1166" height="541" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1604765517328">
+      <screen x="0" y="27" width="1366" height="741" />
+    </state>
+    <state x="100" y="127" width="1166" height="541" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.27.1366.741/1366.0.1024.768@0.27.1366.741" timestamp="1604765517328" />
     <state x="389" y="58" width="650" height="686" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1604165962276">
       <screen x="72" y="27" width="1294" height="741" />
     </state>

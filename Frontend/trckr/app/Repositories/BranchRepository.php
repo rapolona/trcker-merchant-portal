@@ -22,10 +22,11 @@ class BranchRepository extends Repository
         }
     }
 
-    public function getAll()
+    public function getAll($data)
     {
         try {
-            return $this->trackerApi('get', $this->api . 'branches', []);
+            $uri = http_build_query($data);
+            return $this->trackerApi('get', $this->api . 'branches?' . $uri, $data);
         } catch(\Exception $e) {
             $this->sessionExpired();
         }

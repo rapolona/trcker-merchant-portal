@@ -16,7 +16,7 @@
                         <option label="placeholder"></option>
                         @foreach ($filters->business_type as $option)
                             @if(!empty($option))
-                            <option value="{{ $option }}">{{ $option }}</option>
+                            <option {{ (isset($selectedFilter['business_type']) && $selectedFilter['business_type']==$option)? 'selected="selected"' : '' }} value="{{ $option }}">{{ $option }}</option>
                             @endif
                         @endforeach
                     </select>
@@ -28,7 +28,7 @@
                             <option label="placeholder"></option>
                             @foreach ($filters->store_type as $option)
                                 @if(!empty($option))
-                                    <option value="{{ $option }}">{{ $option }}</option>
+                                    <option {{ (isset($selectedFilter['store_type']) && $selectedFilter['store_type']==$option)? 'selected="selected"' : '' }} value="{{ $option }}">{{ $option }}</option>
                                 @endif
                             @endforeach
                         </select>
@@ -40,31 +40,31 @@
                             <option label="placeholder"></option>
                             @foreach ($filters->brand as $option)
                                 @if(!empty($option))
-                                    <option value="{{ $option }}">{{ $option }}</option>
+                                    <option {{ (isset($selectedFilter['brand']) && $selectedFilter['brand']==$option)? 'selected="selected"' : '' }} value="{{ $option }}">{{ $option }}</option>
                                 @endif
                             @endforeach
                         </select>
                     @endif
                 </div>
                 <div class="col-lg-2">
-                    @if(isset($filters->business_type))
+                    @if(isset($filters->province))
                         <select class="select2 hustle-filter" data-placeholder="Province" name="province">
                             <option label="placeholder"></option>
                             @foreach ($filters->province as $option)
                                 @if(!empty($option))
-                                    <option value="{{ $option }}">{{ $option }}</option>
+                                    <option {{ (isset($selectedFilter['province']) && $selectedFilter['province']==$option)? 'selected="selected"' : '' }} value="{{ $option }}">{{ $option }}</option>
                                 @endif
                             @endforeach
                         </select>
                     @endif
                 </div>
                 <div class="col-lg-2">
-                    @if(isset($filters->region))
+                    @if(isset($filters->city))
                         <select class="select2 hustle-filter" data-placeholder="City" name="city">
                             <option label="placeholder"></option>
                             @foreach ($filters->city as $option)
                                 @if(!empty($option))
-                                    <option value="{{ $option }}">{{ $option }}</option>
+                                    <option {{ (isset($selectedFilter['city']) && $selectedFilter['city']==$option)? 'selected="selected"' : '' }} value="{{ $option }}">{{ $option }}</option>
                                 @endif
                             @endforeach
                         </select>
