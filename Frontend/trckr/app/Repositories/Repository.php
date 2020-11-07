@@ -9,10 +9,16 @@ use GuzzleHttp\Client;
 
 Class Repository
 {
+    public function sessionExpired()
+    {
+        $message = "Session Expired. Please login again";
+        Session::put('login_msg', $message);
+        Session::save();
+        Redirect::to(url('/'))->send();
+    }
     public function validateResponse($response)
     {
-        Log::info('RESULT HTTP CODE :: ' . $response->getStatusCode());
-        $expiredHttpCodes = ['500', '403'];
+        $expiredHttpCodes = ['403', '413'];
         if (in_array($response->getStatusCode(), $expiredHttpCodes))
         {
             $message = json_decode($response->getBody());
@@ -23,7 +29,18 @@ Class Repository
             Redirect::to(url('/'))->send();
         }
 
-        // ADD HERE REDIRECT BACK IF VALIDATION ERROR
+        $validationHttpCodes = ['500', '422'];
+        if (in_array($response->getStatusCode(), $validationHttpCodes))
+        {
+            $message = json_decode($response->getBody());
+            Log::info('RESULT MESSAGE :: ' . json_encode(json_decode($message)));
+            $message = "Session Expired. Please login again. {$message->message}";
+            Session::put('login_msg', $message);
+            Session::save();
+            Redirect::back()->send();
+        }
+
+        Log::info('RESULT HTTP CODE :: ' . $response->getStatusCode());
 
         return $response;
     }
@@ -40,14 +57,14 @@ Class Repository
         Log::info('DATA :: ' .json_encode($data));
         $client = new Client();
         $credentials = $this->token();
-        $response = $client->$method($url, [
+        $response = $client->get($url, [
+            'decode_content' => false,
             'headers' => [
                 'Authorization' => 'Bearer ' . $credentials,
                 'Accept'        => 'application/json',
             ],
             'form_params' => $data
         ]);
-
         $this->validateResponse($response);
         return json_decode($response->getBody());
     }

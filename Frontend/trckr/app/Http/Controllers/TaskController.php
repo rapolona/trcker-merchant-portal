@@ -239,64 +239,20 @@ class TaskController extends Controller
         ]);
     }
 
-    public function edit_task_get(Request $request)
+    /**
+     * GET Task
+     *
+     * @return View
+     */
+    public function edit_task_get($taskId)
     {
-        $task_id = $request->query('task_action_id');
+        $data = [
+            'task_id' => $taskId
+        ];
 
-        $api_endpoint = Config::get('trckr.backend_url') . "merchant/task?task_id=$task_id";
-
-        $session = $request->session()->get('session_merchant');
-
-        $merchant_id = $session->merchant_id;
-        $token = ( ! empty($session->token)) ? $session->token : "";
-
-        $response = Http::withToken($token)->get($api_endpoint);
-
-        $tasks = json_decode($response->body());
-
-        $edit_tasks = array();
-        foreach($tasks as $t)
-        {
-            //editable tasks must be owned by active session merchant
-            if ($t->task_id == $task_id AND $t->merchant_id == $merchant_id) {
-                $edit_tasks = $t;
-            }
-        }
-
-        $api_endpoint = Config::get('trckr.backend_url') . "api/task_action_classification";
-
-        $session = $request->session()->get('session_merchant');
-        $token = ( ! empty($session->token)) ? $session->token : "";
-
-        $task_classification = Http::withToken($token)->get($api_endpoint, []);
-
-        if ($task_classification->status() !== 200)
-        {
-            if ($task_classification->status() === 403) {
-                $validator = Validator::make($request->all(), []);
-                $validator->getMessageBag()->add('email', "Session Expired. Please login again. {$response->body()}");
-
-                return redirect('/')
-                    ->withErrors($validator)
-                    ->withInput();
-            }
-
-            //provide handling for failed branch retrieval
-            return redirect('/dashboard');
-        }
-
-        $task_classification = json_decode($task_classification->body());
-
-        $task_config = array();
-
-        /*
-        foreach($edit_tasks->task_questions as $questions) {
-            if($questions->required_inputs == "TRUE OR FALSE" OR $questions->required_inputs == "true_or_false boolean" )
-                $questions->required_inputs = "true_or_false";
-        }
-        */
-
-        return view('concrete.task.edit', ['task' => $edit_tasks, 'task_id' => $task_id, 'task_config' => $task_config, 'task_classification' => $task_classification]);
+        $task = $this->taskService->getTaskById($data);
+        $task_classification = $this->taskService->getTaskActionClassification();
+        return view('concrete.task.edit', ['task' => $task[0], 'task_id' => $taskId, 'task_classification' => $task_classification]);
     }
 
     public function edit_task_post(Request $request)
