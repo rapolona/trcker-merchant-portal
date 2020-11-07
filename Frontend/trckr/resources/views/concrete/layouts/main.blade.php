@@ -18,6 +18,15 @@
     @include('concrete.layouts.header')
     <section class="section-sm">
         <div class="container-fluid">
+            @if(isset($formMessage))
+                <div class="alert alert-dismissible alert-{{ $formMessage['type'] }} mt-1" role="alert"><span class="alert-icon fa-trophy"></span><span>{{ $formMessage['message'] }}</span><button class="close" type="button" data-dismiss="alert" aria-label="Close"><span class="fa-close" aria-hidden="true"></span></button></div>
+            @endif
+
+            @if (session('formMessage'))
+                <div class="alert alert-dismissible alert-{{ $formMessage['type'] }} mt-1" role="alert"><span class="alert-icon fa-trophy"></span><span>{{ $formMessage['message'] }}</span><button class="close" type="button" data-dismiss="alert" aria-label="Close"><span class="fa-close" aria-hidden="true"></span></button></div>
+            @endif
+
+
             @yield('content')
         </div>
     </section>

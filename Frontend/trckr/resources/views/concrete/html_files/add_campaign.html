@@ -101,67 +101,76 @@
                 </li>
               </ul>
             </div>
-            
           </div>
       </section>
 
       <section class="section-sm">
-        <form method="post">
-          <div class="container-fluid">
-            <div class="tabs tabs-vertical-top tabs-border">
-              <ul class="nav nav-tabs justify-content-md-end scroller scroller-horizontal" role="tablist">
-                <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#panelCampaign" role="tab" aria-selected="true">Campaign</a></li>
-                <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#panelBranch" role="tab" aria-selected="false">Branch</a></li>
-                <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#panelTask" role="tab" aria-selected="false">Task</a></li>
-              </ul>
-              <div class="tab-content">
-                <div class="tab-pane fade show active" id="panelCampaign" role="tabpanel">
-                  <div class="row row-30">
-                      <div class="col-lg-2 order-lg-2">
-                        <h4>Campaign Thumbnail</h4>
-                        <div class="tower-file mt-3">
-                          <input class="tower-file-input" id="demo1" type="file">
-                          <label class="btn btn-xs btn-success" for="demo1"><span>Upload</span></label>
-                        </div>
-                      </div>
-                      <div class="col-lg-10 order-lg-1">
-                        <div class="row row-15">
-                          <div class="col-md-6">
-                            <div class="input-group form-group">
-                              <div class="input-group-prepend"><span class="input-group-text"><span class="fa-user"></span></span></div>
-                              <input class="form-control" type="text" name="firstName" placeholder="Campaign Name">
-                            </div>
-                            <div class="input-group form-group">
-                              <div class="input-group-prepend"><span class="input-group-text"><span class="fa-user"></span></span></div>
-                              <input class="form-control" type="text" name="lastName" placeholder="Budget">
-                            </div>
-                          </div>
-                          <div class="col-md-6">
-                            <div class="input-group form-group">
-                              <div class="input-group-prepend"><span class="input-group-text"><span class="fa-lock"></span></span></div>
-                              <input class="form-control" type="password" name="pass" placeholder="Campaign Type">
-                            </div>
-                            <div class="input-group form-group">
-                              <div class="input-group-prepend"><span class="input-group-text"><span class="fa-unlock"></span></span></div>
-                              <input class="form-control" type="password" name="pass1" placeholder="Target Audience">
-                            </div>
-                          </div>
-                          <div class="col-6">
-                            <div class="markdown" data-markdown-footer="Footer placeholder">Put your campaign description here!</div>
-                          </div>
-                          <div class="col-6">
-                            <div class="input-group form-group">
-                              <div class="input-group-prepend"><span class="input-group-text"><span class="fa-envelope-o"></span></span></div>
-                              <input class="form-control" id="daterange1" type="text" name="daterange">
-                            </div>
-                          </div>
-                          
-                        </div>
+        <div class="container-fluid">
+          <div class="alert alert-dismissible alert-primary mt-1" role="alert"><span class="alert-icon fa-trophy"></span><span><b>Success!</b> You have added a new campaign.</span><button class="close" type="button" data-dismiss="alert" aria-label="Close"><span class="fa-close" aria-hidden="true"></span></button></div>
+          <div class="panel panel-nav">
+            <div class="panel-header d-flex flex-wrap align-items-center justify-content-between">
+              <div class="panel-title">Campaign Details</div>
+            </div>
+            <div class="panel-body">
+              <form method="post">
+                <div class="row row-30">
+                  <div class="col-md-6">
+                    <div class="input-group form-group">
+                      <div class="input-group-prepend"><span class="input-group-text"><span class="fa-institution"></span></span></div>
+                      <input class="form-control" type="text" name="firstName" placeholder="Campaign Name">
+                    </div>
+                    <div class="input-group form-group">
+                      <div class="input-group-prepend"><span class="input-group-text"><span class="fa-black-tie"></span></span></div>
+                      <input class="form-control" type="text" name="lastName" placeholder="Budget">
+                    </div>
+                    
+                    <div class="markdown padding-up" style="margin: 15px 0" data-markdown-footer="Footer placeholder">Put your campaign description here!</div>
+                    
+                  </div>
+                      
+                  <div class="col-md-6">
+                    <div class="input-group form-group">
+                      <div class="input-group-prepend"><span class="input-group-text"><span class="fa-caret-square-o-right"></span></span></div>
+                        <select class="form-control" name="filter-purchases">
+                          <option value="0">Campaign Type</option>
+                          <option value="1">1-49</option>
+                          <option value="2">50-499</option>
+                          <option value="1">500-999</option>
+                          <option value="2">1000+</option>
+                        </select>
+                    </div>
+                    <div class="input-group form-group">
+                      <div class="input-group-prepend"><span class="input-group-text"><span class="fa-caret-square-o-right"></span></span></div>
+                      <select class="form-control" name="filter-purchases">
+                          <option value="0">Target Audience</option>
+                          <option value="1">1-49</option>
+                          <option value="2">50-499</option>
+                          <option value="1">500-999</option>
+                          <option value="2">1000+</option>
+                        </select>
+                    </div>
+                    <div class="input-group form-group">
+                      <div class="input-group-prepend"><span class="input-group-text"><span class="fa-calendar"></span></span></div>
+                      <input class="form-control" id="daterange1" type="text" name="daterange">
+                    </div>
+
+                    <div class="form-group col-md-5">
+                      <p>Campaign Thumbnail</p>
+                      <div class="tower-file mt-3">
+                        <input class="tower-file-input" id="demo1" type="file">
+                        <label class="btn btn-xs btn-success" for="demo1"><span>Upload</span></label>
                       </div>
                     </div>
                 </div>
-                <div class="tab-pane fade" id="panelBranch" role="tabpanel">
-                  <div class="panel">
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section-sm">
+        <div class="container-fluid">
+          <div class="panel">
                     <div class="panel-header">
                       <div class="row row-30">
                         <div class="col-lg-2">
@@ -202,16 +211,6 @@
                             <option value="5">Offline</option>
                           </select>
                         </div>
-                        <!-- <div class="col-lg-2">
-                          <select class="form-control" name="filter-status">
-                            <option value="0">Filter by Province</option>
-                            <option value="1">Active</option>
-                            <option value="2">Inactive</option>
-                            <option value="3">Suspended</option>
-                            <option value="4">Online</option>
-                            <option value="5">Offline</option>
-                          </select>
-                        </div> -->
                         <div class="col-lg-2 text-right">
                           <input class="form-control" type="text" name="firstName" placeholder="Max Submission">
                           <!-- <button class="btn btn-danger" type="button"><span class="fa-check"></span></button> -->
@@ -333,64 +332,69 @@
                       </nav>
                     </div>
                   </div>
-                </div>
-                <div class="tab-pane fade" id="panelTask" role="tabpanel">
-                  <div class="row row-30">
-                        <div class="col-md-3">
-                          
-                            <div class="form-group">
-                              <select class="select2" name="country" data-placeholder="Country">
-                                <option label="placeholder"></option>
-                                <option>USA</option>
-                                <option>UK</option>
-                                <option>Ukraine</option>
-                                <option>Australia</option>
-                                <option>Korea</option>
-                                <option>Japan</option>
-                                <option>Germany</option>
-                                <option>Belarus</option>
-                                <option>Poland</option>
-                              </select>
-                            </div>
-                          
-                        </div>
-                        <div class="col-md-3">
-                        
-                            <div class="form-group">
-                              <select class="select2" name="country" multiple data-placeholder="Country">
-                                <option label="placeholder"></option>
-                                <option>USA</option>
-                                <option>UK</option>
-                                <option>Ukraine</option>
-                                <option>Australia</option>
-                                <option>Korea</option>
-                                <option>Japan</option>
-                                <option>Germany</option>
-                                <option>Belarus</option>
-                                <option>Poland</option>
-                              </select>
-                            </div>
-                        
-                        </div>
-                        <div class="col-md-3">
-                          <div class="input-group">
-                            <div class="input-group-prepend"><span class="input-group-text"><span class="fa-building"></span></span></div>
-                            <input class="form-control" type="text" name="city" placeholder="Reward">
-                          </div>
-                        </div>
-                        <div class="col-md-3">
-                          <button class="btn btn-primary" type="submit">Add more</button>
-                        </div>
-                        <div class="col-sm-12 text-right">
-                          <button class="btn btn-light" type="submit">Save Branch</button>
+        </div>
+      </section>
+
+      <section class="section-sm">
+        <div class="container-fluid">
+          <div class="panel panel-nav">
+            <div class="panel-header d-flex flex-wrap align-items-center justify-content-between">
+              <div class="panel-title">Task Details</div>
+            </div>
+            <div class="panel-body">
+                        <div class="row row-30">
+                              <div class="col-md-3">
+                                <div class="form-group">
+                                  <select class="select2" name="country" data-placeholder="Country">
+                                    <option label="placeholder"></option>
+                                    <option>USA</option>
+                                    <option>UK</option>
+                                    <option>Ukraine</option>
+                                    <option>Australia</option>
+                                    <option>Korea</option>
+                                    <option>Japan</option>
+                                    <option>Germany</option>
+                                    <option>Belarus</option>
+                                    <option>Poland</option>
+                                  </select>
+                                </div>
+                              </div>
+                              <div class="col-md-3">
+                                <div class="form-group">
+                                  <select class="select2" name="country" multiple data-placeholder="Country">
+                                    <option label="placeholder"></option>
+                                    <option>USA</option>
+                                    <option>UK</option>
+                                    <option>Ukraine</option>
+                                    <option>Australia</option>
+                                    <option>Korea</option>
+                                    <option>Japan</option>
+                                    <option>Germany</option>
+                                    <option>Belarus</option>
+                                    <option>Poland</option>
+                                  </select>
+                                </div>
+                              </div>
+                              <div class="col-md-3">
+                                <div class="input-group">
+                                  <div class="input-group-prepend"><span class="input-group-text"><span class="fa-building"></span></span></div>
+                                  <input class="form-control" type="text" name="city" placeholder="Reward">
+                                </div>
+                              </div>
+
+                              <div class="col-md-3">
+                                <button class="btn btn-primary" type="submit">Add more</button>
+                              </div>
+                              <div class="col-sm-12 text-right">
+                                <button class="btn btn-light" type="submit">Save Branch</button>
+                              </div>
                         </div>
                       </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </form>
+                    </div>
+                  </div>
+              </form>
       </section>
+
       <div class="sidebar sidebar-lg scroller scroller-vertical">
         <div class="p-4">
           <h3>Find Customer</h3>
