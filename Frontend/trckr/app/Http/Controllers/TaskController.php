@@ -185,49 +185,39 @@ class TaskController extends Controller
         return view('concrete.task.edit', ['task' => $task, 'task_id' => $taskId, 'task_classification' => $task_classification]);
     }
 
-    public function edit_task_post(Request $request)
+    /**
+     * GET Task
+     *
+     * @return View
+     */
+    public function edit_task_post($taskId, Request $request)
     {
         $data = $request->all();
 
         $validator = Validator::make($request->all(), [
             'task_name' => 'required|max:64',
             'task_description' => 'required|max:255',
-            //'subject_level' => 'required|max:64',
             'task_classification_id' => 'required',
-            //'banner_image' => 'required',
             'form_builder' => 'required|min:3'
         ]);
 
         if ($validator->fails())
         {
-            $error_string = "<b>Fields with Errors</b><br/>";
-            foreach ($validator->errors()->messages() as $k => $v)
-            {
-                $error_string .= "{$k}: <br/>";
-                foreach ($v as $l)
-                    $error_string .= "{$l}<br/>";
-            }
-
-            return Response()->json([
-                "success" => false,
-                "message" => $error_string,
-                "file" => $data,
-            ], 422);
+            return redirect()->back()->withErrors($validator)->withInput();
         }
 
         $request_data = array(
             'task_name' => $data['task_name'],
             'task_description' => $data['task_description'],
-            //'subject_level' => $data['subject_level'],
             'task_classification_id' => $data['task_classification_id'],
             'task_questions' => array(),
             'task_id' => $data['task_id']
         );
 
-        if ( ! empty($data['banner_image'])) $request_data['banner_image'] = 'data:' . $data['banner_image']->getMimeType() . ';base64,' . base64_encode(file_get_contents($data['banner_image']));
+        if ( ! empty($data['banner_image']))
+            $request_data['banner_image'] = 'data:' . $data['banner_image']->getMimeType() . ';base64,' . base64_encode(file_get_contents($data['banner_image']));
 
         $temp_task_questions = json_decode($data['form_builder']);
-
         foreach ($temp_task_questions as $k)
         {
             $temp = array();
@@ -248,27 +238,21 @@ class TaskController extends Controller
             $request_data['task_questions'][] = $temp;
         }
 
-        $api_endpoint = Config::get('trckr.backend_url') . "merchant/task";
+        $this->taskService->update($request_data);
 
-        $session = $request->session()->get('session_merchant');
-        $token = ( ! empty($session->token)) ? $session->token : "";
-        $merchant_id = $session->merchant_id;
+        $task = $this->taskService->getTaskById(['task_id' => $request_data['task_id']]);
 
-        $response = Http::withToken($token)->put($api_endpoint, $request_data);
+        $data = [];
+        $data['task_classification'] = $this->taskService->getTaskActionClassification();
+        $data['task_config'] = array();
+        $msg = [
+            'success' => true,
+            'type' => "success",
+            'message' => "Update Task successful!"
+        ];
+        $data['formMessage'] = $msg;
+        $data['task'] = $task;
 
-        if ($response->status() !== 200)
-        {
-            return Response()->json([
-                "success" => false,
-                "message" => "Failed to Modify Task.", // with error:" . $response->body(),
-                "file" => $request_data,
-            ], 422);
-        }
-
-        return Response()->json([
-            "success" => true,
-            "message" => "Task Modification Successful!",// . $response->body(),
-            "file" => json_encode($request_data)
-        ]);
+        return view('concrete.task.edit', $data);
     }
 }

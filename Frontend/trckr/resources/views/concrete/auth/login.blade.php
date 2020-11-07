@@ -7,6 +7,7 @@
       <!-- <div class="col-6 col-sm-5 text-right"><a class="font-weight-bold" href="login.html">Sign In</a><span class="px-2">|</span><a href="register.html">Register</a></div> -->
     </div>
     <form class="panel" method="post" action="{{ config('concreteadmin.login_url', 'login')  }}">
+        <input type="hidden" name="_token" value="{{ csrf_token() }}">
       <div class="panel-body">
         <div class="row">
           <div class="col-lg-12 order-lg-1">

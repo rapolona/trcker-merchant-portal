@@ -1,81 +1,43 @@
 @extends('concrete.layouts.main')
 
 @section('content')
-@section('plugins.JqueryUI', true)
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-            <div class="modal-header" style="display:auto;">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Modal title</h4>
-            </div>
-            <div class="modal-body">
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
 
-    <p>View Task</p>
+    <div class="panel">
+        <div class="panel-header">
+            <div class="panel-title">Task Details</div>
+        </div>
+        <div class="panel-body">
 
-    <div class="card">
-        <form class="form-vertical" id="create_task">
-            <div class="card-body">
-                <input type="hidden" name="_token" value="{{ csrf_token() }}">
-
-                <div class="form-group row">
-                    <label for="company_name" class="col-sm-2 col-form-label">Task Name</label>
-                    <div class="col-sm-10">
-                        <span>{{ ($task->task_name) ? $task->task_name : ''}}</span>
+            <section class="section-sm bg-100">
+                <div class="container-fluid">
+                    <div class="media flex-column flex-sm-row align-items-sm-center group-30">
+                        <div class="media-item"><img src="{{ ($task->banner_image) ? $task->banner_image : ''}}" width="165" height="165" alt=""></div>
+                        <div class="media-body">
+                            <h2>{{  $task->task_name }}</h2>
+                            <p>{{  $task->task_description }}</p>
+                            <p>
+                                @foreach ($task_classification as $ta)
+                                    @if  ($ta->task_classification_id == $task->task_classification_id)
+                                        {{$ta->name}}
+                                    @endif
+                                @endforeach
+                            </p>
+                        </div>
                     </div>
                 </div>
-                <div class="form-group row">
-                    <label for="company_name" class="col-sm-2 col-form-label">Task Description</label>
-                    <div class="col-sm-10">
-                        <span>{{ ($task->task_description) ? $task->task_description : ''}}</span>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="company_name" class="col-sm-2 col-form-label">Task Classification</label>
-                    <div class="col-sm-10">
-                        <span>
-                            @foreach ($task_classification as $ta)
-                                @if  ($ta->task_classification_id == $task->task_classification_id)
-                                    {{$ta->name}}
-                                @endif
-                            @endforeach
-                        </span>
-                    </div>
-                </div>
-                <div class="form-group row" id="image_container">
-                    <label for="company_name" class="col-sm-2 col-form-label">Banner Image</label>
-                    <div class="col-sm-10">
-                        <input type="hidden" class="custom-file-input" id="image" name="banner_image" value="{{ ($task->banner_image) ? $task->banner_image : ''}}" >
-                        <img src="{{ ($task->banner_image) ? $task->banner_image : ''}}"/>
-                    </div>
-                </div>
-
-                <div class="build-wrap"></div>
-            </div>
-            <div class="card-footer">
-                <div class="btn-group float-lg-right" role="group" aria-label="Basic example">
-                    <button type="button" class="btn btn-block btn-primary btn-lg pull-right" id="edit">Edit Details</button>
-                    <button type="button" class="btn btn-danger btn-lg pull-right" id="back">Back</button>
+            </section>
+            <div class="row row-30">
+                <div class="col-md-12">
+                    <div class="build-wrap"></div>
                 </div>
             </div>
-        </form>
+        </div>
     </div>
 
 @stop
 
-@section('css')
-    <link rel="stylesheet" href="/css/admin_custom.css">
-@stop
 
 @section('js')
-    <script type="text/javascript" src="{{url('/vendor/trckr/trckr.js')}}"></script>
     <script type="text/javascript" src="{{url('/vendor/form-builder/form-builder.min.js')}}"></script>
     <script type="text/javascript" src="{{url('/vendor/form-builder/form-render.min.js')}}"></script>
     <script type="text/javascript">
@@ -225,5 +187,8 @@
             $(container).formRender(formRenderOpts);
 
         });
+        function findObjectInArrayByProperty(array, propertyName, propertyValue) {
+            return array.find((o) => { return o[propertyName] === propertyValue });
+        }
     </script>
 @stop
