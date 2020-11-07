@@ -160,7 +160,14 @@ exports.findAllforMerchant = (req, res) => {
   include: include_condition
  })
     .then(data => {
-      res.send(data);
+      if(task_id){
+        console.log(data[0])
+        res.send(data[0]);
+      }
+      else{
+        res.send(data);
+      }
+      
     })
     .catch(err => {
       res.status(500).send({
