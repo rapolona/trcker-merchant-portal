@@ -19,6 +19,9 @@ Route::get('/login', 'AuthController@login_get')->name('login');
 Route::post('/login', 'AuthController@login_post');
 Route::get('/logout', 'AuthController@logout');
 
+Route::post('/forgot-password', 'AuthController@forgot_post');
+Route::get('/forgot-password', 'AuthController@forgot');
+
 // AUTH
 Route::group(["middleware" => ["merchantAuth"]], function() {
     Route::get('/dashboard', 'MainController@index');
@@ -27,10 +30,11 @@ Route::group(["middleware" => ["merchantAuth"]], function() {
     Route::group(['prefix' => 'merchant'], function() {
         Route::get('/debug', 'MerchantController@debug');
         Route::get('/', 'MerchantController@view_profile');
-        Route::get('/view_profile', 'MerchantController@view_profile');
+        Route::get('/profile', 'MerchantController@view_profile');
+        Route::post('/profile', 'MerchantController@modify_profile');
 
-        //Ajax for Save Details
-        Route::post('/modify_profile', 'MerchantController@modify_profile');
+        Route::get('/change-password', 'MerchantController@changePassword');
+        Route::post('/change-password', 'MerchantController@changePasswordPost');
 
         Route::get('/product', 'ProductController@product');
         Route::get('/product/add', 'ProductController@add_product_get');

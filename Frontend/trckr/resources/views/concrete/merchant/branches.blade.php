@@ -75,7 +75,7 @@
                         <button class="btn dropdown-toggle btn-light btn-sm" data-toggle="dropdown"><span>Branch Action</span>
                         </button>
                         <div class="dropdown-menu">
-                            <form method="POST" enctype="multipart/form-data" id="file_upload" action="javascript:void(0)" >
+                            <form method="POST" enctype="multipart/form-data" id="file_upload" action="{{ url('merchant/branch/upload') }}" >
                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                 <input type="file" name="file" id="file" style="display:none">
                                 <button class="btn btn-primary btn-sm dropdown-item" type="button" value="Upload CSV" id="upload_csv">
@@ -106,7 +106,7 @@
 
         <div class="panel-body p-0">
             <div class="table-responsive scroller scroller-horizontal py-3">
-                <table class="table table-striped table-hover data-table" style="min-width: 800px">
+                <table class="table table-striped table-hover data-table" data-table-searching="true" data-table-lengthChange="true" data-page-length="5">
                     <thead>
                     <tr>
                         <td style="width: 40px">
@@ -208,14 +208,6 @@
 
             $('#file').change(function(){
                 $('#file_upload').submit();
-            });
-
-            $('#file_upload').submit(function(e) {
-                //e.preventDefault();
-
-                var formData = new FormData(this);
-
-                post("{{url('/merchant/branch/upload')}}", "Upload Branch", "upload_csv", formData, "{{url('/merchant/branch')}}")
             });
         });
     </script>

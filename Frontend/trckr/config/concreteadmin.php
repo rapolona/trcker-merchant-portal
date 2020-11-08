@@ -87,10 +87,10 @@ return [
                 ]
             ],
 
-            'view_profile' => [
-                'url' => 'merchant/view_profile',
+            'profile' => [
+                'url' => 'merchant/profile',
                 'icon' => 'fa-sitemap',
-                'text' => 'User',
+                'text' => 'Merchant Profile',
                 'in_menu' => true,
                 'sub_url'  => [
                     'add' => [ 'text' => 'Add'],

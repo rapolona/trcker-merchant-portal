@@ -4,7 +4,7 @@
 <div class="col-lg-5">
     <div class="row row-10 align-items-end">
       <div class="col-6 col-sm-7 logo"><a  href="#"><img src="{{ config('concreteadmin.logo_img', 'logo_img')  }}" alt=""></a></div>
-      <!-- <div class="col-6 col-sm-5 text-right"><a class="font-weight-bold" href="login.html">Sign In</a><span class="px-2">|</span><a href="register.html">Register</a></div> -->
+      <div class="col-6 col-sm-5 text-right"><a class="font-weight-bold" href="{{ url('forgot-password') }}">Forgot Password</a><!--<span class="px-2">|</span><a href="register.html">Register</a>--></div>
     </div>
     <form class="panel" method="post" action="{{ config('concreteadmin.login_url', 'login')  }}">
         <input type="hidden" name="_token" value="{{ csrf_token() }}">

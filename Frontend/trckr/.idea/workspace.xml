@@ -21,7 +21,14 @@
   <component name="ChangeListManager">
     <list default="true" id="332e4564-3d58-4e77-b6ff-3f4e7096ea2e" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/MerchantController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/MerchantController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Repositories/MerchantRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Repositories/MerchantRepository.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Services/MerchantService.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Services/MerchantService.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/config/concreteadmin.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/concreteadmin.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/concrete/auth/passwords/forgot.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/concrete/auth/passwords/forgot.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/concrete/layouts/header.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/concrete/layouts/header.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/concrete/merchant/profile.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/concrete/merchant/profile.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -161,6 +168,7 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$USER_HOME$/Desktop/branches.csv" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -207,6 +215,8 @@
       <workItem from="1604707822853" duration="1754000" />
       <workItem from="1604714898378" duration="7076000" />
       <workItem from="1604745380408" duration="19351000" />
+      <workItem from="1604832232441" duration="5567000" />
+      <workItem from="1604840167555" duration="10066000" />
     </task>
     <servers />
   </component>
@@ -226,13 +236,19 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="452" y="155" width="524" height="491" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1604500537715">
-      <screen x="72" y="27" width="1294" height="741" />
+    <state x="401" y="155" width="524" height="491" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1604849044987">
+      <screen x="0" y="27" width="1366" height="741" />
     </state>
+    <state x="401" y="155" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.27.1366.741/1366.0.1024.768@0.27.1366.741" timestamp="1604849044987" />
     <state x="452" y="155" width="524" height="491" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/72.27.1294.741/1366.0.1024.768@72.27.1294.741" timestamp="1604500537715" />
-    <state x="514" y="323" width="399" height="156" key="NewPhpFileDialog" timestamp="1604497956068">
-      <screen x="72" y="27" width="1294" height="741" />
+    <state x="466" y="155" width="424" height="491" key="FileChooserDialogImpl" timestamp="1604837920914">
+      <screen x="0" y="27" width="1366" height="741" />
     </state>
+    <state x="466" y="155" width="424" height="491" key="FileChooserDialogImpl/0.27.1366.741/1366.0.1024.768@0.27.1366.741" timestamp="1604837920914" />
+    <state x="467" y="323" width="399" height="156" key="NewPhpFileDialog" timestamp="1604843883098">
+      <screen x="0" y="27" width="1366" height="741" />
+    </state>
+    <state x="467" y="323" key="NewPhpFileDialog/0.27.1366.741/1366.0.1024.768@0.27.1366.741" timestamp="1604843883098" />
     <state x="514" y="323" width="399" height="156" key="NewPhpFileDialog/72.27.1294.741/1366.0.1024.768@72.27.1294.741" timestamp="1604497956068" />
     <state x="100" y="127" width="1166" height="541" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1604765517328">
       <screen x="0" y="27" width="1366" height="741" />

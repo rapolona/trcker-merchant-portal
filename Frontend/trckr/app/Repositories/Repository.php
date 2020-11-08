@@ -25,7 +25,7 @@ Class Repository
             $message = json_decode($response->getBody());
             Log::info('RESULT MESSAGE :: ' . json_encode(json_decode($message)));
             $message = "Session Expired. Please login again. {$message->message}";
-            Session::put('login_msg', $message);
+            Session::put('formMessage', $message);
             Session::save();
             Redirect::to(url('/'))->send();
         }
@@ -35,7 +35,7 @@ Class Repository
         {
             $message = json_decode($response->getBody());
             Log::info('RESULT MESSAGE :: ' . json_encode(json_decode($message)));
-            $message = "Session Expired. Please login again. {$message->message}";
+            $message = "Error. {$message->message}";
             Session::put('login_msg', $message);
             Session::save();
             Redirect::back()->send();

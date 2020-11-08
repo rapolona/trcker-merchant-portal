@@ -2,20 +2,23 @@
 
 namespace App\Http\Controllers;
 
-Use App\User;
 use App\Document;
 use Illuminate\Http\Request;
-use Illuminate\Http\Client\Response;
-use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Validator,Redirect,File;
 use Config, Session;
+use App\Services\MerchantService;
 
 
 class MerchantController extends Controller
 {
+    private $merchantService;
+
+    public function __construct(MerchantService $merchantService)
+    {
+        $this->merchantService = $merchantService;
+    }
+
     public function index()
     {
         $this->view_profile();
@@ -36,54 +39,24 @@ class MerchantController extends Controller
         var_dump($token);
     }
 
+    /**
+     * View Profile
+     *
+     * @return View
+     */
     public function view_profile(Request $request)
     {
-        //api call for merchant information - no api endpoint yet
-        //http://localhost:6001/merchant/profile
-
-        $api_endpoint = Config::get('trckr.backend_url') . "merchant/profile";
-
-        $session = $request->session()->get('session_merchant');
-        $token = ( ! empty($session->token)) ? $session->token : "";
-
-        $response = Http::withToken($token)->get($api_endpoint, []);
-
-        if ($response->status() !== 200)
-        {
-            if ($response->status() === 403) {
-                $validator = Validator::make($request->all(), []);
-                $validator->getMessageBag()->add('email', "Session Expired. Please login again. {$response->body()}");
-
-                return redirect('/')
-                    ->withErrors($validator)
-                    ->withInput();
-            }
-
-            if ($response->status() === 500) {
-                $handler = json_decode($response->body());
-
-                if ($handler->message->name == "JsonWebTokenError")
-
-                $validator = Validator::make($request->all(), []);
-                $validator->getMessageBag()->add('email', "Session Expired. Please login again. {$response->body()}");
-
-                return redirect('/')
-                    ->withErrors($validator)
-                    ->withInput();
-            }
-
-            //general handling
-            return redirect('/dashboard');
-        }
-
-        $profile = json_decode($response);
-
+        $profile = $this->merchantService->getProfile();
         return view('concrete.merchant.profile', ['profile' => $profile]);
     }
 
+    /**
+     * Update Profile
+     *
+     * @return View
+     */
     public function modify_profile(Request $request)
     {
-        //TODO: Field validation, will throw error on hit as response
         $data = (array) $request->all();
 
         $validator = Validator::make($request->all(), [
@@ -98,43 +71,18 @@ class MerchantController extends Controller
 
         if ($validator->fails())
         {
-            $error_string = "<b>Fields with Errors</b><br/>";
-            foreach ($validator->errors()->messages() as $k => $v)
-            {
-                $error_string .= "{$k}: <br/>";
-                foreach ($v as $l)
-                    $error_string .= "{$l}<br/>";
-            }
-
-            return Response()->json([
-                "success" => false,
-                "message" => $error_string,
-                "file" => $data,
-            ], 422);
+            return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $api_endpoint = Config::get('trckr.backend_url') . "merchant/profile";
+        $this->merchantService->update($data);
 
-        $session = $request->session()->get('session_merchant');
-        $token = ( ! empty($session->token)) ? $session->token : "";
+        $msg = [
+            "type" => "success",
+            "message" => "Update Merchant Information success!",
+        ];
 
-        $response = Http::withToken($token)->put($api_endpoint, $data);
-
-        if ($response->status() !== 200)
-        {
-            //provide handling for failed merchant profile modification
-            return Response()->json([
-                "success" => false,
-                "message" => "Failed updating Merchant Information.", // with error:" . $response->body(),
-                "file" => $data,
-            ], 422);
-        }
-
-        return Response()->json([
-            "success" => true,
-            "message" => "Update Merchant Information success!",// . $response->body(),
-            "file" => $data,
-        ]);
+        $profile = $this->merchantService->getProfile();
+        return view('concrete.merchant.profile', ['profile' => $profile, 'formMessage' => $msg ]);
     }
 
     public function rewards()
@@ -173,4 +121,16 @@ class MerchantController extends Controller
         );
         return view('concrete.merchant.rewards', ['rewards' => $rewards, 'remaining_budget' => $remaining_budget]);
     }
+
+    public function changePassword()
+    {
+
+    }
+
+    public function changePasswordPost(Request $request)
+    {
+
+    }
+
+
 }

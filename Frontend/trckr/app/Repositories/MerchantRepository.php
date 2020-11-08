@@ -13,7 +13,7 @@ class MerchantRepository extends Repository
         $this->api = Config::get('trckr.backend_url') . "merchant/";
     }
 
-    public function get($request)
+    public function get()
     {
         try {
             return $this->trackerApi('get', $this->api . 'profile', []);
@@ -22,10 +22,10 @@ class MerchantRepository extends Repository
         }
     }
 
-    public function update($request)
+    public function update($data)
     {
         try {
-            return $this->trackerApi('put', $this->api . 'profile', []);
+            return $this->trackerApi('put', $this->api . 'profile', $data);
         } catch(\Exception $e) {
             $this->sessionExpired();
         }

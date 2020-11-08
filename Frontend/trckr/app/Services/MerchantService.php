@@ -13,9 +13,9 @@ class MerchantService
         $this->repository = $repository;
     }
 
-    public function getProfile($data)
+    public function getProfile()
     {
-        return $this->repository->get($data);
+        return $this->repository->get();
     }
 
     public function update($data)
