@@ -4,22 +4,282 @@
 @section('plugins.Select2', true)
 @section('plugins.DateRangePicker', true)
 @section('plugins.JqueryUI', true)
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-            <div class="modal-header" style="display:auto;">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Modal title</h4>
+    <form method="post">
+    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+    <section class="section-sm">
+      <div class="container-fluid">
+        <div class="alert alert-dismissible alert-primary mt-1" role="alert"><span class="alert-icon fa-trophy"></span><span><b>Success!</b> You have added a new campaign.</span><button class="close" type="button" data-dismiss="alert" aria-label="Close"><span class="fa-close" aria-hidden="true"></span></button></div>
+        <div class="panel panel-nav">
+          <div class="panel-header d-flex flex-wrap align-items-center justify-content-between">
+            <div class="panel-title">Campaign Details</div>
+          </div>
+          <div class="panel-body">
+              <div class="row row-30">
+                <div class="col-md-6">
+                  <div class="input-group form-group">
+                    <div class="input-group-prepend"><span class="input-group-text"><span class="fa-institution"></span></span></div>
+                    <input class="form-control" type="text" name="firstName" placeholder="Campaign Name">
+                  </div>
+                  <div class="input-group form-group">
+                    <div class="input-group-prepend"><span class="input-group-text"><span class="fa-black-tie"></span></span></div>
+                    <input type="text" class="form-control" id="input_budget" name="budget" value="" placeholder="Enter Budget">
+                  </div>
+                  
+                  <div class="markdown padding-up" style="margin: 15px 0" data-markdown-footer="Footer placeholder">Put your campaign description here!</div>
+                  
+                </div>
+                    
+                <div class="col-md-6">
+                  <div class="input-group form-group">
+                    <div class="input-group-prepend"><span class="input-group-text"><span class="fa-caret-square-o-right"></span></span></div>
+                      <select class="form-control select2" name="campaign_type" id="campaign_type" style="width: 100%;">
+                          <option value="">Select One</option>
+                          @foreach ($campaign_type as $ct)
+                          <option value="{{$ct->campaign_type_id}}">{{$ct->name}}</option>
+                          @endforeach
+                      </select>
+                  </div>
+                  <div class="input-group form-group">
+                    <div class="input-group-prepend"><span class="input-group-text"><span class="fa-caret-square-o-right"></span></span></div>
+                    <select class="form-control select2" name="audience[]" id="audience">
+                      <!-- <select class="form-control" name="filter-purchases"> -->
+                        <option value="All">All</option>
+                        <option value="super_shopper">Super Shopper</option>
+                    </select>
+                  </div>
+                  <div class="input-group form-group">
+                    <div class="input-group-prepend"><span class="input-group-text"><span class="fa-calendar"></span></span></div>
+                    <input class="form-control" id="input_start_date" type="text" name="daterange">
+                  </div>
+
+                  <div class="form-group col-md-5">
+                    <p>Campaign Thumbnail</p>
+                    <div class="tower-file mt-3">
+                      <input class="tower-file-input" id="demo1" type="file">
+                      <label class="btn btn-xs btn-success" for="demo1"><span>Upload</span></label>
+                    </div>
+                  </div>
+              </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-sm">
+        <div class="container-fluid">
+          <div class="panel">
+            <div class="panel-header">
+              <div class="row row-30">
+                <p>NOT DYNAMIC YET</p>
+                <div class="col-lg-2">
+                  <select class="form-control" name="filter-purchases">
+                    <option value="0">Filter by Business Type</option>
+                    <option value="1">1-49</option>
+                    <option value="2">50-499</option>
+                    <option value="1">500-999</option>
+                    <option value="2">1000+</option>
+                  </select>
+                </div>
+                <div class="col-lg-2">
+                  <select class="form-control" name="filter-group">
+                    <option value="0">Filter by Store Type</option>
+                    <option value="1">Customers</option>
+                    <option value="2">Vendors</option>
+                    <option value="3">Distributors</option>
+                    <option value="4">Employees</option>
+                  </select>
+                </div>
+                <div class="col-lg-2">
+                  <select class="form-control" name="filter-status">
+                    <option value="0">Filter by Brand</option>
+                    <option value="1">Active</option>
+                    <option value="2">Inactive</option>
+                    <option value="3">Suspended</option>
+                    <option value="4">Online</option>
+                    <option value="5">Offline</option>
+                  </select>
+                </div>
+                <div class="col-lg-2">
+                  <select class="form-control" name="filter-status">
+                    <option value="0">Filter by Region</option>
+                    <option value="1">Active</option>
+                    <option value="2">Inactive</option>
+                    <option value="3">Suspended</option>
+                    <option value="4">Online</option>
+                    <option value="5">Offline</option>
+                  </select>
+                </div>
+                <div class="col-lg-2 text-right">
+                  <input class="form-control" type="text" name="firstName" placeholder="Max Submission">
+                  <!-- <button class="btn btn-danger" type="button"><span class="fa-check"></span></button> -->
+                </div>
+              </div>
             </div>
-            <div class="modal-body">
+            <div class="panel-body p-0">
+              <div class="table-responsive">
+                <table class="table table-vertical-align">
+                  <thead>
+                    <tr>
+                      <th class="text-center">
+                        <div class="custom-control custom-checkbox">
+                          <input class="custom-control-input" type="checkbox" id="nobycdhv">
+                          <label class="custom-control-label" for="nobycdhv">
+                          </label>
+                        </div>
+                      </th>
+                      <th>Branch Name</th>
+                      <th>Business Type</th>
+                      <th>Store Type</th>
+                      <th>Brand</th>
+                      <th>Address</th>
+                      <th>City</th>
+                      <th>Region</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="text-center">
+                        <div class="custom-control custom-checkbox">
+                          <input class="custom-control-input" type="checkbox" id="nobycdhv"/>
+                          <label class="custom-control-label" for="nobycdhv">
+                          </label>
+                        </div>
+                      </td>
+                      <td>Branch 1</td>
+                      <td>FMCG</td>
+                      <td>mail@demolink.org</td>
+                      <td>01/11/2019</td>
+                      <td>222</td>
+                      <td>$3,600</td>
+                      <td>$3,600</td>
+                      <td class="text-right">
+                        <input class="form-control" type="text" name="firstName" placeholder="Max Submission">
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="text-center">
+                        <div class="custom-control custom-checkbox">
+                          <input class="custom-control-input" type="checkbox" id="qgptiidp"/>
+                          <label class="custom-control-label" for="qgptiidp">
+                          </label>
+                        </div>
+                      </td>
+                      <td>Branch 2</td>
+                      <td>FMCG</td>
+                      <td>mail@demolink.org</td>
+                      <td>01/11/2019</td>
+                      <td>222</td>
+                      <td>$3,600</td>
+                      <td>$3,600</td>
+                      <td class="text-right">
+                        <input class="form-control" type="text" name="firstName" placeholder="Max Submission">
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="text-center">
+                        <div class="custom-control custom-checkbox">
+                          <input class="custom-control-input" type="checkbox" id="qnbhgpnk"/>
+                          <label class="custom-control-label" for="qnbhgpnk">
+                          </label>
+                        </div>
+                      </td>
+                      <td>Branch 3</td>
+                      <td>FMCG</td>
+                      <td>mail@demolink.org</td>
+                      <td>01/11/2019</td>
+                      <td>222</td>
+                      <td>$3,600</td>
+                      <td>$3,600</td>
+                      <td class="text-right">
+                        <input class="form-control" type="text" name="firstName" placeholder="Max Submission">
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="text-center">
+                        <div class="custom-control custom-checkbox">
+                          <input class="custom-control-input" type="checkbox" id="kyeqgbsn"/>
+                          <label class="custom-control-label" for="kyeqgbsn">
+                          </label>
+                        </div>
+                      </td>
+                      <td>Branch 4</td>
+                      <td>FMCG</td>
+                      <td>mail@demolink.org</td>
+                      <td>01/11/2019</td>
+                      <td>222</td>
+                      <td>$3,600</td>
+                      <td>$3,600</td>
+                      <td class="text-right">
+                        <input class="form-control" type="text" name="firstName" placeholder="Max Submission">
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <div class="panel-footer">
+              <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-end">
+                  <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                  <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                  <li class="page-item"><a class="page-link" href="#">2</a></li>
+                  <li class="page-item"><a class="page-link" href="#">3</a></li>
+                  <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                </ul>
+              </nav>
             </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
-    <p>Create New Campaign</p>
+          </div>
+        </div>
+    </section>
+
+    <section class="section-sm">
+    <div class="container-fluid">
+      <div class="panel panel-nav">
+        <div class="panel-header d-flex flex-wrap align-items-center justify-content-between">
+          <div class="panel-title">Task Details</div>
+        </div>
+            <div class="panel-body">
+                <div class="row row-30">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <select class="form-control select2 task_type" name="task_type[]" style="width: 100%;">
+                                <option value="">Select One</option>
+                                @foreach ($task_type as $ct)
+                                <option value="{{$ct->task_classification_id}}">{{$ct->name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <select class="form-control select2 task_actions" multiple="multiple" name="task_actions[]" style="width: 100%;">
+                                <option value="">Select One</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="input-group">
+                          <div class="input-group-prepend"><span class="input-group-text"><span class="fa-building"></span></span></div>
+                          <input class="form-control" type="text" name="reward" placeholder="Reward">
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <!-- <button class="btn btn-primary" type="submit">Add more</button> -->
+                        <button type="button" class="btn btn-danger btn-md pull-right remove_task" id="remove_task_0">Remove Task</button>
+                        <button type="button" class="btn btn-info btn-md pull-right" id="add_task">Add more</button>
+                    </div>
+                    <div class="col-sm-12 text-right">
+                        <button class="btn btn-light" type="submit">Save Branch</button>
+                    </div>
+                </div>
+              </div>
+            </div>
+        </div>
+    </section>
+    </form>
+
 
     <div class="row">
         <div class="col col-lg-12" >
@@ -132,7 +392,7 @@
                             </div>
                             <div class="col col-lg-2">
                                 <div class="btn-group" role="group" aria-label="Basic example">
-                                    <button type="button" class="btn btn-danger btn-md pull-right remove_task" id="remove_task_0">Remove Task</button>
+
                                 </div>
                             </div>
                         </div>
