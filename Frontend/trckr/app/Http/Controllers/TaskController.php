@@ -79,7 +79,7 @@ class TaskController extends Controller
             'task_description' => 'required|max:255',
             //'subject_level' => 'required|max:64',
             'task_classification_id' => 'required',
-            'banner_image' => 'required',
+            'banner_image' => 'required|max:100',
             'form_builder' => 'required|min:3'
         ]);
 
@@ -198,7 +198,8 @@ class TaskController extends Controller
             'task_name' => 'required|max:64',
             'task_description' => 'required|max:255',
             'task_classification_id' => 'required',
-            'form_builder' => 'required|min:3'
+            'form_builder' => 'required|min:3',
+            'banner_image' => 'max:100'
         ]);
 
         if ($validator->fails())
