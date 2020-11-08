@@ -25,6 +25,12 @@ module.exports = (sequelize, Sequelize) => {
       },
       respondent_count: {
         type: Sequelize.INTEGER
+      },
+      submitted_response_count : {
+        type: Sequelize.INTEGER,
+      },
+      status: {
+        type: Sequelize.BOOLEAN,
       }
     });
     return Campaign_Branch_Association;

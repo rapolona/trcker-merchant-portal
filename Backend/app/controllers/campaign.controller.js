@@ -128,8 +128,10 @@ exports.create = (req, res) => {
   for(i=0;i<req.body.tasks.length; i++){
     req.body.tasks[i].index = i+1;
   }
-  
-
+  for(i=0;i<branches_container.length;i++){
+    branches_container[i]["submitted_response_count"]=0;
+    branches_container[i]["status"]=0
+  }
   
   const campaign = {
       merchant_id: req.body.merchantid,
