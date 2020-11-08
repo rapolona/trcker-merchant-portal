@@ -117,4 +117,14 @@ class AuthController extends Controller
 
         return redirect ('/login');
     }
+
+    public function forgot()
+    {
+        return view('concrete.auth.passwords.forgot');
+    }
+
+    public function forgot_post(Request $request)
+    {
+
+    }
 }

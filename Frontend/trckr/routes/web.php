@@ -19,6 +19,9 @@ Route::get('/login', 'AuthController@login_get')->name('login');
 Route::post('/login', 'AuthController@login_post');
 Route::get('/logout', 'AuthController@logout');
 
+Route::post('/forgot-password', 'AuthController@forgot_post');
+Route::get('/forgot-password', 'AuthController@forgot');
+
 // AUTH
 Route::group(["middleware" => ["merchantAuth"]], function() {
     Route::get('/dashboard', 'MainController@index');
