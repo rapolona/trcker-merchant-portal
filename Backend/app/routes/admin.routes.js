@@ -16,5 +16,12 @@ module.exports = app => {
 
     router.post("/refresh", adminMiddleware.isAuthenticated, admins.refreshToken);
 
+    router.put("/changepassword", adminMiddleware.isAuthenticated, admins.changePassword);
+
+    router.post("/forgotpassword", admins.forgotPassword);
+
+    router.post("/passwordtoken", admins.verifyChangePasswordToken)
+
+
     app.use('/merchant/', router);
 }

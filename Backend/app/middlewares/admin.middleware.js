@@ -40,6 +40,9 @@ module.exports = {
         }
       }
     }
+    else if (req.body.passwordToken){
+      next();
+    }
     else{
       res.status(403).send({
         message: "Unauthenticated Request"
