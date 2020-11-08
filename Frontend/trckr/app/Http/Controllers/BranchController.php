@@ -55,10 +55,11 @@ class BranchController extends Controller
             foreach($header as $h)
             {
                 if ( ! in_array($h, $default_headers)){
-                    return Response()->json([
-                        "success" => false,
-                        "message" => "CSV Invalid Header {$h}"
-                    ], 422);
+                    $msg = [
+                        "type" => "warning",
+                        "message" => "CSV Invalid Header",
+                    ];
+                    return redirect('merchant/branch')->with(['formMessage' => $msg]);
                 }
             }
             unset($content[0]);
@@ -70,10 +71,12 @@ class BranchController extends Controller
                 $temp = explode(";", $c);
 
                 if ( count($temp) != count($default_headers)){
-                    return Response()->json([
-                        "success" => false,
-                        "message" => "Invalid Input on Item {$count}"
-                    ]);
+
+                    $msg = [
+                        "type" => "warning",
+                        "message" => "Invalid Input on Item {$count}",
+                    ];
+                    return redirect('merchant/branch')->with(['formMessage' => $msg]);
                 }
 
                 //'name','business_type', 'store_type', 'brand', 'region', 'province', 'address','city', 'longitude', 'latitude'
@@ -105,7 +108,7 @@ class BranchController extends Controller
                         "type" => "warning",
                         "message" => "Failed to Upload the file, please check your csv file",
                     ];
-                    $this->uploadResponse($msg);
+                    return redirect('merchant/branch')->with(['formMessage' => $msg]);
                 }
 
                 $branches[] = $temp_branches;
