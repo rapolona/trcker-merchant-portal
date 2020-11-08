@@ -10,6 +10,7 @@
     <script data-loaded="true" src="{{ asset('./components/base/jquery-3.4.1.min.js') }}"></script> <!-- IMPORTANT DONT CHANGE -->
     <script data-loaded="true" src="{{ asset('./components/base/jquery-ui.min.js') }}"></script> <!-- IMPORTANT DONT CHANGE -->
     <script src="{{ asset('components/base/script.js') }}"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/pace.min.js"></script>
     @yield('css')
     @yield('js')
 </head>
@@ -23,7 +24,7 @@
             @endif
 
             @if (session('formMessage'))
-                <div class="alert alert-dismissible alert-{{ $formMessage['type'] }} mt-1" role="alert"><span class="alert-icon fa-trophy"></span><span>{{ $formMessage['message'] }}</span><button class="close" type="button" data-dismiss="alert" aria-label="Close"><span class="fa-close" aria-hidden="true"></span></button></div>
+                <div class="alert alert-dismissible alert-{{ session('formMessage')['type'] }} mt-1" role="alert"><span class="alert-icon fa-trophy"></span><span>{{ session('formMessage')['message'] }}</span><button class="close" type="button" data-dismiss="alert" aria-label="Close"><span class="fa-close" aria-hidden="true"></span></button></div>
             @endif
 
 

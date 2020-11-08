@@ -13,6 +13,20 @@ class BranchController extends Controller
 {
     private $branchService;
 
+    // 'name','business_type', 'store_type', 'brand', 'region', 'province', 'address','city', 'longitude', 'latitude'
+    private $fieldValidation = [
+        'name' => 'required|max:64',
+        'business_type' => 'required|max:64',
+        'store_type' => 'required|max:64',
+        'brand' => 'required|max:64',
+        'region' => 'required|max:64',
+        'province' => 'required|max:64',
+        'address' => 'required|max:64',
+        'city' => 'required|max:64',
+        'longitude' => array('required','regex:/^(\+|-)?(?:180(?:(?:\.0{1,8})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]{1,8})?))$/'),
+        'latitude' => array('required','regex:/^(\+|-)?(?:90(?:(?:\.0{1,8})?)|(?:[0-9]|[1-8][0-9])(?:(?:\.[0-9]{1,8})?))$/'),
+    ];
+
     public function __construct(BranchService $branchService)
     {
         $this->branchService = $branchService;
@@ -30,13 +44,14 @@ class BranchController extends Controller
             $path = $request->file('file')->getPathName();
             //get stored file
             $content = File::get($path);
-
             //parse
-            $content = explode("\r\n", $content);
+            $content = explode(PHP_EOL, $content);
 
             //header
             $header = explode(";", $content[0]);
-            $default_headers = array('name','address','city', 'longitude', 'latitude');
+            $default_headers = array('name','business_type', 'store_type', 'brand', 'region', 'province', 'address','city', 'longitude', 'latitude');
+
+            // VALIDATE HEADERS
             foreach($header as $h)
             {
                 if ( ! in_array($h, $default_headers)){
@@ -61,37 +76,36 @@ class BranchController extends Controller
                     ]);
                 }
 
+                //'name','business_type', 'store_type', 'brand', 'region', 'province', 'address','city', 'longitude', 'latitude'
                 $temp_branches = array(
                     $header[0] => $temp[0],
                     $header[1] => $temp[1],
                     $header[2] => $temp[2],
                     $header[3] => $temp[3],
-                    $header[4] => $temp[4]
+                    $header[4] => $temp[4],
+                    $header[5] => $temp[5],
+                    $header[6] => $temp[6],
+                    $header[7] => $temp[7],
+                    $header[8] => $temp[8],
+                    $header[9] => $temp[9]
                 );
 
-                $validator = Validator::make($temp_branches, [
-                    'name' => 'required|max:64',
-                    'address' => 'required|max:64',
-                    'city' => 'required|max:64',
-                    'longitude' => array('required','regex:/^(\+|-)?(?:180(?:(?:\.0{1,8})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]{1,8})?))$/'),
-                    'latitude' => array('required','regex:/^(\+|-)?(?:90(?:(?:\.0{1,8})?)|(?:[0-9]|[1-8][0-9])(?:(?:\.[0-9]{1,8})?))$/'),
-                ]);
+                $validator = Validator::make($temp_branches, $this->fieldValidation);
 
                 if ($validator->fails())
                 {
                     $error_string = "<b>Row {$count}: Fields with Errors</b><br/>";
-                    foreach ($validator->errors()->messages() as $k => $v)
-                    {
+                    foreach ($validator->errors()->messages() as $k => $v) {
                         $error_string .= "{$k}: <br/>";
                         foreach ($v as $l)
                             $error_string .= "{$l}<br/>";
                     }
 
-                    return Response()->json([
-                        "success" => false,
-                        "message" => $error_string,
-                        "file" => $temp_branches,
-                    ], 422);
+                    $msg = [
+                        "type" => "warning",
+                        "message" => "Failed to Upload the file, please check your csv file",
+                    ];
+                    $this->uploadResponse($msg);
                 }
 
                 $branches[] = $temp_branches;
@@ -112,29 +126,27 @@ class BranchController extends Controller
 
                 if ($response->status() !== 200)
                 {
-                    //provide handling for failed merchant profile modification
-                    return Response()->json([
-                        "success" => false,
-                        "message" => "Failed Adding Branch {$count}", //with error: [{$response->status()}] {$response->body()}",
-                        "file" => json_encode($response),
-                        "data" => json_encode($b)
-                    ], 422);
+                    $msg = [
+                        "type" => "warning",
+                        "message" => "Failed Adding Branch ",
+                    ];
+                    return redirect('merchant/branch')->with(['formMessage' => $msg]);
                 }
                 $count+=1;
             }
 
-            return Response()->json([
-                "success" => true,
-                "message" => "Uploaded file successfully", // . $response->body(),
-                "file" => $branches
-            ]);
+            $msg = [
+                "type" => "success",
+                "message" => "Uploaded file successfully",
+            ];
+            return redirect('merchant/branch')->with(['formMessage' => $msg]);
         }
 
-        return Response()->json([
-            "success" => false,
+        $msg = [
+            "type" => "danger",
             "message" => "Failed to Upload the file",
-            "file" => ''
-        ]);
+        ];
+        return redirect('merchant/branch')->with(['formMessage' => $msg]);
     }
 
     /**
