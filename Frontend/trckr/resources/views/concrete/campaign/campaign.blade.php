@@ -26,7 +26,7 @@
                         <th>Campaign Name</th>
                         <th>Budget</th>
                         <th>Reward</th>
-                        <th>No. of tasks</th>
+                        <!--<th>No. of tasks</th>-->
                         <th>Start date</th>
                         <th>End date</th>
                         <th>Status</th>
@@ -38,19 +38,21 @@
                     <tr>
                         <td>{{ $campaign->campaign_name }}</td>
                         <td>{{ $campaign->budget }}</td>
-                        <td>N/A</td>
-                        <td>N/A</td>
+                        <td>{{ $campaign->total_reward_amount }}</td>
+                        <!--<td>N/A</td>-->
                         <td>{{ date('Y-m-d', strtotime($campaign->start_date)) }}</td>
                         <td>{{ date('Y-m-d', strtotime($campaign->end_date)) }}</td>
-                        <td class="text-success">{{ $campaign->status }}</td>
+                        <td class="text-{{ config('concreteadmin.status')[$campaign->status] }}">{{ $campaign->status }}</td>
                         <td class="text-right">
                             <div class="dropdown">
                                 <button class="btn dropdown-toggle btn-light btn-sm" data-toggle="dropdown"><span>Action</span>
                                 </button>
                                 <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="#">View</a>
-                                    <a class="dropdown-item" href="#">Edit</a>
-                                    <a class="dropdown-item" href="#">Disable</a>
+                                    <a class="dropdown-item" href="{{ url('campaign/view/') . $campaign->campaign_id }}">View</a>
+                                    <a class="dropdown-item" href="{{ url('campaign/edit/') . $campaign->campaign_id }}">Edit</a>
+                                    <a class="dropdown-item" href="{{ url('campaign/delete/') . $campaign->campaign_id }}">Delete</a>
+                                    <a class="dropdown-item" href="{{ url('campaign/duplicate/') . $campaign->campaign_id }}">Duplicate</a>
+                                    <a class="dropdown-item" href="{{ url('campaign/disable/') . $campaign->campaign_id }}">Disable</a>
                                 </div>
                             </div>
                         </td>

@@ -961,4 +961,15 @@ class CampaignController extends Controller
             "file" => $data['campaigns']
         ]);
     }
+
+    public function duplicate_campaign($campaignId)
+    {
+
+    }
+
+    public function disable_campaign($campaignId)
+    {
+
+    }
+
 }

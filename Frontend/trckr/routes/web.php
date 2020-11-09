@@ -68,15 +68,17 @@ Route::group(["middleware" => ["merchantAuth"]], function() {
 
     // CAMPAIGN
     Route::group(['prefix' => 'campaign'], function() {
-        Route::get('/view ', 'CampaignController@view');
-        Route::get('/view_campaign ', 'CampaignController@view_campaign');
-        Route::get('/create ', 'CampaignController@create');
-        Route::get('/edit ', 'CampaignController@edit');
-        //Ajax for Campaign Creation
-        Route::post('/edit_campaign ', 'CampaignController@edit_campaign');
+        Route::get('/view', 'CampaignController@view');
+        Route::get('/view/{id}', 'CampaignController@view_campaign');
+        Route::get('/create', 'CampaignController@create');
+        Route::get('/edit/{id}', 'CampaignController@edit');
+        Route::post('/edit/{id}', 'CampaignController@edit_campaign');
         Route::post('/create_campaign ', 'CampaignController@create_campaign');
         Route::get('/campaign_type/task ', 'CampaignController@campaign_type');
-        Route::post('/delete ', 'CampaignController@delete_campaign');
+        Route::post('/delete/{id}', 'CampaignController@delete_campaign');
+
+        Route::post('/duplicate/{id}', 'CampaignController@duplicate_campaign');
+        Route::post('/disable/{id}', 'CampaignController@disable_campaign');
     });
 
     // TASK
