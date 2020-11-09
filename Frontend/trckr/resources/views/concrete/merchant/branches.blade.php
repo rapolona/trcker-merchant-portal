@@ -14,6 +14,7 @@
                     @if(isset($filters->business_type))
                     <select class="select2 hustle-filter" data-placeholder="Business Type" name="business_type">
                         <option label="placeholder"></option>
+                        <option value="all">ALL</option>
                         @foreach ($filters->business_type as $option)
                             @if(!empty($option))
                             <option {{ (isset($selectedFilter['business_type']) && $selectedFilter['business_type']==$option)? 'selected="selected"' : '' }} value="{{ $option }}">{{ $option }}</option>
@@ -26,6 +27,7 @@
                     @if(isset($filters->store_type))
                         <select class="select2 hustle-filter" data-placeholder="Store Type" name="store_type">
                             <option label="placeholder"></option>
+                            <option value="all">ALL</option>
                             @foreach ($filters->store_type as $option)
                                 @if(!empty($option))
                                     <option {{ (isset($selectedFilter['store_type']) && $selectedFilter['store_type']==$option)? 'selected="selected"' : '' }} value="{{ $option }}">{{ $option }}</option>
@@ -38,6 +40,7 @@
                     @if(isset($filters->brand))
                         <select class="select2 hustle-filter" data-placeholder="Brand" name="brand">
                             <option label="placeholder"></option>
+                            <option value="all">ALL</option>
                             @foreach ($filters->brand as $option)
                                 @if(!empty($option))
                                     <option {{ (isset($selectedFilter['brand']) && $selectedFilter['brand']==$option)? 'selected="selected"' : '' }} value="{{ $option }}">{{ $option }}</option>
@@ -50,6 +53,7 @@
                     @if(isset($filters->province))
                         <select class="select2 hustle-filter" data-placeholder="Province" name="province">
                             <option label="placeholder"></option>
+                            <option value="all">ALL</option>
                             @foreach ($filters->province as $option)
                                 @if(!empty($option))
                                     <option {{ (isset($selectedFilter['province']) && $selectedFilter['province']==$option)? 'selected="selected"' : '' }} value="{{ $option }}">{{ $option }}</option>
@@ -62,6 +66,7 @@
                     @if(isset($filters->city))
                         <select class="select2 hustle-filter" data-placeholder="City" name="city">
                             <option label="placeholder"></option>
+                            <option value="all">ALL</option>
                             @foreach ($filters->city as $option)
                                 @if(!empty($option))
                                     <option {{ (isset($selectedFilter['city']) && $selectedFilter['city']==$option)? 'selected="selected"' : '' }} value="{{ $option }}">{{ $option }}</option>
@@ -111,8 +116,8 @@
                     <tr>
                         <td style="width: 40px">
                             <div class="custom-control custom-checkbox custom-checkbox-success">
-                                <input class="custom-control-input" type="checkbox" id="chkAll"/>
-                                <label class="custom-control-label" for="chkAll"></label>
+                                <input class="custom-control-input" type="checkbox" id="selectAll"/>
+                                <label class="custom-control-label" for="selectAll"></label>
                             </div>
                         </td>
                         <th>Name</th>
@@ -170,6 +175,11 @@
 
         $(document).ready(function (e) {
 
+            $('#selectAll').click(function(e){
+                var table= $(e.target).closest('table');
+                $('td input:checkbox',table).prop('checked',this.checked);
+            });
+
             $(document).on("click", "a.deleteBranch", function() {
                 if (confirm('Are you sure to delete this record ?')) {
                     window.location.href = $(this).attr('target-href');
@@ -180,7 +190,8 @@
 
             $('select.hustle-filter').on('change', function(e) {
                 let selected = $("select.hustle-filter :selected").map(function(i, el) {
-                    formFilters[$(el).parent().attr('name')] = $(el).val();
+                    let oVal = $(el).val();
+                    formFilters[$(el).parent().attr('name')] = (oVal=='all')? '' : oVal;
                 }).get();
 
                 window.location.href = "{{ url('merchant/branch') }}?" + $.param(formFilters);

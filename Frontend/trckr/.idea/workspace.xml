@@ -21,11 +21,7 @@
   <component name="ChangeListManager">
     <list default="true" id="332e4564-3d58-4e77-b6ff-3f4e7096ea2e" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/CampaignController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/CampaignController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/concreteadmin.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/concreteadmin.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/concrete/campaign/campaign.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/concrete/campaign/campaign.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/concrete/campaign/create.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/concrete/campaign/create.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/concrete/merchant/branches.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/concrete/merchant/branches.blade.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -215,7 +211,7 @@
       <workItem from="1604832232441" duration="5567000" />
       <workItem from="1604840167555" duration="11492000" />
       <workItem from="1604886515982" duration="6187000" />
-      <workItem from="1604913705558" duration="15121000" />
+      <workItem from="1604913705558" duration="16992000" />
     </task>
     <servers />
   </component>
