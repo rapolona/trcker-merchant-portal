@@ -34,7 +34,7 @@ Class Repository
             Redirect::to(url('/'))->send();
         }
 
-        $validationHttpCodes = [500, 422, 413];
+       /* $validationHttpCodes = [500, 422, 413];
         if (in_array($response->getStatusCode(), $validationHttpCodes))
         {
             $message = json_decode($response->getBody());
@@ -47,7 +47,7 @@ Class Repository
             Session::put('formMessage', $msg);
             Session::save();
             Redirect::back()->send();
-        }
+        }*/
 
         Log::info('RESULT HTTP CODE :: ' . $response->getStatusCode());
 
