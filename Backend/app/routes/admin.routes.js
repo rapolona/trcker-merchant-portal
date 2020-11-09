@@ -22,6 +22,8 @@ module.exports = app => {
 
     router.post("/passwordtoken", admins.verifyChangePasswordToken)
 
+    router.put("/admindetail", adminMiddleware.isAuthenticated, admindetails.update)
+
 
     app.use('/merchant/', router);
 }
