@@ -2,126 +2,84 @@
 
 @section('content')
 @section('plugins.JqueryUI', true)
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-            <div class="modal-header" style="display:auto;">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Modal title</h4>
-            </div>
-            <div class="modal-body">
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
+<section>
+    <div class="row no-gutters">
+        <div class="col-md-4 col-lg-3 col-xxl-2 bg-100">
+            <div class="px-3 py-4">
+                <div class="panel">
+                    <div class="panel-body">
+                        <div class="list-block-container">
+                            <div class="list-block-title">Campaign Details</div>
+                            <div class="list-block">
+                                <p><strong>{{ $tickets->campaign->campaign_name }}</strong></p>
+                                <span>{{ $tickets->user_detail->first_name }} {{ $tickets->user_detail->last_name }}</span>
+                                <span>{{ $tickets->user_detail->email }}</span><br />
+                                <span>{{ $tickets->user_detail->account_level }}</span><br />
+                            </div>
+                            <br />
+                            <div class="list-block-title">Ticket Details</div>
+                            <div class="list-block">
+                                <span>Ticket ID: {{ $tickets->task_ticket_id }}</span><br />
+                                <span>Ticket Last Update: {{ date('M d, Y H:i:s', strtotime($tickets->updatedAt)) }}</span><br />
+                                <!-- <span class="text-warning">Pending</span><br /> -->
+                            </div>
 
-    <p>View Ticket</p>
+                        </div>
 
-    <div class="card">
-        <form method="POST" id="handle_ticket" action="javascript:void(0)" >
-            <div class="card-body">
-                <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                <input type="hidden" name="task_ticket_id" value="{{ $tickets->task_ticket_id }}">
-                <input type="hidden" name="action" id="action" value="">
-                <div class="form-group row">
-                    <label for="company_name" class="col-sm-2 col-form-label">Campaign Name</label>
-                    <div class="col-sm-10">
-                        <span>{{ $tickets->campaign->campaign_name }}</span>
                     </div>
-                </div>
-                <div class="form-group row">
-                    <label for="company_name" class="col-sm-2 col-form-label">Ticket Id</label>
-                    <div class="col-sm-10">
-                        <span>{{ ($tickets->task_ticket_id) ? $tickets->task_ticket_id : ''}}</span>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="company_name" class="col-sm-2 col-form-label">Approval Status</label>
-                    <div class="col-sm-10">
-                        <span>{{ ($tickets->approval_status) ? $tickets->approval_status : ''}}</span>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="company_name" class="col-sm-2 col-form-label">Ticket Last Updated</label>
-                    <div class="col-sm-10">
-                        <span>{{ ($tickets->updatedAt) ? $tickets->updatedAt : ''}}</span>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="company_name" class="col-sm-2 col-form-label">User Name</label>
-                    <div class="col-sm-10">
-                        <span>{{ ($tickets->user_detail->first_name) ? $tickets->user_detail->first_name . ' ' . $tickets->user_detail->last_name : ''}}</span>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="company_name" class="col-sm-2 col-form-label">Account Level</label>
-                    <div class="col-sm-10">
-                        <span>{{ ($tickets->user_detail->account_level) ? $tickets->user_detail->account_level  : ''}}</span>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="company_name" class="col-sm-2 col-form-label">Email</label>
-                    <div class="col-sm-10">
-                        <span>{{ ($tickets->user_detail->email) ? $tickets->user_detail->email : ''}}</span>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="company_name" class="col-sm-2 col-form-label">Device Id</label>
-                    <div class="col-sm-10">
-                        <span>{{ ($tickets->device_id) ? $tickets->device_id : ''}}</span>
-                    </div>
-                </div>
-
-                @php
-                    $count = 1;
-                @endphp
-                @foreach ($tickets->task_details as $tix)
-                <div class="form-group row">
-                    <label for="company_name" class="col-sm-2 col-form-label">Task Question {{$count}}</label>
-                    <div class="col-sm-10">
-                        <span>{{ ($tix->task_question->question) ? $tix->task_question->question : ''}}</span>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="company_name" class="col-sm-2 col-form-label">Task Answer</label>
-                    @if (substr($tix->response, 0, 11) == "data:image/")
-                    <div class="col-sm-10">
-                        <img src="{{ ($tix->response) ? $tix->response : ''}}"/>
-                    </div>
-                    @else
-                    <div class="col-sm-10">
-                        <span>{{ ($tix->response) ? $tix->response : ''}}</span>
-                    </div>
-                    @endif
-                </div>
-
-                @php
-                    $count +=1;
-                @endphp
-                @endforeach
-
-            </div>
-            <div class="card-footer">
-                <div class="btn-group float-lg-right" role="group" aria-label="Basic example">
-                    <button type="submit" class="btn btn-primary btn-lg pull-right" id="approve">Approve</button>
-                    <button type="submit" class="btn btn-primary btn-lg pull-right" id="reject">Reject</button>
-                    <button type="button" class="btn btn-danger btn-lg pull-right" id="back">Back</button>
                 </div>
             </div>
-        </form>
+        </div>
+        <div class="col-md-8 col-lg-9 col-xxl-10 border-md-left">
+            <div class="bg-white">
+                <div class="group-15 p-3 d-flex flex-wrap justify-content-lg-between">
+                    <div class="btn-group">
+                        <button class="btn btn-success"><span class="fa-check"></span></button>
+                        <button class="btn btn-danger"><span class="fa-remove"></span></button>
+                        <!-- <button class="btn btn-primary"><span class="fa-eye"></span></button> -->
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover table-align-1 table-vertical-align">
+                        <thead>
+                        <tr>
+                            <!-- <th scope="col">Select</th> -->
+                            <th scope="col">Timestamp</th>
+                            <th scope="col">Coordinates</th>
+                            <th scope="col">Task Question</th>
+                            <th scope="col">Task Answer</th>
+                            <th scope="col">Status</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach ($tickets->task_details as $tix)
+                            <tr>
+                                <td>{{ date('M d, Y H:i:s', strtotime($tix->updatedAt)) }}</td>
+                                <td></td>
+                                <td>{{ ($tix->task_question->question) ? $tix->task_question->question : ''}}</td>
+                                <td>
+                                    @if (substr($tix->response, 0, 11) == "data:image/")
+                                        <span class="list-inline-item">
+                                            <img src="{{ ($tix->response) ? $tix->response : ''}}"/>
+                                        </span>
+                                    @else
+                                        {{ ($tix->response) ? $tix->response : ''}}
+                                    @endif
+                                </td>
+                                <td class="text-success">Approved</td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
-
+</section>
 @stop
 
-@section('css')
-    <link rel="stylesheet" href="/css/admin_custom.css">
-@stop
 
 @section('js')
-    <script type="text/javascript" src="{{url('/vendor/trckr/trckr.js')}}"></script>
     <script type="text/javascript" src="{{url('/vendor/form-builder/form-builder.min.js')}}"></script>
     <script type="text/javascript" src="{{url('/vendor/form-builder/form-render.min.js')}}"></script>
     <script type="text/javascript">
