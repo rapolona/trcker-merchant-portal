@@ -16,11 +16,17 @@
                                 <button class="close" type="button" data-dismiss="alert" aria-label="Close"><span class="fa-close" aria-hidden="true"></span></button>
                             </div>
                         @endif
+
+                        @if (session('formMessage'))
+                                <div class="alert alert-dismissible alert-{{ session('formMessage')['type'] }} mt-1" role="alert"><span class="alert-icon fa-trophy"></span><span>{{ session('formMessage')['message'] }}</span><button class="close" type="button" data-dismiss="alert" aria-label="Close"><span class="fa-close" aria-hidden="true"></span></button></div>
+
+                            @endif
+
                         <div class="form-group">
                             <label for="user">Please input your username or email</label>
                             <div class="input-group">
                                 <div class="input-group-prepend"><span class="input-group-text fa fa-user"></span></div>
-                                <input class="form-control" id="email" type="text" name="email" placeholder="Enter username">
+                                <input class="form-control" id="email" type="text" name="email" placeholder="Enter Email">
                             </div>
                         </div>
                     </div>

@@ -4,16 +4,20 @@ namespace App\Http\Controllers;
 Use App\User;
 
 use Illuminate\Http\Request;
-use Illuminate\Http\Client\Response;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Config;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
+use App\Services\MerchantService;
 
 class AuthController extends Controller
 {
+    private $merchantService;
+
+    public function __construct(MerchantService $merchantService)
+    {
+        $this->merchantService = $merchantService;
+    }
 
     public function index()
     {
@@ -45,32 +49,14 @@ class AuthController extends Controller
                 ->withErrors($validator)
                 ->withInput();
 
-        //api call for login
-        //http://localhost:6001/merchant/auth
-        $api_endpoint = Config::get('trckr.backend_url') . "merchant/auth";
-
-        $response = Http::post($api_endpoint,  [
-          "username" => $email,
-          "password" => $password
+        $response = $this->merchantService->login([
+            "username" => $email,
+            "password" => $password
         ]);
 
-        if ($response->status() !== 200)
-        {
-            $response = json_decode($response);
-            //$validator->addFailure('email', 'Invalid user credentials.', 'email');
-            $validator->getMessageBag()->add('email', "Invalid User Credentials. {$response->message}");
-
-            return redirect('/')
-                ->withErrors($validator)
-                ->withInput();
-        }
-
-        $response = json_decode($response);
-
-        //setting up session variables
+        // SESSION STARTS
         $request->session()->put('session_merchant', $response);
 
-        //redirect to home
         return redirect('/dashboard');
     }
 
@@ -125,6 +111,19 @@ class AuthController extends Controller
 
     public function forgot_post(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email|min:4'
+        ]);
+
+        if ($validator->fails())
+        {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        $data = ['email' => $request->input('email')];
+
+        $this->merchantService->forgotPassword($data);
+        echo "email sent";
 
     }
 }

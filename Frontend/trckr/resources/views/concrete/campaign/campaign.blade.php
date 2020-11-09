@@ -42,7 +42,7 @@
                         <td>N/A</td>
                         <td>{{ date('Y-m-d', strtotime($campaign->start_date)) }}</td>
                         <td>{{ date('Y-m-d', strtotime($campaign->end_date)) }}</td>
-                        <td class="text-success">N/A</td>
+                        <td class="text-success">{{ $campaign->status }}</td>
                         <td class="text-right">
                             <div class="dropdown">
                                 <button class="btn dropdown-toggle btn-light btn-sm" data-toggle="dropdown"><span>Action</span>

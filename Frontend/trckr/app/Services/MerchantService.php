@@ -37,4 +37,14 @@ class MerchantService
     {
         return $this->repository->logout($data);
     }
+
+    public function forgotPassword($data)
+    {
+        return $this->repository->forgotPassword($data);
+    }
+
+    public function changePassword($data)
+    {
+        return $this->repository->changePassword($data);
+    }
 }

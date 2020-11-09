@@ -34,9 +34,13 @@ Class Repository
         if (in_array($response->getStatusCode(), $validationHttpCodes))
         {
             $message = json_decode($response->getBody());
-            Log::info('RESULT MESSAGE :: ' . json_encode(json_decode($message)));
+            Log::info('RESULT MESSAGE :: ' . json_encode($message->message));
             $message = "Error. {$message->message}";
-            Session::put('login_msg', $message);
+            $msg =[
+                'type' => 'danger',
+                'message' => $message
+            ];
+            Session::put('formMessage', $msg);
             Session::save();
             Redirect::back()->send();
         }
@@ -51,21 +55,29 @@ Class Repository
         return Config::get('gbl_profile')->token;
     }
 
-    public function trackerApi($method, $url, $data)
+    public function trackerApi($method, $url, $data, $useToken=true)
     {
         $logMethod = strtoupper($method);
         Log::info("{$logMethod} {$url} ");
         Log::info('DATA :: ' .json_encode($data));
         $client = new Client();
-        $credentials = $this->token();
+        $headers = [
+            'Accept' => 'application/json',
+        ];
+
+        if($useToken){
+            $credentials = $this->token();
+            $headers['Authorization'] = 'Bearer ' . $credentials;
+        }
+
         $response = $client->$method($url, [
             'decode_content' => false,
-            'headers' => [
-                'Authorization' => 'Bearer ' . $credentials,
-                'Accept'        => 'application/json',
-            ],
+            'exceptions' => false,
+            'http_errors' => false,
+            'headers' => $headers,
             'form_params' => $data
         ]);
+
         $this->validateResponse($response);
 
         //print_r(json_decode($response->getStatusCode())); exit();
