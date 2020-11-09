@@ -48,6 +48,9 @@ module.exports = (sequelize, Sequelize) => {
       budget: {
         type: Sequelize.FLOAT
       },
+      total_reward_amount: {
+        type: Sequelize.FLOAT
+      },
       super_shoppers: {
         type: Sequelize.BOOLEAN
       },

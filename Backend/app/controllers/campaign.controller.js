@@ -132,12 +132,17 @@ exports.create = (req, res) => {
     branches_container[i]["submitted_response_count"]=0;
     branches_container[i]["status"]=0
   }
+  var total_reward_amount = 0;
+  for(i=0;i<req.body.tasks.length;i++){
+    total_reward_amount = total_reward_amount + req.body.tasks[i].reward_amount
+  }
   
   const campaign = {
       merchant_id: req.body.merchantid,
       start_date: req.body.start_date,
       end_date: req.body.end_date + ' 23:59:00.000Z',
       budget: req.body.budget,
+      total_reward_amount: total_reward_amount,
       campaign_name: req.body.campaign_name,
       campaign_description: req.body.campaign_description,
       thumbnail_url: req.body.thumbnail_url,
