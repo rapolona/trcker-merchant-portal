@@ -21,16 +21,16 @@ class AuthController extends Controller
 
     public function index()
     {
-        $msg = Session::get('login_msg');
-        Session::put('login_msg', '');
+        $msg = Session::get('formMessage');
+        Session::put('formMessage', '');
         Session::save();
         return view('concrete.auth.login', ['expiredMsg' => $msg]);
     }
 
     public function login_get()
     {
-        $msg = Session::get('login_msg');
-        Session::put('login_msg', '');
+        $msg = Session::get('formMessage');
+        Session::put('formMessage', '');
         Session::save();
         return view ('concrete.auth.login', ['expiredMsg' => $msg]);
     }

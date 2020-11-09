@@ -43,7 +43,7 @@ class MerchantRepository extends Repository
     public function login($data)
     {
         try {
-            return $this->trackerApi('post', $this->api . 'auth', $data);
+            return $this->trackerApi('post', $this->api . 'auth', $data, false);
         } catch(\Exception $e) {
             $this->sessionExpired();
         }

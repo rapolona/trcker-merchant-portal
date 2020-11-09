@@ -24,9 +24,7 @@
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/AuthController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/AuthController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Repositories/MerchantRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Repositories/MerchantRepository.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Repositories/Repository.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Repositories/Repository.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Services/MerchantService.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Services/MerchantService.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/concrete/auth/passwords/forgot.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/concrete/auth/passwords/forgot.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/concrete/campaign/campaign.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/concrete/campaign/campaign.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/concrete/auth/login.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/concrete/auth/login.blade.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -216,7 +214,7 @@
       <workItem from="1604832232441" duration="5567000" />
       <workItem from="1604840167555" duration="11492000" />
       <workItem from="1604886515982" duration="6187000" />
-      <workItem from="1604913705558" duration="1429000" />
+      <workItem from="1604913705558" duration="4487000" />
     </task>
     <servers />
   </component>

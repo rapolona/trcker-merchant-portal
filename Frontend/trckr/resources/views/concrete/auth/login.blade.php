@@ -18,12 +18,12 @@
             @endif
 
             @if($expiredMsg)
-                <div class="alert alert-dismissible alert-warning alert-sm" role="alert"></span><span>{{ $expiredMsg }}</span>
+                <div class="alert alert-dismissible alert-{{ $expiredMsg['type'] }} alert-sm" role="alert"></span><span>{{ $expiredMsg['message'] }}</span>
                     <button class="close" type="button" data-dismiss="alert" aria-label="Close"><span class="fa-close" aria-hidden="true"></span></button>
                 </div>
             @endif
 
-            <div class="form-group">
+                 <div class="form-group">
                 <label for="user">Username</label>
                 <div class="input-group">
                     <div class="input-group-prepend"><span class="input-group-text fa fa-user"></span></div>

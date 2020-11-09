@@ -23,9 +23,13 @@ Class Repository
         if (in_array($response->getStatusCode(), $expiredHttpCodes))
         {
             $message = json_decode($response->getBody());
-            Log::info('RESULT MESSAGE :: ' . json_encode(json_decode($message)));
+            Log::info('ERROR :: ' . json_encode(json_decode($message)));
             $message = "Session Expired. Please login again. {$message->message}";
-            Session::put('formMessage', $message);
+            $msg =[
+                'type' => 'danger',
+                'message' => $message
+            ];
+            Session::put('formMessage', $msg);
             Session::save();
             Redirect::to(url('/'))->send();
         }
@@ -34,10 +38,10 @@ Class Repository
         if (in_array($response->getStatusCode(), $validationHttpCodes))
         {
             $message = json_decode($response->getBody());
-            Log::info('RESULT MESSAGE :: ' . json_encode($message->message));
+            Log::info('WARNING :: ' . json_encode($message->message));
             $message = "Error. {$message->message}";
             $msg =[
-                'type' => 'danger',
+                'type' => 'warning',
                 'message' => $message
             ];
             Session::put('formMessage', $msg);
