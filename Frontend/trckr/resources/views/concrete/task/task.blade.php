@@ -33,8 +33,8 @@
                     @foreach ($tasks as $t)
                         <tr>
                             <td></td>
-                            <td class="view"> {{ $t->task_name }}</td>
-                            <td class="view"> {{ $t->task_description }}</td>
+                            <td> {{ $t->task_name }}</td>
+                            <td> {{ $t->task_description }}</td>
                             <td>
                                 <div class="dropdown">
                                     <button class="btn dropdown-toggle btn-light btn-sm" data-toggle="dropdown"><span>Action</span>
@@ -58,12 +58,6 @@
     <script type="text/javascript">
 
         $(document).ready(function (e) {
-
-            $('.view').click(function(){
-                var task_id = $(this).siblings('.view_id').val();
-
-                window.location.href = "{{url('/task/view_task?task_id=')}}" + task_id;
-            });
 
             $('#myModal').on('hidden.bs.modal', function () {
                 location.reload();
