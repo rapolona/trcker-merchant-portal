@@ -157,8 +157,7 @@ exports.create = (req, res) => {
       at_home_campaign: at_home_campaign,
       campaign_type: req.body.campaign_type,
       campaign_task_associations: req.body.tasks,
-      campaign_branch_associations: branches_container,
-      campaign_reward: req.body.reward
+      campaign_branch_associations: branches_container
   };
   if(campaign.allow_everyone){
     campaign.allowed_account_level='any'
