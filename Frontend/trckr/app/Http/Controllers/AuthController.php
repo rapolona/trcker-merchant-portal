@@ -61,46 +61,8 @@ class AuthController extends Controller
     }
 
     public function logout(Request $request) {
-        $api_endpoint = Config::get('trckr.backend_url') . "merchant/logout";
-
-        $session = $request->session()->get('session_merchant');
-        $token = ( ! empty($session->token)) ? $session->token : "";
-
-        $response = Http::withToken($token)->post($api_endpoint);
-
-        if ($response->status() !== 200)
-        {
-            //var_dump($response->status());exit;
-            if ($response->status() === 403) {
-                $validator = Validator::make($request->all(), []);
-                $validator->getMessageBag()->add('email', "Session Expired. Please login again. {$response->body()}");
-
-                return redirect('/')
-                    ->withErrors($validator)
-                    ->withInput();
-            }
-
-            if ($response->status() === 500) {
-                $handler = json_decode($response->body());
-
-                if ($handler->message->name == "JsonWebTokenError")
-
-                $validator = Validator::make($request->all(), []);
-                $validator->getMessageBag()->add('email', "Session Expired. Please login again. {$response->body()}");
-
-                return redirect('/')
-                    ->withErrors($validator)
-                    ->withInput();
-            }
-
-            //general handling
-            return redirect('/dashboard');
-        }
-
+        $this->merchantService->logout();
         $request->session()->flush('session_merchant');
-
-        $profile = json_decode($response);
-
         return redirect ('/login');
     }
 

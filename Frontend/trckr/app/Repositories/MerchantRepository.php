@@ -49,7 +49,7 @@ class MerchantRepository extends Repository
         }
     }
 
-    public function logout($request)
+    public function logout()
     {
         try {
             return $this->trackerApi('post', $this->api . 'logout', []);
