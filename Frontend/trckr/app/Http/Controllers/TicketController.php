@@ -54,12 +54,14 @@ class TicketController extends Controller
         return view('concrete.ticket.ticket', ['tickets' => $tickets]);
     }
 
-    public function view_ticket($ticketId)
+    public function view_ticket($campaignId, $ticketId)
     {
-        $ticket = $this->capabilityService->getTicket(['task_ticket_id' => $ticketId]);
-        print_r($ticket); exit();
-
-        return view('concrete.ticket.view', ['ticket' => $ticket]);
+        $ticket = $this->capabilityService->getTicket([
+            'task_ticket_id' => $ticketId,
+            'campaign_id' => $campaignId,
+        ]);
+        //print_r($ticket); exit();
+        return view('concrete.ticket.view', ['tickets' => $ticket[0]]);
     }
 
     //AJAX for Accept Ticket ticket.ticket.blade.php

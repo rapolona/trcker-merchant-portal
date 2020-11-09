@@ -82,10 +82,11 @@ class AuthController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $data = ['email' => $request->input('email')];
+        $data = ['email_address' => $request->input('email')];
 
         $this->merchantService->forgotPassword($data);
-        echo "email sent";
+
+        return "email sent"; //view('concrete.auth.passwords.forgot');
 
     }
 }

@@ -29,7 +29,7 @@
                 <div class="form-group row">
                     <label for="company_name" class="col-sm-2 col-form-label">Campaign Name</label>
                     <div class="col-sm-10">
-                        <span>{{ ($tickets->campaign_name) ? $tickets->campaign_name : ''}}</span>
+                        <span>{{ $tickets->campaign->campaign_name }}</span>
                     </div>
                 </div>
                 <div class="form-group row">

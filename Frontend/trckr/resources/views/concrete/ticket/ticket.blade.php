@@ -44,7 +44,7 @@
                                     <td class="text-warning">{{ $t->approval_status }}</td>
                                     <td>
                                         <div class="btn-group">
-                                            <a href="{{ url('ticket/view/' . $t->task_ticket_id ) }}"><button class="btn btn-light" type="button"><span class="fa-eye"></span></button></a>
+                                            <a href="{{ url('ticket/view/' . $t->campaign_id . "/" . $t->task_ticket_id ) }}"><button class="btn btn-light" type="button"><span class="fa-eye"></span></button></a>
                                         </div>
                                     </td>
                                 </tr>
