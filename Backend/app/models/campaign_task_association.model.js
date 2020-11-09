@@ -19,6 +19,10 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.INTEGER,
         allowNull: false
       },
+      reward_amount:{
+        type: Sequelize.INTEGER,
+        allowNull: true
+      },
       task_id: {
         type: DataTypes.UUID,
         allowNull: false,
