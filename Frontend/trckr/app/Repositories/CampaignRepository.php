@@ -34,7 +34,7 @@ class CampaignRepository extends Repository
     public function get($id)
     {
         try {
-            return $this->trackerApi('get', $this->api . $id, []);
+            return $this->trackerApi('get', $this->api . 'find_one/'. $id, []);
         } catch(\Exception $e) {
             $this->sessionExpired();
         }

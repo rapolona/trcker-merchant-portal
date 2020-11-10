@@ -964,12 +964,12 @@ class CampaignController extends Controller
 
     public function duplicate_campaign($campaignId)
     {
-
+        print_r((array) $this->campaignService->get($campaignId));
     }
 
     public function disable_campaign($campaignId)
     {
-
+        echo "disbale";
     }
 
 }
