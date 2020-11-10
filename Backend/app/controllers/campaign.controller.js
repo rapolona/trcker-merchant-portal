@@ -1,6 +1,6 @@
 const db = require("../models");
 const moment = require("moment");
-const { branches } = require("../models");
+const { branches, tasks, campaign_branch_associations, campaign_task_associations } = require("../models");
 const Campaign = db.campaigns;
 const Branch = db.branches;
 const Task_Questions = db.task_questions;
@@ -251,22 +251,43 @@ exports.findAll = (req, res) => {
 exports.findOne = (req, res) => {
   const campaign_id = req.params.campaign_id;
   const merchant_id = req.body.merchantid;
-  
-    Campaign.findByPk(campaign_id)
+  var condition = { 
+    where: 
+    {
+      merchant_id: merchant_id, 
+      campaign_id: campaign_id
+    } , 
+    include: [
+      {model:Branch, attributes:['branch_id'], through: {attributes: ['respondent_count']} },
+      {model:tasks, attributes:['task_id'], through: {attributes: ['reward_amount']}}
+
+    ],
+    attributes: { exclude: ['total_reward_amount','createdAt','updatedAt','merchant_id','campaign_id']}
+  };
+
+    Campaign.findOne(condition)
       .then(data => {
-        if(data.merchant_id==merchant_id){
-          res.send(data);
+        
+        new_result = data.get({plain:true});
+        for (i = 0; i < new_result.branches.length; i++){
+          new_result.branches[i].respondent_count = new_result.branches[i].campaign_branch_association.respondent_count;
+          delete new_result.branches[i].campaign_branch_association;
         }
-        else{
-          res.status(422).send({
-            message: "Error retrieving Campaign with id=" + campaign_id + ". Campaign does not belong to merchant."
-          });
+        for (i = 0; i < new_result.tasks.length; i++){
+          new_result.tasks[i].reward_amount = new_result.tasks[i].campaign_task_association.reward_amount;
+          delete new_result.tasks[i].campaign_task_association;
         }
+        new_result.start_date = new_result.start_date.toISOString().substring(0,10);
+        new_result.end_date = new_result.end_date.toISOString().substring(0,10);
+
+
+
+
+        res.send(new_result);
+
       })
       .catch(err => {
-        res.status(500).send({
-          message: "Error retrieving Campaign with id=" + campaign_id
-        });
+        res.status(500).send(err);
       });
   };
 
