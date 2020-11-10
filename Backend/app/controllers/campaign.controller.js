@@ -262,7 +262,7 @@ exports.findOne = (req, res) => {
       {model:tasks, attributes:['task_id'], through: {attributes: ['reward_amount']}}
 
     ],
-    attributes: { exclude: ['total_reward_amount','createdAt','updatedAt','merchant_id','campaign_id']}
+    attributes: { exclude: ['at_home_campaign','total_reward_amount','createdAt','updatedAt','merchant_id','campaign_id']}
   };
 
     Campaign.findOne(condition)
