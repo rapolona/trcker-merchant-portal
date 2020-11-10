@@ -23,6 +23,12 @@
                 <table class="table table-striped table-hover data-table" data-table-searching="true" data-table-lengthChange="true" data-page-length="5">
                     <thead>
                     <tr>
+                        <td style="width: 40px">
+                            <div class="custom-control custom-checkbox custom-checkbox-success">
+                                <input class="custom-control-input" type="checkbox" id="selectAll"/>
+                                <label class="custom-control-label" for="selectAll"></label>
+                            </div>
+                        </td>
                         <th>Campaign Name</th>
                         <th>Budget</th>
                         <th>Reward</th>
@@ -36,13 +42,19 @@
                     <tbody>
                     @foreach ($campaigns as $campaign)
                     <tr>
+                        <td style="width: 40px">
+                            <div class="custom-control custom-checkbox custom-checkbox-success">
+                                <input class="custom-control-input" type="checkbox" name="branch_id" id="{{ $campaign->campaign_id }}" />
+                                <label class="custom-control-label" for="{{ $campaign->campaign_id }}"></label>
+                            </div>
+                        </td>
                         <td>{{ $campaign->campaign_name }}</td>
                         <td>{{ $campaign->budget }}</td>
                         <td>{{ $campaign->total_reward_amount }}</td>
                         <!--<td>N/A</td>-->
                         <td>{{ date('Y-m-d', strtotime($campaign->start_date)) }}</td>
                         <td>{{ date('Y-m-d', strtotime($campaign->end_date)) }}</td>
-                        <td class="text-{{ config('concreteadmin.status')[$campaign->status] }}">{{ $campaign->status }}</td>
+                        <td class="text-{{ (isset(config('concreteadmin.status')[$campaign->status] ))? config('concreteadmin.status')[$campaign->status] : 'light' }}">{{ $campaign->status }}</td>
                         <td class="text-right">
                             <div class="dropdown">
                                 <button class="btn dropdown-toggle btn-light btn-sm" data-toggle="dropdown"><span>Action</span>
@@ -50,9 +62,13 @@
                                 <div class="dropdown-menu">
                                     <a class="dropdown-item" href="{{ url('campaign/view/' . $campaign->campaign_id )}}">View</a>
                                     <a class="dropdown-item" href="{{ url('campaign/edit/' . $campaign->campaign_id )}}">Edit</a>
-                                    <a class="dropdown-item" href="{{ url('campaign/delete/' . $campaign->campaign_id )}}">Delete</a>
+                                    <!--<a class="dropdown-item" href="{{ url('campaign/delete/' . $campaign->campaign_id )}}">Delete</a>-->
                                     <a class="dropdown-item" href="{{ url('campaign/duplicate/' . $campaign->campaign_id )}}">Duplicate</a>
-                                    <a class="dropdown-item" href="{{ url('campaign/disable/' . $campaign->campaign_id )}}">Disable</a>
+                                    @if($campaign->status=='DISABLED')
+                                    <a class="dropdown-item" href="{{ url('campaign/status/enable/' . $campaign->campaign_id )}}">Activate</a>
+                                    @else
+                                        <a class="dropdown-item" href="{{ url('campaign/status/disable/' . $campaign->campaign_id )}}">Disable</a>
+                                    @endif
                                 </div>
                             </div>
                         </td>
@@ -74,6 +90,12 @@
     <script type="text/javascript">
 
         $(document).ready(function (e) {
+
+            $('#selectAll').click(function(e){
+                var table= $(e.target).closest('table');
+                $('td input:checkbox',table).prop('checked',this.checked);
+            });
+
 
             $('.view').click(function(){
                 var campaign_id = $(this).siblings('.view_id').val();

@@ -23,6 +23,7 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/CampaignController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/CampaignController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Repositories/CampaignRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Repositories/CampaignRepository.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Services/CampaignService.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Services/CampaignService.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/concrete/campaign/campaign.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/concrete/campaign/campaign.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
@@ -216,7 +217,7 @@
       <workItem from="1604886515982" duration="6187000" />
       <workItem from="1604913705558" duration="20975000" />
       <workItem from="1604970331332" duration="6369000" />
-      <workItem from="1605001585575" duration="4675000" />
+      <workItem from="1605001585575" duration="10537000" />
     </task>
     <servers />
   </component>

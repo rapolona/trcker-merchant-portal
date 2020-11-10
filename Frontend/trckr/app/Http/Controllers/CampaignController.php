@@ -964,12 +964,27 @@ class CampaignController extends Controller
 
     public function duplicate_campaign($campaignId)
     {
-        print_r((array) $this->campaignService->get($campaignId));
+        $campaign = (array) $this->campaignService->get($campaignId);
+        $duplicate = $this->campaignService->duplicate($campaign);
+        $msg = [
+            "type" => "success",
+            "message" => $campaign['campaign_name'] . " was successfully duplicated!",
+        ];
+        return redirect('/campaign/view')
+            ->with("formMessage", $msg);
     }
 
-    public function disable_campaign($campaignId)
+    public function status_campaign($status, $campaignId)
     {
-        echo "disbale";
+        $campaign = (array) $this->campaignService->get($campaignId);
+        $this->campaignService->updateStatus($status, $campaignId);
+        $msg = [
+            "type" => "success",
+            "message" => $campaign['campaign_name'] . " was successfully disabled!",
+        ];
+
+        return redirect('/campaign/view')
+            ->with("formMessage", $msg);
     }
 
 }
