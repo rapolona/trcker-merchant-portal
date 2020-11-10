@@ -9,7 +9,6 @@ use Validator,Redirect,File;
 use Config, Session;
 use App\Services\MerchantService;
 
-
 class MerchantController extends Controller
 {
     private $merchantService;
@@ -66,13 +65,18 @@ class MerchantController extends Controller
             'authorized_representative' => 'required|max:64',
             'position' => 'required|max:64',
             'contact_number' => 'required|numeric|digits_between:1,64',
-            'email_address' => 'required|email|max:64'
+            'email_address' => 'required|email|max:64',
+            'profile_image' => 'max:100'
         ]);
 
         if ($validator->fails())
         {
             return redirect()->back()->withErrors($validator)->withInput();
         }
+
+        if ( ! empty($data['profile_image']))
+            $data['profile_image'] = 'data:' . $data['profile_image']->getMimeType() . ';base64,' . base64_encode(file_get_contents($data['profile_image']));
+
 
         $this->merchantService->update($data);
 

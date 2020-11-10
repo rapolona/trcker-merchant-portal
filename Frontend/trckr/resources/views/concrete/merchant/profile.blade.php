@@ -10,15 +10,23 @@
             <div class="panel-title">Merchant Profile</div>
         </div>
         <div class="panel-body">
-            <form class="form-horizontal" id="modify_merchant" method="post" action="{{ url('merchant/profile')  }}">
+            <form class="form-horizontal" id="modify_merchant" method="post" action="{{ url('merchant/profile')  }}" enctype="multipart/form-data">
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
                 <div class="row row-30">
                     <div class="col-md-2">
                         <p>Company Logo</p>
                         <div class="tower-file mt-3">
-                            <input class="tower-file-input" id="demo1" type="file">
+                            @if($errors->first('profile_image'))
+                                <div class="tag-manager-container">
+                                    <span class="tm-tag badge badge-danger" ><span>{{ $errors->first('profile_image') }}</span></span>
+                                </div>
+                            @endif
+                            <input class="tower-file-input" name="profile_image" id="demo1" type="file">
                             <label class="btn btn-xs btn-success" for="demo1"><span>Upload</span></label>
+                                @if(isset($profile->profile_image) && !empty($profile->profile_image))
+                                <div class="tower-file-details"><img class="null" src="{{ $profile->profile_image }}"></div>
+                                    @endif
                         </div>
                     </div>
 
