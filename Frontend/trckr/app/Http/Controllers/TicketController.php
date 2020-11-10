@@ -54,6 +54,11 @@ class TicketController extends Controller
         return view('concrete.ticket.ticket', ['tickets' => $tickets]);
     }
 
+    /**
+     * Ticket instance
+     *
+     * @return View
+     */
     public function view_ticket($campaignId, $ticketId)
     {
         $ticket = $this->capabilityService->getTicket([
@@ -64,80 +69,42 @@ class TicketController extends Controller
         return view('concrete.ticket.view', ['tickets' => $ticket[0]]);
     }
 
-    //AJAX for Accept Ticket ticket.ticket.blade.php
-    public function approve_ticket(Request $request)
+    /**
+     * approve instance
+     *
+     * @return redirect
+     */
+    public function approve_ticket($campaignId, $ticketId)
     {
-        $data = $request->all();
+        $data = ['task_ticket_id' => $ticketId];
+        $this->capabilityService->approveTicket($data);
 
-        $api_endpoint = Config::get('trckr.backend_url') . "merchant/approve";
-        $session = $request->session()->get('session_merchant');
-        $token = ( ! empty($session->token)) ? $session->token : "";
+        $msg = [
+            "type" => "success",
+            "message" => "Reject Ticket(s) Success!",
+        ];
 
-        $count = 1;
-        $tickets = array();
-        $data['task_ticket_id'] = explode(",", $data['task_ticket_id']);
-        foreach($data['task_ticket_id'] as $t)
-        {
-            $request = ["task_ticket_id" => $t];
-            $response = Http::withToken($token)->put($api_endpoint, $request);
-            $tickets[] = $response->body();
-
-            if ($response->status() !== 200)
-            {
-                //provide handling for failed ticket approval
-                return Response()->json([
-                    "success" => false,
-                    "message" => "Failed Ticket Approval {$count}", // with error: [{$response->status()}] {$response->body()}",
-                    "file" => json_encode($response),
-                    "data" => json_encode($t)
-                ], 422);
-            }
-            $count+=1;
-        }
-
-        return Response()->json([
-            "success" => true,
-            "message" => "Approved Ticket(s) Success!", // . $response->body(),
-            "file" => $tickets
-        ]);
+        return redirect('/ticket/view/' . "{$campaignId}/$ticketId")
+            ->with("formMessage", $msg);
     }
 
-    //AJAX for Reject Ticket ticket.ticket.blade.php
-    public function reject_ticket(Request $request)
+    /**
+     * reject instance
+     *
+     * @return redirect
+     */
+    public function reject_ticket($campaignId, $ticketId)
     {
-        $data = $request->all();
+        $data = ['task_ticket_id' => $ticketId];
+        $this->capabilityService->rejectTicket($data);
 
-        $api_endpoint = Config::get('trckr.backend_url') . "merchant/reject";
-        $session = $request->session()->get('session_merchant');
-        $token = ( ! empty($session->token)) ? $session->token : "";
+        $msg = [
+            "type" => "success",
+            "message" => "Reject Ticket(s) Success!",
+        ];
 
-        $count = 1;
-        $tickets = array();
-        $data['task_ticket_id'] = explode(",", $data['task_ticket_id']);
-        foreach($data['task_ticket_id'] as $t)
-        {
-            $request = ["task_ticket_id" => $t];
-            $response = Http::withToken($token)->put($api_endpoint, $request);
-            $tickets[] = $response;
-
-            if ($response->status() !== 200)
-            {
-                //provide handling for failed ticket approval
-                return Response()->json([
-                    "success" => false,
-                    "message" => "Failed Ticket Approval {$count}.", // with error: [{$response->status()}] {$response->body()}",
-                    "file" => json_encode($response),
-                    "data" => json_encode($t)
-                ], 422);
-            }
-            $count+=1;
-        }
-
-        return Response()->json([
-            "success" => true,
-            "message" => "Reject Ticket(s) Success!", // . $response->body(),
-            "file" => $tickets
-        ]);
+        return redirect('/ticket/view/' . "{$campaignId}/$ticketId")
+            ->with("formMessage", $msg);
     }
 
     public function export_csv(Request $request)

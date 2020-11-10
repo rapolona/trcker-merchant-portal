@@ -34,8 +34,8 @@
             <div class="bg-white">
                 <div class="group-15 p-3 d-flex flex-wrap justify-content-lg-between">
                     <div class="btn-group">
-                        <button class="btn btn-success"><span class="fa-check"></span></button>
-                        <button class="btn btn-danger"><span class="fa-remove"></span></button>
+                        <a href="{{ url('ticket/approve_ticket/'.$tickets->campaign_id . '/' . $tickets->task_ticket_id) }}" class="btn btn-success"><span class="fa-check"></span></a>
+                        <a href="{{ url('ticket/approve_ticket/'.$tickets->campaign_id . '/' . $tickets->task_ticket_id) }}" class="btn btn-danger"><span class="fa-remove"></span></a>
                         <!-- <button class="btn btn-primary"><span class="fa-eye"></span></button> -->
                     </div>
                 </div>
@@ -45,7 +45,7 @@
                         <tr>
                             <!-- <th scope="col">Select</th> -->
                             <th scope="col">Timestamp</th>
-                            <th scope="col">Coordinates</th>
+                            <!--<th scope="col">Coordinates</th>-->
                             <th scope="col">Task Question</th>
                             <th scope="col">Task Answer</th>
                             <th scope="col">Status</th>
@@ -55,7 +55,7 @@
                         @foreach ($tickets->task_details as $tix)
                             <tr>
                                 <td>{{ date('M d, Y H:i:s', strtotime($tix->updatedAt)) }}</td>
-                                <td></td>
+                                <!--<td></td>-->
                                 <td>{{ ($tix->task_question->question) ? $tix->task_question->question : ''}}</td>
                                 <td>
                                     @if (substr($tix->response, 0, 11) == "data:image/")
@@ -66,7 +66,7 @@
                                         {{ ($tix->response) ? $tix->response : ''}}
                                     @endif
                                 </td>
-                                <td class="text-success">Approved</td>
+                                <td class="text-success">{{ $tickets->approval_status }}</td>
                             </tr>
                         @endforeach
                         </tbody>
@@ -101,12 +101,6 @@
                 $("#action").val('reject');
             });
 
-            $('#handle_ticket').submit(function(e){
-                var formData = new FormData(this);
-                var action = formData.get('action');
-
-                post("{{url('/ticket/')}}/" + action + "_ticket", actiontext + " Ticket(s)", action, formData, "{{url('/ticket/view')}}");
-            });
         });
     </script>
 @stop
