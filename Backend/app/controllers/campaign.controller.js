@@ -134,7 +134,7 @@ exports.create = (req, res) => {
   }
   var total_reward_amount = 0;
   for(i=0;i<req.body.tasks.length;i++){
-    total_reward_amount = total_reward_amount + req.body.tasks[i].reward_amount
+    total_reward_amount = total_reward_amount + parseFloat(req.body.tasks[i].reward_amount)
   }
   
   const campaign = {
