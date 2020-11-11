@@ -1,9 +1,9 @@
 $(document).ready(function (e) {
 
-    Pace.restart();
+    //Pace.restart();
     
     $(".spinner-border").hide();
-
+/*
     $(function () {
         $(".mydatatable").DataTable({
         "responsive": true,
@@ -27,10 +27,11 @@ $(document).ready(function (e) {
         "scrollX": true,
         });
     });
+*/
 });
 
 //pace
-$(document).ajaxStart(function() { Pace.restart(); });
+//$(document).ajaxStart(function() { Pace.restart(); });
 
 //ajax helper method
 function post(url, activity, button, payload, redirect = "/dashboard")

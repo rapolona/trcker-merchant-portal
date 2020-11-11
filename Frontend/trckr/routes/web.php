@@ -69,6 +69,7 @@ Route::group(["middleware" => ["merchantAuth"]], function() {
 
     // CAMPAIGN
     Route::group(['prefix' => 'campaign'], function() {
+        Route::get('/merchant_branch', 'CampaignController@merchant_branch'); //ajax for get branch
         Route::get('/view', 'CampaignController@view');
         Route::get('/view/{id}', 'CampaignController@view_campaign');
         Route::get('/create', 'CampaignController@create');
