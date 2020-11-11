@@ -121,7 +121,44 @@
             "photo_url":null,
             "merchant_id":null
         }
+    },
+    {
+        "model": "branches",
+        "data": {
+            "branch_id": "c5429ce8-39bd-4e89-81e6-34a85ac713f9",
+            "name": "SM Fairview Supermarket",
+            "business_type": "Retail Grocery",
+            "store_type": "Supermarket",
+            "brand": "SM",
+            "address": " Quirino Highway, cor Regalado Hwy, Novaliches, Quezon City, 1118 Metro Manila",
+            "city": "Quezon City",
+            "region": "NCR",
+            "province": "Metro Manila",
+            "latitude": "14.7336802",
+            "longitude": "121.0595901",
+            "photo_url": "none",
+            "merchant_id": "27570d1a-2556-4e8c-931f-8fd462ee9e0e"
+        }
+    },
+    {
+        "model": "branches",
+        "data": {
+            "branch_id": "5563583f-cabb-4daa-b7e1-28aa6bd5fca1",
+            "name": "Savemore North Edsa",
+            "business_type": "Retail",
+            "store_type": "Supermarket",
+            "brand": "SM",
+            "address": " North Edsa",
+            "city": "Quezon City",
+            "region": "NCR",
+            "province": "Metro Manila",
+            "latitude": "14.6564505",
+            "longitude": "121.0305073",
+            "photo_url": "none",
+            "merchant_id": "27570d1a-2556-4e8c-931f-8fd462ee9e0e"
+        }
     }
+
 
     
 ]

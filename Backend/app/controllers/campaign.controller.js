@@ -1,6 +1,6 @@
 const db = require("../models");
 const moment = require("moment");
-const { branches } = require("../models");
+const { branches, tasks, campaign_branch_associations, campaign_task_associations } = require("../models");
 const Campaign = db.campaigns;
 const Branch = db.branches;
 const Task_Questions = db.task_questions;
@@ -10,6 +10,7 @@ const Campaign_Task_Association = db.campaign_task_associations;
 const Campaign_Reward = db.campaign_rewards;
 const Task_Ticket = db.task_tickets;
 const Op = db.Sequelize.Op;
+
 
 
 
@@ -93,6 +94,7 @@ exports.create = (req, res) => {
       return;
     }
     const branches_container = []
+    var campaign_status = "INACTIVE";
     var at_home_campaign = req.body.at_home_campaign;
 
     if(at_home_campaign==true){
@@ -134,9 +136,16 @@ exports.create = (req, res) => {
   }
   var total_reward_amount = 0;
   for(i=0;i<req.body.tasks.length;i++){
-    total_reward_amount = total_reward_amount + req.body.tasks[i].reward_amount
+    total_reward_amount = total_reward_amount + parseFloat(req.body.tasks[i].reward_amount)
   }
+
+  //Sets status to ongoing if current date lies between start & end date
+  var time_to_check = moment()
   
+  if(time_to_check>=Date.parse(req.body.start_date) && time_to_check <= Date.parse(req.body.end_date)){
+    campaign_status = "ONGOING";
+  }
+
   const campaign = {
       merchant_id: req.body.merchantid,
       start_date: req.body.start_date,
@@ -153,7 +162,7 @@ exports.create = (req, res) => {
       allowed_account_level: req.body.allowed_account_level,
       super_shoppers: req.body.super_shoppers,
       allow_everyone: req.body.allow_everyone,
-      status: "INACTIVE",
+      status: campaign_status,
       at_home_campaign: at_home_campaign,
       campaign_type: req.body.campaign_type,
       campaign_task_associations: req.body.tasks,
@@ -251,22 +260,43 @@ exports.findAll = (req, res) => {
 exports.findOne = (req, res) => {
   const campaign_id = req.params.campaign_id;
   const merchant_id = req.body.merchantid;
-  
-    Campaign.findByPk(campaign_id)
+  var condition = { 
+    where: 
+    {
+      merchant_id: merchant_id, 
+      campaign_id: campaign_id
+    } , 
+    include: [
+      {model:Branch, attributes:['branch_id'], through: {attributes: ['respondent_count']} },
+      {model:tasks, attributes:['task_id'], through: {attributes: ['reward_amount']}}
+
+    ],
+    attributes: { exclude: ['at_home_campaign','total_reward_amount','createdAt','updatedAt','merchant_id','campaign_id']}
+  };
+
+    Campaign.findOne(condition)
       .then(data => {
-        if(data.merchant_id==merchant_id){
-          res.send(data);
+        
+        new_result = data.get({plain:true});
+        for (i = 0; i < new_result.branches.length; i++){
+          new_result.branches[i].respondent_count = new_result.branches[i].campaign_branch_association.respondent_count;
+          delete new_result.branches[i].campaign_branch_association;
         }
-        else{
-          res.status(422).send({
-            message: "Error retrieving Campaign with id=" + campaign_id + ". Campaign does not belong to merchant."
-          });
+        for (i = 0; i < new_result.tasks.length; i++){
+          new_result.tasks[i].reward_amount = new_result.tasks[i].campaign_task_association.reward_amount;
+          delete new_result.tasks[i].campaign_task_association;
         }
+        new_result.start_date = new_result.start_date.toISOString().substring(0,10);
+        new_result.end_date = new_result.end_date.toISOString().substring(0,10);
+
+
+
+
+        res.send(new_result);
+
       })
       .catch(err => {
-        res.status(500).send({
-          message: "Error retrieving Campaign with id=" + campaign_id
-        });
+        res.status(500).send(err);
       });
   };
 
