@@ -53,6 +53,7 @@ Route::group(["middleware" => ["merchantAuth"]], function() {
         Route::get('/branch/edit/{id}', 'BranchController@edit_branch_get');
         Route::post('/branch/edit/{id}', 'BranchController@edit_branch_post');
         Route::get('/branch/delete/{id}', 'BranchController@delete_branch');
+
         Route::post('/branch/bulkdelete', 'BranchController@bulkDelete');
 
         //Ajax for Uploader
@@ -74,12 +75,12 @@ Route::group(["middleware" => ["merchantAuth"]], function() {
         Route::get('/create', 'CampaignController@create');
         Route::get('/edit/{id}', 'CampaignController@edit');
         Route::post('/edit/{id}', 'CampaignController@edit_campaign');
-        Route::post('/create ', 'CampaignController@create_campaign');
+        Route::post('/create', 'CampaignController@create_campaign');
         Route::get('/campaign_type/task ', 'CampaignController@campaign_type');
         Route::get('/delete/{id}', 'CampaignController@delete_campaign');
 
         Route::get('/duplicate/{id}', 'CampaignController@duplicate_campaign');
-        Route::get('/disable/{id}', 'CampaignController@disable_campaign');
+        Route::get('/status/{status}/{id}', 'CampaignController@status_campaign');
     });
 
     // TASK

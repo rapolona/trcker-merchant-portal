@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="rd-navbar-sidebar-active page-small-footer" lang="en">
+<html class="page-small-footer" lang="en">
   <head>
     <title>Hustle Portal</title>
     <meta charset="utf-8">

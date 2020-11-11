@@ -48,4 +48,22 @@ class CampaignRepository extends Repository
             $this->sessionExpired();
         }
     }
+
+    public function enableCampaign($campaignId)
+    {
+        try {
+            return $this->trackerApi('get', $this->api . 'enable/' . $campaignId, []);
+        } catch(\Exception $e) {
+            $this->sessionExpired();
+        }
+    }
+
+    public function disableCampaign($campaignId)
+    {
+        try {
+            return $this->trackerApi('get', $this->api .'disable/' . $campaignId, []);
+        } catch(\Exception $e) {
+            $this->sessionExpired();
+        }
+    }
 }

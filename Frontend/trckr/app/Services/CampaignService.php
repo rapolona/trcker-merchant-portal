@@ -33,4 +33,19 @@ class CampaignService
         return $this->repository->update($data);
     }
 
+    public function duplicate($campaign)
+    {
+        unset($campaign['campaign_id']);
+        $campaign['campaign_name'] = $campaign['campaign_name'] . " copy";
+        return $this->repository->create($campaign);
+    }
+
+    public function updateStatus($status, $campaignId)
+    {
+        if($status=="enable"){
+            return  $this->repository->enableCampaign($campaignId);
+        }
+        return $this->repository->disableCampaign($campaignId);
+    }
+
 }

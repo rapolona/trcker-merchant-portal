@@ -22,8 +22,7 @@
     <list default="true" id="332e4564-3d58-4e77-b6ff-3f4e7096ea2e" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/CampaignController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/CampaignController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Repositories/CampaignRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Repositories/CampaignRepository.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/concrete/campaign/campaign.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/concrete/campaign/campaign.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/concrete/campaign/create.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/concrete/campaign/create.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -216,7 +215,8 @@
       <workItem from="1604886515982" duration="6187000" />
       <workItem from="1604913705558" duration="20975000" />
       <workItem from="1604970331332" duration="6369000" />
-      <workItem from="1605001585575" duration="4675000" />
+      <workItem from="1605001585575" duration="10537000" />
+      <workItem from="1605100261590" duration="8830000" />
     </task>
     <servers />
   </component>
