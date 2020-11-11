@@ -74,7 +74,7 @@ Route::group(["middleware" => ["merchantAuth"]], function() {
         Route::get('/create', 'CampaignController@create');
         Route::get('/edit/{id}', 'CampaignController@edit');
         Route::post('/edit/{id}', 'CampaignController@edit_campaign');
-        Route::post('/create_campaign ', 'CampaignController@create_campaign');
+        Route::post('/create', 'CampaignController@create_campaign');
         Route::get('/campaign_type/task ', 'CampaignController@campaign_type');
         Route::get('/delete/{id}', 'CampaignController@delete_campaign');
 

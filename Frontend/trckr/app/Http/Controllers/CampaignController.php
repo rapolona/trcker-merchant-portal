@@ -177,7 +177,10 @@ class CampaignController extends Controller
 
     public function create_campaign(Request $request)
     {
+
         $data = $request->all();
+
+        print_r($data); exit();
 
         $validator = Validator::make($request->all(), [
             "task_actions" => "required",
