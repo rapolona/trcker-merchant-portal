@@ -14,6 +14,7 @@ const Op = db.Sequelize.Op;
 
 
 
+
 // Create and Save a new Campaign
 exports.create = (req, res) => {
     // Validate request
@@ -93,6 +94,7 @@ exports.create = (req, res) => {
       return;
     }
     const branches_container = []
+    var campaign_status = "INACTIVE";
     var at_home_campaign = req.body.at_home_campaign;
 
     if(at_home_campaign==true){
@@ -136,7 +138,14 @@ exports.create = (req, res) => {
   for(i=0;i<req.body.tasks.length;i++){
     total_reward_amount = total_reward_amount + parseFloat(req.body.tasks[i].reward_amount)
   }
+
+  //Sets status to ongoing if current date lies between start & end date
+  var time_to_check = moment()
   
+  if(time_to_check>=Date.parse(req.body.start_date) && time_to_check <= Date.parse(req.body.end_date)){
+    campaign_status = "ONGOING";
+  }
+
   const campaign = {
       merchant_id: req.body.merchantid,
       start_date: req.body.start_date,
@@ -153,7 +162,7 @@ exports.create = (req, res) => {
       allowed_account_level: req.body.allowed_account_level,
       super_shoppers: req.body.super_shoppers,
       allow_everyone: req.body.allow_everyone,
-      status: "INACTIVE",
+      status: campaign_status,
       at_home_campaign: at_home_campaign,
       campaign_type: req.body.campaign_type,
       campaign_task_associations: req.body.tasks,
