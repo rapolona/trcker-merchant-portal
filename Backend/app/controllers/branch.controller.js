@@ -85,7 +85,7 @@ exports.findAll = (req, res) => {
     condition.merchant_id = id;
   }
   console.log(condition)
-  Branch.findAll({ where: condition })
+  Branch.findAll({ where: condition , order: [["createdAt", "DESC"]]})
     .then(data => {
       res.send(data);
     })

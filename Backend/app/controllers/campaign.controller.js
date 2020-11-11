@@ -234,7 +234,7 @@ exports.findAll = (req, res) => {
       condition.merchant_id = id;
     }
   
-    Campaign.findAll({ where: condition , include: [Branch]})
+    Campaign.findAll({ where: condition , include: [Branch], order:[["createdAt", "DESC"]]})
       .then(data => {
         console.log(data)   
         res.json(data);

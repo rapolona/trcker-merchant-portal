@@ -155,7 +155,7 @@ exports.findAllforMerchant = (req, res) => {
   }
   
 
-  Task.findAll({attributes:{exclude:exclude_condition}, where: where_condition,order:[
+  Task.findAll({attributes:{exclude:exclude_condition}, where: where_condition,order:[['createdAt', 'DESC'],
      [{model: Task_Question},'index', 'ASC']], 
   include: include_condition
  })

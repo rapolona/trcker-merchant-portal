@@ -45,7 +45,7 @@ exports.findAll = (req, res) => {
     condition.merchant_id = id;
   }
 
-  Product.findAll({ where: condition })
+  Product.findAll({ where: condition , order: [["createdAt", "DESC"]]})
     .then(data => {
       res.send(data);
     })
