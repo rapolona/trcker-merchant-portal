@@ -68,12 +68,13 @@ Route::group(["middleware" => ["merchantAuth"]], function() {
 
     // CAMPAIGN
     Route::group(['prefix' => 'campaign'], function() {
+        Route::get('/merchant_branch', 'CampaignController@merchant_branch'); //ajax for get branch
         Route::get('/view', 'CampaignController@view');
         Route::get('/view/{id}', 'CampaignController@view_campaign');
         Route::get('/create', 'CampaignController@create');
         Route::get('/edit/{id}', 'CampaignController@edit');
         Route::post('/edit/{id}', 'CampaignController@edit_campaign');
-        Route::post('/create_campaign ', 'CampaignController@create_campaign');
+        Route::post('/create ', 'CampaignController@create_campaign');
         Route::get('/campaign_type/task ', 'CampaignController@campaign_type');
         Route::get('/delete/{id}', 'CampaignController@delete_campaign');
 
