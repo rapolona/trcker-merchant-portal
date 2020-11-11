@@ -1,6 +1,136 @@
 @extends('concrete.layouts.main')
 
 @section('content')
+    <div class="modal modal-3 fade modal-active" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <form class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">Select Branch</h3>
+                    <button class="close" data-dismiss="modal" aria-label="Close"><span>×</span></button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="panel">
+                            <div class="panel-header">
+                                <div class="row row-30">
+                                    <div class="col-lg-2">
+                                        @if(isset($filters->business_type))
+                                            <select class="form-control hustle-filter" name="business_type">
+                                                <option value="">Business Type</option>
+                                                @foreach ($filters->business_type as $option)
+                                                    @if(!empty($option))
+                                                        <option {{ (isset($selectedFilter['business_type']) && $selectedFilter['business_type']==$option)? 'selected="selected"' : '' }} value="{{ $option }}">{{ $option }}</option>
+                                                    @endif
+                                                @endforeach
+                                            </select>
+                                        @endif
+                                    </div>
+                                    <div class="col-lg-2">
+                                        @if(isset($filters->store_type))
+                                            <select class="form-control hustle-filter" name="store_type">
+                                                <option value="">Store Type</option>
+                                                @foreach ($filters->store_type as $option)
+                                                    @if(!empty($option))
+                                                        <option {{ (isset($selectedFilter['store_type']) && $selectedFilter['store_type']==$option)? 'selected="selected"' : '' }} value="{{ $option }}">{{ $option }}</option>
+                                                    @endif
+                                                @endforeach
+                                            </select>
+                                        @endif
+                                    </div>
+                                    <div class="col-lg-2">
+                                        @if(isset($filters->brand))
+                                            <select class="form-control hustle-filter" name="brand">
+                                                <option value="all">Brand</option>
+                                                @foreach ($filters->brand as $option)
+                                                    @if(!empty($option))
+                                                        <option {{ (isset($selectedFilter['brand']) && $selectedFilter['brand']==$option)? 'selected="selected"' : '' }} value="{{ $option }}">{{ $option }}</option>
+                                                    @endif
+                                                @endforeach
+                                            </select>
+                                        @endif
+                                    </div>
+                                    <div class="col-lg-2">
+                                        @if(isset($filters->province))
+                                            <select class="form-control hustle-filter" name="province">
+                                                <option value="">Province</option>
+                                                @foreach ($filters->province as $option)
+                                                    @if(!empty($option))
+                                                        <option {{ (isset($selectedFilter['province']) && $selectedFilter['province']==$option)? 'selected="selected"' : '' }} value="{{ $option }}">{{ $option }}</option>
+                                                    @endif
+                                                @endforeach
+                                            </select>
+                                        @endif
+                                    </div>
+                                    <div class="col-lg-2">
+                                        @if(isset($filters->city))
+                                            <select class="form-control hustle-filter" name="city">
+                                                <option value="">City</option>
+                                                @foreach ($filters->city as $option)
+                                                    @if(!empty($option))
+                                                        <option {{ (isset($selectedFilter['city']) && $selectedFilter['city']==$option)? 'selected="selected"' : '' }} value="{{ $option }}">{{ $option }}</option>
+                                                    @endif
+                                                @endforeach
+                                            </select>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-body p-0">
+                                <div class="table-responsive scroller scroller-horizontal py-3">
+                                    <table class="table table-striped table-hover data-table" data-table-searching="true" data-table-lengthChange="true" data-page-length="5">
+                                        <thead>
+                                        <tr>
+                                            <td style="width: 40px">
+                                                <div class="custom-control custom-checkbox custom-checkbox-success">
+                                                    <input class="custom-control-input" type="checkbox" id="selectAll"/>
+                                                    <label class="custom-control-label" for="selectAll"></label>
+                                                </div>
+                                            </td>
+                                            <th>Name</th>
+                                            <th>BusinessType</th>
+                                            <th>StoreType</th>
+                                            <th>Brand</th>
+                                            <th>Address</th>
+                                            <th>City</th>
+                                            <th>Region</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        @foreach ($branches as $branch)
+                                            <tr>
+                                                <td style="width: 40px">
+                                                    <div class="custom-control custom-checkbox custom-checkbox-success">
+                                                        <input class="custom-control-input" type="checkbox" name="branch_id" id="{{ $branch->branch_id }}" />
+                                                        <label class="custom-control-label" for="{{ $branch->branch_id }}"></label>
+                                                    </div>
+                                                </td>
+                                                <td>{{ $branch->name }}</td>
+                                                <td>{{ $branch->business_type }}</td>
+                                                <td>{{ $branch->store_type }}</td>
+                                                <td>{{ $branch->brand }}</td>
+                                                <td>{{ $branch->address }}</td>
+                                                <td>{{ $branch->city }}</td>
+                                                <td>{{ $branch->region }}</td>
+                                            </tr>
+                                        @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-start">
+                    <button class="btn btn-primary"  data-dismiss="modal" type="button" id="useBranch">Use Branch</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <section class="section-sm">
         <div class="container-fluid">
             <div class="panel panel-nav">
@@ -58,6 +188,7 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -66,68 +197,30 @@
 
     <section class="section-sm">
         <div class="container-fluid">
-            <div class="panel">
-                <div class="panel-header">
+            <div class="panel panel-nav">
+                <div class="panel-header d-flex flex-wrap align-items-center justify-content-between">
+                    <div class="panel-title">Branch Details</div>
+                </div>
+                <div class="panel-body">
                     <div class="row row-30">
-                        <div class="col-lg-2">
-                            <select class="form-control" name="filter-purchases">
-                                <option value="0">Filter by Business Type</option>
-                                <option value="1">1-49</option>
-                                <option value="2">50-499</option>
-                                <option value="1">500-999</option>
-                                <option value="2">1000+</option>
-                            </select>
+                        <div class="col-lg-4">
+                            <br />
                         </div>
-                        <div class="col-lg-2">
-                            <select class="form-control" name="filter-group">
-                                <option value="0">Filter by Store Type</option>
-                                <option value="1">Customers</option>
-                                <option value="2">Vendors</option>
-                                <option value="3">Distributors</option>
-                                <option value="4">Employees</option>
-                            </select>
+                        <div class="col-lg-4">
+                            <input class="form-control" type="number" name="firstName" placeholder="Default Max Submission">
                         </div>
-                        <div class="col-lg-2">
-                            <select class="form-control" name="filter-status">
-                                <option value="0">Filter by Brand</option>
-                                <option value="1">Active</option>
-                                <option value="2">Inactive</option>
-                                <option value="3">Suspended</option>
-                                <option value="4">Online</option>
-                                <option value="5">Offline</option>
-                            </select>
-                        </div>
-                        <div class="col-lg-2">
-                            <select class="form-control" name="filter-status">
-                                <option value="0">Filter by Region</option>
-                                <option value="1">Active</option>
-                                <option value="2">Inactive</option>
-                                <option value="3">Suspended</option>
-                                <option value="4">Online</option>
-                                <option value="5">Offline</option>
-                            </select>
-                        </div>
-                        <div class="col-lg-2 text-right">
-                            <input class="form-control" type="text" name="firstName" placeholder="Max Submission">
-                            <!-- <button class="btn btn-danger" type="button"><span class="fa-check"></span></button> -->
+                        <div class="col-lg-4">
+                            <button class="btn btn-primary btn-block" data-modal-trigger='{"target":".modal-active","animClass":"zoom-in"}'>Select Branch</button>
                         </div>
                     </div>
-                </div>
-                <div class="panel-body p-0">
-                    <div class="table-responsive">
-                        <table class="table table-vertical-align">
+                    <div class="row row-30">
+                        <div class="col-lg-12">
+                        <table class="table table-striped">
                             <thead>
                             <tr>
-                                <th class="text-center">
-                                    <div class="custom-control custom-checkbox">
-                                        <input class="custom-control-input" type="checkbox" id="nobycdhv">
-                                        <label class="custom-control-label" for="nobycdhv">
-                                        </label>
-                                    </div>
-                                </th>
-                                <th>Branch Name</th>
-                                <th>Business Type</th>
-                                <th>Store Type</th>
+                                <th>Name</th>
+                                <th>BusinessType</th>
+                                <th>StoreType</th>
                                 <th>Brand</th>
                                 <th>Address</th>
                                 <th>City</th>
@@ -137,95 +230,39 @@
                             </thead>
                             <tbody>
                             <tr>
-                                <td class="text-center">
-                                    <div class="custom-control custom-checkbox">
-                                        <input class="custom-control-input" type="checkbox" id="nobycdhv"/>
-                                        <label class="custom-control-label" for="nobycdhv">
-                                        </label>
-                                    </div>
-                                </td>
                                 <td>Branch 1</td>
-                                <td>FMCG</td>
-                                <td>mail@demolink.org</td>
-                                <td>01/11/2019</td>
-                                <td>222</td>
-                                <td>$3,600</td>
-                                <td>$3,600</td>
-                                <td class="text-right">
-                                    <input class="form-control" type="text" name="firstName" placeholder="Max Submission">
-                                </td>
+                                <td>BusinessType</td>
+                                <td>StoreType</td>
+                                <td>Brand</td>
+                                <td>Address</td>
+                                <td>City</td>
+                                <td>Region</td>
+                                <td><input class="form-control" type="number" name="firstName" placeholder=" Max Submission"></td>
                             </tr>
                             <tr>
-                                <td class="text-center">
-                                    <div class="custom-control custom-checkbox">
-                                        <input class="custom-control-input" type="checkbox" id="qgptiidp"/>
-                                        <label class="custom-control-label" for="qgptiidp">
-                                        </label>
-                                    </div>
-                                </td>
                                 <td>Branch 2</td>
-                                <td>FMCG</td>
-                                <td>mail@demolink.org</td>
-                                <td>01/11/2019</td>
-                                <td>222</td>
-                                <td>$3,600</td>
-                                <td>$3,600</td>
-                                <td class="text-right">
-                                    <input class="form-control" type="text" name="firstName" placeholder="Max Submission">
-                                </td>
+                                <td>BusinessType</td>
+                                <td>StoreType</td>
+                                <td>Brand</td>
+                                <td>Address</td>
+                                <td>City</td>
+                                <td>Region</td>
+                                <td><input class="form-control" type="number" name="firstName" placeholder=" Max Submission"></td>
                             </tr>
                             <tr>
-                                <td class="text-center">
-                                    <div class="custom-control custom-checkbox">
-                                        <input class="custom-control-input" type="checkbox" id="qnbhgpnk"/>
-                                        <label class="custom-control-label" for="qnbhgpnk">
-                                        </label>
-                                    </div>
-                                </td>
                                 <td>Branch 3</td>
-                                <td>FMCG</td>
-                                <td>mail@demolink.org</td>
-                                <td>01/11/2019</td>
-                                <td>222</td>
-                                <td>$3,600</td>
-                                <td>$3,600</td>
-                                <td class="text-right">
-                                    <input class="form-control" type="text" name="firstName" placeholder="Max Submission">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="text-center">
-                                    <div class="custom-control custom-checkbox">
-                                        <input class="custom-control-input" type="checkbox" id="kyeqgbsn"/>
-                                        <label class="custom-control-label" for="kyeqgbsn">
-                                        </label>
-                                    </div>
-                                </td>
-                                <td>Branch 4</td>
-                                <td>FMCG</td>
-                                <td>mail@demolink.org</td>
-                                <td>01/11/2019</td>
-                                <td>222</td>
-                                <td>$3,600</td>
-                                <td>$3,600</td>
-                                <td class="text-right">
-                                    <input class="form-control" type="text" name="firstName" placeholder="Max Submission">
-                                </td>
+                                <td>BusinessType</td>
+                                <td>StoreType</td>
+                                <td>Brand</td>
+                                <td>Address</td>
+                                <td>City</td>
+                                <td>Region</td>
+                                <td><input class="form-control" type="number" name="firstName" placeholder=" Max Submission"></td>
                             </tr>
                             </tbody>
                         </table>
+                        </div>
                     </div>
-                </div>
-                <div class="panel-footer">
-                    <nav aria-label="Page navigation example">
-                        <ul class="pagination justify-content-end">
-                            <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                        </ul>
-                    </nav>
                 </div>
             </div>
         </div>
@@ -309,22 +346,64 @@
 
 
 
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-            <div class="modal-header" style="display:auto;">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Modal title</h4>
+
+    <section class="section-sm">
+        <div class="container-fluid">
+            <div class="panel panel-nav">
+                <div class="panel-header d-flex flex-wrap align-items-center justify-content-between">
+                    <div class="panel-title">Task Details</div>
+                </div>
+                <div class="panel-body">
+                    <div class="row row-30">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <select class="form-control select2 task_type" name="task_type[]" style="width: 100%;">
+                                    <option value="">Select One</option>
+                                    @foreach ($task_type as $ct)
+                                        <option value="{{$ct->task_classification_id}}">{{$ct->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <select class="form-control select2 task_actions" multiple="multiple" name="task_actions[]" style="width: 100%;">
+                                    <option value="">Select One</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="input-group">
+                                <div class="input-group-prepend"><span class="input-group-text"><span class="fa-building"></span></span></div>
+                                <input class="form-control" type="text" name="reward" placeholder="Reward">
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <!-- <button class="btn btn-primary" type="submit">Add more</button> -->
+                            <button type="button" class="btn btn-danger btn-md pull-right remove_task" id="remove_task_0">Remove Task</button>
+                            <button type="button" class="btn btn-info btn-md pull-right" id="add_task">Add more</button>
+                        </div>
+                        <div class="col-sm-12 text-right">
+                            <button class="btn btn-light" type="submit">Save Branch</button>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="modal-body">
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
-    <p>Create New Campaign</p>
+        </div>
+    </section>
+    </form>
+
+
+
+
+
+
+
+
+
+
+
 
     <div class="row">
         <div class="col col-lg-12" >
@@ -358,7 +437,7 @@
                                         <select class="form-control select2" multiple="multiple" name="branches[]" style="width: 100%;">
                                             <option value="">Select One</option>
                                             @foreach ($branches as $b)
-                                            <option value="{{$b->branch_id}}">{{$b->name}}</option>
+                                                <option value="{{$b->branch_id}}">{{$b->name}}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -380,7 +459,7 @@
                                         <select class="form-control select2" name="campaign_type" id="campaign_type" style="width: 100%;">
                                             <option value="">Select One</option>
                                             @foreach ($campaign_type as $ct)
-                                            <option value="{{$ct->campaign_type_id}}">{{$ct->name}}</option>
+                                                <option value="{{$ct->campaign_type_id}}">{{$ct->name}}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -419,7 +498,7 @@
                                         <select class="form-control select2 task_type" name="task_type[]" style="width: 100%;">
                                             <option value="">Select One</option>
                                             @foreach ($task_type as $ct)
-                                            <option value="{{$ct->task_classification_id}}">{{$ct->name}}</option>
+                                                <option value="{{$ct->task_classification_id}}">{{$ct->name}}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -437,7 +516,7 @@
                             </div>
                             <div class="col col-lg-2">
                                 <div class="btn-group" role="group" aria-label="Basic example">
-                                    <button type="button" class="btn btn-danger btn-md pull-right remove_task" id="remove_task_0">Remove Task</button>
+
                                 </div>
                             </div>
                         </div>
@@ -569,7 +648,7 @@
                 @foreach ($task_type as $ct)
                     html += '<option value="{{$ct->task_classification_id}}">{{$ct->name}}</option>'
                 @endforeach
-                html += '</select>';
+                    html += '</select>';
                 html += '</div>';
                 html += '</div>';
                 html += '</div>';
