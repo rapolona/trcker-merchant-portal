@@ -1,7 +1,6 @@
 @extends('concrete.layouts.main')
 
 @section('content')
-@section('plugins.JqueryUI', true)
 <section>
     <div class="row no-gutters">
         <div class="col-md-4 col-lg-3 col-xxl-2 bg-100">
@@ -35,7 +34,7 @@
                 <div class="group-15 p-3 d-flex flex-wrap justify-content-lg-between">
                     <div class="btn-group">
                         <a href="{{ url('ticket/approve_ticket/'.$tickets->campaign_id . '/' . $tickets->task_ticket_id) }}" class="btn btn-success"><span class="fa-check"></span></a>
-                        <a href="{{ url('ticket/approve_ticket/'.$tickets->campaign_id . '/' . $tickets->task_ticket_id) }}" class="btn btn-danger"><span class="fa-remove"></span></a>
+                        <a href="{{ url('ticket/reject_ticket/'.$tickets->campaign_id . '/' . $tickets->task_ticket_id) }}" class="btn btn-danger"><span class="fa-remove"></span></a>
                         <!-- <button class="btn btn-primary"><span class="fa-eye"></span></button> -->
                     </div>
                 </div>
@@ -66,7 +65,7 @@
                                         {{ ($tix->response) ? $tix->response : ''}}
                                     @endif
                                 </td>
-                                <td class="text-success">{{ $tickets->approval_status }}</td>
+                                <td class="text-{{ config('concreteadmin')['ticket_status'][$tickets->approval_status ] }}">{{ $tickets->approval_status }}</td>
                             </tr>
                         @endforeach
                         </tbody>

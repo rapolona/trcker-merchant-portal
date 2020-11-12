@@ -3,14 +3,20 @@ namespace App\Services;
 
 use Illuminate\Log;
 use App\Repositories\CapabilityRepository;
+use App\Repositories\MerchantRepository;
 
 class CapabilityService
 {
     protected $repository;
 
-    public function __construct(CapabilityRepository $repository)
+    protected $merchantRepository;
+
+    public function __construct(
+        CapabilityRepository $repository,
+        MerchantRepository $merchantRepository)
     {
         $this->repository = $repository;
+        $this->merchantRepository = $merchantRepository;
     }
 
     public function createTaskTicket($data)
@@ -25,12 +31,12 @@ class CapabilityService
 
     public function approveTicket($data)
     {
-        return $this->repository->approveTicket($data);
+        return $this->merchantRepository->approveTicket($data);
     }
 
     public function rejectTicket($data)
     {
-        return $this->repository->rejectTicket($data);
+        return $this->merchantRepository->rejectTicket($data);
     }
 
     public function getTicketsByCampaignId($data)

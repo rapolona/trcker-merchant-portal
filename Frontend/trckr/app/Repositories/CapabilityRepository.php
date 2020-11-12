@@ -32,24 +32,6 @@ class CapabilityRepository extends Repository
         }
     }
 
-    public function approveTicket($data)
-    {
-        try {
-            return $this->trackerApi('put', $this->api . 'merchant/approve', $data);
-        } catch(\Exception $e) {
-            $this->sessionExpired();
-        }
-    }
-
-    public function rejectTicket($data)
-    {
-        try {
-            return $this->trackerApi('put', $this->api . 'merchant/reject', $data);
-        } catch(\Exception $e) {
-            $this->sessionExpired();
-        }
-    }
-
     public function getTicketsByCampaignId($data)
     {
         try {

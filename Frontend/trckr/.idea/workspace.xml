@@ -21,7 +21,14 @@
   <component name="ChangeListManager">
     <list default="true" id="332e4564-3d58-4e77-b6ff-3f4e7096ea2e" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/concrete/merchant/branches.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/concrete/merchant/branches.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Middleware/Merchant.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Middleware/Merchant.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Repositories/CapabilityRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Repositories/CapabilityRepository.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Repositories/MerchantRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Repositories/MerchantRepository.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Services/CapabilityService.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Services/CapabilityService.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/concreteadmin.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/concreteadmin.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/concrete/layouts/header.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/concrete/layouts/header.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/concrete/ticket/ticket.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/concrete/ticket/ticket.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/concrete/ticket/view.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/concrete/ticket/view.blade.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -272,6 +279,11 @@
           <url>file://$PROJECT_DIR$/app/Http/Controllers/ProductController.php</url>
           <line>3</line>
           <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/app/Services/CapabilityService.php</url>
+          <line>3</line>
+          <option name="timeStamp" value="2" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

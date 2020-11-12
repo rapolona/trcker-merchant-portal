@@ -18,10 +18,10 @@ class Merchant
     public function handle($request, Closure $next)
     {
         $session = $request->session()->get('session_merchant');
-
         if( ! empty($session->token)){
             $admin = $session->adminDetails;
             $admin->token = $session->token;
+            $admin->merchant = $session->merchant;
             Config::set('gbl_profile', $admin);
             return $next($request);
         }

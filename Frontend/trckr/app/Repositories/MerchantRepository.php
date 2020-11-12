@@ -60,17 +60,35 @@ class MerchantRepository extends Repository
 
     public function forgotPassword($data)
     {
-       // try {
+        try {
             return $this->trackerApi('post', $this->api . 'forgotpassword', $data,false);
-       // } catch(\Exception $e) {
-        //    $this->sessionExpired();
-       // }
+        } catch(\Exception $e) {
+            $this->sessionExpired();
+        }
     }
 
     public function changePassword($data)
     {
         try {
             return $this->trackerApi('post', $this->api . 'changepassword', $data);
+        } catch(\Exception $e) {
+            $this->sessionExpired();
+        }
+    }
+
+    public function approveTicket($data)
+    {
+        try {
+            return $this->trackerApi('put', $this->api . 'approve', $data);
+        } catch(\Exception $e) {
+            $this->sessionExpired();
+        }
+    }
+
+    public function rejectTicket($data)
+    {
+        try {
+            return $this->trackerApi('put', $this->api . 'reject', $data);
         } catch(\Exception $e) {
             $this->sessionExpired();
         }

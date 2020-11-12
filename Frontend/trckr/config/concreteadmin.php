@@ -52,6 +52,13 @@ return [
         'COMPLETED' => 'success',
         'PENDING' => 'dark',
     ],
+
+    'ticket_status' =>[
+        'Pending' => 'primary',
+        'PENDING' => 'primary',
+        'REJECTED' => 'danger',
+        'APPROVED' => 'success',
+    ],
     /*
     |--------------------------------------------------------------------------
     | MENU / BREADCRUMBS

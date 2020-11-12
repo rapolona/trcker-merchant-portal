@@ -41,7 +41,7 @@
                                     <td>{{ $t->device_id}}</td>
                                     <td>{{ $t->campaign_name }}</td>
                                     <td>{{ $t->createdAt }}</td>
-                                    <td class="text-warning">{{ $t->approval_status }}</td>
+                                    <td class="text-{{ config('concreteadmin')['ticket_status'][$t->approval_status ] }}">{{ $t->approval_status }}</td>
                                     <td>
                                         <div class="btn-group">
                                             <a href="{{ url('ticket/view/' . $t->campaign_id . "/" . $t->task_ticket_id ) }}"><button class="btn btn-light" type="button"><span class="fa-eye"></span></button></a>
