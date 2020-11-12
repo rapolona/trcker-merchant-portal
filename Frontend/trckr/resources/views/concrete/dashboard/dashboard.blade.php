@@ -29,15 +29,14 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-12">
+        <!-- <div class="col-md-12">
             <div class="panel admin-panel admin-panel panel-nav p-0" data-admin-panel='{"panelMenuClass":"px-3"}'>
                 <div class="panel-header d-flex align-items-center justify-content-between pr-3">
                     <ul class="nav nav-tabs scroller scroller-horizontal" role="tablist">
                         <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#dashboardGraph1" role="tab" aria-controls="dashboardGraph1" aria-selected="true">User activity</a></li>
                         <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#dashboardGraph2" role="tab" aria-controls="dashboardGraph2" aria-selected="false">Popular items</a></li>
                     </ul>
-                    <div class="admin-panel-buttons py-2 px-3">
-                        <!-- <button class="admin-panel-button fa" title="color" data-panel="color"></button> -->
+                    <div class="admin-panel-buttons py-2 px-3">     
                         <button class="admin-panel-button fa" title="collapse" data-panel="collapse"></button>
                         <button class="admin-panel-button fa" title="fullscreen" data-panel="fullscreen"></button>
                         <button class="admin-panel-button fa" title="remove" data-panel="remove"></button>
@@ -98,7 +97,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
         <div class="col-md-6">
             <div class="panel admin-panel">
                 <div class="panel-header d-flex align-items-center">

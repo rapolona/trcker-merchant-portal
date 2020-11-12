@@ -12,7 +12,6 @@
                 <div class="panel-body">
                     <div class="row row-30">
                         <div class="col-md-6">
-                            
                             <div class="input-group form-group">
                                 <div class="input-group-prepend"><span class="input-group-text"><span class="fa-institution"></span></span></div>
                                 <input class="form-control  {{ $errors->first('campaign_name')? 'form-control-danger' : '' }}" type="text" value="{{ old('campaign_name') }}" name="campaign_name" placeholder="Campaign Name">
@@ -24,7 +23,7 @@
                             @endif
                             <div class="input-group form-group">
                                 <div class="input-group-prepend"><span class="input-group-text"><span class="fa-black-tie"></span></span></div>
-                                <input class="form-control  {{ $errors->first('budget')? 'form-control-danger' : '' }}" type="text" value="{{ old('budget') }} "name="budget" placeholder="Budget">
+                                <input class="form-control  {{ $errors->first('budget')? 'form-control-danger' : '' }}" type="text" value="{{ old('budget') }}" name="budget" placeholder="Budget">
                             </div>
                             @if($errors->first('budget'))
                                 <div class="tag-manager-container">
@@ -87,12 +86,29 @@
                                     <span class="tm-tag badge badge-danger" ><span>{{ $errors->first('thumbnail_url') }}</span></span>
                                 </div>
                             @endif
+
+                            <div class="form-group col-md-12" style="border:1px solid #ddd; border-radius: 0.25rem; padding: 10px;">
+                              <p>Campaign Thumbnail</p>
+                              <div class="tower-file mt-3">
+                                <input class="tower-file-input" id="demo1" type="file">
+                                <label class="btn btn-xs btn-success" for="demo1"><span>Upload</span></label>
+                              </div>
+                            </div>
+
+                            <div class="input-group form-group">
+                              <div class="custom-control custom-switch custom-switch-success">
+                                <input class="custom-control-input" type="checkbox" id="customSwitch3">
+                                <label class="custom-control-label" for="customSwitch3">Do-It-At-Home
+                                </label>
+                              </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
+
     <section class="section-sm">
         <div class="container-fluid">
             <div class="panel">
@@ -256,6 +272,7 @@
             <div class="panel panel-nav">
                 <div class="panel-header d-flex flex-wrap align-items-center justify-content-between">
                     <div class="panel-title">Task Details</div>
+                    <button class="btn btn-sm" type="button" id="add_task"><span class="fa-plus">Add more task</span></button>
                 </div>
                 <div class="panel-body">
                     @if ( ! empty (old('task_type'))) 
@@ -352,39 +369,37 @@
                         </div>
                         <div class="col col-md-2">
                             <div class="btn-group" role="group" aria-label="Basic example">
-                                <button type="button" class="btn btn-danger btn-md pull-right remove_task" id="remove_task_0">Remove Task</button>
+                                <button type="button" class="btn btn-md btn-danger remove_task" id="remove_task_0"><span class="fa-remove"></span></button>
                             </div>
                         </div>
                     </div>
                     @endif
-                    <div class="btn-group" role="group" aria-label="Basic example">
-                        <button type="button" class="btn btn-primary btn-md pull-right" id="add_task">Add New Task</button>
+
+                    <div class="col-sm-12 text-right">
+                        <button class="btn btn-primary" type="submit" id="submit">Save Campaign</button>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="section-sm">
+    <!-- <section class="section-sm">
         <div class="container-fluid">
             <div class="panel">
                 <div class="panel-body">
                     <div class="row">
                         <div class="btn-group float-lg-right" role="group" aria-label="Basic example">
-                            <!--<button type="submit" class="btn btn-block btn-primary btn-lg pull-right" id="submit">Edit Details</button> -->
                             <button class="btn btn-primary btn-md" type="submit" value="Submit" id="submit">
                                 <span class="spinner-border spinner-border-sm" role="status" id="loader_submit" aria-hidden="true" disabled> </span>
-                                Create Campaign
+                                Save Campaign
                             </button>
                             <button type="button" class="btn btn-danger btn-md pull-right" id="back">Back</button>
                         </div>
                     </div>
                 </div>
             </div>
-
-        
         </div>
-    </section>
+    </section> -->
 </form>
 @stop
 
@@ -401,10 +416,8 @@
             minDate: 0,
             onSelect: function(date) {
                 var selectedDate = new Date(date);
-                //var msecsInADay = 86400000;
                 var endDate = new Date(selectedDate.getTime());
                 $("#input_end_date").datepicker( "option", "minDate", endDate );
-                //$("#input_end_date").datepicker( "option", "maxDate", '+y' );
             }
         });
         $('#input_end_date').datepicker({
@@ -412,10 +425,8 @@
             dateFormat: 'yy-mm-dd',
             onSelect: function(date) {
                 var selectedDate = new Date(date);
-                //var msecsInADay = 86400000;
                 var startDate = new Date(selectedDate.getTime());
                 $("#input_start_date").datepicker( "option", "maxDate", startDate );
-                //$("#input_start_date").datepicker( "option", "minDate", '-y' );
             }
         });
 
@@ -427,9 +438,6 @@
             }).get();
 
             $(document).ready(function() {
-                //var table = $(".table").DataTable();
-                //table.destroy();
-                //$('.table tbody').empty();
 
                 $('.table').DataTable( {
                     "destroy": true,
@@ -455,34 +463,6 @@
                     alert( data[0] +"'s salary is: "+ data[ 5 ] );
                 } );
             } );
-            /*
-            $.ajax({
-                type:'GET',
-                url: "{{url('/campaign/merchant_branch')}}?" + $.param(formFilters),
-                cache:false,
-                contentType: false,
-                processData: false,
-                success: (data) => {
-                    var table = $(".table").DataTable(
-
-                    );
-                    table.destroy();
-                    $('.table').empty();
-                    $(data.branches).each(function(){
-                        var row = [this.name, this.business_type, this.store_type, this.brand, this.address, this.city, this.region];                        
-                        console.log(row);                        
-                        branches.push( row );
-                    });
-                    table = $('.table').DataTable( {
-                        columns: [{data:"name"}, {data:"business_type"}, {data:"store_type"}, {data:"brand"}, {data:"address"}, {data:"city"}, {data:"region"}],
-                        data:    branches
-                    } );
-                },
-                error: function(data){
-                    console.log(data);
-                }
-            });
-            */
         });
 
         $(document).on("click", ".remove_task" , function() {
@@ -616,8 +596,6 @@
                 $(this).remove();
             }
         });
-
-
 
     </script>
 @stop
