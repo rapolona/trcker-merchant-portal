@@ -1,7 +1,7 @@
 @extends('concrete.layouts.main')
 
 @section('breadcrumbs_pull_right')
-    <button class="btn btn-light" type="button"><span class="fa-cloud-download"></span><span class="pl-2">Download Report</span></button>
+    <a class="btn btn-light" href="{{ url('/ticket/export_csv') }}"><span class="fa-cloud-download"></span><span class="pl-2">Download Report</span></a>
 @endsection
 
 @section('content')

@@ -192,6 +192,23 @@ class TicketController extends Controller
 
         //creating the csv data
         $csv_data = array();
+        $csv_data[0] = [
+            'Ticket ID',
+            'Full Name',
+            'Account Level',
+            'Email',
+            'Device ID',
+            'Approval Status',
+            'Campaign ID',
+            'Campaign Name',
+            'Ticket Submitted',
+            'Mobile Number',
+            'Location',
+            'Ticket Status',
+            'Branch',
+            'Question',
+            'Answer'
+        ];
         foreach ($tickets as $k)
         {
             $k->createdAt = new DateTime($k->createdAt);
@@ -247,7 +264,7 @@ class TicketController extends Controller
         ob_start();
         $df = fopen("php://output", 'w');
 
-        fputcsv($df, array_keys(reset($array), ";"));
+       // fputcsv($df, array_keys(reset($array), ";"));
 
         foreach ($array as $row) fputcsv($df, $row, ";");
 
