@@ -181,7 +181,7 @@
             });
 
             $(document).on("click", "a.deleteBranch", function() {
-                if (confirm('Are you sure to delete this record ?')) {
+                if (confirm('Are you sure you want to delete this item ?')) {
                     window.location.href = $(this).attr('target-href');
                 }
             });
@@ -207,7 +207,7 @@
 
                 $('#delete_ids').val(JSON.stringify(products));
 
-                if (confirm('Are you sure to delete this records ?')) {
+                if (confirm('Are you sure you want to delete these items ?')) {
                     $("#deleteForm").submit();
                 }
             });
