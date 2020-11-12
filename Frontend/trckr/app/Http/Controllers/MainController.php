@@ -32,6 +32,10 @@ class MainController extends Controller
 
         $data['totalrespondents'] = $totalrespondents;
 
+        $data['total_respondents_count'] = array_sum(array_map(function($item) {
+            return $item->respondents;
+        }, $data['totalrespondents']));
+
         return view('concrete.dashboard.dashboard', $data);
     }
 }
