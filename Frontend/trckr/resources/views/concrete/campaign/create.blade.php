@@ -3,7 +3,7 @@
 @section('content')
 <form method="post" name="create_campaign" id="create_campaign">
     <input type="hidden" name="_token" value="{{ csrf_token() }}">
-    <section class="section-sm">
+    <section class="section-sm campaign-section">
         <div class="container-fluid">
             <div class="panel panel-nav">
                 <div class="panel-header d-flex flex-wrap align-items-center justify-content-between">
@@ -109,7 +109,7 @@
         </div>
     </section>
 
-    <section class="section-sm">
+    <section class="section-sm campaign-section">
         <div class="container-fluid">
             <div class="panel">
                 <div class="panel-header d-flex flex-wrap align-items-center justify-content-between">
@@ -267,7 +267,7 @@
         </div>
     </section>
 
-    <section class="section-sm">
+    <section class="section-sm campaign-section">
         <div class="container-fluid">
             <div class="panel panel-nav">
                 <div class="panel-header d-flex flex-wrap align-items-center justify-content-between">
@@ -329,7 +329,7 @@
                                 </div>
                                 <div class="col col-md-2">
                                     <div class="btn-group" role="group" aria-label="Basic example">
-                                        <button type="button" class="btn btn-danger btn-md pull-right remove_task" id="remove_task_0">Remove Task </button>
+                                        <button type="button" class="btn btn-md btn-danger remove_task" id="remove_task_0"><span class="fa-remove"></span></button>
                                     </div>
                                 </div>
                             </div>
@@ -375,31 +375,16 @@
                     </div>
                     @endif
 
-                    <div class="col-sm-12 text-right">
-                        <button class="btn btn-primary" type="submit" id="submit">Save Campaign</button>
-                    </div>
+                </div>
+
+                <div class="panel-footer">
+                  <div class="group-5">
+                     <button class="btn btn-success" type="submit" id="submit">Save Campaign</button>
+                  </div>
                 </div>
             </div>
         </div>
     </section>
-
-    <!-- <section class="section-sm">
-        <div class="container-fluid">
-            <div class="panel">
-                <div class="panel-body">
-                    <div class="row">
-                        <div class="btn-group float-lg-right" role="group" aria-label="Basic example">
-                            <button class="btn btn-primary btn-md" type="submit" value="Submit" id="submit">
-                                <span class="spinner-border spinner-border-sm" role="status" id="loader_submit" aria-hidden="true" disabled> </span>
-                                Save Campaign
-                            </button>
-                            <button type="button" class="btn btn-danger btn-md pull-right" id="back">Back</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section> -->
 </form>
 @stop
 
@@ -571,7 +556,7 @@
                 html += '</div>';
                 html += '<div class="col col-md-2">';
                 html += '<div class="btn-group" role="group" aria-label="Basic example">';
-                html += '<button type="button" class="btn btn-danger btn-md pull-right remove_task" id="remove_task_0">Remove Task</button>';
+                html += '<button type="button" class="btn btn-md btn-danger remove_task" id="remove_task_0"><span class="fa-remove"></span></button>';
                 html += '</div>';
                 html += '</div>';
                 html += '</div>';
