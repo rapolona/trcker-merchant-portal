@@ -12,9 +12,11 @@
     <div class="panel">
         <div class="panel-header">
             <div class="row">
-                <div class="col-sm-12">
-                    <div class="panel-title"><span class="panel-icon fa-tasks"></span> <span>Campaigns</span>
-                    </div>
+                <div class="col-sm-7">
+                    <div class="panel-title"><span class="panel-icon fa-tasks"></span> <span>Campaigns</span></div>
+                </div>
+                <div class="col-sm-5">
+                    <button class="btn btn-danger btn-sm pull-right"><span class="fa-ban"></span><span class="pl-2">Disable Campaigns</span></button>
                 </div>
             </div>
         </div>
@@ -23,7 +25,7 @@
                 <table class="table table-striped table-hover data-table" data-table-searching="true" data-table-lengthChange="true" data-page-length="5">
                     <thead>
                     <tr>
-                        <td style="width: 40px">
+                        <td style="width: 40px" data-orderable="false" data-targets="0" >
                             <div class="custom-control custom-checkbox custom-checkbox-success">
                                 <input class="custom-control-input" type="checkbox" id="selectAll"/>
                                 <label class="custom-control-label" for="selectAll"></label>
@@ -36,7 +38,7 @@
                         <th>Start date</th>
                         <th>End date</th>
                         <th>Status</th>
-                        <th></th>
+                        <th data-orderable="false" ></th>
                     </tr>
                     </thead>
                     <tbody>

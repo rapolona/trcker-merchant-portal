@@ -1,5 +1,11 @@
 @extends('concrete.layouts.main')
 
+@section('breadcrumbs_pull_right')
+    <div class="group-10">
+        <a class="btn btn-light" href="{{ url('/merchant/branch/add') }}"><span class="fa-plus"></span><span class="pl-2">Add New Branch</span></a>
+    </div>
+@endsection
+
 @section('content')
     <div class="panel">
         <div class="panel-header">
@@ -76,33 +82,25 @@
                     @endif
                 </div>
                 <div class="col-lg-2 text-right">
-                    <div class="dropdown">
-                        <button class="btn dropdown-toggle btn-light btn-sm" data-toggle="dropdown"><span>Branch Action</span>
+                    <div class="btn-group" role="group" aria-label="Basic example">
+                    <form method="POST" enctype="multipart/form-data" id="file_upload" action="{{ url('merchant/branch/upload') }}" >
+                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                        <input type="file" name="file" id="file" style="display:none">
+                        <button class="btn btn-primary btn-sm" type="button" value="Upload CSV" id="upload_csv">
+                            <span class="fa-upload"></span>
+                            <span class="spinner-border spinner-border-sm" role="status" id="loader_upload_csv" aria-hidden="true" disabled> </span>
+                            CSV
                         </button>
-                        <div class="dropdown-menu">
-                            <form method="POST" enctype="multipart/form-data" id="file_upload" action="{{ url('merchant/branch/upload') }}" >
-                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                <input type="file" name="file" id="file" style="display:none">
-                                <button class="btn btn-primary btn-sm dropdown-item" type="button" value="Upload CSV" id="upload_csv">
-                                    <span class="fa-upload"></span>
-                                    <span class="spinner-border spinner-border-sm" role="status" id="loader_upload_csv" aria-hidden="true" disabled> </span>
-                                    Upload CSV
-                                </button>
-                            </form>
-                            <a href="{{url('/merchant/branch/add')}}" type="button" class="dropdown-item btn btn-success btn-sm pull-right" id="add">
-                                <span class="fa-plus"></span>
-                                Add
-                            </a>
-                            <form method="POST" id="deleteForm" action="{{ url('merchant/branch/bulkdelete')  }}" >
-                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                <input type="hidden" name="delete_ids" id="delete_ids"  value="">
-                                <button class="dropdown-item btn btn-danger btn-sm" type="button" id="delete">
-                                    <span class="mdi-delete-variant"></span>
-                                    <span class="spinner-border spinner-border-sm" role="status" id="loader_upload_csv" aria-hidden="true" disabled> </span>
-                                    Bulk Delete
-                                </button>
-                            </form>
-                        </div>
+                    </form>
+                    <form method="POST" id="deleteForm" action="{{ url('merchant/branch/bulkdelete')  }}" >
+                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                        <input type="hidden" name="delete_ids" id="delete_ids"  value="">
+                        <button class="btn btn-danger btn-sm" type="button" id="delete">
+                            <span class="mdi-delete-variant"></span>
+                            <span class="spinner-border spinner-border-sm" role="status" id="loader_upload_csv" aria-hidden="true" disabled> </span>
+                            Delete
+                        </button>
+                    </form>
                     </div>
                 </div>
             </div>

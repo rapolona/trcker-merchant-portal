@@ -21,8 +21,7 @@
   <component name="ChangeListManager">
     <list default="true" id="332e4564-3d58-4e77-b6ff-3f4e7096ea2e" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/components/base/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/components/base/style.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/concrete/campaign/campaign.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/concrete/campaign/campaign.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/concrete/ticket/ticket.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/concrete/ticket/ticket.blade.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
