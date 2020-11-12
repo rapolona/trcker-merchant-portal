@@ -1,5 +1,11 @@
 @extends('concrete.layouts.main')
 
+@section('breadcrumbs_pull_right')
+    <div class="group-10">
+        <a class="btn btn-light" href="{{ url('/merchant/branch/add') }}"><span class="fa-plus"></span><span class="pl-2">Add New Branch</span></a>
+    </div>
+@endsection
+
 @section('content')
     <div class="panel">
         <div class="panel-header">
@@ -89,10 +95,6 @@
                                     Upload CSV
                                 </button>
                             </form>
-                            <a href="{{url('/merchant/branch/add')}}" type="button" class="dropdown-item btn btn-success btn-sm pull-right" id="add">
-                                <span class="fa-plus"></span>
-                                Add
-                            </a>
                             <form method="POST" id="deleteForm" action="{{ url('merchant/branch/bulkdelete')  }}" >
                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                 <input type="hidden" name="delete_ids" id="delete_ids"  value="">
