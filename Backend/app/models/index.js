@@ -49,6 +49,7 @@ db.task_details = require("./task_detail.model.js")(sequelize, Sequelize);
 
 db.admins.hasOne(db.admindetails, { foreignKey: "admin_id", as:"adminDetails"});
 db.admins.hasOne(db.adminsessions, {foreignKey: "admin_id", as:"adminSessions"});
+db.admins.belongsTo(db.merchants, {foreignKey: "merchant_id", as:"merchant"});
 db.merchants.hasMany(db.admins, {foreignKey: "merchant_id", as:"merchantAdmins"})
 db.admins.hasMany(db.adminpasswordtokens, {foreignKey: "admin_id", as:"passwordTokens"})
 db.users.hasOne(db.userdetails, { foreignKey: "user_id", as:"userDetails"});

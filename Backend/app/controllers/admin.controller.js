@@ -5,6 +5,7 @@ const Admin = db.admins;
 const AdminSession = db.adminsessions
 const AdminDetail = db.admindetails
 const AdminPasswordToken = db.adminpasswordtokens
+const Merchant = db.merchants;
 const mailer = require("../utils/email.utils.js");
 const crypto = require("crypto");
 const Op = db.sequelize.Op;
@@ -48,7 +49,7 @@ exports.findAdminByCredential = (req,res) => {
                         username : req.body.username,
                         password : passwordObject.hash
                     }
-                    Admin.findOne({where: attempt,include: [{model:AdminDetail, as:"adminDetails"}], attributes:{exclude: ['password', 'password_salt']}})
+                    Admin.findOne({where: attempt,include: [{model:AdminDetail, as:"adminDetails"}, {model:Merchant, as:"merchant"}], attributes:{exclude: ['password', 'password_salt']}})
                     .then(data => {
                         if(data){
                             var sqlData = data.get({plain:true})
