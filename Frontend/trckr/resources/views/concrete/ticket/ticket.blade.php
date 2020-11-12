@@ -22,7 +22,12 @@
                 <table class="table table-striped table-hover data-table" data-table-searching="true" data-table-lengthChange="true" data-page-length="5" >
                     <thead>
                     <tr>
-                        <th class="no-sort"></th>
+                        <th class="no-sort">
+                            <div class="custom-control custom-checkbox custom-checkbox-success">
+                                <input class="custom-control-input" type="checkbox" id="selectAll">
+                                <label class="custom-control-label" for="selectAll"></label>
+                            </div>
+                        </th>
                         <th>Name</th>
                         <th>Email</th>
                         <th>Mobile</th>
@@ -36,11 +41,10 @@
                     <tbody>
                     @foreach ($tickets as $t)
                         <tr>
-                            <input class="view_id" type="hidden" name="row_task_ticket_id[]" value="{{ $t->task_ticket_id }}"/>
                             <td>
-                                <div class="custom-control custom-checkbox custom-checkbox-light">
-                                    <input class="custom-control-input" type="checkbox" id="lightCheck">
-                                    <label class="custom-control-label" for="lightCheck"></label>
+                                <div class="custom-control custom-checkbox custom-checkbox-success">
+                                    <input class="custom-control-input" type="checkbox" id="{{ $t->task_ticket_id }} value="{{ $t->task_ticket_id }}">
+                                    <label class="custom-control-label" for="{{ $t->task_ticket_id }}"></label>
                                 </div>
                             </td>
                             <td>{{ $t->user_detail->first_name . " " . $t->user_detail->last_name }}</td>
@@ -68,6 +72,13 @@
     <script type="text/javascript" src="{{url('/vendor/trckr/trckr.js')}}"></script>
     <script type="text/javascript">
         $(document).ready(function (e) {
+
+            $('#selectAll').click(function(e){
+                let table= $(e.target).closest('table');
+                $('td input:checkbox',table).prop('checked',this.checked);
+            });
+
+
             $("#export").click(function(){
                 window.location.href = "{{url('/ticket/export_csv')}}";
             });

@@ -174,7 +174,7 @@
         $(document).ready(function (e) {
 
             $('#selectAll').click(function(e){
-                var table= $(e.target).closest('table');
+                let table= $(e.target).closest('table');
                 $('td input:checkbox',table).prop('checked',this.checked);
             });
 

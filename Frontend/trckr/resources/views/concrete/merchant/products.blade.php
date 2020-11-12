@@ -45,8 +45,8 @@
                     <tr>
                         <td style="width: 40px">
                             <div class="custom-control custom-checkbox custom-checkbox-success">
-                                <input class="custom-control-input" type="checkbox" id="chkAll"/>
-                                <label class="custom-control-label" for="chkAll"></label>
+                                <input class="custom-control-input" type="checkbox" id="selectAll"/>
+                                <label class="custom-control-label" for="selectAll"></label>
                             </div>
                         </td>
                         <th>Brand</th>
@@ -59,7 +59,7 @@
                         <tr>
                             <td style="width: 40px">
                                 <div class="custom-control custom-checkbox custom-checkbox-success">
-                                    <input class="custom-control-input" type="checkbox" name="product_id" id="{{ $product->product_id }}" />
+                                    <input class="custom-control-input" type="checkbox" name="product_id[]" id="{{ $product->product_id }}" />
                                     <label class="custom-control-label" for="{{ $product->product_id }}"></label>
                                 </div>
                             </td>
@@ -85,6 +85,11 @@
     <script type="text/javascript">
 
         $(document).ready(function (e) {
+
+            $('#selectAll').click(function(e){
+                let table= $(e.target).closest('table');
+                $('td input:checkbox',table).prop('checked',this.checked);
+            });
 
             $(document).on("click", "a.deleteProduct", function() {
                 if (confirm('Are you sure to delete this record ?')) {

@@ -42,7 +42,7 @@ class TicketController extends Controller
             $data = ['campaign_id' => $k->campaign_id];
             $response = $this->capabilityService->getTicket($data);
             foreach ($response as $j) {
-                $j->campaign_name = 'KKK';//($k->campaign_name) ? $k->campaign_name : 'NO Campaign Name';
+                $j->campaign_name = ($k->campaign_name) ? $k->campaign_name : 'NO Campaign Name';
                 $j->updatedAt = new DateTime($j->updatedAt);
                 $j->updatedAt = $j->updatedAt->format("F d, Y");
                 $j->createdAt = new DateTime($j->createdAt);
