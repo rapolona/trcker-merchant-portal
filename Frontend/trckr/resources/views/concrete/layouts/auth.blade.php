@@ -17,15 +17,13 @@
     <script src="{{ asset('components/base/script.js') }}"></script>
   </head>
   <body>
-<div class="page page-gradient-bg">
-    <div id="particles-container"></div>
-    <section class="section-lg section-one-screen">
-        <div class="container">
+    <div class="limiter">
+        <div class="container-login100">
+            <div class="wrap-login100">
             <div class="row justify-content-center">
                 @yield('content')
             </div>
         </div>
-    </section>
-</div>
-</body>
+    </div>
+  </body>
 </html>
