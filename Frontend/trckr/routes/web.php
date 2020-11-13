@@ -81,6 +81,7 @@ Route::group(["middleware" => ["merchantAuth"]], function() {
 
         Route::get('/duplicate/{id}', 'CampaignController@duplicate_campaign');
         Route::get('/status/{status}/{id}', 'CampaignController@status_campaign');
+        Route::post('/bulk-action', 'CampaignController@bulk_action');
     });
 
     // TASK
@@ -92,6 +93,7 @@ Route::group(["middleware" => ["merchantAuth"]], function() {
         Route::post('/delete/{id}', 'TaskController@delete_task');
         Route::get('/edit/{id}', 'TaskController@edit_task_get');
         Route::post('/edit/{id}', 'TaskController@edit_task_post');
+        Route::post('/bulk-action', 'TaskController@bulk_action');
     });
 
     /*

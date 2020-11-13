@@ -52,7 +52,7 @@ class CampaignRepository extends Repository
     public function enableCampaign($campaignId)
     {
         try {
-            return $this->trackerApi('get', $this->api . 'enable/' . $campaignId, []);
+            return $this->trackerApi('put', $this->api . 'enable/' . $campaignId, []);
         } catch(\Exception $e) {
             $this->sessionExpired();
         }
@@ -61,7 +61,7 @@ class CampaignRepository extends Repository
     public function disableCampaign($campaignId)
     {
         try {
-            return $this->trackerApi('get', $this->api .'disable/' . $campaignId, []);
+            return $this->trackerApi('put', $this->api .'disable/' . $campaignId, []);
         } catch(\Exception $e) {
             $this->sessionExpired();
         }

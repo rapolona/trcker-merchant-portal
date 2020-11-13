@@ -34,10 +34,13 @@ Class Repository
             Redirect::to(url('/'))->send();
         }
 
+        Log::info('RESULT HTTP CODE :: ' . $response->getStatusCode());
+
         $validationHttpCodes = [500, 422, 413, 404];
         if (in_array($response->getStatusCode(), $validationHttpCodes))
         {
             $message = json_decode($response->getBody());
+            print_r($message); exit();
             Log::info('WARNING :: ' . json_encode($message->message));
             $message = "Error. {$message->message}";
             $msg =[
@@ -48,8 +51,6 @@ Class Repository
             Session::save();
             Redirect::back()->send();
         }
-
-        Log::info('RESULT HTTP CODE :: ' . $response->getStatusCode());
 
         return $response;
     }
