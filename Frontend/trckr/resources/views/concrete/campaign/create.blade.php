@@ -100,6 +100,7 @@
                                         <input class="custom-control-input" type="checkbox" name="branch_id-nobranch" id="branch_id-nobranch">
                                         <label class="custom-control-label" for="branch_id-nobranch">Do-It-At-Home
                                         </label>
+                                        <input type="hidden" name="nobranch_submissions" value="100" />
                                     </div>
                                 </div>
                             </div>
@@ -401,7 +402,7 @@
 
 
                     $(data.file).each(function(){
-                        $(task_action).append('<option value="' + this.task_classification_id + "|" + this.task_id +'">' + this.task_name + '</option>');
+                        $(task_action).append('<option value="'+ this.task_id +'">' + this.task_name + '</option>');
                     });
                 },
                 error: function(data){

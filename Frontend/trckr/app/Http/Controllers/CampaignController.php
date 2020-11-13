@@ -187,9 +187,7 @@ class CampaignController extends Controller
         $data = (array) $request->all();
 
         $task_type = $this->taskService->getTaskActionClassification();
-
         $tasks = $this->taskService->getTaskByMerchant();
-
         $campaign_type = (object) array(
             (object) array(
                 'campaign_type_id' => 1,
@@ -218,8 +216,6 @@ class CampaignController extends Controller
     {
         $data = $request->all();
 
-        print_r($data); exit();
-
         $validations = [
             "start_date" => "required|date|after_or_equal:today",
             "end_date" => "required|date|after_or_equal:start_date",
@@ -231,7 +227,6 @@ class CampaignController extends Controller
             "task_actions.*" => "required",
             "status" => "",
             "task_type" => "",
-            //"branches" => "required",
             "audience" => "required",
             "thumbnail_url" => "required|url"
         ];
@@ -245,41 +240,22 @@ class CampaignController extends Controller
 
         //validation on submissions
         $data["branches"] = array();
-        foreach ($data as $k => $v)
-        {
-            if (strpos($k, 'branch_id-nobranch') !== false AND $v == "on") {
-                $validations["submissions-nobranch"] = "required|numeric";
-            }
-            if (strpos($k, 'branch_id') !== false AND $v == "on"){
-                $temp = explode("-", $k, 2);
-                $validations["submissions-" . $temp[1]] = "required|numeric";
-            }
-        }
 
         //validation on task action classifiations, tasks and rewards
-        $temp_task_actions = $data['task_actions'];
+        $temp_task_actions = $data['task_id'];
         $temp_task_type = $data['task_type'];
-        $temp_reward= $data['reward'];
+        $temp_reward= $data['reward_amount'];
         unset($data['task_actions']);
         unset($data['task_type']);
         unset($data['reward']);
         $data['task_actions'] = array();
 
         $count = 0;
-        foreach($temp_task_actions as $k)
+        foreach($temp_task_actions as $k => $v)
         {
-            if ( ! empty($k)) {
-                $temp = explode("|", $k);
-                $data['task_actions'][] = $temp[1];
-                $data['task_type'][] = $temp[0];
-                $data['reward'][] = $temp_reward[$count];
-            }
-            else {
-                $data['task_actions'][] = NULL;
-                $data['task_type'][] = NULL;
-                $data['reward'][] = NULL;
-            }
-            $count+=1;
+            $data['task_actions'][] = $temp_task_actions[$k];
+            $data['task_type'][] = $temp_task_type[$k];
+            $data['reward'][] = $temp_reward[$k];
         }
 
         $validator = Validator::make($data, $validations);
@@ -304,9 +280,9 @@ class CampaignController extends Controller
             "tasks" => array()
         );
 
-        if ( ! empty($data["branch_id-nobranch"]) AND $data["branch_id-nobranch"] == "on") {
+        if ( ! empty($data["branch_id-nobranch"]) && $data["branch_id-nobranch"] == "on") {
             $request_data["at_home_campaign"] = 1;
-            $request_data["at_home_respondent_count"] = $data["submissions-nobranch"];
+            $request_data["at_home_respondent_count"] = $data["nobranch_submissions"];
             $request_data["reward"] = array(
                 "reward_name" => "Cash",
                 "reward_description" => "Cash reward",
@@ -317,8 +293,8 @@ class CampaignController extends Controller
         else {
             foreach($data['branch_id'] as $k => $v){
                 $request_data['branches'][] = array(
-                    'branch_id' => $k,
-                    'respondent_count' => $data["submissions"][$k]
+                    'branch_id' => $v,
+                    'respondent_count' => $data["submission"][$k]
                 );
             }
         }
@@ -330,17 +306,17 @@ class CampaignController extends Controller
             );
         }
 
+
+
         $response = $this->campaignService->create($request_data);
 
         if ( ! empty($response->campaign_id))
             $msg = [
-                "success" => true,
                 "type" => "success",
                 "message" => "Create Campaign Successful!",
             ];
         else
             $msg = [
-                "success" => true,
                 "type" => "danger",
                 "message" => "Create Campaign Failed - {$response->message}",
             ];
