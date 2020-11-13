@@ -2,7 +2,12 @@
 
 @section('breadcrumbs_pull_right')
     <div class="group-10">
-        <a class="btn btn-light" href="{{ url('/merchant/branch/add') }}"><span class="fa-plus"></span><span class="pl-2">Add New Branch</span></a>
+        <!-- <a class="btn btn-light" href="{{ url('/merchant/branch/add') }}"><span class="fa-plus"></span><span class="pl-2">Add New Branch</span></a> -->
+        <div class="btn-group">
+          <a class="btn btn-primary" href="{{ url('/merchant/branch/add') }}"><span class="fa-plus">Add a new branch</span></a>
+<!--           <a class="btn btn-dark" href="#"><span class="fa-upload">Upload CSV</span></a> -->
+        </div>
+
     </div>
 @endsection
 
@@ -82,26 +87,24 @@
                     @endif
                 </div>
                 <div class="col-lg-2 text-right">
-                    <div class="btn-group" role="group" aria-label="Basic example">
                     <form method="POST" enctype="multipart/form-data" id="file_upload" action="{{ url('merchant/branch/upload') }}" >
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                         <input type="file" name="file" id="file" style="display:none">
-                        <button class="btn btn-primary btn-sm" type="button" value="Upload CSV" id="upload_csv">
+                        <button class="btn btn-primary btn-md" type="button" value="Upload CSV" id="upload_csv">
                             <span class="fa-upload"></span>
                             <span class="spinner-border spinner-border-sm" role="status" id="loader_upload_csv" aria-hidden="true" disabled> </span>
-                            CSV
+                            Upload CSV
                         </button>
                     </form>
                     <form method="POST" id="deleteForm" action="{{ url('merchant/branch/bulkdelete')  }}" >
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                         <input type="hidden" name="delete_ids" id="delete_ids"  value="">
-                        <button class="btn btn-danger btn-sm" type="button" id="delete">
+                        <button class="btn btn-danger btn-md" type="button" id="delete">
                             <span class="mdi-delete-variant"></span>
                             <span class="spinner-border spinner-border-sm" role="status" id="loader_upload_csv" aria-hidden="true" disabled> </span>
                             Delete
                         </button>
                     </form>
-                    </div>
                 </div>
             </div>
         </div>
@@ -146,11 +149,10 @@
                             <td>{{ $branch->region }}</td>
                             <td>
                                 <div class="dropdown">
-                                    <button class="btn dropdown-toggle btn-light btn-sm" data-toggle="dropdown"><span>Action</span>
-                                    </button>
+                                    <button class="btn dropdown-toggle btn-light btn-sm" data-toggle="dropdown"><span>Action</span></button>
                                     <div class="dropdown-menu">
-                                        <a class="dropdown-item" href="{{url('/merchant/branch/edit/' . $branch->branch_id )}}"><span class="fa-edit"></span> Update</a>
-                                        <a class="dropdown-item deleteBranch" href="#" target-href="{{url('/merchant/branch/delete/' . $branch->branch_id )}}"><span class="mdi-delete"></span> Delete</a>
+                                        <a class="dropdown-item" href="{{url('/merchant/branch/edit/' . $branch->branch_id )}}"> Update</a>
+                                        <a class="dropdown-item deleteBranch" href="#" target-href="{{url('/merchant/branch/delete/' . $branch->branch_id )}}"> Delete</a>
                                     </div>
                                 </div>
                             </td>

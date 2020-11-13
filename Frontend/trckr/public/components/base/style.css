@@ -8,7 +8,7 @@ a.white {
 }
 
 .breadcrumbs {
-	font-size: .65rem;
+	font-size: .75rem;
 }
 
 .section-sm {
@@ -34,7 +34,7 @@ div.build-wrap div.form-actions.btn-group{
 }
 
 .rd-navbar-fixed .rd-navbar-panel{background-color: #1b653a !important}
-.rd-navbar-sidebar-panel{background-color:#bdcc14 !important}
+.rd-navbar-sidebar-panel{background-color: #246b42 !important}
 
 .campaign-section { padding: 10px 0; }
 
@@ -382,4 +382,76 @@ iframe {
     padding-left: 15px;
     padding-right: 15px;
   }
+}
+
+/*//////////////////////////////////////////////////////////////////
+[ buttons ]*/
+
+.btn-primary {
+  color: #1b653a;
+  background-color: #c4cf2e;
+  border-color: #c4cf2e;
+  box-shadow: 0 0 0 transparent;
+}
+
+.btn-primary:hover {
+  color: #1b653a;
+  background-color: #c9d431;
+  border-color: #c9d431;
+}
+
+.btn-primary:focus, .btn-primary.focus {
+  box-shadow: 0 0 0 transparent, 0 0 0 0.2rem rgba(131, 162, 196, 0.5);
+}
+
+.btn-primary.disabled, .btn-primary:disabled {
+  color: #fff;
+  background-color: #c4cf2e;
+  border-color: #c4cf2e;
+}
+
+.btn-primary:not(:disabled):not(.disabled):active, .btn-primary:not(:disabled):not(.disabled).active,
+.show > .btn-primary.dropdown-toggle {
+  color: #fff;
+  background-color: #c4cf2e;
+  border-color: #c4cf2e;
+}
+
+.btn-primary:not(:disabled):not(.disabled):active:focus, .btn-primary:not(:disabled):not(.disabled).active:focus,
+.show > .btn-primary.dropdown-toggle:focus {
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.125), 0 0 0 0.2rem rgba(131, 162, 196, 0.5);
+}
+
+.alert-primary {
+    color: #1b653a;
+    background-color: #c4cf2e;
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.page-item.active .page-link {
+    z-index: 1;
+    color: #1b653a;
+    background-color: #c4cf2e;
+    border-color: #c4cf2e;
+}
+
+/*//////////////////////////////////////////////////////////////////
+[ links ]*/
+
+.page-link {
+    position: relative;
+    display: block;
+    padding: 0.5rem 0.75rem;
+    margin-left: -1px;
+    line-height: 1.25;
+    color: #1b653a !important;
+    background-color: #fff;
+    border: 1px solid #ddd;
+}
+
+.page-item.active .page-link {
+    z-index: 1;
+    color: #1b653a !important;
+    background-color: #c4cf2e !important;
+    border-color: #c4cf2e !important;
 }
