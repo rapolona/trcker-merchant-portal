@@ -314,24 +314,28 @@ exports.update = (req, res) => {
         req.body.branches[i].campaign_id = id
       }
     }
+
+    
     console.log(req.body.tasks)
     db.sequelize.transaction({autocommit:false},transaction => {
-      return Promise.all([
+      var campaignUpdateTransactions = [
         Campaign.update(req.body, {
-          where: { campaign_id: id, merchant_id : req.body.merchantid, status:0},
+          where: { campaign_id: id, merchant_id : req.body.merchantid, status:"INACTIVE"},
           transaction: transaction
         }),
         Campaign_Task_Association.destroy({
           where: {campaign_id: id},
           transaction:transaction}),
-        Campaign_Task_Association.bulkCreate(req.body.tasks, {transaction:transaction}),
-        Campaign_Reward.update(req.body.reward, {where: {campaign_id : id}, transaction:transaction}),
-        Campaign_Branch_Association.destroy({
+        Campaign_Task_Association.bulkCreate(req.body.tasks, {transaction:transaction})
+      ]
+      if(req.body.at_home_campaign==false){
+        campaignUpdateTransactions.push([Campaign_Branch_Association.destroy({
           where: {campaign_id: id},
           transaction:transaction
         }),
-        Campaign_Branch_Association.bulkCreate(req.body.branches, {transaction:transaction})
-      ])
+        Campaign_Branch_Association.bulkCreate(req.body.branches, {transaction:transaction})]) 
+      }
+      return Promise.all(campaignUpdateTransactions)
     })
     .then(data => {
       if(data){
@@ -342,7 +346,7 @@ exports.update = (req, res) => {
     })
     .catch(err => {
       res.status(500).send({
-        message: err || "Error updating campaign"
+        message: err.message || "Error updating campaign"
       })
     })
   
