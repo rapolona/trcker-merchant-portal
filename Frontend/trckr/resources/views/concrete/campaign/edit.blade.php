@@ -464,11 +464,11 @@
         });
 
         $(document).ready(function (e) {          
-            $("#branch_id-nobranch").change(function(){
+            $("input[name=branch_id-nobranch]:checkbox").change(function(){
                 if (this.checked) {
                     $(".branch-input:checkbox").each(function(){
                         console.log(this);
-                        $(this).attr("id","disabledInput");
+                        $(this).prop("disabled", true);
                     });
                     $(".branch-input:text").each(function(){
                         console.log(this);
@@ -478,14 +478,14 @@
                 else $(".branch-input ").each(function(){
                     $(".branch-input:checkbox").each(function(){
                         console.log(this);
-                        $(this).removeAttr("id","disabledInput");
+                        $(this).prop("disabled", false);
                     });
                     $(".branch-input:text").each(function(){
                         console.log(this);
                         $(this).prop("disabled", false);
                     });
                 });
-            }); 
+            });  
 
             $("#submit").click(function(){
             });
