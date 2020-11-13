@@ -23,12 +23,6 @@
                 <table class="table table-striped table-hover data-table" data-table-searching="true" data-table-lengthChange="true" data-page-length="5">
                     <thead>
                     <tr>
-                        <td style="width: 40px">
-                            <div class="custom-control custom-checkbox custom-checkbox-success">
-                                <input class="custom-control-input" type="checkbox" id="selectAll"/>
-                                <label class="custom-control-label" for="selectAll"></label>
-                            </div>
-                        </td>
                         <th>Task Name</th>
                         <th>Task Description</th>
                         <th></th>
@@ -37,12 +31,6 @@
                     <tbody>
                     @foreach ($tasks as $t)
                         <tr>
-                            <td style="width: 40px">
-                                <div class="custom-control custom-checkbox custom-checkbox-success">
-                                    <input class="custom-control-input" type="checkbox" name="task_id[]" id="{{ $t->task_id }}" />
-                                    <label class="custom-control-label" for="{{ $t->task_id }}"></label>
-                                </div>
-                            </td>
                             <td> {{ $t->task_name }}</td>
                             <td> {{ $t->task_description }}</td>
                             <td>
@@ -68,11 +56,6 @@
     <script type="text/javascript">
 
         $(document).ready(function (e) {
-
-            $('#selectAll').click(function(e){
-                let table= $(e.target).closest('table');
-                $('td input:checkbox',table).prop('checked',this.checked);
-            });
 
             $('#myModal').on('hidden.bs.modal', function () {
                 location.reload();
