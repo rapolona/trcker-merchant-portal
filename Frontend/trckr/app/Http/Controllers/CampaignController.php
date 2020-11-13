@@ -216,6 +216,8 @@ class CampaignController extends Controller
     {
         $data = $request->all();
 
+        //print_r($data); exit();
+
         $validations = [
             "start_date" => "required|date|after_or_equal:today",
             "end_date" => "required|date|after_or_equal:start_date",
@@ -306,7 +308,7 @@ class CampaignController extends Controller
             );
         }
 
-
+        //print_r($request_data); exit();
 
         $response = $this->campaignService->create($request_data);
 
@@ -511,141 +513,11 @@ class CampaignController extends Controller
         ]);
     }
 
-    public function edit(Request $request)
+    public function edit($campaignId, Request $request)
     {
-        //api call for campaigns
-        //http://localhost:6001/merchant/campaign
-        /*
-        $api_endpoint = "http://localhost:6001/merchant/campaign";
-        $campaigns = Http::withToken($this->$_backend_token)->get($api_endpoint,  []);
-        $campaigns = json_decode($campaigns);
-        */
-
-        //get all campaigns
-        $campaign_id = $request->input('campaign_id');
-
-        $api_endpoint = Config::get('trckr.backend_url') . "merchant/campaign";
-
-        $session = $request->session()->get('session_merchant');
-
-        if ( ! $session) return redirect('/');
-        $token = ( ! empty($session->token)) ? $session->token : "";
-
-        $response = Http::withToken($token)->get($api_endpoint);
-
-        if ($response->status() !== 200)
-        {
-            if ($response->status() === 403) {
-                $validator = Validator::make($request->all(), []);
-                $validator->getMessageBag()->add('email', "Session Expired. Please login again. {$response->body()}");
-
-                return redirect('/')
-                    ->withErrors($validator)
-                    ->withInput();
-            }
-
-            if ($response->status() === 500) {
-                $handler = json_decode($response->body());
-
-                if ($handler->message->name == "JsonWebTokenError")
-
-                $validator = Validator::make($request->all(), []);
-                $validator->getMessageBag()->add('email', "Session Expired. Please login again. {$response->body()}");
-
-                return redirect('/')
-                    ->withErrors($validator)
-                    ->withInput();
-            }
-
-            //general handling
-            return redirect('/dashboard');
-        }
-
-        $response = json_decode($response);
-
-        //get the specific campaign for based on campaign id
-        $campaign = array();
-        foreach ($response as &$k) {
-            if ($k->campaign_id == $campaign_id) $campaign = $k;
-            $start_date = new DateTime($k->start_date);
-            $k->start_date = $start_date->format("Y-m-d");
-            $end_date = new DateTime($k->end_date);
-            $k->end_date = $end_date->format("Y-m-d");
-        }
-
-        //getting specific campaign detail
-        $api_endpoint = Config::get('trckr.capability_url') . "capability/campaigndetail?campaign_id=$campaign_id";
-
-        $response = Http::withToken($token)->get($api_endpoint);
-
-        if ($response->status() !== 200)
-        {
-            if ($response->status() === 403) {
-                $validator = Validator::make($request->all(), []);
-                $validator->getMessageBag()->add('email', "Session Expired. Please login again. {$response->body()}");
-
-                return redirect('/')
-                    ->withErrors($validator)
-                    ->withInput();
-            }
-
-            if ($response->status() === 500) {
-                $handler = json_decode($response->body());
-
-                if ($handler->message->name == "JsonWebTokenError")
-
-                $validator = Validator::make($request->all(), []);
-                $validator->getMessageBag()->add('email', "Session Expired. Please login again. {$response->body()}");
-
-                return redirect('/')
-                    ->withErrors($validator)
-                    ->withInput();
-            }
-
-            //general handling
-            return redirect('/dashboard');
-        }
-
-        $campaign_detail = json_decode($response->body());
-
-        //api for getting campaign_type
-        $api_endpoint = Config::get('trckr.backend_url') . "api/task_action_classification";
-
-        $session = $request->session()->get('session_merchant');
-        $token = ( ! empty($session->token)) ? $session->token : "";
-
-        $response = Http::withToken($token)->get($api_endpoint, []);
-
-        if ($response->status() !== 200)
-        {
-            if ($response->status() === 403) {
-                $validator = Validator::make($request->all(), []);
-                $validator->getMessageBag()->add('email', "Session Expired. Please login again. {$response->body()}");
-
-                return redirect('/')
-                    ->withErrors($validator)
-                    ->withInput();
-            }
-
-            if ($response->status() === 500) {
-                $handler = json_decode($response->body());
-
-                if ($handler->message->name == "JsonWebTokenError")
-
-                $validator = Validator::make($request->all(), []);
-                $validator->getMessageBag()->add('email', "Session Expired. Please login again. {$response->body()}");
-
-                return redirect('/')
-                    ->withErrors($validator)
-                    ->withInput();
-            }
-
-            //general handling
-            return redirect('/dashboard');
-        }
-
-        $task_type = json_decode($response->body());
-
+        $data = (array) $request->all();
+        $task_type = $this->taskService->getTaskActionClassification();
+        $tasks = $this->taskService->getTaskByMerchant();
         $campaign_type = (object) array(
             (object) array(
                 'campaign_type_id' => 1,
@@ -661,90 +533,21 @@ class CampaignController extends Controller
             ),
         );
 
-        //api for getting merchant tasks
-        $api_endpoint = Config::get('trckr.backend_url') . "merchant/task";
+        $branches = $this->branchService->getAll($data);
+        $branch_filters = $this->branchService->getFilters();
+        $campaign = (array) $this->campaignService->get($campaignId);
 
-        $response = Http::withToken($token)->get($api_endpoint, []);
+        foreach ($tasks as &$k)
+            $k->task_id = $k->task_classification_id . "|" . $k->task_id;
 
-        if ($response->status() !== 200)
-        {
-            if ($response->status() === 403) {
-                $validator = Validator::make($request->all(), []);
-                $validator->getMessageBag()->add('email', "Session Expired. Please login again. {$response->body()}");
-
-                return redirect('/')
-                    ->withErrors($validator)
-                    ->withInput();
-            }
-
-            if ($response->status() === 500) {
-                $handler = json_decode($response->body());
-
-                if ($handler->message->name == "JsonWebTokenError")
-
-                $validator = Validator::make($request->all(), []);
-                $validator->getMessageBag()->add('email', "Session Expired. Please login again. {$response->body()}");
-
-                return redirect('/')
-                    ->withErrors($validator)
-                    ->withInput();
-            }
-
-            //general handling
-            return redirect('/dashboard');
-        }
-
-        $tasks = json_decode($response->body());
-
-        //api for getting branches
-        $api_endpoint = Config::get('trckr.backend_url') . "merchant/branches";
-
-        $response = Http::withToken($token)->get($api_endpoint, []);
-
-        if ($response->status() !== 200)
-        {
-            if ($response->status() === 403) {
-                $validator = Validator::make($request->all(), []);
-                $validator->getMessageBag()->add('email', "Session Expired. Please login again. {$response->body()}");
-
-                return redirect('/')
-                    ->withErrors($validator)
-                    ->withInput();
-            }
-
-            if ($response->status() === 500) {
-                $handler = json_decode($response->body());
-
-                if ($handler->message->name == "JsonWebTokenError")
-
-                $validator = Validator::make($request->all(), []);
-                $validator->getMessageBag()->add('email', "Session Expired. Please login again. {$response->body()}");
-
-                return redirect('/')
-                    ->withErrors($validator)
-                    ->withInput();
-            }
-
-            //general handling
-            return redirect('/dashboard');
-        }
-
-        $branches = json_decode($response->body());
-
-        #echo "<pre>";
-        #var_dump($campaign);
-        #var_dump($campaign_detail);
-        #echo "</pre>";
-
-        //manual population of task questions onload
-        $tasks_per_type = array();
-
-        foreach ($campaign_detail->campaign_tasks as $k) {
-            $tasks_per_type[$k->task_classification_id] = $this->task_type($k->task_classification_id)->getData();
-            $tasks_per_type[$k->task_classification_id] = $tasks_per_type[$k->task_classification_id]->file;
-        }
-
-        return view('concrete.campaign.edit', ['campaign' => $campaign, 'campaign_detail' => $campaign_detail, 'tasks_per_type' => $tasks_per_type, 'campaign_type' => $campaign_type, 'branches' => $branches, 'task_type' => $task_type]);
+        return view('concrete.campaign.edit', [
+            'campaign_type' => $campaign_type,
+            'branches' => $branches,
+            'branch_filters' => $branch_filters,
+            'task_type' => $task_type,
+            'tasks' => $tasks,
+            'campaign' => $campaign
+        ]);
     }
 
     public function edit_campaign(Request $request)

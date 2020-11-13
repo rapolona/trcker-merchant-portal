@@ -23,6 +23,7 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/CampaignController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/CampaignController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/concrete/campaign/create.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/concrete/campaign/create.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/concrete/campaign/edit.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/concrete/campaign/edit.blade.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -217,7 +218,7 @@
       <workItem from="1605001585575" duration="10537000" />
       <workItem from="1605100261590" duration="8830000" />
       <workItem from="1605222684144" duration="11163000" />
-      <workItem from="1605262705611" duration="13846000" />
+      <workItem from="1605262705611" duration="20465000" />
     </task>
     <servers />
   </component>
