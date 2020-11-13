@@ -218,6 +218,8 @@ class CampaignController extends Controller
     {
         $data = $request->all();
 
+        print_r($data); exit();
+
         $validations = [
             "start_date" => "required|date|after_or_equal:today",
             "end_date" => "required|date|after_or_equal:start_date",
