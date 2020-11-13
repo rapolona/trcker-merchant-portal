@@ -106,6 +106,7 @@ Route::group(["middleware" => ["merchantAuth"]], function() {
         Route::get('/create', 'TicketController@create');
         Route::get('/approve_ticket/{campaignId}/{ticketId}', 'TicketController@approve_ticket');
         Route::get('/reject_ticket/{campaignId}/{ticketId}', 'TicketController@reject_ticket');
+        Route::post('/bulk-action', 'TicketController@bulk_action');
         //Ajax for Save Details
         Route::get('/export_csv', 'TicketController@export_csv');
     });

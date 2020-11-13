@@ -51,6 +51,8 @@ class TicketController extends Controller
             }
         }
 
+      //  print_r($tickets); exit();
+
         return view('concrete.ticket.ticket', ['tickets' => $tickets]);
     }
 
@@ -106,6 +108,45 @@ class TicketController extends Controller
         return redirect('/ticket/view/' . "{$campaignId}/$ticketId")
             ->with("formMessage", $msg);
     }
+
+    /**
+     * reject instance
+     *
+     * @return redirect
+     */
+    public function bulk_action(Request $request)
+    {
+        $data = (array)$request->all();
+
+        if(!isset($data['tickets'])){
+            $msg = [
+                "type" => "warning",
+                "message" => "Pls check an item you want to " . $data['status'],
+            ];
+
+            return redirect('/ticket/view/')
+                ->with("formMessage", $msg);
+        }
+
+        foreach($data['tickets'] as $id){
+            $newData = ['task_ticket_id' => $id];
+            if($data['status']=='reject'){
+                $this->capabilityService->rejectTicket($newData);
+            }else{
+                $this->capabilityService->approveTicket($newData);
+            }
+        }
+
+        $msg = [
+            "type" => "success",
+            "message" =>  ucfirst($data['status']) . " Ticket(s) Success!",
+        ];
+
+        return redirect('/ticket/view/')
+            ->with("formMessage", $msg);
+    }
+
+
 
     public function export_csv(Request $request)
     {

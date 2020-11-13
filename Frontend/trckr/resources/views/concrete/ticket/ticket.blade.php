@@ -5,67 +5,71 @@
 @endsection
 
 @section('content')
-    <div class="panel">
-        <div class="panel-header">
-            <div class="row">
-                <div class="col-sm-6">
-                    <div class="panel-title"><span class="panel-icon fa-ticket"></span> <span>Tickets</span></div>
-                </div>
-                <div class="col-sm-6">
-                    <button class="btn btn-danger btn-sm pull-right"><span class="fa-ban"></span><span class="pl-2">Reject</span></button>
-                    <button class="btn btn-success btn-sm pull-right"><span class="fa-check"></span><span class="pl-2">Approve</span></button>
+    <form method="post" action="{{ url('ticket/bulk-action') }}" id="tableList">
+        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+        <div class="panel">
+            <div class="panel-header">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="panel-title"><span class="panel-icon fa-ticket"></span> <span>Tickets</span></div>
+                    </div>
+                    <div class="col-sm-6">
+                        <button type="button" value="reject" class="btn btn-danger btn-sm pull-right approve-reject"><span class="fa-ban"></span><span class="pl-2">Reject</span></button>
+                        <button type="button" value="approve" class="btn btn-success btn-sm pull-right approve-reject"><span class="fa-check"></span><span class="pl-2">Approve</span></button>
+                        <input id="ticket-status" name="status" type="hidden" />
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="panel-body p-0">
-            <div class="table-responsive scroller scroller-horizontal py-3">
-                <table class="table table-striped table-hover data-table" data-table-searching="true" data-table-lengthChange="true" data-page-length="5" >
-                    <thead>
-                    <tr>
-                        <th class="no-sort">
-                            <div class="custom-control custom-checkbox custom-checkbox-success">
-                                <input class="custom-control-input" type="checkbox" id="selectAll">
-                                <label class="custom-control-label" for="selectAll"></label>
-                            </div>
-                        </th>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Mobile</th>
-                        <th>Device ID</th>
-                        <th>Campaign Name</th>
-                        <th>Date Submitted</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    @foreach ($tickets as $t)
+            <div class="panel-body p-0">
+                <div class="table-responsive scroller scroller-horizontal py-3">
+                    <table class="table table-striped table-hover data-table" data-table-searching="true" data-table-lengthChange="true" data-page-length="5" >
+                        <thead>
                         <tr>
-                            <td>
+                            <th class="no-sort">
                                 <div class="custom-control custom-checkbox custom-checkbox-success">
-                                    <input class="custom-control-input" type="checkbox" id="{{ $t->task_ticket_id }} value="{{ $t->task_ticket_id }}">
-                                    <label class="custom-control-label" for="{{ $t->task_ticket_id }}"></label>
+                                    <input class="custom-control-input" type="checkbox" id="selectAll">
+                                    <label class="custom-control-label" for="selectAll"></label>
                                 </div>
-                            </td>
-                            <td>{{ $t->user_detail->first_name . " " . $t->user_detail->last_name }}</td>
-                            <td>{{ $t->user_detail->email }}</td>
-                            <td>09178478820 -- add in the API</td>
-                            <td>{{ $t->device_id}}</td>
-                            <td>{{ $t->campaign_name }}</td>
-                            <td>{{ $t->createdAt }}</td>
-                            <td class="text-{{ config('concreteadmin')['ticket_status'][$t->approval_status ] }}">{{ $t->approval_status }}</td>
-                            <td>
-                                <div class="btn-group">
-                                    <a href="{{ url('ticket/view/' . $t->campaign_id . "/" . $t->task_ticket_id ) }}"><button class="btn btn-light" type="button"><span class="fa-eye"></span></button></a>
-                                </div>
-                            </td>
+                            </th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Mobile</th>
+                            <th>Device ID</th>
+                            <th>Campaign Name</th>
+                            <th>Date Submitted</th>
+                            <th>Status</th>
+                            <th>Actions</th>
                         </tr>
-                    @endforeach
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                        @foreach ($tickets as $t)
+                            <tr>
+                                <td>
+                                    <div class="custom-control custom-checkbox custom-checkbox-success">
+                                        <input class="custom-control-input" type="checkbox" name="tickets[]" id="{{ $t->task_ticket_id }}" value="{{ $t->task_ticket_id }}">
+                                        <label class="custom-control-label" for="{{ $t->task_ticket_id }}"></label>
+                                    </div>
+                                </td>
+                                <td>{{ $t->user_detail->first_name . " " . $t->user_detail->last_name }}</td>
+                                <td>{{ $t->user_detail->email }}</td>
+                                <td>09178478820 -- add in the API</td>
+                                <td>{{ $t->device_id}}</td>
+                                <td>{{ $t->campaign_name }}</td>
+                                <td>{{ $t->createdAt }}</td>
+                                <td class="text-{{ config('concreteadmin')['ticket_status'][$t->approval_status ] }}">{{ $t->approval_status }}</td>
+                                <td>
+                                    <div class="btn-group">
+                                        <a href="{{ url('ticket/view/' . $t->campaign_id . "/" . $t->task_ticket_id ) }}"><button class="btn btn-light" type="button"><span class="fa-eye"></span></button></a>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
-    </div>
+    </form>
 @stop
 
 @section('js')
@@ -78,6 +82,14 @@
                 $('td input:checkbox',table).prop('checked',this.checked);
             });
 
+            $('.approve-reject').click(function(e){
+                let val = $(this).attr('value');
+                $('#ticket-status').val(val);
+
+                if (confirm('Are you sure you want to ' + val + ' these items ?')) {
+                    $('#tableList').submit();
+                }
+            });
 
             $("#export").click(function(){
                 window.location.href = "{{url('/ticket/export_csv')}}";
