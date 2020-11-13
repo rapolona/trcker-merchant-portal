@@ -33,8 +33,8 @@ div.build-wrap div.form-actions.btn-group{
     display: none;
 }
 
-.rd-navbar-fixed .rd-navbar-panel{background-color: #c4cf2e !important;}
-.rd-navbar-sidebar-panel{background-color:#959e16 !important}
+.rd-navbar-fixed .rd-navbar-panel{background-color: #1b653a !important}
+.rd-navbar-sidebar-panel{background-color:#bdcc14 !important}
 
 .campaign-section { padding: 10px 0; }
 
@@ -184,14 +184,12 @@ iframe {
 }
 
 .wrap-login100 {
-  width: 400px;
-  background: #fff;
-  border-radius: 3px;
-  overflow: hidden;
-  padding: 20px;
+    width: 400px;
+    background: #fff;
+    border-radius: 3px;
+    overflow: hidden;
+    padding: 20px 40px;
 }
-
-
 
 /*------------------------------------------------------------------
 [  ]*/
