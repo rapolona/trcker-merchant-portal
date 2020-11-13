@@ -9,78 +9,83 @@
 @endsection
 
 @section('content')
-    <div class="panel">
-        <div class="panel-header">
-            <div class="row">
-                <div class="col-sm-7">
-                    <div class="panel-title"><span class="panel-icon fa-tasks"></span> <span>Campaigns</span></div>
-                </div>
-                <div class="col-sm-5">
-                    <button class="btn btn-danger btn-sm pull-right"><span class="fa-ban"></span><span class="pl-2">Disable Campaigns</span></button>
+    <form method="post" action="{{ url('campaign/bulk-action') }}" id="tableList">
+        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+        <div class="panel">
+            <div class="panel-header">
+                <div class="row">
+                    <div class="col-sm-7">
+                        <div class="panel-title"><span class="panel-icon fa-tasks"></span> <span>Campaigns</span></div>
+                    </div>
+                    <div class="col-sm-5">
+                        <button type="button" value="disable" class="btn btn-danger btn-sm pull-right enable-disable"><span class="fa-ban"></span><span class="pl-2">Disable</span></button>
+                        <button type="button" value="enable" class="btn btn-success btn-sm pull-right enable-disable"><span class="fa-check"></span><span class="pl-2">Activate</span></button>
+                        <input id="campaign-status" name="status" type="hidden" />
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="panel-body p-0">
-            <div class="table-responsive scroller scroller-horizontal py-3">
-                <table class="table table-striped table-hover data-table" data-table-searching="true" data-table-lengthChange="true" data-page-length="5">
-                    <thead>
-                    <tr>
-                        <td style="width: 40px" data-orderable="false" data-targets="0" >
-                            <div class="custom-control custom-checkbox custom-checkbox-success">
-                                <input class="custom-control-input" type="checkbox" id="selectAll"/>
-                                <label class="custom-control-label" for="selectAll"></label>
-                            </div>
-                        </td>
-                        <th>Campaign Name</th>
-                        <th>Budget</th>
-                        <th>Reward</th>
-                        <!--<th>No. of tasks</th>-->
-                        <th>Start date</th>
-                        <th>End date</th>
-                        <th>Status</th>
-                        <th data-orderable="false" ></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    @foreach ($campaigns as $campaign)
-                    <tr>
-                        <td style="width: 40px">
-                            <div class="custom-control custom-checkbox custom-checkbox-success">
-                                <input class="custom-control-input" type="checkbox" name="branch_id" id="{{ $campaign->campaign_id }}" />
-                                <label class="custom-control-label" for="{{ $campaign->campaign_id }}"></label>
-                            </div>
-                        </td>
-                        <td>{{ $campaign->campaign_name }}</td>
-                        <td>{{ $campaign->budget }}</td>
-                        <td>{{ $campaign->total_reward_amount }}</td>
-                        <!--<td>N/A</td>-->
-                        <td>{{ date('Y-m-d', strtotime($campaign->start_date)) }}</td>
-                        <td>{{ date('Y-m-d', strtotime($campaign->end_date)) }}</td>
-                        <td class="text-{{ (isset(config('concreteadmin.status')[$campaign->status] ))? config('concreteadmin.status')[$campaign->status] : 'light' }}">{{ $campaign->status }}</td>
-                        <td class="text-right">
-                            <div class="dropdown">
-                                <button class="btn dropdown-toggle btn-light btn-sm" data-toggle="dropdown"><span>Action</span>
-                                </button>
-                                <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="{{ url('campaign/view/' . $campaign->campaign_id )}}">View</a>
-                                    <a class="dropdown-item" href="{{ url('campaign/edit/' . $campaign->campaign_id )}}">Edit</a>
-                                    <!--<a class="dropdown-item" href="{{ url('campaign/delete/' . $campaign->campaign_id )}}">Delete</a>-->
-                                    <a class="dropdown-item" href="{{ url('campaign/duplicate/' . $campaign->campaign_id )}}">Duplicate</a>
-                                    @if($campaign->status=='DISABLED')
-                                    <a class="dropdown-item" href="{{ url('campaign/status/enable/' . $campaign->campaign_id )}}">Activate</a>
-                                    @else
-                                        <a class="dropdown-item" href="{{ url('campaign/status/disable/' . $campaign->campaign_id )}}">Disable</a>
-                                    @endif
+            <div class="panel-body p-0">
+                <div class="table-responsive scroller scroller-horizontal py-3">
+                    <table class="table table-striped table-hover data-table" data-table-searching="true" data-table-lengthChange="true" data-page-length="5">
+                        <thead>
+                        <tr>
+                            <td style="width: 40px" data-orderable="false" data-targets="0" >
+                                <div class="custom-control custom-checkbox custom-checkbox-success">
+                                    <input class="custom-control-input" type="checkbox" id="selectAll"/>
+                                    <label class="custom-control-label" for="selectAll"></label>
                                 </div>
-                            </div>
-                        </td>
-                    </tr>
-                    @endforeach
-                    </tbody>
-                </table>
+                            </td>
+                            <th>Campaign Name</th>
+                            <th>Budget</th>
+                            <th>Reward</th>
+                            <!--<th>No. of tasks</th>-->
+                            <th>Start date</th>
+                            <th>End date</th>
+                            <th>Status</th>
+                            <th data-orderable="false" ></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach ($campaigns as $campaign)
+                            <tr>
+                                <td style="width: 40px">
+                                    <div class="custom-control custom-checkbox custom-checkbox-success">
+                                        <input class="custom-control-input" type="checkbox" name="campaign_id[]" id="{{ $campaign->campaign_id }}" value="{{ $campaign->campaign_id }}" />
+                                        <label class="custom-control-label" for="{{ $campaign->campaign_id }}"></label>
+                                    </div>
+                                </td>
+                                <td>{{ $campaign->campaign_name }}</td>
+                                <td>{{ $campaign->budget }}</td>
+                                <td>{{ $campaign->total_reward_amount }}</td>
+                                <!--<td>N/A</td>-->
+                                <td>{{ date('Y-m-d', strtotime($campaign->start_date)) }}</td>
+                                <td>{{ date('Y-m-d', strtotime($campaign->end_date)) }}</td>
+                                <td class="text-{{ (isset(config('concreteadmin.status')[$campaign->status] ))? config('concreteadmin.status')[$campaign->status] : 'light' }}">{{ $campaign->status }}</td>
+                                <td class="text-right">
+                                    <div class="dropdown">
+                                        <button class="btn dropdown-toggle btn-light btn-sm" data-toggle="dropdown"><span>Action</span>
+                                        </button>
+                                        <div class="dropdown-menu">
+                                            <a class="dropdown-item" href="{{ url('campaign/view/' . $campaign->campaign_id )}}">View</a>
+                                            <a class="dropdown-item" href="{{ url('campaign/edit/' . $campaign->campaign_id )}}">Edit</a>
+                                        <!--<a class="dropdown-item" href="{{ url('campaign/delete/' . $campaign->campaign_id )}}">Delete</a>-->
+                                            <a class="dropdown-item" href="{{ url('campaign/duplicate/' . $campaign->campaign_id )}}">Duplicate</a>
+                                            @if($campaign->status=='DISABLED')
+                                                <a class="dropdown-item" href="{{ url('campaign/status/enable/' . $campaign->campaign_id )}}">Activate</a>
+                                            @else
+                                                <a class="dropdown-item" href="{{ url('campaign/status/disable/' . $campaign->campaign_id )}}">Disable</a>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
-    </div>
+    </form>
 @stop
 
 @section('css')
@@ -96,6 +101,15 @@
             $('#selectAll').click(function(e){
                 let table= $(e.target).closest('table');
                 $('td input:checkbox',table).prop('checked',this.checked);
+            });
+
+            $('.enable-disable').click(function(e){
+                let val = $(this).attr('value');
+                $('#campaign-status').val(val);
+
+                if (confirm('Are you sure you want to ' + val + ' these items ?')) {
+                    $('#tableList').submit();
+                }
             });
 
 
@@ -142,5 +156,5 @@
                 window.location.href = "{{url('/campaign/edit?campaign_id=')}}" + campaigns[0];
             });
         });
-  </script>
+    </script>
 @stop

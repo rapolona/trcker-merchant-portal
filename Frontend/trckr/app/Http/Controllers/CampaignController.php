@@ -50,9 +50,9 @@ class CampaignController extends Controller
     {
         $data = (array) $request->all();
         unset($data["_"]);
-        foreach($data as &$k) 
+        foreach($data as &$k)
             if ($k == "all") $k = NULL;
-        
+
         $branches = $this->branchService->getAll($data);
 
         //$filters = $this->branchService->getFilters();
@@ -207,7 +207,7 @@ class CampaignController extends Controller
 
         $branches = $this->branchService->getAll($data);
         $branch_filters = $this->branchService->getFilters();
-        
+
         foreach ($tasks as &$k)
             $k->task_id = $k->task_classification_id . "|" . $k->task_id;
 
@@ -216,7 +216,7 @@ class CampaignController extends Controller
 
     public function create_campaign(Request $request)
     {
-        $data = $request->all();    
+        $data = $request->all();
 
         $validations = [
             "start_date" => "required|date|after_or_equal:today",
@@ -364,7 +364,7 @@ class CampaignController extends Controller
 
         $branches = $this->branchService->getAll($request);
         $branch_filters = $this->branchService->getFilters();
-        
+
         foreach ($tasks as &$k)
             $k->task_id = $k->task_classification_id . "|" . $k->task_id;
 
@@ -936,6 +936,39 @@ class CampaignController extends Controller
         ];
 
         return redirect('/campaign/view')
+            ->with("formMessage", $msg);
+    }
+
+    /**
+     * reject instance
+     *
+     * @return redirect
+     */
+    public function bulk_action(Request $request)
+    {
+        $data = (array) $request->all();
+        $status = $data['status'];
+
+        if(!isset($data['campaign_id'])){
+            $msg = [
+                "type" => "warning",
+                "message" => "Pls check an item you want to set into " . $data['status'],
+            ];
+
+            return redirect('/campaign/view/')
+                ->with("formMessage", $msg);
+        }
+
+        foreach($data['campaign_id'] as $id){
+            $this->campaignService->updateStatus($status, $id);
+        }
+
+        $msg = [
+            "type" => "success",
+            "message" =>  ucfirst($data['status']) . " Campaigns(s) Success!",
+        ];
+
+        return redirect('/campaign/view/')
             ->with("formMessage", $msg);
     }
 
