@@ -260,6 +260,11 @@ class CampaignController extends Controller
                 );
             }
         }
+        
+        //if branch is empty and not no branch
+        if (count($data['branches']) == 0 AND ! isset($data['branch_id-nobranch'])) {
+            $validations["branch_id"] = "required";
+        }
 
         //validation on task action classifiations, tasks and rewards
         $temp_task_actions = $data['task_actions'];
@@ -632,6 +637,11 @@ class CampaignController extends Controller
                     "respondent_count" => $data["submissions-" . $temp[1]]
                 );
             }
+        }
+
+        //if branch is empty and not no branch
+        if (count($data['branches']) == 0 AND ! isset($data['branch_id-nobranch'])) {
+            $validations["branch_id"] = "required";
         }
 
         //validation on task action classifiations, tasks and rewards
