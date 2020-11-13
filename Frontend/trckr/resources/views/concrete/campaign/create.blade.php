@@ -415,26 +415,13 @@
                 if (this.checked) {
                     $('#branchSection').hide();
                     $(".branch-input:checkbox").each(function(){
-                        console.log(this);
-                        $(this).attr("id","disabledInput");
-                    });
-                    $(".branch-input:text").each(function(){
-                        console.log(this);
-                        $(this).prop("disabled", true);
+                        $(this).prop("checked",false);
+                        $(this).change();
+                        $('#selectAll').prop("checked",false);
                     });
                 }
                 else{
                     $('#branchSection').show();
-                    $(".branch-input ").each(function(){
-                        $(".branch-input:checkbox").each(function(){
-                            console.log(this);
-                            $(this).removeAttr("id","disabledInput");
-                        });
-                        $(".branch-input:text").each(function(){
-                            console.log(this);
-                            $(this).prop("disabled", false);
-                        });
-                    });
                 }
             });
 
@@ -458,7 +445,7 @@
 
                 let clonedTask = $("div.task-container:first").clone();
 
-                $('.task-action-container',clonedTask).html('<select required class="form-control select2 task_actions" name="task_actions[]" style="width: 100%;">' +
+                $('.task-action-container',clonedTask).html('<select required class="form-control select2 task_actions" name="task_id[]" style="width: 100%;">' +
                     '<option value="">Select Task</option>' +
                     '</select>');
                 $('#taskBody').append(clonedTask);
