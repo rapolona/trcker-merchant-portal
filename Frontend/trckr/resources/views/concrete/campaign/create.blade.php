@@ -186,6 +186,11 @@
                 </div>
                 <div class="panel-body p-0">
                     <div class="table-responsive scroller scroller-horizontal py-3" id="branch_table" >
+                        @if($errors->first('branch_id'))
+                        <div class="tag-manager-container">
+                            <span class="tm-tag badge badge-danger" ><span>{{ $errors->first('branch_id') }}</span></span>
+                        </div>
+                        @endif
                         <table class="table table-striped table-hover data-table"style="min-width: 800px">
                             <thead>
                             <tr>
@@ -275,7 +280,7 @@
                         @endphp
                         @foreach (old('task_type') as $t)
                             <div class="row task_container">
-                                <div class="col col-md-3">
+                                <div class="col col-md-4">
                                     <div class="form-group row">
                                         <label for="task_type" class="col-sm-2 col-form-label">Task Type</label>
                                         <div class="col-sm-10">
@@ -322,7 +327,7 @@
                                         </div>
                                     @endif
                                 </div>
-                                <div class="col col-md-2">
+                                <div class="col col-md-1">
                                     <div class="btn-group" role="group" aria-label="Basic example">
                                         <button type="button" class="btn btn-md btn-danger remove_task" id="remove_task_0"><span class="fa-remove"></span></button>
                                     </div>

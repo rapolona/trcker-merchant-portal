@@ -186,6 +186,11 @@
                 </div>
                 <div class="panel-body p-0">
                     <div class="table-responsive scroller scroller-horizontal py-3" id="branch_table" >
+                        @if($errors->first('branch_id'))
+                        <div class="tag-manager-container">
+                            <span class="tm-tag badge badge-danger" ><span>{{ $errors->first('branch_id') }}</span></span>
+                        </div>
+                        @endif
                         <table class="table table-striped table-hover data-table"style="min-width: 800px">
                             <thead>
                             <tr>
