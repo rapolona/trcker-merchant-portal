@@ -40,7 +40,6 @@ Class Repository
         if (in_array($response->getStatusCode(), $validationHttpCodes))
         {
             $message = json_decode($response->getBody());
-            print_r($message); exit();
             Log::info('WARNING :: ' . json_encode($message->message));
             $message = "Error. {$message->message}";
             $msg =[

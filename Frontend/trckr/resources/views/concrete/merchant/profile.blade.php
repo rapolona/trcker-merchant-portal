@@ -1,7 +1,8 @@
 @extends('concrete.layouts.main')
 
 @section('breadcrumbs_pull_right')
-    <a class="btn btn-light" href="#"><span class="fa-cloud-download"></span><span class="pl-2">Change Password</span></a>
+    <!--<a class="btn btn-light" href="#"><span class="fa-cloud-download"></span><span class="pl-2">Change Password</span></a>
+    -->
 @endsection
 
 @section('content')
