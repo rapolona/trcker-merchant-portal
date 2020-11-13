@@ -416,7 +416,7 @@ exports.deleteAll = (req, res) => {
   exports.getActiveCampaigns = (req,res) => {
     const merchantId = req.body.merchantid;
   
-    Campaign.findAll({where: {merchant_id: merchantId, status: 1}, raw:true,attributes:[[db.Sequelize.fn('COUNT','campaign_id'), "active_campaigns"]]})
+    Campaign.findAll({where: {merchant_id: merchantId, status: "ONGOING"}, raw:true,attributes:[[db.Sequelize.fn('COUNT','campaign_id'), "active_campaigns"]]})
     .then(data => {
       res.send(data)
     })
