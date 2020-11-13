@@ -71,7 +71,8 @@ class CapabilityRepository extends Repository
     public function getCampaignDetails($data)
     {
         try {
-            return $this->trackerApi('get', $this->api . 'capability/campaigndetail', $data);
+            $uri = http_build_query($data);
+            return $this->trackerApi('get', $this->api . 'capability/campaigndetail?' . $uri, $data);
         } catch(\Exception $e) {
             $this->sessionExpired();
         }

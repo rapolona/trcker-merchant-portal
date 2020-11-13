@@ -96,11 +96,11 @@
                             </div>
 
                             <div class="input-group form-group">
-                              <div class="custom-control custom-switch custom-switch-success">
-                                <input class="custom-control-input" type="checkbox" id="customSwitch3">
-                                <label class="custom-control-label" for="customSwitch3">Do-It-At-Home
-                                </label>
-                              </div>
+                                <div class="custom-control custom-switch custom-switch-success">
+                                    <input class="custom-control-input" {{ (old('branch_id-nobranch')=="on")? 'checked="checked"' : '' }} type="checkbox" name="branch_id-nobranch" id="customSwitch3" />
+                                    <label class="custom-control-label" for="customSwitch3">Do-It-At-Home
+                                    </label>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -237,20 +237,15 @@
                     <div class="table-responsive scroller scroller-horizontal py-3">
                         <table class="table table-striped table-hover" style="min-width: 800px">
                             <tbody>
-                                <td style="width: 40px">
-                                    <div class="custom-control custom-checkbox custom-checkbox-success">
-                                        <input class="custom-control-input" {{ (old('branch_id-nobranch')=="on")? 'checked="checked"' : '' }} type="checkbox" name="branch_id-nobranch" id="branch_id-nobranch" />
-                                        <label class="custom-control-label" for="branch_id-nobranch"></label>
-                                    </div>
-                                </td>
-                                <td>No Branch</td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
-                                <td class="text-right" width="15%">
+                                <td></td>
+                                <td style="width: 10%">Do-It-At-Home</td>
+                                <td class="text-right" style="width:15%">
                                     <input class="form-control {{ $errors->first('submissions-nobranch')? 'form-control-danger' : '' }}" type="text" name="submissions-nobranch" value="{{ old('submissions-nobranch') }}"placeholder="Max Submission">
                                     @if($errors->first('submissions-nobranch'))
                                         <div class="tag-manager-container">
@@ -338,7 +333,7 @@
                         @endforeach
                     @else
                     <div class="row task_container">
-                        <div class="col col-md-3">
+                        <div class="col col-md-4">
                             <div class="form-group row">
                                 <label for="task_type" class="col-sm-2 col-form-label">Task Type</label>
                                 <div class="col-sm-10">
@@ -367,7 +362,7 @@
                                 <input class="form-control" type="text" name="reward[]" placeholder="Reward">
                             </div>
                         </div>
-                        <div class="col col-md-2">
+                        <div class="col col-md-1">
                             <div class="btn-group" role="group" aria-label="Basic example">
                                 <button type="button" class="btn btn-md btn-danger remove_task" id="remove_task_0"><span class="fa-remove"></span></button>
                             </div>
@@ -395,6 +390,8 @@
 @section('js')
     <script type="text/javascript" src="{{url('/vendor/trckr/trckr.js')}}"></script>
     <script type="text/javascript">
+
+        
         //input_end_date
         $('#input_start_date').datepicker({
             dateFormat: 'yy-mm-dd',
@@ -483,7 +480,18 @@
         });
 
         $(document).ready(function (e) {          
-            $("#branch_id-nobranch").change(function(){
+            $('#chkAll').click(function() {
+                if ($(this).prop("checked") == true) 
+                    $(".branch-input:checkbox").each(function(){
+                        $(this).prop("checked", true);
+                    });
+                else 
+                    $(".branch-input:checkbox").each(function(){
+                        $(this).prop("checked", false);
+                    });
+            });
+
+            $("input[name=branch_id-nobranch]:checkbox").change(function(){
                 if (this.checked) {
                     $(".branch-input:checkbox").each(function(){
                         console.log(this);
@@ -525,7 +533,7 @@
                 }
 
                 var html = '<div class="row task_container">';
-                html += '<div class="col col-md-3">';
+                html += '<div class="col col-md-4">';
                 html += '<div class="form-group row">';
                 html += '<label for="task_type" class="col-sm-2 col-form-label">Task Type</label>';
                 html += '<div class="col-sm-10">';
@@ -554,7 +562,7 @@
                 html += '<input class="form-control" type="text" name="reward[]" placeholder="Reward">';
                 html += '</div>';
                 html += '</div>';
-                html += '<div class="col col-md-2">';
+                html += '<div class="col col-md-1">';
                 html += '<div class="btn-group" role="group" aria-label="Basic example">';
                 html += '<button type="button" class="btn btn-md btn-danger remove_task" id="remove_task_0"><span class="fa-remove"></span></button>';
                 html += '</div>';
