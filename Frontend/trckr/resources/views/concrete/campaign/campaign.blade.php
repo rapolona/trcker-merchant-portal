@@ -66,13 +66,13 @@
                                         <button class="btn dropdown-toggle btn-light btn-sm" data-toggle="dropdown"><span>Action</span>
                                         </button>
                                         <div class="dropdown-menu">
-                                            <a class="dropdown-item" href="{{ url('campaign/view/' . $campaign->campaign_id )}}">View</a>
+                                            <!--<a class="dropdown-item" href="{{ url('campaign/view/' . $campaign->campaign_id )}}">View</a>-->
                                             <a class="dropdown-item" href="{{ url('campaign/edit/' . $campaign->campaign_id )}}">Edit</a>
-                                        <!--<a class="dropdown-item" href="{{ url('campaign/delete/' . $campaign->campaign_id )}}">Delete</a>-->
+                                            <!--<a class="dropdown-item" href="{{ url('campaign/delete/' . $campaign->campaign_id )}}">Delete</a>-->
                                             <a class="dropdown-item" href="{{ url('campaign/duplicate/' . $campaign->campaign_id )}}">Duplicate</a>
                                             @if($campaign->status=='DISABLED')
                                                 <a class="dropdown-item" href="{{ url('campaign/status/enable/' . $campaign->campaign_id )}}">Activate</a>
-                                            @else
+                                            @elseif($campaign->status=='ONGOING')
                                                 <a class="dropdown-item" href="{{ url('campaign/status/disable/' . $campaign->campaign_id )}}">Disable</a>
                                             @endif
                                         </div>

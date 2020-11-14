@@ -565,6 +565,8 @@ class CampaignController extends Controller
         foreach ($tasks as &$k)
             $k->task_id = $k->task_classification_id . "|" . $k->task_id;
 
+        //print_r($campaign); exit();
+
         return view('concrete.campaign.edit', [
             'campaign_type' => $campaign_type,
             'branches' => $branches,
@@ -793,11 +795,10 @@ class CampaignController extends Controller
         $this->campaignService->updateStatus($status, $campaignId);
         $msg = [
             "type" => "success",
-            "message" => $campaign['campaign_name'] . " was successfully disabled!",
+            "message" => $campaign['campaign_name'] . " was successfully " . $status. "d!",
         ];
 
-        return redirect('/campaign/view')
-            ->with("formMessage", $msg);
+        return redirect()->back()->with("formMessage", $msg);
     }
 
     /**

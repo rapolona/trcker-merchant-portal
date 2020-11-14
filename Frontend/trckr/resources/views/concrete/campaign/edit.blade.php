@@ -8,7 +8,20 @@
             <div class="container-fluid">
                 <div class="panel panel-nav">
                     <div class="panel-header d-flex flex-wrap align-items-center justify-content-between">
-                        <div class="panel-title">Campaign Details</div>
+                        <div class="col-md-6">
+                            <div class="panel-title">Campaign Details</div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="pull-right">
+                            <strong>Status: </strong>
+                            <span>{{ $campaign['status'] }}</span>
+                            @if($campaign['status']=='DISABLED')
+                                <a class="btn btn-sm btn-danger" href="{{ url('campaign/status/enable/' . $campaign['campaign_id'] )}}">Activate</a>
+                            @elseif($campaign['status']=='ONGOING')
+                                <a class="btn btn-sm btn-success" href="{{ url('campaign/status/disable/' . $campaign['campaign_id'] )}}">Disable</a>
+                            @endif
+                            </div>
+                        </div>
                     </div>
                     <div class="panel-body">
                         <div class="row row-30">
