@@ -377,7 +377,7 @@
 
                 </div>
 
-                <div class="panel-footer">
+                <div class="panel-footer text-right">
                   <div class="group-5">
                      <button class="btn btn-success" type="submit" id="submit">Save Campaign</button>
                   </div>

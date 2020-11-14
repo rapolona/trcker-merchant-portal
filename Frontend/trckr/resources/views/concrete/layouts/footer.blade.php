@@ -2,7 +2,7 @@
         <div class="d-flex justify-content-between align-items-center group-10">
           <div>© Hustle PH</div>
           <div><!-- <span>Scroll Up</span> -->
-            <button class="to-top btn btn-sm btn-primary"><span class="fa-chevron-up"></span></button>
+            <button class="to-top btn btn-sm btn-outline-primary"><span class="fa-chevron-up"></span></button>
           </div>
         </div>
       </footer>

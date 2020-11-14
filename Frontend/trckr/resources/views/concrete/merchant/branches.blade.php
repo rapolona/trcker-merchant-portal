@@ -4,7 +4,7 @@
     <div class="group-10">
         <!-- <a class="btn btn-light" href="{{ url('/merchant/branch/add') }}"><span class="fa-plus"></span><span class="pl-2">Add New Branch</span></a> -->
         <div class="btn-group">
-          <a class="btn btn-primary" href="{{ url('/merchant/branch/add') }}"><span class="fa-plus">Add a new branch</span></a>
+          <a class="btn btn-outline-primary" href="{{ url('/merchant/branch/add') }}"><span class="fa-plus">Add a new branch</span></a>
 <!--           <a class="btn btn-dark" href="#"><span class="fa-upload">Upload CSV</span></a> -->
         </div>
 
