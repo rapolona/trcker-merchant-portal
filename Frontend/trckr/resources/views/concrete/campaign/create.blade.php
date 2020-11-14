@@ -1,7 +1,7 @@
 @extends('concrete.layouts.main')
 
 @section('content')
-    <form method="post" name="create_campaign" id="create_campaign">
+    <form method="post" name="create_campaign" id="create_campaign" enctype="multipart/form-data">
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
         <section class="section-sm campaign-section">
             <div class="container-fluid">
@@ -23,14 +23,14 @@
                                 @endif
                                 <div class="input-group form-group">
                                     <div class="input-group-prepend"><span class="input-group-text"><span class="fa-black-tie"></span></span></div>
-                                    <input class="form-control  {{ $errors->first('budget')? 'form-control-danger' : '' }}" type="text" value="{{ old('budget') }}" name="budget" placeholder="Budget">
+                                    <input class="form-control  {{ $errors->first('budget')? 'form-control-danger' : '' }}" type="number" value="{{ old('budget') }}" name="budget" placeholder="Budget">
                                 </div>
                                 @if($errors->first('budget'))
                                     <div class="tag-manager-container">
                                         <span class="tm-tag badge badge-danger" ><span>{{ $errors->first('budget') }}</span></span>
                                     </div>
                                 @endif
-                                <textarea name="campaign_description" required class="markdown padding-up {{ $errors->first('campaign_description')? 'form-control-danger' : '' }}" style="" data-markdown-footer="Footer placeholder" value="{{ old('campaign_description') }}">Put your campaign description here!</textarea>
+                                <textarea name="campaign_description" required class="markdown padding-up {{ $errors->first('campaign_description')? 'form-control-danger' : '' }}" style="" data-markdown-footer="Footer placeholder">{{ old('campaign_description', 'Put your campaign description here!') }}</textarea>
                                 @if($errors->first('campaign_description'))
                                     <div class="tag-manager-container">
                                         <span class="tm-tag badge badge-danger" ><span>{{ $errors->first('campaign_description') }}</span></span>
@@ -77,23 +77,18 @@
                                         <span class="tm-tag badge badge-danger" ><span>{{ $errors->first('start_date') }}{{ $errors->first('end_date') }}</span></span>
                                     </div>
                                 @endif
-                                <div class="input-group form-group">
-                                    <div class="input-group-prepend"><span class="input-group-text"><span class="fa-institution"></span></span></div>
-                                    <input class="form-control  {{ $errors->first('thumbnail_url')? 'form-control-danger' : '' }}" type="text" value="{{ old('thumbnail_url') }}" name="thumbnail_url" placeholder="Campaign Thumbnail">
+                                <div class="form-group col-md-5 {{ $errors->first('campaign_name')? 'form-control-danger' : '' }}">
+                                    <p>Campaign Thumbnail</p>
+                                    <div class="tower-file mt-3">
+                                        <input class="tower-file-input" name="thumbnail_url" id="demo1" type="file">
+                                        <label class="btn btn-xs btn-success" for="demo1"><span>Upload</span></label>
+                                    </div>
                                 </div>
                                 @if($errors->first('thumbnail_url'))
                                     <div class="tag-manager-container">
                                         <span class="tm-tag badge badge-danger" ><span>{{ $errors->first('thumbnail_url') }}</span></span>
                                     </div>
                                 @endif
-
-                                <div class="form-group col-md-12" style="border:1px solid #ddd; border-radius: 0.25rem; padding: 10px;">
-                                    <p>Campaign Thumbnail</p>
-                                    <div class="tower-file mt-3">
-                                        <input class="tower-file-input" id="demo1" type="file">
-                                        <label class="btn btn-xs btn-success" for="demo1"><span>Upload</span></label>
-                                    </div>
-                                </div>
 
                                 <div class="input-group form-group">
                                     <div class="custom-control custom-switch custom-switch-success">

@@ -19,7 +19,7 @@ Class Repository
     }
     public function validateResponse($response)
     {
-        $expiredHttpCodes = [403, 401];
+        /*$expiredHttpCodes = [403, 401];
         if (in_array($response->getStatusCode(), $expiredHttpCodes))
         {
             $message = json_decode($response->getBody());
@@ -49,7 +49,7 @@ Class Repository
             Session::put('formMessage', $msg);
             Session::save();
             Redirect::back()->send();
-        }
+        }*/
 
         return $response;
     }

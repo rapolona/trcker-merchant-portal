@@ -1,20 +1,21 @@
 @extends('concrete.layouts.main')
 
 @section('content')
-    <form method="post" name="create_campaign" id="create_campaign">
+    <form method="post" name="create_campaign" id="create_campaign" enctype="multipart/form-data">
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
+        <input type="text" name="campaign_id" value="{{ $campaign['campaign_id'] }}">
         <section class="section-sm campaign-section">
             <div class="container-fluid">
                 <div class="panel panel-nav">
                     <div class="panel-header d-flex flex-wrap align-items-center justify-content-between">
-                        <div class="panel-title">Update Campaign Details</div>
+                        <div class="panel-title">Campaign Details</div>
                     </div>
                     <div class="panel-body">
                         <div class="row row-30">
                             <div class="col-md-6">
                                 <div class="input-group form-group">
                                     <div class="input-group-prepend"><span class="input-group-text"><span class="fa-institution"></span></span></div>
-                                    <input required class="form-control  {{ $errors->first('campaign_name')? 'form-control-danger' : '' }}" type="text" value="{{ old('campaign_name') }}" name="campaign_name" placeholder="Campaign Name">
+                                    <input required class="form-control  {{ $errors->first('campaign_name')? 'form-control-danger' : '' }}" type="text" value="{{ old('campaign_name', $campaign['campaign_name']) }}" name="campaign_name" placeholder="Campaign Name">
                                 </div>
                                 @if($errors->first('campaign_name'))
                                     <div class="tag-manager-container">
@@ -23,14 +24,14 @@
                                 @endif
                                 <div class="input-group form-group">
                                     <div class="input-group-prepend"><span class="input-group-text"><span class="fa-black-tie"></span></span></div>
-                                    <input class="form-control  {{ $errors->first('budget')? 'form-control-danger' : '' }}" type="text" value="{{ old('budget') }}" name="budget" placeholder="Budget">
+                                    <input class="form-control  {{ $errors->first('budget')? 'form-control-danger' : '' }}" type="number" value="{{ old('budget', $campaign['budget']) }}" name="budget" placeholder="Budget">
                                 </div>
                                 @if($errors->first('budget'))
                                     <div class="tag-manager-container">
                                         <span class="tm-tag badge badge-danger" ><span>{{ $errors->first('budget') }}</span></span>
                                     </div>
                                 @endif
-                                <textarea name="campaign_description" required class="markdown padding-up {{ $errors->first('campaign_description')? 'form-control-danger' : '' }}" style="" data-markdown-footer="Footer placeholder" value="{{ old('campaign_description') }}">Put your campaign description here!</textarea>
+                                <textarea name="campaign_description" required class="markdown padding-up {{ $errors->first('campaign_description')? 'form-control-danger' : '' }}" style="" data-markdown-footer="Footer placeholder">{{ old('campaign_description', $campaign['campaign_description']) }}</textarea>
                                 @if($errors->first('campaign_description'))
                                     <div class="tag-manager-container">
                                         <span class="tm-tag badge badge-danger" ><span>{{ $errors->first('campaign_description') }}</span></span>
@@ -45,7 +46,7 @@
                                         <option value="">Campaign Type</option>
                                         @foreach ($campaign_type as $ct)
                                             @if(!empty($ct))
-                                                <option {{ (old('campaign_type')==$ct->name)? 'selected="selected"' : '' }} value="{{$ct->name}}">{{$ct->name}}</option>
+                                                <option {{ (old('campaign_type',$campaign['campaign_type'])==$ct->name)? 'selected="selected"' : '' }} value="{{$ct->name}}">{{$ct->name}}</option>
                                             @endif
                                         @endforeach
                                     </select>
@@ -59,27 +60,33 @@
                                     <div class="input-group-prepend"><span class="input-group-text"><span class="fa-caret-square-o-right"></span></span></div>
                                     <select required class="form-control" name="audience" id="audience">
                                         <option value="">Audience</option>
-                                        <option {{ (old('audience')=="All")? 'selected="selected"' : '' }} value="All">All</option>
-                                        <option {{ (old('audience')=="super_shopper")? 'selected="selected"' : '' }} value="super_shopper">Super Shopper</option>
+                                        <option {{ (old('audience', $campaign['audience'])=="All")? 'selected="selected"' : '' }} value="All">All</option>
+                                        <option {{ (old('audience', $campaign['audience'])=="super_shopper")? 'selected="selected"' : '' }} value="super_shopper">Super Shopper</option>
                                     </select>
                                 </div>
-                                @if($errors->first('campaign_type'))
+                                @if($errors->first('audience'))
                                     <div class="tag-manager-container">
-                                        <span class="tm-tag badge badge-danger" ><span>{{ $errors->first('campaign_type') }}</span></span>
+                                        <span class="tm-tag badge badge-danger" ><span>{{ $errors->first('audience') }}</span></span>
                                     </div>
                                 @endif
                                 <div class="input-group form-group">
                                     <div class="input-group-prepend"><span class="input-group-text"><span class="fa-calendar"></span></span></div>
-                                    <input  required class="form-control  {{ $errors->first('start_date') || $errors->first('end_date')? 'form-control-danger' : '' }}" id="daterange1" type="text" value="{{ old('daterange') }} "name="daterange" placeholder="Date Range">
+                                    <input  required class="form-control  {{ $errors->first('start_date') || $errors->first('end_date')? 'form-control-danger' : '' }}" id="daterange1" type="text" value="{{ old('daterange', $campaign['daterange']) }}" name="daterange" placeholder="Date Range">
                                 </div>
                                 @if($errors->first('daterange'))
                                     <div class="tag-manager-container">
                                         <span class="tm-tag badge badge-danger" ><span>{{ $errors->first('start_date') }}{{ $errors->first('end_date') }}</span></span>
                                     </div>
                                 @endif
-                                <div class="input-group form-group">
-                                    <div class="input-group-prepend"><span class="input-group-text"><span class="fa-institution"></span></span></div>
-                                    <input class="form-control  {{ $errors->first('thumbnail_url')? 'form-control-danger' : '' }}" type="text" value="{{ old('thumbnail_url') }}" name="thumbnail_url" placeholder="Campaign Thumbnail">
+                                <div class="form-group col-md-5 {{ $errors->first('campaign_name')? 'form-control-danger' : '' }}">
+                                    <p>Campaign Thumbnail</p>
+                                    <div class="tower-file mt-3">
+                                        <input class="tower-file-input" name="thumbnail_url" id="demo1" type="file">
+                                        <label class="btn btn-xs btn-success" for="demo1"><span>Upload</span></label>
+                                        @if(isset($campaign['thumbnail_url']) && !empty($campaign['thumbnail_url']))
+                                            <div class="tower-file-details"><img class="null" src="{{ $campaign['thumbnail_url'] }}"></div>
+                                        @endif
+                                    </div>
                                 </div>
                                 @if($errors->first('thumbnail_url'))
                                     <div class="tag-manager-container">
@@ -87,17 +94,9 @@
                                     </div>
                                 @endif
 
-                                <div class="form-group col-md-12" style="border:1px solid #ddd; border-radius: 0.25rem; padding: 10px;">
-                                    <p>Campaign Thumbnail</p>
-                                    <div class="tower-file mt-3">
-                                        <input class="tower-file-input" id="demo1" type="file">
-                                        <label class="btn btn-xs btn-success" for="demo1"><span>Upload</span></label>
-                                    </div>
-                                </div>
-
                                 <div class="input-group form-group">
                                     <div class="custom-control custom-switch custom-switch-success">
-                                        <input class="custom-control-input" type="checkbox" name="branch_id-nobranch" {{ old('branch_id-nobranch')? 'checked=""' : '' }} id="branch_id-nobranch">
+                                        <input class="custom-control-input" type="checkbox" name="branch_id-nobranch" {{ old('branch_id-nobranch', $campaign['branch_id-nobranch'] )? 'checked=""' : '' }} id="branch_id-nobranch">
                                         <label class="custom-control-label" for="branch_id-nobranch">Do-It-At-Home
                                         </label>
                                         <input type="hidden" name="nobranch_submissions" value="100" />
@@ -215,7 +214,7 @@
                                         <td style="width: 40px">
                                             <div class="custom-control custom-checkbox custom-checkbox-success">
                                                 <input class="branch-input custom-control-input branch-id-checkbox" type="checkbox" name="branch_id[]" id="{{ $branch->branch_id }}" value="{{ $branch->branch_id }}"
-                                                       @if(is_array(old('branch_id')) && in_array($branch->branch_id, old('branch_id'))) checked @endif />
+                                                       @if(is_array(old('branch_id', $campaign['branch_id'])) && in_array($branch->branch_id, old('branch_id', $campaign['branch_id']))) checked @endif />
                                                 <label class="custom-control-label" for="{{ $branch->branch_id }}"></label>
                                             </div>
                                         </td>
@@ -228,12 +227,12 @@
                                         <td>{{ $branch->region }}</td>
                                         <td class="text-right" width="15%">
                                             @php
-                                                if(old('branch_id'))
+                                                if(old('branch_id', $campaign['branch_id']))
     {
-        $branchIdKey = array_search($branch->branch_id, old('branch_id'));
+        $branchIdKey = array_search($branch->branch_id, old('branch_id', $campaign['branch_id']));
     }
                                             @endphp
-                                            <input @if(is_array(old('branch_id')) && in_array($branch->branch_id, old('branch_id'))) name="submission[]" value="{{ old('submission.' . $branchIdKey ) }}" @else disabled @endif class="branch-input form-control max-submission" type="number" placeholder="Max Submission">
+                                            <input @if(is_array(old('branch_id', $campaign['branch_id'])) && in_array($branch->branch_id, old('branch_id', $campaign['branch_id']))) name="submission[]" value="{{ old('submission.' . $branchIdKey, $campaign['submission'][$branchIdKey] ) }}" @else disabled @endif class="branch-input form-control max-submission" type="number" placeholder="Max Submission">
                                         </td>
                                     </tr>
                                 @endforeach
@@ -256,14 +255,14 @@
                     <div class="panel-body">
                         <div id="taskBody">
                             @for($x = 0; $x <= 5; $x++)
-                                @if($x==0 || old('task_type.' . $x))
+                                @if($x==0 || old('task_type.' . $x, (isset($campaign['tasks'][$x]->task_id))? $campaign['tasks'][$x]->task_id : ''))
                                     <div class="row row-30 task-container">
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <select class="form-control task_type" required name="task_type[]" style="width: 100%;">
                                                     <option value="">Select Task Type</option>
                                                     @foreach ($task_type as $ct)
-                                                        <option {{ (old('task_type.' . $x) == $ct->task_classification_id)? 'selected="selected"' : '' }} value="{{$ct->task_classification_id}}">{{$ct->name}}</option>
+                                                        <option {{ (old('task_type.' . $x, $campaign['tasks'][$x]->task_type) == $ct->task_classification_id)? 'selected="selected"' : '' }} value="{{$ct->task_classification_id}}">{{$ct->name}}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -278,7 +277,7 @@
                                         <div class="col-md-3">
                                             <div class="input-group">
                                                 <div class="input-group-prepend"><span class="input-group-text"><span class="fa-building"></span></span></div>
-                                                <input class="form-control" required type="number" name="reward_amount[]" value="{{old('reward_amount.' . $x)}}" placeholder="Reward">
+                                                <input class="form-control" required type="number" name="reward_amount[]" value="{{old('reward_amount.' . $x, $campaign['tasks'][$x]->reward_amount)}}" placeholder="Reward">
                                             </div>
                                         </div>
 

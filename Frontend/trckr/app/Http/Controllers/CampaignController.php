@@ -215,9 +215,6 @@ class CampaignController extends Controller
     public function create_campaign(Request $request)
     {
         $data = $request->all();
-
-        //print_r($data); exit();
-
         $validations = [
             "start_date" => "required|date|after_or_equal:today",
             "end_date" => "required|date|after_or_equal:start_date",
@@ -230,7 +227,7 @@ class CampaignController extends Controller
             "status" => "",
             "task_type" => "",
             "audience" => "required",
-            "thumbnail_url" => "required|url"
+            "thumbnail_url" => "required|max:100"
         ];
 
         //validation on daterange
@@ -282,6 +279,9 @@ class CampaignController extends Controller
             "tasks" => array()
         );
 
+        if ( ! empty($data['thumbnail_url']))
+            $request_data['thumbnail_url'] = 'data:' . $data['thumbnail_url']->getMimeType() . ';base64,' . base64_encode(file_get_contents($data['thumbnail_url']));
+
         if ( ! empty($data["branch_id-nobranch"]) && $data["branch_id-nobranch"] == "on") {
             $request_data["at_home_campaign"] = 1;
             $request_data["at_home_respondent_count"] = $data["nobranch_submissions"];
@@ -307,8 +307,6 @@ class CampaignController extends Controller
                 'reward_amount' => $data['reward'][$i]
             );
         }
-
-        //print_r($request_data); exit();
 
         $response = $this->campaignService->create($request_data);
 
@@ -513,6 +511,12 @@ class CampaignController extends Controller
         ]);
     }
 
+
+
+
+
+
+
     public function edit($campaignId, Request $request)
     {
         $data = (array) $request->all();
@@ -536,10 +540,27 @@ class CampaignController extends Controller
         $branches = $this->branchService->getAll($data);
         $branch_filters = $this->branchService->getFilters();
         $campaign = (array) $this->campaignService->get($campaignId);
+        $campaign['audience'] = ($campaign['allow_everyone']==1)? 'All' : 'super_shopper';
+        $campaign['daterange'] = date('m/d/Y', strtotime($campaign['start_date'])) . " - " . date('m/d/Y', strtotime($campaign['end_date']));
+        $campaign['branch_id-nobranch'] = ($campaign['branches'][0]->branch_id == 'fbe9b0cf-5a77-4453-a127-9a8567ff3aa7')? true : false;
 
-        //check branch Do-it-home id fbe9b0cf-5a77-4453-a127-9a8567ff3aa7
-        $campaign['']
-        //print_r($campaign); exit();
+        // TASK ALIGNMENT TO CREATE old()
+        foreach($tasks as $k){
+            foreach ($campaign['tasks']  as $camTkey => $camTask ){
+                if($k->task_id==$camTask->task_id){
+                    $campaign['tasks'][$camTkey]->task_type = $k->task_classification->task_classification_id;
+                }
+            }
+        }
+
+        // BRANCH ALIGNMENT TO CREATE old()
+        $campaign['branch_id'] = [];
+        $campaign['submission'] = [];
+        $campaign['campaign_id'] = $campaignId;
+        foreach ($campaign['branches'] as $bKey =>$branch){
+            $campaign['branch_id'][$bKey] = $branch->branch_id;
+            $campaign['submission'][$bKey] = $branch->respondent_count;
+        }
 
         foreach ($tasks as &$k)
             $k->task_id = $k->task_classification_id . "|" . $k->task_id;
@@ -552,114 +573,169 @@ class CampaignController extends Controller
             'tasks' => $tasks,
             'campaign' => $campaign
         ]);
+
+
     }
 
-    public function edit_campaign(Request $request)
+    public function edit_campaign($campaignId, Request $request)
     {
         $data = $request->all();
-
-        $validator = Validator::make($request->all(), [
-            "campaign_id" => "required",
-            "task_actions" => "required",
+        $validations = [
             "start_date" => "required|date|after_or_equal:today",
             "end_date" => "required|date|after_or_equal:start_date",
-            "budget" => "required",
             'campaign_name' => 'required|max:64',
             'campaign_type' => 'required',
-            'campaign_description' => 'required|max:64',
-            "budget" => "required|lt:1000000000",
-            "reward" => "required|lt:budget",
+            'campaign_description' => 'required',
+            "budget" => "required|numeric|lt:1000000000",
+            "reward.*" => "required|numeric|lt:budget",
+            "task_actions.*" => "required",
             "status" => "",
-            "task_type" => "required",
-            "branches" => "required",
+            "task_type" => "",
             "audience" => "required"
-        ]);
+        ];
+
+        //validation on daterange
+        $date_range = explode(" - ", $data["daterange"]);
+        $data["start_date"] = DateTime::createFromFormat("m/d/Y" , $date_range[0]);
+        $data["start_date"] = $data["start_date"]->format('Y-m-d');
+        $data["end_date"] = DateTime::createFromFormat("m/d/Y" , $date_range[1]);
+        $data["end_date"] = $data["end_date"]->format('Y-m-d');
+
+        //validation on submissions
+        $data["branches"] = array();
+
+        //validation on task action classifiations, tasks and rewards
+        $temp_task_actions = $data['task_id'];
+        $temp_task_type = $data['task_type'];
+        $temp_reward= $data['reward_amount'];
+        unset($data['task_actions']);
+        unset($data['task_type']);
+        unset($data['reward']);
+        $data['task_actions'] = array();
+
+        $count = 0;
+        foreach($temp_task_actions as $k => $v)
+        {
+            $data['task_actions'][] = $temp_task_actions[$k];
+            $data['task_type'][] = $temp_task_type[$k];
+            $data['reward'][] = $temp_reward[$k];
+        }
+
+        $validator = Validator::make($data, $validations);
 
         if ($validator->fails())
         {
-            $error_string = "<b>Fields with Errors</b><br/>";
-            foreach ($validator->errors()->messages() as $k => $v)
-            {
-                $error_string .= "{$k}: <br/>";
-                foreach ($v as $l)
-                    $error_string .= "{$l}<br/>";
-            }
-
-            return Response()->json([
-                "success" => false,
-                "message" => $error_string,
-                "file" => $data,
-            ], 422);
+            return redirect()->back()->withErrors($validator)->withInput();
         }
 
         $request_data = array(
-            "campaign_id" => $data['campaign_id'],
             "start_date" => $data['start_date'],
             "end_date" => $data['end_date'],
             "budget" => $data['budget'],
             "campaign_name" => $data['campaign_name'],
-            "campaign_type" => $data['campaign_type'],
             "campaign_description" => $data['campaign_description'],
-            "reward" => array(
-                "reward_name" => "Cash Voucher",
-                "reward_description" => "Cash Voucher",
-                "type" => "VOUCHER",
-                "amount" => $data['reward']
-            ),
-            "status" => 1,
-            "task_type" => $data['task_type'],
-            //"task_actions" => array(),
+            "thumbnail_url" => !empty($data['thumbnail_url']) ? $data['thumbnail_url'] : '',
+            "description_image_url" => "",
+            "super_shoppers" => ($data['audience'] == "super_shopper") ? 1 : 0,
+            "allow_everyone" => ($data['audience'] == "All") ? 1 : 0,
+            "task_type" => $data['campaign_type'],
             "branches" => array(),
             "tasks" => array()
         );
 
-        if ($data['audience'][0] == "All") {
-            $request_data['allow_everyone'] = 1;
+        if ( ! empty($data['thumbnail_url']))
+            $request_data['thumbnail_url'] = 'data:' . $data['thumbnail_url']->getMimeType() . ';base64,' . base64_encode(file_get_contents($data['thumbnail_url']));
+
+        if ( ! empty($data["branch_id-nobranch"]) && $data["branch_id-nobranch"] == "on") {
+            $request_data["at_home_campaign"] = 1;
+            $request_data["at_home_respondent_count"] = $data["nobranch_submissions"];
+            $request_data["reward"] = array(
+                "reward_name" => "Cash",
+                "reward_description" => "Cash reward",
+                "type" => "CASH",
+                "amount" => array_sum($data["reward"])
+            );
+        }
+        else {
+            foreach($data['branch_id'] as $k => $v){
+                $request_data['branches'][] = array(
+                    'branch_id' => $v,
+                    'respondent_count' => $data["submission"][$k]
+                );
+            }
         }
 
-        if ($data['audience'][0] == "Super Shopper") {
-            $request_data['super_shopper'] = 1;
-        }
-
-        //ensure at least 1 respondent
-        $respondents = ceil( $data['budget'] / $data['reward'] / count($data['branches']));
-
-        foreach($data['branches'] as $k) {
-            $request_data['branches'][] = array(
-                'branch_id' => $k,
-                'respondents' => $respondents
+        for($i = 0; $i < count($data['task_actions']); $i++) {
+            $request_data['tasks'][$i] = array(
+                'task_id' => $data['task_actions'][$i],
+                'reward_amount' => $data['reward'][$i]
             );
         }
 
-        foreach($data['task_actions'] as $k) {
-            $request_data['tasks'][] = array(
-                'task_id' => $k
-            );
+
+        $response = $this->campaignService->update($request_data);
+
+        print_r($response); exit();
+        $msg = [
+                "type" => "success",
+                "message" => "Update Campaign Successful!",
+            ];
+
+        $data = (array) $request->all();
+        $task_type = $this->taskService->getTaskActionClassification();
+        $tasks = $this->taskService->getTaskByMerchant();
+        $campaign_type = (object) array(
+            (object) array(
+                'campaign_type_id' => 1,
+                'name' => "Merchandising"
+            ),
+            (object) array(
+                'campaign_type_id' => 2,
+                'name' => "Mystery Shopper"
+            ),
+            (object) array(
+                'campaign_type_id' => 3,
+                'name' => "Shopper Insignting"
+            ),
+        );
+
+        $branches = $this->branchService->getAll($data);
+        $branch_filters = $this->branchService->getFilters();
+        $campaign = (array) $this->campaignService->get($campaignId);
+        $campaign['audience'] = ($campaign['allow_everyone']==1)? 'All' : 'super_shopper';
+        $campaign['daterange'] = date('m/d/Y', strtotime($campaign['start_date'])) . " - " . date('m/d/Y', strtotime($campaign['end_date']));
+        $campaign['branch_id-nobranch'] = ($campaign['branches'][0]->branch_id == 'fbe9b0cf-5a77-4453-a127-9a8567ff3aa7')? true : false;
+
+        // TASK ALIGNMENT TO CREATE old()
+        foreach($tasks as $k){
+            foreach ($campaign['tasks']  as $camTkey => $camTask ){
+                if($k->task_id==$camTask->task_id){
+                    $campaign['tasks'][$camTkey]->task_type = $k->task_classification->task_classification_id;
+                }
+            }
         }
 
-
-        $api_endpoint = Config::get('trckr.backend_url') . "merchant/campaign/update";
-
-        $session = $request->session()->get('session_merchant');
-        $token = ( ! empty($session->token)) ? $session->token : "";
-
-        $response = Http::withToken($token)->put($api_endpoint, $request_data);
-
-        if ($response->status() !== 200)
-        {
-            //provide handling for failed merchant profile modification
-            return Response()->json([
-                "success" => false,
-                "message" => "Failed to Edit Campaign.", // with error:" . $response->body(),
-                "file" => $request_data,
-            ], 422);
+        // BRANCH ALIGNMENT TO CREATE old()
+        $campaign['branch_id'] = [];
+        $campaign['submission'] = [];
+        $campaign['campaign_id'] = $campaignId;
+        foreach ($campaign['branches'] as $bKey =>$branch){
+            $campaign['branch_id'][$bKey] = $branch->branch_id;
+            $campaign['submission'][$bKey] = $branch->respondent_count;
         }
 
-        return Response()->json([
-            "success" => true,
-            "message" => "Campaign modification successful!", // . $response->body(),
-            "file" => $request_data
+        foreach ($tasks as &$k)
+            $k->task_id = $k->task_classification_id . "|" . $k->task_id;
+
+        return view('concrete.campaign.edit', [
+            'campaign_type' => $campaign_type,
+            'branches' => $branches,
+            'branch_filters' => $branch_filters,
+            'task_type' => $task_type,
+            'tasks' => $tasks,
+            'campaign' => $campaign
         ]);
+
     }
 
 
