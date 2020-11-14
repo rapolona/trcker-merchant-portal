@@ -1,13 +1,13 @@
 @extends('concrete.layouts.main')
 
 @section('content')
-<form method="post" name="create_campaign" id="create_campaign">
+<form method="post" name="create_campaign" id="create_campaign" enctype="multipart/form-data">
     <input type="hidden" name="_token" value="{{ csrf_token() }}">
     <section class="section-sm campaign-section">
         <div class="container-fluid">
             <div class="panel panel-nav">
                 <div class="panel-header d-flex flex-wrap align-items-center justify-content-between">
-                    <div class="panel-title">Campaign Details</div>
+                    <div class="panel-title">Campaign Details {{ $campaign->at_home_campaign }}</div>
                 </div>
                 <div class="panel-body">
                     <div class="row row-30">
@@ -77,9 +77,13 @@
                                     <span class="tm-tag badge badge-danger" ><span>{{ $errors->first('start_date') }}{{ $errors->first('end_date') }}</span></span>
                                 </div>
                             @endif
-                            <div class="input-group form-group">
-                                <div class="input-group-prepend"><span class="input-group-text"><span class="fa-institution"></span></span></div>
-                                <input class="form-control  {{ $errors->first('thumbnail_url')? 'form-control-danger' : '' }}" type="text" value="{{ old('thumbnail_url', $campaign->thumbnail_url) }}" name="thumbnail_url" placeholder="Campaign Thumbnail">
+                            <div class="form-group col-md-12" style="border:1px solid #ddd; border-radius: 0.25rem; padding: 10px;">
+                              <p>Campaign Thumbnail</p>
+                              <div class="tower-file mt-3">
+                                <input class="tower-file-input {{ $errors->first('thumbnail_url')? 'form-control-danger' : '' }}" name="thumbnail_url" value="{{ old('thumbnail_url', $campaign->thumbnail_url) }}" id="demo1" type="file">
+                                <label class="btn btn-xs btn-success" for="demo1"><span>Upload</span></label>
+                                <div class="tower-file-details"><img class="null" src="{{ old('thumbnail_url', $campaign->thumbnail_url) }}"></div>
+                              </div>
                             </div>
                             @if($errors->first('thumbnail_url'))
                                 <div class="tag-manager-container">
@@ -87,17 +91,10 @@
                                 </div>
                             @endif
 
-                            <div class="form-group col-md-12" style="border:1px solid #ddd; border-radius: 0.25rem; padding: 10px;">
-                              <p>Campaign Thumbnail</p>
-                              <div class="tower-file mt-3">
-                                <input class="tower-file-input" id="demo1" type="file">
-                                <label class="btn btn-xs btn-success" for="demo1"><span>Upload</span></label>
-                              </div>
-                            </div>
-
                             <div class="input-group form-group">
                                 <div class="custom-control custom-switch custom-switch-success">
-                                    <input class="custom-control-input" {{ (old('branch_id-nobranch')=="on")? 'checked="checked"' : '' }} type="checkbox" name="branch_id-nobranch" id="customSwitch3" />
+                                    <input type="hidden" name="checker" id="checker" value="{{ old('checker', 1)}}">
+                                    <input class="custom-control-input" {{ (old('branch_id-nobranch', ( ! empty($campaign->at_home_campaign) AND $campaign->at_home_campaign) ? "on" : "")=="on")? 'checked="checked"' : '' }} type="checkbox" name="branch_id-nobranch" id="customSwitch3" />
                                     <label class="custom-control-label" for="customSwitch3">Do-It-At-Home
                                     </label>
                                 </div>
@@ -116,7 +113,7 @@
                     <div class="panel-title">Branch Details</div>
                 </div>
                 <div class="panel-header">
-                    <div class="row row-30">
+                    <div class="row row-30" id="branch_header">
                         <div class="col-lg-2">
                             @if(isset($branch_filters->business_type))
                             <select class="select2 hustle-filter" data-placeholder="Business Type" name="business_type">
@@ -207,7 +204,7 @@
                                 <th>Address</th>
                                 <th>City</th>
                                 <th>Region</th>
-                                <th style="width:15%">Branch Submissions }</th>
+                                <th style="width:15%">Branch Submissions</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -225,7 +222,7 @@
                                             <label class="custom-control-label" for="{{ $branch->branch_id }}"></label>
                                         </div>
                                     </td>
-                                    <td>{{ $branch->name }}</td>
+                                    <td>{{ $branch->name }} {{$branch->branch_id == $temp_branch}}</td>
                                     <td>{{ $branch->business_type }}</td>
                                     <td>{{ $branch->store_type }}</td>
                                     <td>{{ $branch->brand }}</td>
@@ -248,21 +245,16 @@
                     <div class="table-responsive scroller scroller-horizontal py-3">
                         <table class="table table-striped table-hover" style="min-width: 800px">
                             <tbody>
-                                <td style="width: 40px">
-                                    <div class="custom-control custom-checkbox custom-checkbox-success">
-                                        <input class="custom-control-input" {{ (old('branch_id-nobranch')=="on")? 'checked="checked"' : '' }} type="checkbox" name="branch_id-nobranch" id="branch_id-nobranch" />
-                                        <label class="custom-control-label" for="branch_id-nobranch"></label>
-                                    </div>
-                                </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
                                 <td>No Branch</td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
                                 <td class="text-right" width="15%">
-                                    <input class="form-control {{ $errors->first('submissions-nobranch')? 'form-control-danger' : '' }}" type="text" name="submissions-nobranch" value="{{ old('submissions-nobranch') }}"placeholder="Max Submission">
+                                    <input class="form-control {{ $errors->first('submissions-nobranch')? 'form-control-danger' : '' }}" type="text" name="submissions-nobranch" value="{{ old('submissions-nobranch', $campaign->at_home_respondents_count) }}"placeholder="Max Submission">
                                     @if($errors->first('submissions-nobranch'))
                                         <div class="tag-manager-container">
                                             <span class="tm-tag badge badge-danger" ><span>{{ $errors->first('submissions-nobranch') }}</span></span>
@@ -282,7 +274,13 @@
         <div class="container-fluid">
             <div class="panel panel-nav">
                 <div class="panel-header d-flex flex-wrap align-items-center justify-content-between">
-                    <div class="panel-title">Task Details</div>
+                    <div class="panel-title">Task Details
+                    @if($errors->first('rewards_sum'))
+                        <div class="tag-manager-container">
+                            <span class="tm-tag badge badge-danger" ><span>{{ $errors->first('rewards_sum') }}</span></span>
+                        </div>
+                    @endif
+                    </div>
                     <button class="btn btn-sm" type="button" id="add_task"><span class="fa-plus">Add more task</span></button>
                 </div>
                 <div class="panel-body">
@@ -437,6 +435,10 @@
         });
 
         $(document).on("click", ".remove_task" , function() {
+            if ( $(this).parent().parent().parent().siblings().length < 1) {
+                alert ("Minimum Tasks for Campaigns is 1");
+                return;
+            }
             $(this).parent().parent().parent().remove();
         });
 
@@ -469,7 +471,9 @@
         });
 
         $(document).ready(function (e) {          
-            $("input[name=branch_id-nobranch]:checkbox").change(function(){
+            var toggler = $("input[name=branch_id-nobranch]:checkbox");
+            
+            $(toggler).change(function(){
                 if (this.checked) {
                     $(".branch-input:checkbox").each(function(){
                         console.log(this);
@@ -479,6 +483,8 @@
                         console.log(this);
                         $(this).prop("disabled", true);
                     });
+                    $("#branch_header").hide();
+                    $("#branch_table").hide();
                 }
                 else $(".branch-input ").each(function(){
                     $(".branch-input:checkbox").each(function(){
@@ -489,8 +495,14 @@
                         console.log(this);
                         $(this).prop("disabled", false);
                     });
+                    $("#branch_header").show();
+                    $("#branch_table").show();
                 });
-            });  
+            });
+
+            if ( $(toggler).is(":checked")) {
+                $(toggler).change();
+            }
 
             $("#submit").click(function(){
             });

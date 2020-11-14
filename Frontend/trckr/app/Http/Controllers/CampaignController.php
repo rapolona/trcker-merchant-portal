@@ -78,11 +78,9 @@ class CampaignController extends Controller
             ];
         }
         
-        /*
         return Response()->json([
             "data" => $datatables_branches
         ], 200);
-        */
     }
 
     public function view_campaign(Request $request)
@@ -234,7 +232,7 @@ class CampaignController extends Controller
             "task_type" => "",
             //"branches" => "required",
             "audience" => "required",
-            "thumbnail_url" => "required|url"
+            "thumbnail_url" => "required|max:100"
         ];
 
         //validation on daterange
@@ -246,10 +244,12 @@ class CampaignController extends Controller
 
         //validation on submissions
         $data["branches"] = array();
+        $total_respondents = 0;
         foreach ($data as $k => $v)
         {
             if (strpos($k, 'branch_id-nobranch') !== false AND $v == "on") {
                 $validations["submissions-nobranch"] = "required|numeric";
+                $total_respondents += $data["submissions-nobranch"];
             }
             if (strpos($k, 'branch_id') !== false AND $v == "on"){
                 $temp = explode("-", $k, 2);
@@ -258,6 +258,8 @@ class CampaignController extends Controller
                     "branch_id" => $temp[1],
                     "respondent_count" => $data["submissions-" . $temp[1]]
                 );
+                break;
+                $total_respondents += $data["submissions-" . $temp[1]];
             }
         }
         
@@ -276,6 +278,7 @@ class CampaignController extends Controller
         $data['task_actions'] = array();
 
         $count = 0;
+        $total_rewards = 0;
         foreach($temp_task_actions as $k)
         {
             if ( ! empty($k)) {
@@ -283,6 +286,7 @@ class CampaignController extends Controller
                 $data['task_actions'][] = $temp[1];
                 $data['task_type'][] = $temp[0];
                 $data['reward'][] = $temp_reward[$count];
+                $total_rewards += $temp_reward[$count];
             }
             else {
                 $data['task_actions'][] = NULL;
@@ -291,6 +295,9 @@ class CampaignController extends Controller
             }
             $count+=1;
         }
+
+        $data["rewards_sum"] = $total_respondents * $total_rewards;
+        $validations["rewards_sum"] = "lte:budget";
 
         $validator = Validator::make($data, $validations);
 
@@ -305,7 +312,7 @@ class CampaignController extends Controller
             "budget" => $data['budget'],
             "campaign_name" => $data['campaign_name'],
             "campaign_description" => $data['campaign_description'],
-            "thumbnail_url" => $data['thumbnail_url'],
+            "thumbnail_url" => 'data:' . $data['thumbnail_url']->getMimeType() . ';base64,' . base64_encode(file_get_contents($data['thumbnail_url'])),
             "description_image_url" => "",
             "super_shoppers" => ($data['audience'] == "super_shopper") ? 1 : 0,
             "allow_everyone" => ($data['audience'] == "All") ? 1 : 0,
@@ -321,8 +328,9 @@ class CampaignController extends Controller
                 "reward_name" => "Cash",
                 "reward_description" => "Cash reward",
                 "type" => "CASH",
-                "amount" => array_sum($data["reward"])
+                "amount" => $data["rewards_sum"]
             );
+            unset($request_data["branches"]);
         }
         else $request_data["branches"] = $data["branches"];
 
@@ -543,6 +551,8 @@ class CampaignController extends Controller
         $data = (array) $request->all();
 
         $campaign = $this->campaignService->get($campaign_id);
+        $campaigns = $this->campaignService->getAll();
+
         $campaign->campaign_id = $campaign_id;
         
         $campaign->start_date = DateTime::createFromFormat("Y-m-d" , $campaign->start_date);
@@ -552,7 +562,7 @@ class CampaignController extends Controller
         $campaign->daterange = "{$campaign->start_date} - {$campaign->end_date}";
 
         $campaign_detail = $this->capabilityService->getCampaignDetails(array("campaign_id" => $campaign_id));
-        
+
         $task_type = $this->taskService->getTaskActionClassification();
 
         $tasks = $this->taskService->getTaskByMerchant();
@@ -573,6 +583,15 @@ class CampaignController extends Controller
         );
 
         $branches = $this->branchService->getAll(array());
+
+        $campaign->at_home_campaign = 0;
+        $campaign->at_home_respondents_count = 0;
+        foreach($campaigns as $k) {
+            if ($k->campaign_id == $campaign->campaign_id AND $k->at_home_campaign == 1) {
+                $campaign->at_home_campaign = 1;
+                $campaign->at_home_respondents_count = $k->branches[0]->campaign_branch_association->respondent_count;
+            }
+        }        
 
         $branch_filters = $this->branchService->getFilters();
 
@@ -612,7 +631,7 @@ class CampaignController extends Controller
             "task_type" => "",
             //"branches" => "required",
             "audience" => "required",
-            "thumbnail_url" => "required|url"
+            //"thumbnail_url" => "required|max:100"
         ];
 
         //validation on daterange
@@ -624,10 +643,12 @@ class CampaignController extends Controller
 
         //validation on submissions
         $data["branches"] = array();
+        $total_respondents = 0;
         foreach ($data as $k => $v)
         {
             if (strpos($k, 'branch_id-nobranch') !== false AND $v == "on") {
                 $validations["submissions-nobranch"] = "required|numeric";
+                $total_respondents += $data["submissions-nobranch"];
             }
             if (strpos($k, 'branch_id') !== false AND $v == "on"){
                 $temp = explode("-", $k, 2);
@@ -636,6 +657,7 @@ class CampaignController extends Controller
                     "branch_id" => $temp[1],
                     "respondent_count" => $data["submissions-" . $temp[1]]
                 );
+                $total_respondents += $data["submissions-" . $temp[1]];
             }
         }
 
@@ -654,6 +676,7 @@ class CampaignController extends Controller
         $data['task_actions'] = array();
 
         $count = 0;
+        $total_rewards = 0;
         foreach($temp_task_actions as $k)
         {
             if ( ! empty($k)) {
@@ -661,6 +684,7 @@ class CampaignController extends Controller
                 $data['task_actions'][] = $temp[1];
                 $data['task_type'][] = $temp[0];
                 $data['reward'][] = $temp_reward[$count];
+                $total_rewards += $temp_reward[$count];
             }
             else {
                 $data['task_actions'][] = NULL;
@@ -669,6 +693,11 @@ class CampaignController extends Controller
             }
             $count+=1;
         }
+
+        $validations["rewards"] = "lte:" . $total_respondents * $total_rewards;
+
+        $data["rewards_sum"] = $total_respondents * $total_rewards;
+        $validations["rewards_sum"] = "lte:budget";
 
         $validator = Validator::make($data, $validations);
 
@@ -684,7 +713,6 @@ class CampaignController extends Controller
             "budget" => $data['budget'],
             "campaign_name" => $data['campaign_name'],
             "campaign_description" => $data['campaign_description'],
-            "thumbnail_url" => $data['thumbnail_url'],
             "description_image_url" => "",
             "super_shoppers" => ($data['audience'] == "super_shopper") ? 1 : 0,
             "allow_everyone" => ($data['audience'] == "All") ? 1 : 0,
@@ -693,17 +721,17 @@ class CampaignController extends Controller
             "tasks" => array()
         );
 
-        
+        if ( ! empty($data["thumbnail_url"])) $request_data["thumbnail_url"] = 'data:' . $data['thumbnail_url']->getMimeType() . ';base64,' . base64_encode(file_get_contents($data['thumbnail_url']));
 
         if ( ! empty($data["branch_id-nobranch"]) AND $data["branch_id-nobranch"] == "on") {
-            unset($data["branches"]);
+            unset($request_data["branches"]);
             $request_data["at_home_campaign"] = 1;
             $request_data["at_home_respondent_count"] = $data["submissions-nobranch"];
             $request_data["reward"] = array(
                 "reward_name" => "Cash",
                 "reward_description" => "Cash reward",
                 "type" => "CASH",
-                "amount" => array_sum($data["reward"])
+                "amount" => $data["rewards_sum"]
             );
         }
         else $request_data["branches"] = $data["branches"];
@@ -715,8 +743,6 @@ class CampaignController extends Controller
             );
         }
 
-
-        //var_dump($request_data);exit;
         $response = $this->campaignService->update($request_data);
 
         $msg = [
