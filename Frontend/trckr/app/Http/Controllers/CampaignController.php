@@ -275,6 +275,7 @@ class CampaignController extends Controller
             "super_shoppers" => ($data['audience'] == "super_shopper") ? 1 : 0,
             "allow_everyone" => ($data['audience'] == "All") ? 1 : 0,
             "task_type" => $data['campaign_type'],
+            "campaign_type" => $data['campaign_type'],
             "branches" => array(),
             "tasks" => array()
         );
@@ -641,6 +642,7 @@ class CampaignController extends Controller
             "super_shoppers" => ($data['audience'] == "super_shopper") ? 1 : 0,
             "allow_everyone" => ($data['audience'] == "All") ? 1 : 0,
             "task_type" => $data['campaign_type'],
+            "campaign_type" => $data['campaign_type'],
             "branches" => array(),
             "tasks" => array(),
             "campaign_id" => $data['campaign_id'],
