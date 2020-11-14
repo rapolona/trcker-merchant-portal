@@ -13,8 +13,111 @@
 
 @section('content')
     <div class="panel">
-        <div class="panel-header">
-            <div class="row">
+        <div class="panel-header d-flex flex-wrap align-items-center justify-content-between">
+            <div class="panel-title">Merchant Branches</div>
+            <div class="btn-group">
+                <form method="POST" enctype="multipart/form-data" id="file_upload" action="{{ url('merchant/branch/upload') }}" >
+                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                    <input type="file" name="file" id="file" style="display:none">
+                    <button class="btn btn-light btn-md" type="button" value="Upload CSV" id="upload_csv">
+                        <span class="fa-upload"></span>
+                        <span class="spinner-border spinner-border-sm" role="status" id="loader_upload_csv" aria-hidden="true" disabled> </span>
+                        Upload CSV
+                    </button>
+                </form>
+                <form method="POST" id="deleteForm" action="{{ url('merchant/branch/bulkdelete')  }}" >
+                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                    <input type="hidden" name="delete_ids" id="delete_ids"  value="">
+                    <button class="btn btn-danger btn-md" type="button" id="delete">
+                        <span class="mdi-delete-variant"></span>
+                        <span class="spinner-border spinner-border-sm" role="status" id="loader_upload_csv" aria-hidden="true" disabled> </span>
+                        Delete
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <div class="panel-menu">
+            <div class="row row-30">      
+                <div class="col-lg-2">
+                    @if(isset($filters->business_type))
+                    <select class="select2 hustle-filter" data-placeholder="Business Type" name="business_type">
+                        <option label="placeholder"></option>
+                        <option value="all">ALL</option>
+                        @foreach ($filters->business_type as $option)
+                            @if(!empty($option))
+                            <option {{ (isset($selectedFilter['business_type']) && $selectedFilter['business_type']==$option)? 'selected="selected"' : '' }} value="{{ $option }}">{{ $option }}</option>
+                            @endif
+                        @endforeach
+                    </select>
+                    @endif
+                </div>
+                <div class="col-lg-2">
+                    @if(isset($filters->store_type))
+                        <select class="select2 hustle-filter" data-placeholder="Store Type" name="store_type">
+                            <option label="placeholder"></option>
+                            <option value="all">ALL</option>
+                            @foreach ($filters->store_type as $option)
+                                @if(!empty($option))
+                                    <option {{ (isset($selectedFilter['store_type']) && $selectedFilter['store_type']==$option)? 'selected="selected"' : '' }} value="{{ $option }}">{{ $option }}</option>
+                                @endif
+                            @endforeach
+                        </select>
+                    @endif
+                </div>
+                <div class="col-lg-2">
+                    @if(isset($filters->brand))
+                        <select class="select2 hustle-filter" data-placeholder="Brand" name="brand">
+                            <option label="placeholder"></option>
+                            <option value="all">ALL</option>
+                            @foreach ($filters->brand as $option)
+                                @if(!empty($option))
+                                    <option {{ (isset($selectedFilter['brand']) && $selectedFilter['brand']==$option)? 'selected="selected"' : '' }} value="{{ $option }}">{{ $option }}</option>
+                                @endif
+                            @endforeach
+                        </select>
+                    @endif
+                </div>
+                <div class="col-lg-2">
+                    @if(isset($filters->province))
+                        <select class="select2 hustle-filter" data-placeholder="Province" name="province">
+                            <option label="placeholder"></option>
+                            <option value="all">ALL</option>
+                            @foreach ($filters->province as $option)
+                                @if(!empty($option))
+                                    <option {{ (isset($selectedFilter['province']) && $selectedFilter['province']==$option)? 'selected="selected"' : '' }} value="{{ $option }}">{{ $option }}</option>
+                                @endif
+                            @endforeach
+                        </select>
+                    @endif
+                </div>
+                <div class="col-lg-2">
+                    @if(isset($filters->city))
+                        <select class="select2 hustle-filter" data-placeholder="City" name="city">
+                            <option label="placeholder"></option>
+                            <option value="all">ALL</option>
+                            @foreach ($filters->city as $option)
+                                @if(!empty($option))
+                                    <option {{ (isset($selectedFilter['city']) && $selectedFilter['city']==$option)? 'selected="selected"' : '' }} value="{{ $option }}">{{ $option }}</option>
+                                @endif
+                            @endforeach
+                        </select>
+                    @endif
+                </div>
+                <div class="col-lg-2">
+                  <select class="form-control" name="filter-status">
+                    <option value="0">Filter by Province</option>
+                    <option value="1">Active</option>
+                    <option value="2">Inactive</option>
+                    <option value="3">Suspended</option>
+                    <option value="4">Online</option>
+                    <option value="5">Offline</option>
+                  </select>
+                </div>
+            </div>
+        </div>
+
+            <!-- <div class="row">
                 <div class="col-sm-12">
                     <div class="panel-title"><span class="panel-icon fa-tasks"></span> <span>Merchant Branches</span>
                     </div>
@@ -86,11 +189,11 @@
                         </select>
                     @endif
                 </div>
-                <div class="col-lg-2 text-right">
+                <div class="col-lg-2">
                     <form method="POST" enctype="multipart/form-data" id="file_upload" action="{{ url('merchant/branch/upload') }}" >
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                         <input type="file" name="file" id="file" style="display:none">
-                        <button class="btn btn-primary btn-md" type="button" value="Upload CSV" id="upload_csv">
+                        <button class="btn btn-light btn-md" type="button" value="Upload CSV" id="upload_csv">
                             <span class="fa-upload"></span>
                             <span class="spinner-border spinner-border-sm" role="status" id="loader_upload_csv" aria-hidden="true" disabled> </span>
                             Upload CSV
@@ -107,7 +210,7 @@
                     </form>
                 </div>
             </div>
-        </div>
+        </div> -->
 
 
         <div class="panel-body p-0">
