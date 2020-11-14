@@ -5,9 +5,22 @@
     <input type="hidden" name="_token" value="{{ csrf_token() }}">
     <section class="section-sm campaign-section">
         <div class="container-fluid">
-            <div class="panel panel-nav">
-                <div class="panel-header d-flex flex-wrap align-items-center justify-content-between">
-                    <div class="panel-title">Campaign Details {{ $campaign->at_home_campaign }}</div>
+            <div class="panel">
+                <div class="panel-header align-items-center justify-content-between">
+                    <div class="row">
+                        <div class="col-sm-7">
+                            <div class="panel-title"><span class="panel-icon fa-tasks"></span> <span>Campaign Details</span></div>
+                        </div>
+                        <div class="col-sm-5">    
+                            @if($campaign->status == "ONGOING")
+                                <button type="button" value="disable" class="btn btn-danger btn-sm pull-right enable-disable"><span class="fa-ban"></span><span class="pl-2">Disable</span></button>
+                            @elseif(in_array($campaign->status, array("INACTIVE", "DISABLED")))
+                                <button type="button" value="enable" class="btn btn-success btn-sm pull-right enable-disable"><span class="fa-check"></span><span class="pl-2">Activate</span></button>
+                            @endif
+                            <input id="campaign-status" name="status" type="hidden" />
+                            <input id="campaign_id" name="campaign_id" type="hidden" />
+                        </div>
+                    </div>
                 </div>
                 <div class="panel-body">
                     <div class="row row-30">
@@ -289,7 +302,7 @@
                     @foreach($campaign->tasks as $campaign_tasks)
                         
                         <div class="row task_container">
-                            <div class="col col-md-3">
+                            <div class="col col-md-4">
                                 <div class="form-group row">
                                     <label for="task_type" class="col-sm-2 col-form-label">Task Type</label>
                                     <div class="col-sm-10">
@@ -339,7 +352,7 @@
                                     </div>
                                 @endif
                             </div>
-                            <div class="col col-md-2">
+                            <div class="col col-md-1">
                                 <div class="btn-group" role="group" aria-label="Basic example">
                                     <button type="button" class="btn btn-md btn-danger remove_task" id="remove_task_0"><span class="fa-remove"></span></button>
                                 </div>
@@ -369,25 +382,6 @@
 @section('js')
     <script type="text/javascript" src="{{url('/vendor/trckr/trckr.js')}}"></script>
     <script type="text/javascript">
-        //input_end_date
-        $('#input_start_date').datepicker({
-            dateFormat: 'yy-mm-dd',
-            minDate: 0,
-            onSelect: function(date) {
-                var selectedDate = new Date(date);
-                var endDate = new Date(selectedDate.getTime());
-                $("#input_end_date").datepicker( "option", "minDate", endDate );
-            }
-        });
-        $('#input_end_date').datepicker({
-            minDate: 0,
-            dateFormat: 'yy-mm-dd',
-            onSelect: function(date) {
-                var selectedDate = new Date(date);
-                var startDate = new Date(selectedDate.getTime());
-                $("#input_start_date").datepicker( "option", "maxDate", startDate );
-            }
-        });
 
         let formFilters = new Object();
         var branches = [];
@@ -397,17 +391,6 @@
             }).get();
 
             $(document).ready(function() {
-                $('#chkAll').click(function() {
-                    if ($(this).prop("checked") == true) 
-                        $(".branch-input:checkbox").each(function(){
-                            $(this).prop("checked", true);
-                        });
-                    else 
-                        $(".branch-input:checkbox").each(function(){
-                            $(this).prop("checked", false);
-                        });
-                });
-
                 $('.table').DataTable( {
                     "destroy": true,
                     //"ajax": "{{url('/test.json')}}?" + $.param(formFilters)/*,
@@ -470,7 +453,25 @@
             });
         });
 
-        $(document).ready(function (e) {          
+        $(document).ready(function (e) {
+            $('#chkAll').click(function() {
+                if ($(this).prop("checked") == true) 
+                    $(".branch-input:checkbox").each(function(){
+                        $(this).prop("checked", true);
+                    });
+                else 
+                    $(".branch-input:checkbox").each(function(){
+                        $(this).prop("checked", false);
+                    });
+            });
+
+            $('.enable-disable').click(function(){
+                let val = $(this).val();
+
+                let url = (val == "enable") ? "{{ url('campaign/status/enable/' . $campaign->campaign_id )}}" : "{{ url('campaign/status/disable/' . $campaign->campaign_id )}}";
+                window.location.href = url;
+            });
+
             var toggler = $("input[name=branch_id-nobranch]:checkbox");
             
             $(toggler).change(function(){
@@ -523,7 +524,7 @@
                 }
 
                 var html = '<div class="row task_container">';
-                html += '<div class="col col-md-3">';
+                html += '<div class="col col-md-4">';
                 html += '<div class="form-group row">';
                 html += '<label for="task_type" class="col-sm-2 col-form-label">Task Type</label>';
                 html += '<div class="col-sm-10">';
@@ -552,7 +553,7 @@
                 html += '<input class="form-control" type="text" name="reward[]" placeholder="Reward">';
                 html += '</div>';
                 html += '</div>';
-                html += '<div class="col col-md-2">';
+                html += '<div class="col col-md-1">';
                 html += '<div class="btn-group" role="group" aria-label="Basic example">';
                 html += '<button type="button" class="btn btn-md btn-danger remove_task" id="remove_task_0"><span class="fa-remove"></span></button>';
                 html += '</div>';

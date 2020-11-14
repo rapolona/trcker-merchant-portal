@@ -354,7 +354,7 @@ class CampaignController extends Controller
                 "type" => "danger",
                 "message" => "Create Campaign Failed - {$response->message}",
             ];
-
+        /*
         $task_type = $this->taskService->getTaskActionClassification();
 
         $tasks = $this->taskService->getTaskByMerchant();
@@ -379,8 +379,11 @@ class CampaignController extends Controller
 
         foreach ($tasks as &$k)
             $k->task_id = $k->task_classification_id . "|" . $k->task_id;
+        */
 
-        return view('concrete.campaign.create', ['formMessage' => $msg, 'campaign_type' => $campaign_type, 'branches' => $branches, 'branch_filters' => $branch_filters, 'task_type' => $task_type, 'tasks' => $tasks]);
+        //return view('concrete.campaign.create', ['formMessage' => $msg, 'campaign_type' => $campaign_type, 'branches' => $branches, 'branch_filters' => $branch_filters, 'task_type' => $task_type, 'tasks' => $tasks]);
+        return redirect('/campaign/create')
+            ->with("formMessage", $msg)->withInput();
     }
 
     public function campaign_type(Request $request)
@@ -626,7 +629,7 @@ class CampaignController extends Controller
             "budget" => "required|numeric|lt:1000000000",
             "reward.*" => "required|numeric|lt:budget",
             "task_actions.*" => "required",
-            "status" => "",
+            //"status" => "",
             "task_type" => "",
             //"branches" => "required",
             "audience" => "required",
@@ -705,6 +708,8 @@ class CampaignController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
+        $campaign = $this->campaignService->get($campaign_id);
+        
         $request_data = array(
             "campaign_id" => $campaign_id,
             "start_date" => $data['start_date'],
@@ -713,6 +718,7 @@ class CampaignController extends Controller
             "campaign_name" => $data['campaign_name'],
             "campaign_description" => $data['campaign_description'],
             "description_image_url" => "",
+            "status" => $campaign->status,
             "super_shoppers" => ($data['audience'] == "super_shopper") ? 1 : 0,
             "allow_everyone" => ($data['audience'] == "All") ? 1 : 0,
             "campaign_type" => $data['campaign_type'],
@@ -733,7 +739,10 @@ class CampaignController extends Controller
                 "amount" => $data["rewards_sum"]
             );
         }
-        else $request_data["branches"] = $data["branches"];
+        else {
+            $request_data["branches"] = $data["branches"];
+            $request_data["at_home_campaign"] = 0;
+        }
 
         for($i = 0; $i < count($data['task_actions']); $i++) {
             $request_data['tasks'][$i] = array(
@@ -742,6 +751,7 @@ class CampaignController extends Controller
             );
         }
 
+        //echo json_encode($request_data);exit;
         $response = $this->campaignService->update($request_data);
 
         $msg = [
@@ -749,7 +759,7 @@ class CampaignController extends Controller
             "type" => "success",
             "message" => "Update Campaign Successful!",
         ];
-
+        /*
         $task_type = $this->taskService->getTaskActionClassification();
 
         $tasks = $this->taskService->getTaskByMerchant();
@@ -772,10 +782,13 @@ class CampaignController extends Controller
         $branches = $this->branchService->getAll($request);
         $branch_filters = $this->branchService->getFilters();
         
+        
         foreach ($tasks as &$k)
             $k->task_id = $k->task_classification_id . "|" . $k->task_id;
-
-        return view('concrete.campaign.create', ['formMessage' => $msg, 'campaign_type' => $campaign_type, 'branches' => $branches, 'branch_filters' => $branch_filters, 'task_type' => $task_type, 'tasks' => $tasks]);
+        */
+        return redirect('/campaign/edit/' . $campaign_id)
+            ->with("formMessage", $msg);
+        //return view('concrete.campaign.create', ['formMessage' => $msg, 'campaign_type' => $campaign_type, 'branches' => $branches, 'branch_filters' => $branch_filters, 'task_type' => $task_type, 'tasks' => $tasks]);
         ////////
 /*
         $validator = Validator::make($request->all(), [
@@ -938,10 +951,12 @@ class CampaignController extends Controller
         $this->campaignService->updateStatus($status, $campaignId);
         $msg = [
             "type" => "success",
-            "message" => $campaign['campaign_name'] . " was successfully disabled!",
+            "message" => $campaign['campaign_name'] . " was successfully {$status}d!",
         ];
 
-        return redirect('/campaign/view')
+        
+        //return redirect('/campaign/view')
+        return redirect()->back()
             ->with("formMessage", $msg);
     }
 
