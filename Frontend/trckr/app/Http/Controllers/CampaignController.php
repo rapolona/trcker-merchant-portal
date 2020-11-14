@@ -640,7 +640,8 @@ class CampaignController extends Controller
             "allow_everyone" => ($data['audience'] == "All") ? 1 : 0,
             "task_type" => $data['campaign_type'],
             "branches" => array(),
-            "tasks" => array()
+            "tasks" => array(),
+            "campaign_id" => $data['campaign_id'],
         );
 
         if ( ! empty($data['thumbnail_url']))
@@ -672,10 +673,8 @@ class CampaignController extends Controller
             );
         }
 
-
         $response = $this->campaignService->update($request_data);
 
-        print_r($response); exit();
         $msg = [
                 "type" => "success",
                 "message" => "Update Campaign Successful!",
@@ -699,7 +698,7 @@ class CampaignController extends Controller
             ),
         );
 
-        $branches = $this->branchService->getAll($data);
+        $branches = $this->branchService->getAll([]);
         $branch_filters = $this->branchService->getFilters();
         $campaign = (array) $this->campaignService->get($campaignId);
         $campaign['audience'] = ($campaign['allow_everyone']==1)? 'All' : 'super_shopper';
@@ -733,7 +732,8 @@ class CampaignController extends Controller
             'branch_filters' => $branch_filters,
             'task_type' => $task_type,
             'tasks' => $tasks,
-            'campaign' => $campaign
+            'campaign' => $campaign,
+            'formMessage' => $msg
         ]);
 
     }

@@ -19,7 +19,7 @@ Class Repository
     }
     public function validateResponse($response)
     {
-        /*$expiredHttpCodes = [403, 401];
+        $expiredHttpCodes = [403, 401];
         if (in_array($response->getStatusCode(), $expiredHttpCodes))
         {
             $message = json_decode($response->getBody());
@@ -49,7 +49,7 @@ Class Repository
             Session::put('formMessage', $msg);
             Session::save();
             Redirect::back()->send();
-        }*/
+        }
 
         return $response;
     }
@@ -61,6 +61,10 @@ Class Repository
 
     public function trackerApi($method, $url, $data, $useToken=true)
     {
+        //REFRESH SESSION FORM DATA GLOBAL
+        //Session::put('formMessage', '');
+        //Session::save();
+
         $logMethod = strtoupper($method);
         Log::info("{$logMethod} {$url} ");
         Log::info('DATA :: ' .json_encode($data));

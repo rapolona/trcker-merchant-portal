@@ -3,7 +3,7 @@
 @section('content')
     <form method="post" name="create_campaign" id="create_campaign" enctype="multipart/form-data">
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
-        <input type="text" name="campaign_id" value="{{ $campaign['campaign_id'] }}">
+        <input type="hidden" name="campaign_id" value="{{ $campaign['campaign_id'] }}">
         <section class="section-sm campaign-section">
             <div class="container-fluid">
                 <div class="panel panel-nav">
@@ -210,11 +210,12 @@
                                 </thead>
                                 <tbody>
                                 @foreach ($branches as $branch)
+
                                     <tr>
                                         <td style="width: 40px">
                                             <div class="custom-control custom-checkbox custom-checkbox-success">
                                                 <input class="branch-input custom-control-input branch-id-checkbox" type="checkbox" name="branch_id[]" id="{{ $branch->branch_id }}" value="{{ $branch->branch_id }}"
-                                                       @if(is_array(old('branch_id', $campaign['branch_id'])) && in_array($branch->branch_id, old('branch_id', $campaign['branch_id']))) checked @endif />
+                                                       @if(is_array(old('branch_id', $campaign['branch_id'])  ) && in_array($branch->branch_id, old('branch_id', $campaign['branch_id']))) checked @endif />
                                                 <label class="custom-control-label" for="{{ $branch->branch_id }}"></label>
                                             </div>
                                         </td>

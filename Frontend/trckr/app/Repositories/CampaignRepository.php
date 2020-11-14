@@ -24,11 +24,11 @@ class CampaignRepository extends Repository
 
     public function update($data)
     {
-      //  try {
+        try {
             return $this->trackerApi('put', $this->api . 'update', $data);
-      //  } catch(\Exception $e) {
-      //      $this->sessionExpired();
-      //  }
+        } catch(\Exception $e) {
+            $this->sessionExpired();
+        }
     }
 
     public function get($id)
