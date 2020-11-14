@@ -112,7 +112,8 @@
 
         <div class="panel-body p-0">
             <div class="table-responsive scroller scroller-horizontal py-3">
-                <table class="table table-striped table-hover data-table" data-table-searching="true" data-table-lengthChange="true" data-page-length="5">
+                <table class="table table-striped table-hover data-table dataTable" data-page-length="7" role="grid">
+                <!-- <table class="table table-striped table-hover data-table" data-table-searching="true" data-table-lengthChange="true" data-page-length="5"> -->
                     <thead>
                     <tr>
                         <td style="width: 40px">
