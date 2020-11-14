@@ -537,6 +537,10 @@ class CampaignController extends Controller
         $branch_filters = $this->branchService->getFilters();
         $campaign = (array) $this->campaignService->get($campaignId);
 
+        //check branch Do-it-home id fbe9b0cf-5a77-4453-a127-9a8567ff3aa7
+        $campaign['']
+        //print_r($campaign); exit();
+
         foreach ($tasks as &$k)
             $k->task_id = $k->task_classification_id . "|" . $k->task_id;
 
