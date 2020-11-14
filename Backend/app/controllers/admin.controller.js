@@ -170,13 +170,13 @@ exports.forgotPassword = (req,res) => {
             .then(data => {
                 var passwordTokenEmailTemplate = ""
                 try{
-                    fs.readFile("app/templates/verificationemail.html", 'utf8', 
+                    fs.readFile("app/templates/forgotpasswordemail.html", 'utf8', 
                     (err,filedata)=>{
                         if(err){
                             console.log("While reading template : "  + err);
                         }
                         else{
-                            passwordTokenEmailTemplate = filedata.replace(/%VERIFICATIONCODE%/g, passwordToken);
+                            passwordTokenEmailTemplate = filedata.replace(/%PASSWORDTOKEN%/g, passwordToken);
                             mailer.sendMail(req.body.email_address, process.env.SUPPORT_EMAIL, "HUSTLE PH APP FORGOT PASSWORD TOKEN", passwordTokenEmailTemplate)
                             res.send(adminDetail)
                         }

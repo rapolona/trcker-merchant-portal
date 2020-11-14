@@ -314,42 +314,68 @@ exports.update = (req, res) => {
         req.body.branches[i].campaign_id = id
       }
     }
+    var total_reward_amount = 0;
+    for(i=0;i<req.body.tasks.length;i++){
+      total_reward_amount = total_reward_amount + parseFloat(req.body.tasks[i].reward_amount)
+    }
+    var campaignBody = {
+      start_date: req.body.start_date,
+      end_date: req.body.end_date + ' 23:59:00.000Z',
+      budget: req.body.budget,
+      total_reward_amount: total_reward_amount,
+      campaign_name: req.body.campaign_name,
+      campaign_description: req.body.campaign_description,
+      thumbnail_url: req.body.thumbnail_url,
+      description_image_url: req.body.description_image_url,
+      audience_age_min: req.body.audience_age_min,
+      audience_age_max: req.body.audience_age_max,
+      audience_gender: req.body.audience_gender,
+      allowed_account_level: req.body.allowed_account_level,
+      super_shoppers: req.body.super_shoppers,
+      allow_everyone: req.body.allow_everyone,
+      at_home_campaign: req.body.at_home_campaign,
+      at_home_respondent_count: req.body.at_home_respondent_count,
+      campaign_type: req.body.campaign_type,
+    }
 
-    
     console.log(req.body.tasks)
-    db.sequelize.transaction({autocommit:false},transaction => {
-      var campaignUpdateTransactions = [
-        Campaign.update(req.body, {
-          where: { campaign_id: id, merchant_id : req.body.merchantid, status:"INACTIVE"},
-          transaction: transaction
-        }),
-        Campaign_Task_Association.destroy({
-          where: {campaign_id: id},
-          transaction:transaction}),
-        Campaign_Task_Association.bulkCreate(req.body.tasks, {transaction:transaction})
-      ]
-      if(!req.body.at_home_campaign){
-        campaignUpdateTransactions.push([Campaign_Branch_Association.destroy({
-          where: {campaign_id: id},
-          transaction:transaction
-        }),
-        Campaign_Branch_Association.bulkCreate(req.body.branches, {transaction:transaction})]) 
-      }
-      return Promise.all(campaignUpdateTransactions)
-    })
-    .then(data => {
-      if(data){
-        res.send({
-          message: "Campaign, Tasks, Rewards, and Branches are updated succesfully"
+    Campaign.update(campaignBody, {where: { campaign_id: id, merchant_id : req.body.merchantid, status:{[Op.or]:["INACTIVE", "DISABLED"]}},})
+    .then(num => {
+      if(num == 1){
+        db.sequelize.transaction({autocommit:false},transaction => {
+          var campaignUpdateTransactions = [
+            Campaign_Task_Association.destroy({
+              where: {campaign_id: id},
+              transaction:transaction}),
+            Campaign_Task_Association.bulkCreate(req.body.tasks, {transaction:transaction})
+          ]
+          if(!req.body.at_home_campaign){
+            campaignUpdateTransactions.push([Campaign_Branch_Association.destroy({
+              where: {campaign_id: id},
+              transaction:transaction
+            }),
+            Campaign_Branch_Association.bulkCreate(req.body.branches, {transaction:transaction})]) 
+          }
+          return Promise.all(campaignUpdateTransactions)
+        })
+        .then(data => {
+          if(data){
+            res.send({
+              message: "Campaign, Tasks, Rewards, and Branches are updated succesfully"
+            })
+          }
+        })
+        .catch(err => {
+          res.status(500).send({
+            message: err.message || "Error updating campaign"
+          })
         })
       }
-    })
-    .catch(err => {
-      res.status(500).send({
-        message: err.message || "Error updating campaign"
-      })
-    })
-  
+      else{
+        res.status(422).send({message:"Cannot update campaign that is ongoing"})
+        return;
+      }
+    })  
   };
 
 // Delete a Campaign with the specified id in the request
