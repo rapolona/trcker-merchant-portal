@@ -452,6 +452,6 @@ iframe {
 .page-item.active .page-link {
     z-index: 1;
     color: #1b653a !important;
-    background-color: #c4cf2e !important;
-    border-color: #c4cf2e !important;
+    background-color: #ccc!important;
+    border-color: #ccc!important;
 }

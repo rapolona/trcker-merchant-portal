@@ -220,7 +220,7 @@
                     <thead>
                     <tr>
                         <td style="width: 40px">
-                            <div class="custom-control custom-checkbox custom-checkbox-success">
+                            <div class="custom-control custom-checkbox custom-checkbox-light">
                                 <input class="custom-control-input" type="checkbox" id="selectAll"/>
                                 <label class="custom-control-label" for="selectAll"></label>
                             </div>
