@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html class="page-small-footer" lang="en">
-  <head>
+<head>
     <title>Hustle Portal</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
@@ -15,17 +15,15 @@
     <link rel="stylesheet" href="{{ asset('components/base/style.css') }}">
     <link rel="stylesheet" href="{{ asset('components/trcker-login.css') }}">
     <script src="{{ asset('components/base/script.js') }}"></script>
-  </head>
-  <body>
-<div class="page page-gradient-bg">
-    <div id="particles-container"></div>
-    <section class="section-lg section-one-screen">
-        <div class="container">
+</head>
+<body>
+<div class="limiter">
+    <div class="container-login100">
+        <div class="wrap-login100">
             <div class="row justify-content-center">
                 @yield('content')
             </div>
         </div>
-    </section>
-</div>
+    </div>
 </body>
 </html>
