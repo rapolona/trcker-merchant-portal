@@ -258,7 +258,6 @@ class CampaignController extends Controller
                     "branch_id" => $temp[1],
                     "respondent_count" => $data["submissions-" . $temp[1]]
                 );
-                break;
                 $total_respondents += $data["submissions-" . $temp[1]];
             }
         }
