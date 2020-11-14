@@ -23,7 +23,7 @@
                                 @endif
                                 <div class="input-group form-group">
                                     <div class="input-group-prepend"><span class="input-group-text"><span class="fa-black-tie"></span></span></div>
-                                    <input class="form-control  {{ $errors->first('budget')? 'form-control-danger' : '' }}" type="number" value="{{ old('budget') }}" name="budget" placeholder="Budget">
+                                    <input class="form-control  {{ $errors->first('budget')? 'form-control-danger' : '' }}" type="number" value="{{ old('budget') }}" name="budget" id="budget" placeholder="Budget">
                                 </div>
                                 @if($errors->first('budget'))
                                     <div class="tag-manager-container">
@@ -95,7 +95,7 @@
                                         <input class="custom-control-input" type="checkbox" name="branch_id-nobranch" {{ old('branch_id-nobranch')? 'checked=""' : '' }} id="branch_id-nobranch">
                                         <label class="custom-control-label" for="branch_id-nobranch">Do-It-At-Home
                                         </label>
-                                        <input type="hidden" name="nobranch_submissions" value="100" />
+                                        <input type="hidden" name="nobranch_submissions" id="nobranch_submissions" value="100" />
                                     </div>
                                 </div>
                             </div>
@@ -273,7 +273,7 @@
                                 <div class="col-md-3">
                                     <div class="input-group">
                                         <div class="input-group-prepend"><span class="input-group-text"><span class="fa-building"></span></span></div>
-                                        <input class="form-control" required type="number" name="reward_amount[]" value="{{old('reward_amount.' . $x)}}" placeholder="Reward">
+                                        <input class="form-control reward_amount" required type="number" name="reward_amount[]" value="{{old('reward_amount.' . $x)}}" placeholder="Reward">
                                     </div>
                                 </div>
 
@@ -481,10 +481,40 @@
                 $(this).remove();
             }
         });
+
         $(document).ready(function (e) {
             setTimeout(function(){ $(".task_type").change(); }, 3000);
             $("#branch_id-nobranch").change();
+
+            $("form#create_campaign").submit(function(e){
+                let isNoBranch = $("#branch_id-nobranch").is(':checked');
+                let budget = parseInt($("#budget").val());
+                let totalSubmission = 0;
+                let totalRewards = 0;
+                if(isNoBranch){
+                    totalSubmission = parseInt($("#nobranch_submissions").val());
+                }else{
+                    $("input.max-submission").each(function(){
+                        totalSubmission += parseInt($(this).val()) || 0;
+                    });
+                }
+
+                $("input.reward_amount").each(function(){
+                    totalRewards += parseInt($(this).val()) || 0;
+                });
+
+                let computeBudget = totalSubmission * totalRewards;
+
+                if(budget < computeBudget){
+                    alert('You are over your budget please adjust your rewards or max submissions or increase your budget');
+                    return false;
+                }
+
+                return true;
+            });
+
         });
+
 
     </script>
 @stop
