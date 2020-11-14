@@ -328,7 +328,7 @@ exports.update = (req, res) => {
           transaction:transaction}),
         Campaign_Task_Association.bulkCreate(req.body.tasks, {transaction:transaction})
       ]
-      if(req.body.at_home_campaign==false){
+      if(!req.body.at_home_campaign){
         campaignUpdateTransactions.push([Campaign_Branch_Association.destroy({
           where: {campaign_id: id},
           transaction:transaction
