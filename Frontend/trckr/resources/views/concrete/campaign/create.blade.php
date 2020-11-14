@@ -397,28 +397,7 @@
 @section('js')
     <script type="text/javascript" src="{{url('/vendor/trckr/trckr.js')}}"></script>
     <script type="text/javascript">
-
-        
-        //input_end_date
-        $('#input_start_date').datepicker({
-            dateFormat: 'yy-mm-dd',
-            minDate: 0,
-            onSelect: function(date) {
-                var selectedDate = new Date(date);
-                var endDate = new Date(selectedDate.getTime());
-                $("#input_end_date").datepicker( "option", "minDate", endDate );
-            }
-        });
-        $('#input_end_date').datepicker({
-            minDate: 0,
-            dateFormat: 'yy-mm-dd',
-            onSelect: function(date) {
-                var selectedDate = new Date(date);
-                var startDate = new Date(selectedDate.getTime());
-                $("#input_start_date").datepicker( "option", "maxDate", startDate );
-            }
-        });
-
+    
         let formFilters = new Object();
         var branches = [];
         $(document).on("change", "select.hustle-filter" , function(e) {
