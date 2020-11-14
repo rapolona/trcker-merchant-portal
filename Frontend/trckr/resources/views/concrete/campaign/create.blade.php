@@ -23,7 +23,7 @@
                                 @endif
                                 <div class="input-group form-group">
                                     <div class="input-group-prepend"><span class="input-group-text"><span class="fa-black-tie"></span></span></div>
-                                    <input class="form-control  {{ $errors->first('budget')? 'form-control-danger' : '' }}" type="number" value="{{ old('budget') }}" name="budget" id="budget" placeholder="Budget">
+                                    <input required class="form-control  {{ $errors->first('budget')? 'form-control-danger' : '' }}" type="number" min="1" value="{{ old('budget') }}" name="budget" id="budget" placeholder="Budget">
                                 </div>
                                 @if($errors->first('budget'))
                                     <div class="tag-manager-container">
@@ -77,7 +77,7 @@
                                         <span class="tm-tag badge badge-danger" ><span>{{ $errors->first('start_date') }}{{ $errors->first('end_date') }}</span></span>
                                     </div>
                                 @endif
-                                <div class="form-group col-md-5 {{ $errors->first('campaign_name')? 'form-control-danger' : '' }}">
+                                <div class="form-group {{ $errors->first('campaign_name')? 'form-control-danger' : '' }}" style="border:1px solid #ddd; border-radius: 0.25rem; padding: 10px;">
                                     <p>Campaign Thumbnail</p>
                                     <div class="tower-file mt-3">
                                         <input class="tower-file-input" name="thumbnail_url" id="demo1" type="file">
@@ -89,15 +89,6 @@
                                         <span class="tm-tag badge badge-danger" ><span>{{ $errors->first('thumbnail_url') }}</span></span>
                                     </div>
                                 @endif
-
-                                <div class="input-group form-group">
-                                    <div class="custom-control custom-switch custom-switch-success">
-                                        <input class="custom-control-input" type="checkbox" name="branch_id-nobranch" {{ old('branch_id-nobranch')? 'checked=""' : '' }} id="branch_id-nobranch">
-                                        <label class="custom-control-label" for="branch_id-nobranch">Do-It-At-Home
-                                        </label>
-                                        <input type="hidden" name="nobranch_submissions" id="nobranch_submissions" value="100" />
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -105,13 +96,28 @@
             </div>
         </section>
 
-        <section class="section-sm campaign-section" id="branchSection">
+        <section class="section-sm campaign-section">
             <div class="container-fluid">
                 <div class="panel">
                     <div class="panel-header d-flex flex-wrap align-items-center justify-content-between">
-                        <div class="panel-title">Branch Details</div>
+                        <div class="col-md-6">
+                            <div class="panel-title">Branch Details</div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="col-md-5 pull-right">
+                                <div class="input-group form-group">
+                                    <div class="custom-control custom-switch custom-switch-success">
+                                        <input class="custom-control-input" type="checkbox" name="branch_id-nobranch" {{ old('nobranch_submissions', 1) > 0? 'checked=""' : '' }} id="branch_id-nobranch">
+                                        <label class="custom-control-label" for="branch_id-nobranch">Do-It-At-Home</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 pull-right">
+                                <input class="form-control" required type="number" min="1" name="nobranch_submissions" id="nobranch_submissions" value="{{ old('nobranch_submissions') }}" placeholder="Max Submission" />
+                            </div>
+                        </div>
                     </div>
-                    <div class="panel-header">
+                    <div class="panel-header branchSection" style="display: none">
                         <div class="row row-30">
                             <div class="col-lg-2">
                                 @if(isset($branch_filters->business_type))
@@ -179,11 +185,11 @@
                                 @endif
                             </div>
                             <div class="col-lg-2">
-                                <input class="branch-input form-control" id="defaultMaxSubmission" type="number" value="" placeholder="Default Max Submission">
+                                <input class="branch-input form-control" id="defaultMaxSubmission" type="number" min="1" name="defaultMaxSubmission" value="{{ old('defaultMaxSubmission') }}" placeholder="Default Max Submission">
                             </div>
                         </div>
                     </div>
-                    <div class="panel-body p-0">
+                    <div class="panel-body p-0 branchSection"  style="display: none">
                         <div class="table-responsive scroller scroller-horizontal py-3" id="branch_table" >
                             <table class="table table-striped table-hover data-table"style="min-width: 800px">
                                 <thead>
@@ -228,7 +234,7 @@
     $branchIdKey = array_search($branch->branch_id, old('branch_id'));
 }
                                             @endphp
-                                            <input @if(is_array(old('branch_id')) && in_array($branch->branch_id, old('branch_id'))) name="submission[]" value="{{ old('submission.' . $branchIdKey ) }}" @else disabled @endif class="branch-input form-control max-submission" type="number" placeholder="Max Submission">
+                                            <input @if(is_array(old('branch_id')) && in_array($branch->branch_id, old('branch_id'))) name="submission[]" value="{{ old('submission.' . $branchIdKey ) }}" @else disabled @endif class="branch-input form-control max-submission" type="number" min="1" placeholder="Max Submission">
                                         </td>
                                     </tr>
                                 @endforeach
@@ -273,13 +279,13 @@
                                 <div class="col-md-3">
                                     <div class="input-group">
                                         <div class="input-group-prepend"><span class="input-group-text"><span class="fa-building"></span></span></div>
-                                        <input class="form-control reward_amount" required type="number" name="reward_amount[]" value="{{old('reward_amount.' . $x)}}" placeholder="Reward">
+                                        <input class="form-control reward_amount" required type="number" min="1" name="reward_amount[]" value="{{old('reward_amount.' . $x)}}" placeholder="Reward">
                                     </div>
                                 </div>
 
                                 <div class="col-md-3">
                                     <!-- <button class="btn btn-primary" type="submit">Add more</button> -->
-                                    <button type="button" class="btn btn-danger btn-md remove_task" {{ $x > 0 ? '' : 'style="display: none"' }}>
+                                    <button style="display:none;" type="button" class="btn btn-danger btn-md remove_task" {{ $x > 0 ? '' : 'style="display: none"' }}>
                                         <span class="fa-remove"></span>
                                     </button>
                                 </div>
@@ -291,7 +297,7 @@
                     </div>
 
                     <div class="panel-footer">
-                        <div class="group-5">
+                        <div class="group-5 pull-right">
                             <button class="btn btn-success" type="submit" id="submit">Save Campaign</button>
                         </div>
                     </div>
@@ -421,23 +427,22 @@
         $(document).ready(function (e) {
             $("#branch_id-nobranch").change(function(){
                 if (this.checked) {
-                    $('#branchSection').hide();
+                    $('.branchSection').hide();
                     $(".branch-input:checkbox").each(function(){
                         $(this).prop("checked",false);
                         $(this).change();
                         $('#selectAll').prop("checked",false);
                     });
+                    $('#nobranch_submissions').show();
+                    $('#nobranch_submissions').attr('required', true);
                 }
                 else{
-                    $('#branchSection').show();
+                    $('.branchSection').show();
+                    $('#nobranch_submissions').hide();
+                    $('#nobranch_submissions').removeAttr('required');
+                    $('#nobranch_submissions').val('');
                 }
-            });
 
-            $("#submit").click(function(){
-            });
-
-            $("#create_campaign").submit(function(e){
-                //e.preventDefault();
             });
 
             $("#back").click(function(){
@@ -497,6 +502,12 @@
                     $("input.max-submission").each(function(){
                         totalSubmission += parseInt($(this).val()) || 0;
                     });
+
+                    if(totalSubmission==0)
+                    {
+                        alert('Please select at least one branch');
+                        return false;
+                    }
                 }
 
                 $("input.reward_amount").each(function(){

@@ -544,7 +544,7 @@ class CampaignController extends Controller
         $campaign['audience'] = ($campaign['allow_everyone']==1)? 'All' : 'super_shopper';
         $campaign['daterange'] = date('m/d/Y', strtotime($campaign['start_date'])) . " - " . date('m/d/Y', strtotime($campaign['end_date']));
         $campaign['branch_id-nobranch'] = ($campaign['branches'][0]->branch_id == 'fbe9b0cf-5a77-4453-a127-9a8567ff3aa7')? true : false;
-
+        $campaign['branch_id-nobranch_value'] = ($campaign['branches'][0]->branch_id == 'fbe9b0cf-5a77-4453-a127-9a8567ff3aa7')? $campaign['branches'][0]->respondent_count : '';
         // TASK ALIGNMENT TO CREATE old()
         foreach($tasks as $k){
             foreach ($campaign['tasks']  as $camTkey => $camTask ){
@@ -708,6 +708,7 @@ class CampaignController extends Controller
         $campaign['audience'] = ($campaign['allow_everyone']==1)? 'All' : 'super_shopper';
         $campaign['daterange'] = date('m/d/Y', strtotime($campaign['start_date'])) . " - " . date('m/d/Y', strtotime($campaign['end_date']));
         $campaign['branch_id-nobranch'] = ($campaign['branches'][0]->branch_id == 'fbe9b0cf-5a77-4453-a127-9a8567ff3aa7')? true : false;
+        $campaign['branch_id-nobranch_value'] = ($campaign['branches'][0]->branch_id == 'fbe9b0cf-5a77-4453-a127-9a8567ff3aa7')? $campaign['branches'][0]->respondent_count : '';
 
         // TASK ALIGNMENT TO CREATE old()
         foreach($tasks as $k){
