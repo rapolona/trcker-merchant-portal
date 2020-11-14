@@ -19,7 +19,7 @@
                 <form method="POST" enctype="multipart/form-data" id="file_upload" action="{{ url('merchant/branch/upload') }}" >
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                     <input type="file" name="file" id="file" style="display:none">
-                    <button class="btn btn-light btn-md" type="button" value="Upload CSV" id="upload_csv">
+                    <button class="btn btn-light btn-sm" type="button" value="Upload CSV" id="upload_csv">
                         <span class="fa-upload"></span>
                         <span class="spinner-border spinner-border-sm" role="status" id="loader_upload_csv" aria-hidden="true" disabled> </span>
                         Upload CSV
@@ -28,7 +28,7 @@
                 <form method="POST" id="deleteForm" action="{{ url('merchant/branch/bulkdelete')  }}" >
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                     <input type="hidden" name="delete_ids" id="delete_ids"  value="">
-                    <button class="btn btn-danger btn-md" type="button" id="delete">
+                    <button class="btn btn-danger btn-sm" type="button" id="delete">
                         <span class="mdi-delete-variant"></span>
                         <span class="spinner-border spinner-border-sm" role="status" id="loader_upload_csv" aria-hidden="true" disabled> </span>
                         Delete
@@ -103,16 +103,6 @@
                             @endforeach
                         </select>
                     @endif
-                </div>
-                <div class="col-lg-2">
-                  <select class="form-control" name="filter-status">
-                    <option value="0">Filter by Province</option>
-                    <option value="1">Active</option>
-                    <option value="2">Inactive</option>
-                    <option value="3">Suspended</option>
-                    <option value="4">Online</option>
-                    <option value="5">Offline</option>
-                  </select>
                 </div>
             </div>
         </div>
@@ -214,17 +204,16 @@
 
 
         <div class="panel-body p-0">
-            <div class="table-responsive scroller scroller-horizontal py-3">
-                <table class="table table-striped table-hover data-table dataTable" data-page-length="7" role="grid">
-                <!-- <table class="table table-striped table-hover data-table" data-table-searching="true" data-table-lengthChange="true" data-page-length="5"> -->
-                    <thead>
-                    <tr>
-                        <td style="width: 40px">
-                            <div class="custom-control custom-checkbox custom-checkbox-light">
-                                <input class="custom-control-input" type="checkbox" id="selectAll"/>
-                                <label class="custom-control-label" for="selectAll"></label>
-                            </div>
-                        </td>
+                <div class="table-responsive scroller scroller-horizontal py-3">
+                    <table class="table table-striped table-hover data-table" data-table-searching="true" data-table-lengthChange="true" data-page-length="5">
+                        <thead>
+                        <tr>
+                            <td style="width: 40px" data-orderable="false" data-targets="0" >
+                                <div class="custom-control custom-checkbox custom-checkbox-success">
+                                    <input class="custom-control-input" type="checkbox" id="selectAll"/>
+                                    <label class="custom-control-label" for="selectAll"></label>
+                                </div>
+                            </td>
                         <th>Name</th>
                         <th>BusinessType</th>
                         <th>StoreType</th>
@@ -239,7 +228,7 @@
                     @foreach ($branches as $branch)
                         <tr>
                             <td style="width: 40px">
-                                <div class="custom-control custom-checkbox custom-checkbox-success">
+                                <div class="custom-control custom-checkbox custom-checkbox-light">
                                     <input class="custom-control-input" type="checkbox" name="branch_id" id="{{ $branch->branch_id }}" />
                                     <label class="custom-control-label" for="{{ $branch->branch_id }}"></label>
                                 </div>

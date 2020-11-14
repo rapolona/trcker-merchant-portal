@@ -17,10 +17,10 @@
                     <div class="col-sm-7">
                         <div class="panel-title"><span class="panel-icon fa-tasks"></span> <span>Campaigns</span></div>
                     </div>
-                    <div class="col-sm-5">
+                    <div class="col-sm-5 text-right">
                         <div class="btn-group">
-                            <button class="btn btn-light enable-disable" type="button" value="enable"><span class="fa-check"></span><span class="pl-2">Enable</span></button>
-                            <button class="btn btn-danger enable-disable" type="button" value="disable"><span class="fa-ban"></span><span class="pl-2">Disable</span></button>
+                            <button class="btn btn-light btn-sm enable-disable" type="button" value="enable"><span class="fa-check"></span><span class="pl-2">Enable</span></button>
+                            <button class="btn btn-danger btn-sm enable-disable" type="button" value="disable"><span class="fa-ban"></span><span class="pl-2">Disable</span></button>
                         </div>
                         <input id="campaign-status" name="status" type="hidden" />
                     </div>
@@ -32,7 +32,7 @@
                         <thead>
                         <tr>
                             <td style="width: 40px" data-orderable="false" data-targets="0" >
-                                <div class="custom-control custom-checkbox custom-checkbox-success">
+                                <div class="custom-control custom-checkbox custom-checkbox-light">
                                     <input class="custom-control-input" type="checkbox" id="selectAll"/>
                                     <label class="custom-control-label" for="selectAll"></label>
                                 </div>
@@ -51,7 +51,7 @@
                         @foreach ($campaigns as $campaign)
                             <tr>
                                 <td style="width: 40px">
-                                    <div class="custom-control custom-checkbox custom-checkbox-success">
+                                    <div class="custom-control custom-checkbox custom-checkbox-light">
                                         <input class="custom-control-input" type="checkbox" name="campaign_id[]" id="{{ $campaign->campaign_id }}" value="{{ $campaign->campaign_id }}" />
                                         <label class="custom-control-label" for="{{ $campaign->campaign_id }}"></label>
                                     </div>
