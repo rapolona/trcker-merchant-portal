@@ -38,10 +38,9 @@ div.build-wrap div.form-actions.btn-group{
 
 .campaign-section { padding: 10px 0; }
 
-/* look where the var is set*/
-/*.rd-navbar-fixed .rd-navbar-panel, .rd-navbar-fixed .rd-navbar-sidebar {
-    background: rgb(92 134 10) !important;
-}*/
+.rd-navbar-fixed .btn-navbar-panel:not(:disabled):not(.disabled):active, .rd-navbar-fixed .btn-navbar-panel:not(:disabled):not(.disabled).active {
+	box-shadow: none;
+}
 
 /*---------------------------------------------*/
 input {
