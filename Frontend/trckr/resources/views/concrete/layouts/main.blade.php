@@ -11,6 +11,8 @@
     <script data-loaded="true" src="{{ asset('./components/base/jquery-ui.min.js') }}"></script> <!-- IMPORTANT DONT CHANGE -->
     <script src="{{ asset('components/base/script.js') }}"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/pace.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
     @yield('css')
     @yield('js')
 </head>
