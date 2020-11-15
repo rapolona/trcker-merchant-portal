@@ -381,10 +381,6 @@
                     }]
                 } );
 
-                $('#example tbody').on( 'click', 'button', function () {
-                    var data = table.row( $(this).parents('tr') ).data();
-                    alert( data[0] +"'s salary is: "+ data[ 5 ] );
-                } );
             } );
         });
 
@@ -477,7 +473,10 @@
             $(document).on('click', '#add_task', function(){
                 let index = $(".task-container").length;
                 if (index >= 5) {
-                    alert("The maximum limit of task classifications per campaign is 5");
+                    $.alert({
+                        title: 'Hustle',
+                        content: 'The maximum limit of task classifications per campaign is 5',
+                    });
                     return;
                 }
 
@@ -529,7 +528,10 @@
 
                     if(totalSubmission==0)
                     {
-                        alert('Please select at least one branch');
+                        $.alert({
+                            title: 'Hustle',
+                            content: 'Please select at least one branch',
+                        });
                         return false;
                     }
                 }
@@ -541,7 +543,10 @@
                 let computeBudget = totalSubmission * totalRewards;
 
                 if(budget < computeBudget){
-                    alert('You are over your budget please adjust your rewards or max submissions or increase your budget');
+                    $.alert({
+                        title: 'Hustle',
+                        content: 'You are over your budget please adjust your rewards or max submissions or increase your budget',
+                    });
                     return false;
                 }
 
