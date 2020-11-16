@@ -46,9 +46,7 @@ Class Repository
                 'type' => 'warning',
                 'message' => $message
             ];
-            Session::put('formMessage', $msg);
-            Session::save();
-            Redirect::back()->send();
+            Redirect::back()->with('formMessage', $msg)->send();
         }
 
         return $response;
