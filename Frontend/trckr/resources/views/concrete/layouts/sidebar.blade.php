@@ -24,29 +24,15 @@
                 <span class="rd-navbar-icon mdi-sitemap"></span><span class="rd-navbar-link-text">Branches</span>
             </a>
         </li>
-        <li class="rd-navbar-nav-item"><a class="rd-navbar-link" href="#"><span class="rd-navbar-icon fa-columns"></span><span class="rd-navbar-link-text">Campaign Tasks</span></a>
-            <ul class="rd-navbar-dropdown">
-                <li class="rd-navbar-nav-item {{ Request::is('task/create/*')? 'active' : '' }}">
-                    <a class="rd-navbar-link" href="{{ url('task/create') }}">
-                        <span class="rd-navbar-icon mdi-file-presentation-box"></span>Create a task
-                    </a>
-                </li>
-                <li class="rd-navbar-nav-item {{ Request::is('task/create/*')? 'active' : '' }}">
-                    <a class="rd-navbar-link" href="{{ url('task/view') }}">
-                        <span class="rd-navbar-icon fa-wpforms"></span>View all tasks
-                    </a>
-                </li>
-            </ul>
+        <li class="rd-navbar-nav-item">
+            <a class="rd-navbar-link" href="{{ url('task/view') }}">
+                <span class="rd-navbar-icon fa-columns"></span><span class="rd-navbar-link-text">Tasks</span>
+            </a>
         </li>
-        <li class="rd-navbar-nav-item"><a class="rd-navbar-link" href="#"><span class="rd-navbar-icon fa-star"></span><span class="rd-navbar-link-text">Campaigns</span></a>
-            <ul class="rd-navbar-dropdown">
-                <li class="rd-navbar-nav-item {{ Request::is('campaign/create/*')? 'active' : '' }}">
-                    <a class="rd-navbar-link" href="{{ url('campaign/create') }}"><span class="rd-navbar-icon fa-book"></span>Create a campaign</a>
-                </li>
-                <li class="rd-navbar-nav-item {{ Request::is('campaign/view/*')? 'active' : '' }}">
-                    <a class="rd-navbar-link" href="{{ url('campaign/view') }}"><span class="rd-navbar-icon fa-window-maximize"></span>View all campaigns</a>
-                </li>
-            </ul>
+        <li class="rd-navbar-nav-item">
+            <a class="rd-navbar-link" href="{{ url('campaign/view') }}">
+                <span class="rd-navbar-icon fa-star"></span><span class="rd-navbar-link-text">Campaigns</span>
+            </a>
         </li>
         <li class="rd-navbar-nav-item {{ Request::is('ticket/view/*')? 'active' : '' }}">
             <a class="rd-navbar-link" href="{{ url('ticket/view') }}"><span class="rd-navbar-icon fa-server"></span>Ticket Management</a>

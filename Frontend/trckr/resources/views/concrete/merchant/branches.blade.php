@@ -2,14 +2,112 @@
 
 @section('breadcrumbs_pull_right')
     <div class="group-10">
-        <a class="btn btn-light" href="{{ url('/merchant/branch/add') }}"><span class="fa-plus"></span><span class="pl-2">Add New Branch</span></a>
+        <!-- <a class="btn btn-light" href="{{ url('/merchant/branch/add') }}"><span class="fa-plus"></span><span class="pl-2">Add New Branch</span></a> -->
+        <div class="btn-group">
+          <a class="btn btn-outline-primary" href="{{ url('/merchant/branch/add') }}"><span class="fa-plus">Add a new branch</span></a>
+<!--           <a class="btn btn-dark" href="#"><span class="fa-upload">Upload CSV</span></a> -->
+        </div>
+
     </div>
 @endsection
 
 @section('content')
     <div class="panel">
-        <div class="panel-header">
-            <div class="row">
+        <div class="panel-header d-flex flex-wrap align-items-center justify-content-between">
+            <div class="panel-title">Merchant Branches</div>
+            <div class="btn-group">
+                <form method="POST" enctype="multipart/form-data" id="file_upload" action="{{ url('merchant/branch/upload') }}" >
+                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                    <input type="file" name="file" id="file" style="display:none">
+                    <button class="btn btn-light btn-sm" type="button" value="Upload CSV" id="upload_csv">
+                        <span class="fa-upload"></span>
+                        <span class="spinner-border spinner-border-sm" role="status" id="loader_upload_csv" aria-hidden="true" disabled> </span>
+                        Upload CSV
+                    </button>
+                </form>
+                <form method="POST" id="deleteForm" action="{{ url('merchant/branch/bulkdelete')  }}" >
+                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                    <input type="hidden" name="delete_ids" id="delete_ids"  value="">
+                    <button class="btn btn-danger btn-sm" type="button" id="delete">
+                        <span class="mdi-delete-variant"></span>
+                        <span class="spinner-border spinner-border-sm" role="status" id="loader_upload_csv" aria-hidden="true" disabled> </span>
+                        Delete
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <div class="panel-menu">
+            <div class="row row-30">      
+                <div class="col-lg-2">
+                    @if(isset($filters->business_type))
+                    <select class="select2 hustle-filter" data-placeholder="Business Type" name="business_type">
+                        <option label="placeholder"></option>
+                        <option value="all">ALL</option>
+                        @foreach ($filters->business_type as $option)
+                            @if(!empty($option))
+                            <option {{ (isset($selectedFilter['business_type']) && $selectedFilter['business_type']==$option)? 'selected="selected"' : '' }} value="{{ $option }}">{{ $option }}</option>
+                            @endif
+                        @endforeach
+                    </select>
+                    @endif
+                </div>
+                <div class="col-lg-2">
+                    @if(isset($filters->store_type))
+                        <select class="select2 hustle-filter" data-placeholder="Store Type" name="store_type">
+                            <option label="placeholder"></option>
+                            <option value="all">ALL</option>
+                            @foreach ($filters->store_type as $option)
+                                @if(!empty($option))
+                                    <option {{ (isset($selectedFilter['store_type']) && $selectedFilter['store_type']==$option)? 'selected="selected"' : '' }} value="{{ $option }}">{{ $option }}</option>
+                                @endif
+                            @endforeach
+                        </select>
+                    @endif
+                </div>
+                <div class="col-lg-2">
+                    @if(isset($filters->brand))
+                        <select class="select2 hustle-filter" data-placeholder="Brand" name="brand">
+                            <option label="placeholder"></option>
+                            <option value="all">ALL</option>
+                            @foreach ($filters->brand as $option)
+                                @if(!empty($option))
+                                    <option {{ (isset($selectedFilter['brand']) && $selectedFilter['brand']==$option)? 'selected="selected"' : '' }} value="{{ $option }}">{{ $option }}</option>
+                                @endif
+                            @endforeach
+                        </select>
+                    @endif
+                </div>
+                <div class="col-lg-2">
+                    @if(isset($filters->province))
+                        <select class="select2 hustle-filter" data-placeholder="Province" name="province">
+                            <option label="placeholder"></option>
+                            <option value="all">ALL</option>
+                            @foreach ($filters->province as $option)
+                                @if(!empty($option))
+                                    <option {{ (isset($selectedFilter['province']) && $selectedFilter['province']==$option)? 'selected="selected"' : '' }} value="{{ $option }}">{{ $option }}</option>
+                                @endif
+                            @endforeach
+                        </select>
+                    @endif
+                </div>
+                <div class="col-lg-2">
+                    @if(isset($filters->city))
+                        <select class="select2 hustle-filter" data-placeholder="City" name="city">
+                            <option label="placeholder"></option>
+                            <option value="all">ALL</option>
+                            @foreach ($filters->city as $option)
+                                @if(!empty($option))
+                                    <option {{ (isset($selectedFilter['city']) && $selectedFilter['city']==$option)? 'selected="selected"' : '' }} value="{{ $option }}">{{ $option }}</option>
+                                @endif
+                            @endforeach
+                        </select>
+                    @endif
+                </div>
+            </div>
+        </div>
+
+            <!-- <div class="row">
                 <div class="col-sm-12">
                     <div class="panel-title"><span class="panel-icon fa-tasks"></span> <span>Merchant Branches</span>
                     </div>
@@ -81,43 +179,41 @@
                         </select>
                     @endif
                 </div>
-                <div class="col-lg-2 text-right">
-                    <div class="btn-group" role="group" aria-label="Basic example">
+                <div class="col-lg-2">
                     <form method="POST" enctype="multipart/form-data" id="file_upload" action="{{ url('merchant/branch/upload') }}" >
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                         <input type="file" name="file" id="file" style="display:none">
-                        <button class="btn btn-primary btn-sm" type="button" value="Upload CSV" id="upload_csv">
+                        <button class="btn btn-light btn-md" type="button" value="Upload CSV" id="upload_csv">
                             <span class="fa-upload"></span>
                             <span class="spinner-border spinner-border-sm" role="status" id="loader_upload_csv" aria-hidden="true" disabled> </span>
-                            CSV
+                            Upload CSV
                         </button>
                     </form>
                     <form method="POST" id="deleteForm" action="{{ url('merchant/branch/bulkdelete')  }}" >
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                         <input type="hidden" name="delete_ids" id="delete_ids"  value="">
-                        <button class="btn btn-danger btn-sm" type="button" id="delete">
+                        <button class="btn btn-danger btn-md" type="button" id="delete">
                             <span class="mdi-delete-variant"></span>
                             <span class="spinner-border spinner-border-sm" role="status" id="loader_upload_csv" aria-hidden="true" disabled> </span>
                             Delete
                         </button>
                     </form>
-                    </div>
                 </div>
             </div>
-        </div>
+        </div> -->
 
 
         <div class="panel-body p-0">
-            <div class="table-responsive scroller scroller-horizontal py-3">
-                <table class="table table-striped table-hover data-table" data-table-searching="true" data-table-lengthChange="true" data-page-length="5">
-                    <thead>
-                    <tr>
-                        <td style="width: 40px">
-                            <div class="custom-control custom-checkbox custom-checkbox-success">
-                                <input class="custom-control-input" type="checkbox" id="selectAll"/>
-                                <label class="custom-control-label" for="selectAll"></label>
-                            </div>
-                        </td>
+                <div class="table-responsive scroller scroller-horizontal py-3">
+                    <table class="table table-striped table-hover data-table" data-table-searching="true" data-table-lengthChange="true" data-page-length="5">
+                        <thead>
+                        <tr>
+                            <td style="width: 40px" data-orderable="false" data-targets="0" >
+                                <div class="custom-control custom-checkbox custom-checkbox-light">
+                                    <input class="custom-control-input" type="checkbox" id="selectAll"/>
+                                    <label class="custom-control-label" for="selectAll"></label>
+                                </div>
+                            </td>
                         <th>Name</th>
                         <th>BusinessType</th>
                         <th>StoreType</th>
@@ -132,7 +228,7 @@
                     @foreach ($branches as $branch)
                         <tr>
                             <td style="width: 40px">
-                                <div class="custom-control custom-checkbox custom-checkbox-success">
+                                <div class="custom-control custom-checkbox custom-checkbox-light">
                                     <input class="custom-control-input" type="checkbox" name="branch_id" id="{{ $branch->branch_id }}" />
                                     <label class="custom-control-label" for="{{ $branch->branch_id }}"></label>
                                 </div>
@@ -146,11 +242,10 @@
                             <td>{{ $branch->region }}</td>
                             <td>
                                 <div class="dropdown">
-                                    <button class="btn dropdown-toggle btn-light btn-sm" data-toggle="dropdown"><span>Action</span>
-                                    </button>
+                                    <button class="btn dropdown-toggle btn-light btn-sm" data-toggle="dropdown"><span>Action</span></button>
                                     <div class="dropdown-menu">
-                                        <a class="dropdown-item" href="{{url('/merchant/branch/edit/' . $branch->branch_id )}}"><span class="fa-edit"></span> Update</a>
-                                        <a class="dropdown-item deleteBranch" href="#" target-href="{{url('/merchant/branch/delete/' . $branch->branch_id )}}"><span class="mdi-delete"></span> Delete</a>
+                                        <a class="dropdown-item" href="{{url('/merchant/branch/edit/' . $branch->branch_id )}}"> Update</a>
+                                        <a class="dropdown-item deleteBranch" href="#" target-href="{{url('/merchant/branch/delete/' . $branch->branch_id )}}"> Delete</a>
                                     </div>
                                 </div>
                             </td>

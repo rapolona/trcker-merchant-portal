@@ -3,7 +3,7 @@
 @section('breadcrumbs_pull_right')
     <div class="group-10">
         <!-- <button class="btn btn-secondary" type="button"><span class="fa-plus"></span><span class="pl-2">Add New Branch</span></button> -->
-        <a class="btn btn-light" href="{{ url('campaign/create') }}"><span class="fa-plus"></span><span class="pl-2">Add New Campaign</span></a>
+        <a class="btn btn-primary" href="{{ url('campaign/create') }}"><span class="fa-plus"></span><span class="pl-2">Add New Campaign</span></a>
         <!-- <button class="btn btn-secondary" type="button"><span class="fa-user"></span><span class="pl-2">Button Link</span></button> -->
     </div>
 @endsection
@@ -17,9 +17,11 @@
                     <div class="col-sm-7">
                         <div class="panel-title"><span class="panel-icon fa-tasks"></span> <span>Campaigns</span></div>
                     </div>
-                    <div class="col-sm-5">
-                        <button type="button" value="disable" class="btn btn-danger btn-sm pull-right enable-disable"><span class="fa-ban"></span><span class="pl-2">Disable</span></button>
-                        <button type="button" value="enable" class="btn btn-success btn-sm pull-right enable-disable"><span class="fa-check"></span><span class="pl-2">Activate</span></button>
+                    <div class="col-sm-5 text-right">
+                        <div class="btn-group">
+                            <button class="btn btn-light btn-sm enable-disable" type="button" value="enable"><span class="fa-check"></span><span class="pl-2">Enable</span></button>
+                            <button class="btn btn-danger btn-sm enable-disable" type="button" value="disable"><span class="fa-ban"></span><span class="pl-2">Disable</span></button>
+                        </div>
                         <input id="campaign-status" name="status" type="hidden" />
                     </div>
                 </div>
@@ -30,7 +32,7 @@
                         <thead>
                         <tr>
                             <td style="width: 40px" data-orderable="false" data-targets="0" >
-                                <div class="custom-control custom-checkbox custom-checkbox-success">
+                                <div class="custom-control custom-checkbox custom-checkbox-light">
                                     <input class="custom-control-input" type="checkbox" id="selectAll"/>
                                     <label class="custom-control-label" for="selectAll"></label>
                                 </div>
@@ -49,7 +51,7 @@
                         @foreach ($campaigns as $campaign)
                             <tr>
                                 <td style="width: 40px">
-                                    <div class="custom-control custom-checkbox custom-checkbox-success">
+                                    <div class="custom-control custom-checkbox custom-checkbox-light">
                                         <input class="custom-control-input" type="checkbox" name="campaign_id[]" id="{{ $campaign->campaign_id }}" value="{{ $campaign->campaign_id }}" />
                                         <label class="custom-control-label" for="{{ $campaign->campaign_id }}"></label>
                                     </div>
@@ -66,13 +68,13 @@
                                         <button class="btn dropdown-toggle btn-light btn-sm" data-toggle="dropdown"><span>Action</span>
                                         </button>
                                         <div class="dropdown-menu">
-                                            <!--<a class="dropdown-item" href="{{ url('campaign/view/' . $campaign->campaign_id )}}">View</a>-->
+                                            <!-- <a class="dropdown-item" href="{{ url('campaign/view/' . $campaign->campaign_id )}}">View</a> -->
                                             <a class="dropdown-item" href="{{ url('campaign/edit/' . $campaign->campaign_id )}}">Edit</a>
-                                            <!--<a class="dropdown-item" href="{{ url('campaign/delete/' . $campaign->campaign_id )}}">Delete</a>-->
+                                        <!--<a class="dropdown-item" href="{{ url('campaign/delete/' . $campaign->campaign_id )}}">Delete</a>-->
                                             <a class="dropdown-item" href="{{ url('campaign/duplicate/' . $campaign->campaign_id )}}">Duplicate</a>
                                             @if($campaign->status=='DISABLED')
-                                                <a class="dropdown-item" href="{{ url('campaign/status/enable/' . $campaign->campaign_id )}}">Activate</a>
-                                            @elseif($campaign->status=='ONGOING')
+                                                <a class="dropdown-item" href="{{ url('campaign/status/enable/' . $campaign->campaign_id )}}">Enable</a>
+                                            @else
                                                 <a class="dropdown-item" href="{{ url('campaign/status/disable/' . $campaign->campaign_id )}}">Disable</a>
                                             @endif
                                         </div>
