@@ -271,7 +271,7 @@ exports.findOne = (req, res) => {
       {model:tasks, attributes:['task_id'], through: {attributes: ['reward_amount']}}
 
     ],
-    attributes: { exclude: ['at_home_campaign','total_reward_amount','createdAt','updatedAt','merchant_id','campaign_id']}
+    attributes: { exclude: ['total_reward_amount','createdAt','updatedAt','merchant_id','campaign_id']}
   };
 
     Campaign.findOne(condition)
@@ -445,8 +445,15 @@ exports.deleteAll = (req, res) => {
 
   exports.getActiveCampaigns = (req,res) => {
     const merchantId = req.body.merchantid;
-  
-    Campaign.findAll({where: {merchant_id: merchantId, status: "ONGOING"}, raw:true,attributes:[[db.Sequelize.fn('COUNT','campaign_id'), "active_campaigns"]]})
+    var groupByParams = req.query.groupby;
+    var groupArr = []
+    var attributesArr = [[db.Sequelize.fn('COUNT','campaign_id'), "active_campaigns"]]
+    if(groupByParams && groupByParams == "campaign_type"){
+       groupArr.push("campaign_type");
+       attributesArr.push("campaign_type")
+    }
+
+    Campaign.findAll({where: {merchant_id: merchantId, status: "ONGOING"}, group:groupArr,raw:true,attributes:attributesArr})
     .then(data => {
       res.send(data)
     })
