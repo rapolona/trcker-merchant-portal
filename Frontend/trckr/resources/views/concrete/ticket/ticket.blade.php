@@ -1,7 +1,7 @@
 @extends('concrete.layouts.main')
 
 @section('breadcrumbs_pull_right')
-    <a class="btn btn-light" href="{{ url('/ticket/export_csv') }}"><span class="fa-cloud-download"></span><span class="pl-2">Download Report</span></a>
+    <a class="btn btn-outline-primary" href="{{ url('/ticket/export_csv') }}"><span class="fa-cloud-download"></span><span class="pl-2">Download Report</span></a>
 @endsection
 
 @section('content')
@@ -15,7 +15,7 @@
                     </div>
                     <div class="col-sm-6">
                         <button type="button" value="reject" class="btn btn-danger btn-sm pull-right approve-reject"><span class="fa-ban"></span><span class="pl-2">Reject</span></button>
-                        <button type="button" value="approve" class="btn btn-success btn-sm pull-right approve-reject"><span class="fa-check"></span><span class="pl-2">Approve</span></button>
+                        <button type="button" value="approve" class="btn btn-light btn-sm pull-right approve-reject"><span class="fa-check"></span><span class="pl-2">Approve</span></button>
                         <input id="ticket-status" name="status" type="hidden" />
                     </div>
                 </div>
@@ -26,7 +26,7 @@
                         <thead>
                         <tr>
                             <th class="no-sort">
-                                <div class="custom-control custom-checkbox custom-checkbox-success">
+                                <div class="custom-control custom-checkbox custom-checkbox-light">
                                     <input class="custom-control-input" type="checkbox" id="selectAll">
                                     <label class="custom-control-label" for="selectAll"></label>
                                 </div>
@@ -45,7 +45,7 @@
                         @foreach ($tickets as $t)
                             <tr>
                                 <td>
-                                    <div class="custom-control custom-checkbox custom-checkbox-success">
+                                    <div class="custom-control custom-checkbox custom-checkbox-light">
                                         <input class="custom-control-input" type="checkbox" name="tickets[]" id="{{ $t->task_ticket_id }}" value="{{ $t->task_ticket_id }}">
                                         <label class="custom-control-label" for="{{ $t->task_ticket_id }}"></label>
                                     </div>

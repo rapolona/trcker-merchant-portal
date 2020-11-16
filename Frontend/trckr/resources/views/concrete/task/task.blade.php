@@ -1,10 +1,9 @@
 @extends('concrete.layouts.main')
 
 @section('breadcrumbs_pull_right')
-    <div class="group-10">
-        <!-- <button class="btn btn-secondary" type="button"><span class="fa-plus"></span><span class="pl-2">Add New Branch</span></button> -->
-        <a class="btn btn-light" href="{{ url('task/create') }}"><span class="fa-plus"></span><span class="pl-2">Add New Task</span></a>
-        <!-- <button class="btn btn-secondary" type="button"><span class="fa-user"></span><span class="pl-2">Button Link</span></button> -->
+    <div class="btn-group">
+          <a class="btn btn-outline-primary" href="{{ url('task/create') }}"><span class="fa-plus">Add a new branch</span></a>
+<!--           <a class="btn btn-dark" href="#"><span class="fa-upload">Upload CSV</span></a> -->
     </div>
 @endsection
 
