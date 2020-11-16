@@ -102,12 +102,15 @@
                     <div class="panel-header">
                       <div class="group-5 d-flex flex-wrap align-items-center justify-content-between">
                         <div class="panel-title">Branch Details</div>
-                        <div>
+                        <div class="col-lg-3">
                           <input class="form-control form-control-sm" required type="number" min="1" name="nobranch_submissions" id="nobranch_submissions" value="{{ old('nobranch_submissions') }}" placeholder="Max Submission" />
-                          <div class="custom-control custom-switch custom-switch-light">
-                            <input class="custom-control-input" type="checkbox" name="branch_id-nobranch" {{ old('nobranch_submissions', 1) > 0? 'checked=""' : '' }} id="branch_id-nobranch">
-                            <label class="custom-control-label" for="customPanelSwitch">Do-It-At-Home</label>
-                          </div>
+
+                            <div class="input-group form-group">
+                                <div class="custom-control custom-switch custom-switch-success">
+                                    <input class="custom-control-input" type="checkbox" name="branch_id-nobranch" {{ old('nobranch_submissions', 1) > 0? 'checked=""' : '' }} id="branch_id-nobranch">
+                                    <label class="custom-control-label" for="branch_id-nobranch">Do-It-At-Home</label>
+                                </div>
+                            </div>
                         </div>
                       </div>
                     </div>
