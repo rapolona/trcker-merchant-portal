@@ -2,8 +2,7 @@
 
 @section('breadcrumbs_pull_right')
     <div class="btn-group">
-          <a class="btn btn-outline-primary" href="{{ url('task/create') }}"><span class="fa-plus">Add a new branch</span></a>
-<!--           <a class="btn btn-dark" href="#"><span class="fa-upload">Upload CSV</span></a> -->
+          <a class="btn btn-outline-primary" href="{{ url('task/create') }}"><span class="fa-plus"> Add a new task</span></a>
     </div>
 @endsection
 

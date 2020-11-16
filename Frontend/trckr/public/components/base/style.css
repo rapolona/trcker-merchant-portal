@@ -397,8 +397,8 @@ iframe {
 }
 
 .btn-outline-primary {
-    color: #6d92b9;
-    border-color: #6d92b9;
+    color: #1b653a;
+    border-color: #1b653a;
 }
 
 .btn-outline-primary:hover {
@@ -412,15 +412,15 @@ iframe {
 }
 
 .btn-outline-primary.disabled, .btn-outline-primary:disabled {
-	color: #6d92b9;
+	color: #1b653a;
 	background-color: transparent;
 }
 
 .btn-outline-primary:not(:disabled):not(.disabled):active, .btn-outline-primary:not(:disabled):not(.disabled).active,
 .show > .btn-outline-primary.dropdown-toggle {
 	color: #fff;
-	background-color: #6d92b9;
-	border-color: #6d92b9;
+	background-color: #1b653a;
+	border-color: #1b653a;
 }
 
 .btn-outline-primary:not(:disabled):not(.disabled):active:focus, .btn-outline-primary:not(:disabled):not(.disabled).active:focus,
