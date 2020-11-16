@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Log;
 use Config;
 use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Request;
 
 Class Repository
 {
@@ -49,6 +50,8 @@ Class Repository
             Redirect::back()->with('formMessage', $msg)->send();
         }
 
+        Log::info('----------- Log END --------');
+
         return $response;
     }
 
@@ -57,11 +60,31 @@ Class Repository
         return Config::get('gbl_profile')->token;
     }
 
+    public function logUserDetail()
+    {
+        $ip = request()->ip();
+        $log = [
+            'IP' => $ip,
+        ];
+        if(isset(Config::get('gbl_profile')->merchant)){
+            $details = Config::get('gbl_profile')->merchant;
+            $merchant = [
+                'merchant_id' => $details->merchant_id,
+                'name' => $details->name,
+                'email' => $details->email_address
+            ];
+            $log['merchant'] = $merchant;
+        }
+
+        Log::info("USER DETAILS");
+        Log::info($log);
+    }
+
     public function trackerApi($method, $url, $data, $useToken=true)
     {
-        //REFRESH SESSION FORM DATA GLOBAL
-        //Session::put('formMessage', '');
-        //Session::save();
+        Log::info('----------- Log start --------');
+
+        $this->logUserDetail();
 
         $logMethod = strtoupper($method);
         Log::info("{$logMethod} {$url} ");
