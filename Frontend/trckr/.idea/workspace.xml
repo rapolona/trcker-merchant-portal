@@ -21,6 +21,8 @@
   <component name="ChangeListManager">
     <list default="true" id="332e4564-3d58-4e77-b6ff-3f4e7096ea2e" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/trckr.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/trckr.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/concrete/campaign/create.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/concrete/campaign/create.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/concrete/campaign/edit.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/concrete/campaign/edit.blade.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -219,7 +221,10 @@
       <workItem from="1605262705611" duration="21534000" />
       <workItem from="1605316211897" duration="11966000" />
       <workItem from="1605347362022" duration="23026000" />
-      <workItem from="1605406084478" duration="1325000" />
+      <workItem from="1605406084478" duration="2926000" />
+      <workItem from="1605439817794" duration="585000" />
+      <workItem from="1605490330155" duration="567000" />
+      <workItem from="1605520140541" duration="2519000" />
     </task>
     <servers />
   </component>

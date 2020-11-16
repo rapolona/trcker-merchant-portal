@@ -475,6 +475,7 @@
                 if (index >= 5) {
                     $.alert({
                         title: 'Hustle',
+                        type: 'red',
                         content: 'The maximum limit of task classifications per campaign is 5',
                     });
                     return;
@@ -530,6 +531,7 @@
                     {
                         $.alert({
                             title: 'Hustle',
+                            type: 'red',
                             content: 'Please select at least one branch',
                         });
                         return false;
@@ -545,6 +547,7 @@
                 if(budget < computeBudget){
                     $.alert({
                         title: 'Hustle',
+                        type: 'red',
                         content: 'You are over your budget please adjust your rewards or max submissions or increase your budget',
                     });
                     return false;
