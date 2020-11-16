@@ -316,7 +316,7 @@
 
                     <div class="panel-footer">
                         <div class="group-5 pull-right">
-                            <button class="btn btn-success" type="submit" id="submit">Save Campaign</button>
+                            <button class="btn btn-primary" type="submit" id="submit">Save Campaign</button>
                         </div>
                     </div>
                 </div>

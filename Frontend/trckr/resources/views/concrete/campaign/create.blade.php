@@ -81,7 +81,7 @@
                                     <p>Campaign Thumbnail</p>
                                     <div class="tower-file mt-3">
                                         <input class="tower-file-input" name="thumbnail_url" id="demo1" type="file">
-                                        <label class="btn btn-xs btn-success" for="demo1"><span>Upload</span></label>
+                                        <label class="btn btn-xs btn-light" for="demo1"><span>Upload</span></label>
                                     </div>
                                 </div>
                                 @if($errors->first('thumbnail_url'))
@@ -99,24 +99,21 @@
         <section class="section-sm campaign-section">
             <div class="container-fluid">
                 <div class="panel">
-                    <div class="panel-header d-flex flex-wrap align-items-center justify-content-between">
-                        <div class="col-md-6">
-                            <div class="panel-title">Branch Details</div>
+                    <div class="panel-header">
+                      <div class="group-5 d-flex flex-wrap align-items-center justify-content-between">
+                        <div class="panel-title">Branch Details</div>
+                        <div>
+                          <input class="form-control form-control-sm" required type="number" min="1" name="nobranch_submissions" id="nobranch_submissions" value="{{ old('nobranch_submissions') }}" placeholder="Max Submission" />
                         </div>
-                        <div class="col-md-6">
-                            <div class="col-md-5 pull-right">
-                                <div class="input-group form-group">
-                                    <div class="custom-control custom-switch custom-switch-success">
-                                        <input class="custom-control-input" type="checkbox" name="branch_id-nobranch" {{ old('nobranch_submissions', 1) > 0? 'checked=""' : '' }} id="branch_id-nobranch">
-                                        <label class="custom-control-label" for="branch_id-nobranch">Do-It-At-Home</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4 pull-right">
-                                <input class="form-control" required type="number" min="1" name="nobranch_submissions" id="nobranch_submissions" value="{{ old('nobranch_submissions') }}" placeholder="Max Submission" />
-                            </div>
+                        <div>
+                          <div class="custom-control custom-switch custom-switch-light">
+                            <input class="custom-control-input" type="checkbox" name="branch_id-nobranch" {{ old('nobranch_submissions', 1) > 0? 'checked=""' : '' }} id="branch_id-nobranch">
+                            <label class="custom-control-label" for="customPanelSwitch">Do-It-At-Home</label>
+                          </div>
                         </div>
+                      </div>
                     </div>
+
                     <div class="panel-header branchSection" style="display: none">
                         <div class="row row-30">
                             <div class="col-lg-2">
@@ -195,7 +192,7 @@
                                 <thead>
                                 <tr>
                                     <td style="width: 40px">
-                                        <div class="custom-control custom-checkbox custom-checkbox-success">
+                                        <div class="custom-control custom-checkbox custom-checkbox-light">
                                             <input class="custom-control-input" type="checkbox" id="selectAll"/>
                                             <label class="custom-control-label" for="selectAll"></label>
                                         </div>
@@ -214,7 +211,7 @@
                                 @foreach ($branches as $branch)
                                     <tr>
                                         <td style="width: 40px">
-                                            <div class="custom-control custom-checkbox custom-checkbox-success">
+                                            <div class="custom-control custom-checkbox custom-checkbox-light">
                                                 <input class="branch-input custom-control-input branch-id-checkbox" type="checkbox" name="branch_id[]" id="{{ $branch->branch_id }}" value="{{ $branch->branch_id }}"
                                                        @if(is_array(old('branch_id')) && in_array($branch->branch_id, old('branch_id'))) checked @endif />
                                                 <label class="custom-control-label" for="{{ $branch->branch_id }}"></label>
@@ -298,7 +295,7 @@
 
                     <div class="panel-footer">
                         <div class="group-5 pull-right">
-                            <button class="btn btn-success" type="submit" id="submit">Save Campaign</button>
+                            <button class="btn btn-primary" type="submit" id="submit">Save Campaign</button>
                         </div>
                     </div>
                 </div>
@@ -358,7 +355,7 @@
                         "targets": 0,
                         "data": 0,
                         "render": function ( data, type, row, meta ) {
-                            return '<div class="branch-input custom-control custom-checkbox custom-checkbox-success"><input class="custom-control-input" type="checkbox" name="branch_id[' + data + ']" id="' + data + '" /><label class="custom-control-label" for="' + data +'"></label></div>';
+                            return '<div class="branch-input custom-control custom-checkbox custom-checkbox-light"><input class="custom-control-input" type="checkbox" name="branch_id[' + data + ']" id="' + data + '" /><label class="custom-control-label" for="' + data +'"></label></div>';
                         }
                     }]
                 } );
