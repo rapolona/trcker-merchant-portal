@@ -104,8 +104,6 @@
                         <div class="panel-title">Branch Details</div>
                         <div>
                           <input class="form-control form-control-sm" required type="number" min="1" name="nobranch_submissions" id="nobranch_submissions" value="{{ old('nobranch_submissions') }}" placeholder="Max Submission" />
-                        </div>
-                        <div>
                           <div class="custom-control custom-switch custom-switch-light">
                             <input class="custom-control-input" type="checkbox" name="branch_id-nobranch" {{ old('nobranch_submissions', 1) > 0? 'checked=""' : '' }} id="branch_id-nobranch">
                             <label class="custom-control-label" for="customPanelSwitch">Do-It-At-Home</label>
