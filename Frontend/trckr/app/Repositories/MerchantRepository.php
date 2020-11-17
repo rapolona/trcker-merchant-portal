@@ -18,7 +18,7 @@ class MerchantRepository extends Repository
         try {
             return $this->trackerApi('get', $this->api . 'profile', []);
         } catch(\Exception $e) {
-            $this->sessionExpired();
+            $this->sessionExpired($e);
         }
     }
 
@@ -27,7 +27,7 @@ class MerchantRepository extends Repository
         try {
             return $this->trackerApi('put', $this->api . 'profile', $data);
         } catch(\Exception $e) {
-            $this->sessionExpired();
+            $this->sessionExpired($e);
         }
     }
 
@@ -36,7 +36,7 @@ class MerchantRepository extends Repository
         try {
             return $this->trackerApi('get', $this->api . 'campaign', []);
         } catch(\Exception $e) {
-            $this->sessionExpired();
+            $this->sessionExpired($e);
         }
     }
 
@@ -45,7 +45,7 @@ class MerchantRepository extends Repository
         try {
             return $this->trackerApi('post', $this->api . 'auth', $data, false);
         } catch(\Exception $e) {
-            $this->sessionExpired();
+            $this->sessionExpired($e);
         }
     }
 
@@ -54,7 +54,7 @@ class MerchantRepository extends Repository
         try {
             return $this->trackerApi('post', $this->api . 'logout', []);
         } catch(\Exception $e) {
-            $this->sessionExpired();
+            $this->sessionExpired($e);
         }
     }
 
@@ -63,7 +63,7 @@ class MerchantRepository extends Repository
         try {
             return $this->trackerApi('post', $this->api . 'forgotpassword', $data,false);
         } catch(\Exception $e) {
-            $this->sessionExpired();
+            $this->sessionExpired($e);
         }
     }
 
@@ -72,7 +72,7 @@ class MerchantRepository extends Repository
         try {
             return $this->trackerApi('post', $this->api . 'changepassword', $data);
         } catch(\Exception $e) {
-            $this->sessionExpired();
+            $this->sessionExpired($e);
         }
     }
 
@@ -81,7 +81,7 @@ class MerchantRepository extends Repository
         try {
             return $this->trackerApi('put', $this->api . 'approve', $data);
         } catch(\Exception $e) {
-            $this->sessionExpired();
+            $this->sessionExpired($e);
         }
     }
 
@@ -90,7 +90,7 @@ class MerchantRepository extends Repository
         try {
             return $this->trackerApi('put', $this->api . 'reject', $data);
         } catch(\Exception $e) {
-            $this->sessionExpired();
+            $this->sessionExpired($e);
         }
     }
 }

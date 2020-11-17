@@ -15,11 +15,11 @@ class TaskRepository extends Repository
 
     public function create($data)
     {
-       // try {
+        try {
             return $this->trackerApi('post', $this->api, $data);
-       // } catch(\Exception $e) {
-       //     $this->sessionExpired();
-       // }
+        } catch(\Exception $e) {
+            $this->sessionExpired($e);
+        }
     }
 
     public function update($data)
@@ -27,7 +27,7 @@ class TaskRepository extends Repository
         try {
             return $this->trackerApi('put', $this->api, $data);
         } catch(\Exception $e) {
-            $this->sessionExpired();
+            $this->sessionExpired($e);
         }
     }
 
@@ -36,7 +36,7 @@ class TaskRepository extends Repository
         try {
             return $this->trackerApi('get', $this->api. '?task_id=' . $data['task_id'] , $data);
         } catch(\Exception $e) {
-            $this->sessionExpired();
+            $this->sessionExpired($e);
         }
     }
 
@@ -45,7 +45,7 @@ class TaskRepository extends Repository
         try {
             return $this->trackerApi('get', $this->api , []);
         } catch(\Exception $e) {
-            $this->sessionExpired();
+            $this->sessionExpired($e);
         }
     }
 
@@ -55,7 +55,7 @@ class TaskRepository extends Repository
             $data = ['task_type'=>'Merchandising'];
             return $this->trackerApi('get', $this->api, $data);
         } catch(\Exception $e) {
-            $this->sessionExpired();
+            $this->sessionExpired($e);
         }
     }
 
@@ -64,7 +64,7 @@ class TaskRepository extends Repository
         try {
             return $this->trackerApi('get', Config::get('trckr.backend_url') . 'api/task_action_classification' , []);
         } catch(\Exception $e) {
-            $this->sessionExpired();
+            $this->sessionExpired($e);
         }
     }
 

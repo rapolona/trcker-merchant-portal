@@ -10,8 +10,12 @@ use Illuminate\Support\Facades\Request;
 
 Class Repository
 {
-    public function sessionExpired()
+    public function sessionExpired($e = null)
     {
+        if($e){
+            Log::info('error');
+            Log::info($e->getMessage());
+        }
         Log::info('SESSION EXPIRED');
         $message = "Session Expired. Please login again";
         Session::put('login_msg', $message);

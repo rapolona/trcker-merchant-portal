@@ -18,7 +18,7 @@ class BranchRepository extends Repository
         try {
             return $this->trackerApi('get', $this->api . 'branch/filters', []);
         } catch(\Exception $e) {
-            $this->sessionExpired();
+            $this->sessionExpired($e);
         }
     }
 
@@ -28,7 +28,7 @@ class BranchRepository extends Repository
             $uri = http_build_query($data);
             return $this->trackerApi('get', $this->api . 'branches?' . $uri, $data);
         } catch(\Exception $e) {
-            $this->sessionExpired();
+            $this->sessionExpired($e);
         }
     }
 
@@ -37,7 +37,7 @@ class BranchRepository extends Repository
         try {
             return $this->trackerApi('get', $this->api . 'branch/find_one/' .$id, []);
         } catch(\Exception $e) {
-            $this->sessionExpired();
+            $this->sessionExpired($e);
         }
     }
 
@@ -46,7 +46,7 @@ class BranchRepository extends Repository
         try {
             return $this->trackerApi('post', $this->api . 'branch/', $data);
         } catch(\Exception $e) {
-            $this->sessionExpired();
+            $this->sessionExpired($e);
         }
     }
 
@@ -55,7 +55,7 @@ class BranchRepository extends Repository
         try {
             return $this->trackerApi('put', $this->api . 'branch/', $data);
         } catch(\Exception $e) {
-            $this->sessionExpired();
+            $this->sessionExpired($e);
         }
     }
 
@@ -64,7 +64,7 @@ class BranchRepository extends Repository
         try {
             return $this->trackerApi('delete', $this->api . 'branch/', $data);
         } catch(\Exception $e) {
-            $this->sessionExpired();
+            $this->sessionExpired($e);
         }
     }
 }
