@@ -425,13 +425,26 @@ exports.deleteAll = (req, res) => {
   exports.countRespondents = (req,res) => {
     var groupByParam = req.query.groupby
     var groupArr = ['campaign_id']
+    var taskTicketAttributesArr = [[db.Sequelize.fn("COUNT", "user_id"), "respondents"], 'campaign_id']
     var includeArr = [{model:Campaign, where:{merchant_id: req.body.merchantid}, attributes:['campaign_name', 'campaign_description']}]
-    if(groupByParam && groupByParam == "BRANCH"){
-      groupArr.push('task_ticket.branch_id')
-      includeArr.push({model:Branch, attributes:['name']})
+    if(groupByParam){
+      groupByParam = groupByParam.split(",")
+      for(var i = 0; i<groupByParam.length; i++){
+        if(groupByParam[i] == "BRANCH"){
+          groupArr.push('task_ticket.branch_id')
+          includeArr.push({model:Branch, attributes:['name']})
+        }
+        if(groupByParam[i] == "CAMPAIGN"){
+          groupArr.push('task_ticket.campaign_id')
+        }
+        if(groupByParam[i] == "STATUS"){
+          groupArr.push('task_ticket.approval_status')
+          taskTicketAttributesArr.push("approval_status")
+        }
+      }
     }
-    Task_Ticket.findAll({include:includeArr,group:groupArr, attributes:[
-      [db.Sequelize.fn("COUNT", "user_id"), "respondents"], 'campaign_id']})
+    
+    Task_Ticket.findAll({include:includeArr,group:groupArr, attributes:taskTicketAttributesArr})
     .then(data => {
       res.send(data)
     })
@@ -520,3 +533,47 @@ exports.disable_campaign = (req, res) => {
       });
     });
 };
+
+exports.countCampaign = (req,res)=>{
+  const merchantId = req.body.merchantid;
+  var groupByParams = req.query.groupby;
+  var groupArr = []
+  var filterParams = req.query.filterby;
+  var filterValParams = req.query.filterval;
+  var whereObject = {merchant_id: merchantId}
+  var attributesArr = [[db.Sequelize.fn('COUNT','campaign_id'), "campaigns"]]
+  if(filterValParams && filterParams){
+    filterValParams = filterValParams.split(',')
+    filterParams = filterParams.split(',')
+    console.log(filterParams)
+    console.log(filterValParams)
+    if(filterParams.length != filterValParams.length){
+      res.status(422).send({
+        message: "Please supply filter val for each filter by param"
+      })
+      return;
+    }
+    for(var i = 0; i<filterParams.length; i++){
+      whereObject[filterParams[i]] = filterValParams[i] 
+     }
+  }
+  if(groupByParams){
+    groupByParams = groupByParams.split(',')
+    console.log(groupByParams)
+    for(var i =0 ; i<groupByParams.length; i++){
+      groupArr.push(groupByParams[i])
+      attributesArr.push(groupByParams[i])
+    }
+  }
+
+  Campaign.findAll({where: whereObject, group:groupArr,raw:true,attributes:attributesArr})
+  .then(data => {
+    res.send(data)
+  })
+  .catch(err=>{
+    res.status(500).send({
+      message:
+        err.message || "Error counting campaign"
+    });
+  })
+}
