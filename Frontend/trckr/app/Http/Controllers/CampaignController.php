@@ -280,6 +280,14 @@ class CampaignController extends Controller
             "tasks" => array()
         );
 
+        preg_match_all('#\bhttps?://[^,\s()<>]+(?:\([\w\d]+\)|([^,[:punct:]\s]|/))#', $data['campaign_description'], $match);
+
+        if(isset($match) && isset($match[0]) && isset($match[0][0])){
+            $request_data['description_image_url'] = $match[0][0];
+        }
+
+        //print_r($request_data['description_image_url'] ); exit();
+
         if ( ! empty($data['thumbnail_url']))
             $request_data['thumbnail_url'] = 'data:' . $data['thumbnail_url']->getMimeType() . ';base64,' . base64_encode(file_get_contents($data['thumbnail_url']));
 
@@ -647,6 +655,12 @@ class CampaignController extends Controller
             "tasks" => array(),
             "campaign_id" => $data['campaign_id'],
         );
+
+        preg_match_all('#\bhttps?://[^,\s()<>]+(?:\([\w\d]+\)|([^,[:punct:]\s]|/))#', $data['campaign_description'], $match);
+
+        if(isset($match) && isset($match[0]) && isset($match[0][0])){
+            $request_data['description_image_url'] = $match[0][0];
+        }
 
         if ( ! empty($data['thumbnail_url']))
             $request_data['thumbnail_url'] = 'data:' . $data['thumbnail_url']->getMimeType() . ';base64,' . base64_encode(file_get_contents($data['thumbnail_url']));
