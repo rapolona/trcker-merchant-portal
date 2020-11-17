@@ -90,7 +90,7 @@ exports.approve = (req, res) => {
       Task_Ticket.findAll({
         where: {campaign_id: campaign_id},
         include: [
-          {model: User_Detail, as:'user_detail', attributes: ['first_name', 'last_name', 'account_level', 'email']}
+          {model: User_Detail, as:'user_detail', attributes: ['first_name', 'last_name', 'account_level', 'email','settlement_account_number', 'settlement_account_type']}
         ],
         attributes: ["user_id"],
         group: ["user_id"]       
@@ -115,7 +115,7 @@ exports.approve = (req, res) => {
           {model: Task_Detail, include: [
             {model:Task_Question, attributes: ['question']}]
           },
-          {model: User_Detail, as:'user_detail', attributes: ['first_name', 'last_name', 'account_level', 'email']}
+          {model: User_Detail, as:'user_detail', attributes: ['first_name', 'last_name', 'account_level', 'email','settlement_account_number', 'settlement_account_type']}
         ]
         })
       .then(data => {
