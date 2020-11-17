@@ -4,7 +4,7 @@
 /public/html_files
 /storage
 /vendor
-/config/trckr.php
+/config
 .env
 .idea/*
 .env.backup

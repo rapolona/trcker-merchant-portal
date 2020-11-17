@@ -18,7 +18,7 @@ class CapabilityRepository extends Repository
         try {
             return $this->trackerApi('post', $this->api . 'capability/taskticket', $data);
         } catch(\Exception $e) {
-            $this->sessionExpired();
+            $this->sessionExpired($e);
         }
     }
 
@@ -28,7 +28,7 @@ class CapabilityRepository extends Repository
             $uri = http_build_query($data);
             return $this->trackerApi('get', $this->api . 'capability/tasktickets?' . $uri , $data);
         } catch(\Exception $e) {
-            $this->sessionExpired();
+            $this->sessionExpired($e);
         }
     }
 
@@ -37,7 +37,7 @@ class CapabilityRepository extends Repository
         try {
             return $this->trackerApi('get', $this->api . 'capability/tasktickets', $data);
         } catch(\Exception $e) {
-            $this->sessionExpired();
+            $this->sessionExpired($e);
         }
     }
 
@@ -46,7 +46,7 @@ class CapabilityRepository extends Repository
         try {
             return $this->trackerApi('get', $this->api . 'capability/tasktickets', $data);
         } catch(\Exception $e) {
-            $this->sessionExpired();
+            $this->sessionExpired($e);
         }
     }
 
@@ -55,7 +55,7 @@ class CapabilityRepository extends Repository
         try {
             return $this->trackerApi('get', $this->api . 'capability/campaign', []);
         } catch(\Exception $e) {
-            $this->sessionExpired();
+            $this->sessionExpired($e);
         }
     }
 
@@ -64,7 +64,7 @@ class CapabilityRepository extends Repository
         try {
             return $this->trackerApi('get', $this->api . 'capability/campaign', $data);
         } catch(\Exception $e) {
-            $this->sessionExpired();
+            $this->sessionExpired($e);
         }
     }
 
@@ -74,7 +74,7 @@ class CapabilityRepository extends Repository
             $uri = http_build_query($data);
             return $this->trackerApi('get', $this->api . 'capability/campaigndetail?' . $uri, $data);
         } catch(\Exception $e) {
-            $this->sessionExpired();
+            $this->sessionExpired($e);
         }
     }
 }
