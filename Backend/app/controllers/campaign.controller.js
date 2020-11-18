@@ -607,7 +607,7 @@ exports.countCampaign = (req,res)=>{
                         AND
                         tickets.approval_status = "APPROVED"
                 )`),
-                'APPROVED',
+                'Approved',
                 
             ],[
               // Note the wrapping parentheses in the call below!
@@ -619,7 +619,7 @@ exports.countCampaign = (req,res)=>{
                       AND
                       tickets.approval_status = "REJECTED"
               )`),
-              'REJECTED',
+              'Rejected',
           ]
           ]
     , where: {merchant_id : req.body.merchantid}})
