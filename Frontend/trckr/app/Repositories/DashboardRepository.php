@@ -22,12 +22,30 @@ class DashboardRepository extends Repository
         }
     }
 
-    public function getTotalRespondents()
+    public function getTotalRespondents($groupBy=null)
     {
         try {
-            return $this->trackerApi('get', $this->api . 'totalrespondents', []);
+            $uri = "";
+            if($groupBy){
+                $uri = "?" . http_build_query($groupBy);
+            }
+            return $this->trackerApi('get', $this->api . 'totalrespondents' .$uri, []);
         } catch(\Exception $e) {
             $this->sessionExpired($e);
         }
     }
+
+    public function countCampaign($groupBy=null)
+    {
+        try {
+            $uri = "";
+            if($groupBy){
+                $uri = "?" . http_build_query($groupBy);
+            }
+            return $this->trackerApi('get', $this->api . 'countcampaign' .$uri, []);
+        } catch(\Exception $e) {
+            $this->sessionExpired($e);
+        }
+    }
+
 }

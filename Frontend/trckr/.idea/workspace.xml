@@ -20,12 +20,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="332e4564-3d58-4e77-b6ff-3f4e7096ea2e" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/trckr.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/trckr.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/CampaignController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/CampaignController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/MainController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/MainController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Repositories/DashboardRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Repositories/DashboardRepository.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Services/DashboardService.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Services/DashboardService.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/concrete/dashboard/dashboard.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/concrete/dashboard/dashboard.blade.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -171,6 +170,7 @@
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="nodejs_package_manager_path" value="npm" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
@@ -229,7 +229,7 @@
       <workItem from="1605490330155" duration="567000" />
       <workItem from="1605520140541" duration="2658000" />
       <workItem from="1605574131895" duration="3201000" />
-      <workItem from="1605606619811" duration="7103000" />
+      <workItem from="1605606619811" duration="13558000" />
     </task>
     <servers />
   </component>
@@ -271,10 +271,15 @@
       <screen x="72" y="27" width="1294" height="741" />
     </state>
     <state x="389" y="58" width="650" height="686" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/72.27.1294.741/1366.0.1024.768@72.27.1294.741" timestamp="1604165962276" />
-    <state x="420" y="136" width="618" height="522" key="find.popup" timestamp="1604148247960">
-      <screen x="72" y="27" width="1294" height="741" />
+    <state x="367" y="136" width="653" height="622" key="find.popup" timestamp="1605690575254">
+      <screen x="0" y="27" width="1366" height="741" />
     </state>
+    <state x="367" y="136" width="653" height="622" key="find.popup/0.27.1366.741/1366.0.1024.768@0.27.1366.741" timestamp="1605690575254" />
     <state x="420" y="136" width="618" height="522" key="find.popup/72.27.1294.741/1366.0.1024.768@72.27.1294.741" timestamp="1604148247960" />
+    <state x="347" y="174" key="run.anything.popup" timestamp="1605692851286">
+      <screen x="0" y="27" width="1366" height="741" />
+    </state>
+    <state x="347" y="174" key="run.anything.popup/0.27.1366.741/1366.0.1024.768@0.27.1366.741" timestamp="1605692851286" />
     <state x="382" y="89" width="672" height="678" key="search.everywhere.popup" timestamp="1604504350957">
       <screen x="72" y="27" width="1294" height="741" />
     </state>
