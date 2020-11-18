@@ -177,7 +177,7 @@ exports.forgotPassword = (req,res) => {
                         }
                         else{
                             passwordTokenEmailTemplate = filedata.replace(/%PASSWORDTOKEN%/g, passwordToken);
-                            mailer.sendMail(req.body.email_address, "HUSTLE PH", "Password Reset Request", passwordTokenEmailTemplate)
+                            mailer.sendMail(req.body.email_address, "do-not-reply@hustle-portal.com", "Password Reset Request", passwordTokenEmailTemplate)
                             res.send(adminDetail)
                         }
                     })
