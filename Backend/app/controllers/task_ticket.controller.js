@@ -3,6 +3,8 @@ const Task_Ticket = db.task_tickets;
 const Task_Detail = db.task_details;
 const User_Detail = db.userdetails;
 const Task_Question = db.task_questions;
+const Campaign = db.campaigns;
+const Branches = db.branches;
 const Op = db.Sequelize.Op;
 
 // Update a Task_Ticketn by the id in the request
@@ -128,4 +130,31 @@ exports.approve = (req, res) => {
             err.message || "Some error occurred while retrieving task tickets."
         });
       });
+    }
+
+  exports.findAllTicketsWithDetails = (req,res)=> {
+    const id = req.body.merchantid
+    const condition = req.query
+   
+    Task_Ticket.findAll({
+      include: [
+        {model: Task_Detail, as:'task_details', include: [{
+          model:Task_Question, as: 'task_question', attributes: ['question']}]
+        },
+        {model: User_Detail, as:'user_detail', attributes: ['first_name', 'last_name', 'account_level', 'email', 'settlement_account_number', 'settlement_account_type']},
+        {model: Campaign, as:'campaign', where:{merchant_id : id}},
+        {model: Branches, as:'branch'}
+      ],
+      order: [["createdAt", "DESC"]]
+      })
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      console.log(err)
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving task tickets."
+      });
+    });
     }

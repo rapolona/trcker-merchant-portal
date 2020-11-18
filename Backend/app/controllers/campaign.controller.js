@@ -10,6 +10,7 @@ const Campaign_Task_Association = db.campaign_task_associations;
 const Campaign_Reward = db.campaign_rewards;
 const Task_Ticket = db.task_tickets;
 const Op = db.Sequelize.Op;
+const sequelize = db.sequelize;
 
 
 
@@ -577,3 +578,58 @@ exports.countCampaign = (req,res)=>{
     });
   })
 }
+
+ exports.countStatusTicketPerCampaign = (req,res) => {
+    Campaign.findAll({
+      attributes:  [
+          "campaign_id",
+          "campaign_name",
+              [
+                  // Note the wrapping parentheses in the call below!
+                  sequelize.literal(`(
+                      SELECT COUNT(*)
+                      FROM task_tickets AS tickets
+                      WHERE
+                          tickets.campaign_id = campaign.campaign_id
+                          AND
+                          tickets.approval_status = "Pending"
+                  )`),
+                  'Pending',
+                  
+              ],
+              [
+                // Note the wrapping parentheses in the call below!
+                sequelize.literal(`(
+                    SELECT COUNT(*)
+                    FROM task_tickets AS tickets
+                    WHERE
+                      tickets.campaign_id = campaign.campaign_id
+                        AND
+                        tickets.approval_status = "APPROVED"
+                )`),
+                'APPROVED',
+                
+            ],[
+              // Note the wrapping parentheses in the call below!
+              sequelize.literal(`(
+                  SELECT COUNT(*)
+                  FROM task_tickets AS tickets
+                  WHERE
+                    tickets.campaign_id = campaign.campaign_id
+                      AND
+                      tickets.approval_status = "REJECTED"
+              )`),
+              'REJECTED',
+          ]
+          ]
+    , where: {merchant_id : req.body.merchantid}})
+    .then(data => {
+      res.send(data)
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while counting respondents"
+      });
+    })
+  }

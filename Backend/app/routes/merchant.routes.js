@@ -45,6 +45,8 @@ module.exports = app => {
     router.get("/dashboard/totalrespondents", adminMiddleware.isAuthenticated, campaigns.countRespondents);
 
     router.get("/dashboard/countcampaign", adminMiddleware.isAuthenticated, campaigns.countCampaign);
+    
+    router.get("/dashboard/respondentperstatus", adminMiddleware.isAuthenticated, campaigns.countStatusTicketPerCampaign);
   
     app.use('/merchant/', router);
   };
