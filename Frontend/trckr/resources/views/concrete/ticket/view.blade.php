@@ -13,7 +13,7 @@
                                 <p><strong>{{ $tickets->campaign->campaign_name }}</strong></p>
                                 <span>{{ $tickets->user_detail->first_name }} {{ $tickets->user_detail->last_name }}</span>
                                 <span>{{ $tickets->user_detail->email }}</span><br />
-                                <span><strong>{{ $tickets->user_detail->settlement_account_type }}: {{ $tickets->user_detail->settlement_account_number }}</strong></span><br />
+                                <span><strong>{{ $tickets->user_detail->settlement_account_type }} - {{ $tickets->user_detail->settlement_account_number }}</strong></span><br />
                                 <span>{{ $tickets->user_detail->account_level }}</span><br />
                             </div>
                             <br />
