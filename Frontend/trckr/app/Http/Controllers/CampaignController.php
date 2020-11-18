@@ -5,12 +5,14 @@ namespace App\Http\Controllers;
 use App\Document;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use League\HTMLToMarkdown\HtmlConverter;
 use Validator,Redirect,File;
 use Config, Session;
 use DateTime;
 use App\Services\CampaignService;
 use App\Services\TaskService;
 use App\Services\BranchService;
+use Illuminate\Mail\Markdown;
 
 class CampaignController extends Controller
 {
@@ -280,13 +282,7 @@ class CampaignController extends Controller
             "tasks" => array()
         );
 
-        preg_match_all('#\bhttps?://[^,\s()<>]+(?:\([\w\d]+\)|([^,[:punct:]\s]|/))#', $data['campaign_description'], $match);
-
-        if(isset($match) && isset($match[0]) && isset($match[0][0])){
-            $request_data['description_image_url'] = $match[0][0];
-        }
-
-        //print_r($request_data['description_image_url'] ); exit();
+        $request_data['campaign_description'] = Markdown::parse($request_data['campaign_description'])->toHtml();
 
         if ( ! empty($data['thumbnail_url']))
             $request_data['thumbnail_url'] = 'data:' . $data['thumbnail_url']->getMimeType() . ';base64,' . base64_encode(file_get_contents($data['thumbnail_url']));
@@ -562,6 +558,9 @@ class CampaignController extends Controller
             }
         }
 
+        $converter = new HtmlConverter();
+        $campaign['campaign_description'] = $converter->convert($campaign['campaign_description']);
+
         // BRANCH ALIGNMENT TO CREATE old()
         $campaign['branch_id'] = [];
         $campaign['submission'] = [];
@@ -656,11 +655,8 @@ class CampaignController extends Controller
             "campaign_id" => $data['campaign_id'],
         );
 
-        preg_match_all('#\bhttps?://[^,\s()<>]+(?:\([\w\d]+\)|([^,[:punct:]\s]|/))#', $data['campaign_description'], $match);
+        $request_data['campaign_description'] = Markdown::parse($request_data['campaign_description'])->toHtml();
 
-        if(isset($match) && isset($match[0]) && isset($match[0][0])){
-            $request_data['description_image_url'] = $match[0][0];
-        }
 
         if ( ! empty($data['thumbnail_url']))
             $request_data['thumbnail_url'] = 'data:' . $data['thumbnail_url']->getMimeType() . ';base64,' . base64_encode(file_get_contents($data['thumbnail_url']));
@@ -732,6 +728,9 @@ class CampaignController extends Controller
                 }
             }
         }
+
+        $converter = new HtmlConverter();
+        $campaign['campaign_description'] = $converter->convert($campaign['campaign_description']);
 
         // BRANCH ALIGNMENT TO CREATE old()
         $campaign['branch_id'] = [];
