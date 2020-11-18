@@ -2,10 +2,15 @@ var nodemailer = require("nodemailer");
 
 exports.sendMail = (to, from, subject, message, callback)=>{
     var transporter = nodemailer.createTransport({
-        service: 'gmail',
+        service: 'localhost',
+        port:25,
+        secure:false,
         auth: {
-            user: "dukewillard13@gmail.com",
-            pass: '$3cur3Th1$'
+            user: "do-not-reply",
+            pass: '29EXt4'
+        },
+        tls:{
+            rejectUnauthorized:false
         }
     });
     var mailOptions = {
@@ -18,8 +23,7 @@ exports.sendMail = (to, from, subject, message, callback)=>{
     transporter.sendMail(mailOptions, (err, info)=>{
        if(err){
            console.log(err)
-           res.status(500).send({message: "Error sending email"})
-           return; 
+           callback(err); 
        } 
        else{
            callback();
