@@ -22,4 +22,25 @@ class DashboardService
     {
         return $this->repository->getTotalRespondents();
     }
+
+    public function getTotalRespondentsByCampaignAndStatus()
+    {
+        return $this->repository->getTotalRespondents(['groupby' => 'CAMPAIGN,STATUS']);
+    }
+
+    public function getCountCampaignByStatus()
+    {
+        return $this->repository->countCampaign(['groupby' => 'status']);
+    }
+
+    public function getCountCampaignByType()
+    {
+        return $this->repository->countCampaign(['groupby' => 'campaign_type']);
+    }
+
+    public function getCountCampaignByStatusAndType()
+    {
+        return $this->repository->countCampaign(['groupby' => 'status,campaign_type']);
+    }
+
 }
