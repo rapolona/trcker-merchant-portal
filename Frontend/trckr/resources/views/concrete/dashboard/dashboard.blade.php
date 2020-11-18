@@ -36,7 +36,7 @@
                             <div class="admin-panel-switch fa-bars"></div>
                         </div>
                         <div class="panel-body p-0">
-                            <div class="highcharts-container" data-highcharts-options="{&quot;colors&quot;:[&quot;#6cd1e1&quot;,&quot;#f8c450&quot;,&quot;#ee6161&quot;,&quot;#6d92b9&quot;],&quot;chart&quot;:{&quot;type&quot;:&quot;bar&quot;},&quot;title&quot;:{&quot;text&quot;:null},&quot;xAxis&quot;:{&quot;labels&quot;:{&quot;style&quot;:{&quot;color&quot;:&quot;#9575cd&quot;}},&quot;tickColor&quot;:&quot;rgba(255, 255, 255, 0)&quot;},&quot;yAxis&quot;:{&quot;min&quot;:0,&quot;title&quot;:{&quot;text&quot;:null},&quot;labels&quot;:{&quot;style&quot;:{&quot;color&quot;:&quot;#9575cd&quot;}},&quot;minTickInterval&quot;:20,&quot;lineWidth&quot;:1},&quot;tooltip&quot;:{&quot;headerFormat&quot;:&quot;&lt;table&gt;&quot;,&quot;pointFormat&quot;:&quot;&lt;tr&gt;&lt;td style=\&quot;padding:0\&quot;&gt;{series.name}: &lt;b&gt;{point.y}&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&quot;,&quot;footerFormat&quot;:&quot;&lt;/table&gt;&quot;},&quot;plotOptions&quot;:{&quot;series&quot;:{&quot;groupPadding&quot;:0.03,&quot;borderRadius&quot;:18}},&quot;legend&quot;:{&quot;itemStyle&quot;:{&quot;fontWeight&quot;:400,&quot;fontSize&quot;:&quot;14px&quot;,&quot;color&quot;:&quot;#797b7c&quot;}},&quot;credits&quot;:{&quot;enabled&quot;:false},&quot;series&quot;:[{&quot;name&quot;:&quot;{{ $count_campaign_status[1]->status }}&quot;,&quot;data&quot;:[{{ $count_campaign_status[1]->campaigns }}]},{&quot;name&quot;:&quot;{{ $count_campaign_status[2]->status }}&quot;,&quot;data&quot;:[{{ $count_campaign_status[2]->campaigns }}]},{&quot;name&quot;:&quot;{{ $count_campaign_status[0]->status }}&quot;,&quot;data&quot;:[{{ $count_campaign_status[0]->campaigns }}]}]}" style="height: 300px"></div>
+                            <div class="highcharts-container" data-highcharts-options="{&quot;colors&quot;:[&quot;#6cd1e1&quot;,&quot;#f8c450&quot;,&quot;#ee6161&quot;,&quot;#6d92b9&quot;],&quot;chart&quot;:{&quot;type&quot;:&quot;bar&quot;},&quot;title&quot;:{&quot;text&quot;:null},&quot;xAxis&quot;:{&quot;labels&quot;:{&quot;style&quot;:{&quot;color&quot;:&quot;#9575cd&quot;}},&quot;tickColor&quot;:&quot;rgba(255, 255, 255, 0)&quot;},&quot;yAxis&quot;:{&quot;min&quot;:0,&quot;title&quot;:{&quot;text&quot;:null},&quot;labels&quot;:{&quot;style&quot;:{&quot;color&quot;:&quot;#9575cd&quot;}},&quot;minTickInterval&quot;:20,&quot;lineWidth&quot;:1},&quot;tooltip&quot;:{&quot;headerFormat&quot;:&quot;&lt;table&gt;&quot;,&quot;pointFormat&quot;:&quot;&lt;tr&gt;&lt;td style=\&quot;padding:0\&quot;&gt;{series.name}: &lt;b&gt;{point.y}&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&quot;,&quot;footerFormat&quot;:&quot;&lt;/table&gt;&quot;},&quot;plotOptions&quot;:{&quot;series&quot;:{&quot;groupPadding&quot;:0.03,&quot;borderRadius&quot;:18}},&quot;legend&quot;:{&quot;itemStyle&quot;:{&quot;fontWeight&quot;:400,&quot;fontSize&quot;:&quot;14px&quot;,&quot;color&quot;:&quot;#797b7c&quot;}},&quot;credits&quot;:{&quot;enabled&quot;:false},&quot;series&quot;:[{&quot;name&quot;:&quot;{{ (isset($count_campaign_status[1]))? $count_campaign_status[1]->status : 'DONE' }}&quot;,&quot;data&quot;:[{{ (isset($count_campaign_status[1]))? $count_campaign_status[1]->campaigns : 0 }}]},{&quot;name&quot;:&quot;{{ (isset($count_campaign_status[2]))? $count_campaign_status[2]->status : 'ONGOING' }}&quot;,&quot;data&quot;:[{{ (isset($count_campaign_status[2]))? $count_campaign_status[2]->campaigns : 0 }}]},{&quot;name&quot;:&quot;{{ (isset($count_campaign_status[0]))? $count_campaign_status[0]->status : 'DISABLED' }}&quot;,&quot;data&quot;:[{{ (isset($count_campaign_status[0]))? $count_campaign_status[0]->campaigns : 0 }}]}]}" style="height: 300px"></div>
                         </div>
                     </div>
                 </div>
@@ -78,26 +78,7 @@
                         </div>
                     </div>
                 </div>
-
-                <div class="col-md-6">
-                    <div class="panel admin-panel">
-                        <div class="panel-header d-flex align-items-center">
-                            <div class="panel-title flex-grow-1">Calendar widget</div>
-                            <div class="admin-panel-buttons">
-                                <button class="admin-panel-button fa" title="title" data-panel="title"></button>
-                                <!-- <button class="admin-panel-button fa" title="color" data-panel="color"></button> -->
-                                <button class="admin-panel-button fa" title="collapse" data-panel="collapse"></button>
-                                <button class="admin-panel-button fa" title="fullscreen" data-panel="fullscreen"></button>
-                                <button class="admin-panel-button fa" title="remove" data-panel="remove"></button>
-                            </div>
-                            <div class="admin-panel-switch fa-bars"></div>
-                        </div>
-                        <div class="panel-body pt-3">
-                            <div class="fullcalendar calendar-widget" data-fullcalendar-header='{"left":"title","center":"","right":"today prev,next"}' data-fullcalendar-event='[{"title":"Sony Meeting","start":"2019-05-06","className":"fc-event-success"},{"title":"Conference","start":"2019-05-14","end":"2019-05-16","className":"fc-event-warning"},{"title":"System Testing","start":"2019-05-26","end":"2019-05-28","className":"fc-event-primary"}]'></div>
-                        </div>
-                    </div>
-                </div>
-
+                
                 <div class="col-md-6">
                     <div class="panel">
                         <div class="panel-header">
