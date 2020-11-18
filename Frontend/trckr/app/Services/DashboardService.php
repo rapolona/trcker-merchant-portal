@@ -43,4 +43,9 @@ class DashboardService
         return $this->repository->countCampaign(['groupby' => 'status,campaign_type']);
     }
 
+    public function getRespondentPerStatus()
+    {
+        return $this->repository->respondentPerStatus();
+    }
+
 }

@@ -40,6 +40,7 @@ class MainController extends Controller
         $data['count_campaign_status'] = $this->service->getCountCampaignByStatus();
         $data['count_campaign_status_type'] = $this->service->getCountCampaignByStatusAndType();
         $data['respondents_campaign_status'] = $this->service->getTotalRespondentsByCampaignAndStatus();
+        $data['campaign_per_status'] = $this->service->getRespondentPerStatus();
 
         return view('concrete.dashboard.dashboard', $data);
     }

@@ -48,4 +48,15 @@ class DashboardRepository extends Repository
         }
     }
 
+    public function respondentPerStatus($groupBy=null)
+    {
+        try {
+            return $this->trackerApi('get', $this->api . 'respondentperstatus', []);
+        } catch(\Exception $e) {
+            $this->sessionExpired($e);
+        }
+    }
+
+
+
 }
