@@ -49,15 +49,18 @@ class BranchController extends Controller
 
             //header
             $header = explode(";", $content[0]);
-            $default_headers = array('name','business_type', 'store_type', 'brand', 'region', 'province', 'address','city', 'longitude', 'latitude');
+
+           // print_r($content); exit();
+
+            $default_headers = ['name','business_type', 'store_type', 'brand', 'region', 'province', 'address','city', 'longitude', 'latitude'];
 
             // VALIDATE HEADERS
             foreach($header as $h)
             {
-                if ( ! in_array($h, $default_headers)){
+                if ( ! in_array(trim($h), $default_headers)){
                     $msg = [
                         "type" => "warning",
-                        "message" => "CSV Invalid Header",
+                        "message" => "CSV Invalid Header {$h}",
                     ];
                     return redirect('merchant/branch')->with(['formMessage' => $msg]);
                 }
@@ -68,51 +71,57 @@ class BranchController extends Controller
             $branches = array();
             $count = 1;
             foreach ($content as $c) {
-                $temp = explode(";", $c);
+                if(!empty(trim($c))) {
 
-                if ( count($temp) != count($default_headers)){
 
-                    $msg = [
-                        "type" => "warning",
-                        "message" => "Invalid Input on Item {$count}",
-                    ];
-                    return redirect('merchant/branch')->with(['formMessage' => $msg]);
-                }
+                    $temp = explode(";", trim($c));
 
-                //'name','business_type', 'store_type', 'brand', 'region', 'province', 'address','city', 'longitude', 'latitude'
-                $temp_branches = array(
-                    $header[0] => $temp[0],
-                    $header[1] => $temp[1],
-                    $header[2] => $temp[2],
-                    $header[3] => $temp[3],
-                    $header[4] => $temp[4],
-                    $header[5] => $temp[5],
-                    $header[6] => $temp[6],
-                    $header[7] => $temp[7],
-                    $header[8] => $temp[8],
-                    $header[9] => $temp[9]
-                );
+                    if (count($temp) != count($default_headers)) {
 
-                $validator = Validator::make($temp_branches, $this->fieldValidation);
-
-                if ($validator->fails())
-                {
-                    $error_string = "<b>Row {$count}: Fields with Errors</b><br/>";
-                    foreach ($validator->errors()->messages() as $k => $v) {
-                        $error_string .= "{$k}: <br/>";
-                        foreach ($v as $l)
-                            $error_string .= "{$l}<br/>";
+                        $msg = [
+                            "type" => "warning",
+                            "message" => "Invalid Input on Item {$count}",
+                        ];
+                        return redirect('merchant/branch')->with(['formMessage' => $msg]);
                     }
 
-                    $msg = [
-                        "type" => "warning",
-                        "message" => "Failed to Upload the file, please check your csv file",
-                    ];
-                    return redirect('merchant/branch')->with(['formMessage' => $msg]);
-                }
+                    //'name','business_type', 'store_type', 'brand', 'region', 'province', 'address','city', 'longitude', 'latitude'
+                    $temp_branches = array(
+                        $header[0] => $temp[0],
+                        $header[1] => $temp[1],
+                        $header[2] => $temp[2],
+                        $header[3] => $temp[3],
+                        $header[4] => $temp[4],
+                        $header[5] => $temp[5],
+                        $header[6] => $temp[6],
+                        $header[7] => $temp[7],
+                        $header[8] => $temp[8],
+                        trim($header[9]) => trim($temp[9])
+                    );
 
-                $branches[] = $temp_branches;
+                    // print_r($temp_branches); exit();
+
+                    $validator = Validator::make($temp_branches, $this->fieldValidation);
+
+                    if ($validator->fails()) {
+                        $error_string = "Row {$count}: Fields with Errors";
+                        foreach ($validator->errors()->messages() as $k => $v) {
+                            $error_string .= "{$k}: ";
+                            foreach ($v as $l)
+                                $error_string .= "{$l}";
+                        }
+
+                        $msg = [
+                            "type" => "warning",
+                            "message" => "Failed to Upload the file, please check your csv file, {$error_string}",
+                        ];
+                        return redirect('merchant/branch')->with(['formMessage' => $msg]);
+                    }
+
+                    $branches[] = $temp_branches;
+                }
                 $count+=1;
+
             }
 
             $api_endpoint = Config::get('trckr.backend_url') . "merchant/branch";
