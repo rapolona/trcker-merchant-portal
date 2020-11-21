@@ -1,7 +1,6 @@
 @extends('concrete.layouts.main')
 
 @section('content')
-
         <div class="container-fluid">
             <div class="row row-30">
                 <div class="col-sm-6 col-md-6">
@@ -38,7 +37,7 @@
                                     <tr>
                                         <th class="no-sort">#</th>
                                         <th>Name</th>
-                                        <th>Status</th>
+                                        <th class="text-right">Status</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -46,7 +45,7 @@
                                         <tr>
                                             <td>{{ $k + 1 }}</td>
                                             <td>{{ $t->campaign_name }}</td>
-                                            <td>
+                                            <td class="text-right">
                                                 <div class="badge badge-success">{{ $t->Approved }} - Approved</div>
                                                 <div class="badge badge-danger">{{ $t->Rejected }}  - Rejected</div>
                                                 <div class="badge badge-warning">{{ $t->Pending }}  - Pending</div>
