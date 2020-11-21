@@ -84,104 +84,63 @@ class CampaignController extends Controller
         */
     }
 
-    public function view_campaign(Request $request)
+    public function view_campaign($campaignId)
     {
-        //api call for campaigns
-        //http://localhost:6001/merchant/campaign
-        /*
-        $api_endpoint = "http://localhost:6001/merchant/campaign";
-        $campaigns = Http::withToken($this->$_backend_token)->get($api_endpoint,  []);
-        $campaigns = json_decode($campaigns);
-        */
+        $task_type = $this->taskService->getTaskActionClassification();
+        $tasks = $this->taskService->getTaskByMerchant();
+        $campaign_type = (object) array(
+            (object) array(
+                'campaign_type_id' => 1,
+                'name' => "Merchandising"
+            ),
+            (object) array(
+                'campaign_type_id' => 2,
+                'name' => "Mystery Shopper"
+            ),
+            (object) array(
+                'campaign_type_id' => 3,
+                'name' => "Shopper Insignting"
+            ),
+        );
 
-        //get all campaigns
-        $campaign_id = $request->input('campaign_id');
-
-        $api_endpoint = Config::get('trckr.backend_url') . "merchant/campaign";
-
-        $session = $request->session()->get('session_merchant');
-
-        if ( ! $session) return redirect('/');
-        $token = ( ! empty($session->token)) ? $session->token : "";
-
-        $response = Http::withToken($token)->get($api_endpoint);
-
-        if ($response->status() !== 200)
-        {
-            if ($response->status() === 403) {
-                $validator = Validator::make($request->all(), []);
-                $validator->getMessageBag()->add('email', "Session Expired. Please login again. {$response->body()}");
-
-                return redirect('/')
-                    ->withErrors($validator)
-                    ->withInput();
+        $branches = $this->branchService->getAll([]);
+        $branch_filters = $this->branchService->getFilters();
+        $campaign = (array) $this->campaignService->get($campaignId);
+        $campaign['audience'] = ($campaign['allow_everyone']==1)? 'All' : 'super_shopper';
+        $campaign['daterange'] = date('m/d/Y', strtotime($campaign['start_date'])) . " - " . date('m/d/Y', strtotime($campaign['end_date']));
+        $campaign['branch_id-nobranch'] = ($campaign['branches'][0]->branch_id == 'fbe9b0cf-5a77-4453-a127-9a8567ff3aa7')? true : false;
+        $campaign['branch_id-nobranch_value'] = ($campaign['branches'][0]->branch_id == 'fbe9b0cf-5a77-4453-a127-9a8567ff3aa7')? $campaign['branches'][0]->respondent_count : '';
+        // TASK ALIGNMENT TO CREATE old()
+        foreach($tasks as $k){
+            foreach ($campaign['tasks']  as $camTkey => $camTask ){
+                if($k->task_id==$camTask->task_id){
+                    $campaign['tasks'][$camTkey]->task_type = $k->task_classification->task_classification_id;
+                }
             }
-
-            if ($response->status() === 500) {
-                $handler = json_decode($response->body());
-
-                if ($handler->message->name == "JsonWebTokenError")
-
-                $validator = Validator::make($request->all(), []);
-                $validator->getMessageBag()->add('email', "Session Expired. Please login again. {$response->body()}");
-
-                return redirect('/')
-                    ->withErrors($validator)
-                    ->withInput();
-            }
-
-            //general handling
-            return redirect('/dashboard');
         }
 
-        $response = json_decode($response);
-
-        //get the specific campaign for based on campaign id
-        $campaign = array();
-        foreach ($response as &$k) {
-            if ($k->campaign_id == $campaign_id) $campaign = $k;
-            $start_date = new DateTime($k->start_date);
-            $k->start_date = $start_date->format("F d, Y");
-            $end_date = new DateTime($k->end_date);
-            $k->end_date = $end_date->format("F d, Y");
+        // BRANCH ALIGNMENT TO CREATE old()
+        $campaign['branch_id'] = [];
+        $campaign['submission'] = [];
+        $campaign['campaign_id'] = $campaignId;
+        foreach ($campaign['branches'] as $bKey =>$branch){
+            $campaign['branch_id'][$bKey] = $branch->branch_id;
+            $campaign['submission'][$bKey] = $branch->respondent_count;
         }
 
-        //getting specific campaign detail
-        $api_endpoint = Config::get('trckr.capability_url') . "capability/campaigndetail?campaign_id=$campaign_id";
+        foreach ($tasks as &$k)
+            $k->task_id = $k->task_classification_id . "|" . $k->task_id;
 
-        $response = Http::withToken($token)->get($api_endpoint);
+        //print_r($campaign); exit();
 
-        if ($response->status() !== 200)
-        {
-            if ($response->status() === 403) {
-                $validator = Validator::make($request->all(), []);
-                $validator->getMessageBag()->add('email', "Session Expired. Please login again. {$response->body()}");
-
-                return redirect('/')
-                    ->withErrors($validator)
-                    ->withInput();
-            }
-
-            if ($response->status() === 500) {
-                $handler = json_decode($response->body());
-
-                if ($handler->message->name == "JsonWebTokenError")
-
-                $validator = Validator::make($request->all(), []);
-                $validator->getMessageBag()->add('email', "Session Expired. Please login again. {$response->body()}");
-
-                return redirect('/')
-                    ->withErrors($validator)
-                    ->withInput();
-            }
-
-            //general handling
-            return redirect('/dashboard');
-        }
-
-        $campaign_detail = json_decode($response->body());
-
-        return view('concrete.campaign.view', ['campaign' => $campaign, 'campaign_detail' => $campaign_detail]);
+        return view('concrete.campaign.view', [
+            'campaign_type' => $campaign_type,
+            'branches' => $branches,
+            'branch_filters' => $branch_filters,
+            'task_type' => $task_type,
+            'tasks' => $tasks,
+            'campaign' => $campaign
+        ]);
     }
 
     public function create(Request $request)
