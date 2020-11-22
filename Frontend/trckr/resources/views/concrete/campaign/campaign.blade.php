@@ -69,7 +69,9 @@
                                         </button>
                                         <div class="dropdown-menu">
                                             <a class="dropdown-item" href="{{ url('campaign/view/' . $campaign->campaign_id )}}">View</a>
+                                            @if($campaign->status!='DONE')
                                             <a class="dropdown-item" href="{{ url('campaign/edit/' . $campaign->campaign_id )}}">Edit</a>
+                                            @endif
                                         <!--<a class="dropdown-item" href="{{ url('campaign/delete/' . $campaign->campaign_id )}}">Delete</a>-->
                                             <a class="dropdown-item" href="{{ url('campaign/duplicate/' . $campaign->campaign_id )}}">Duplicate</a>
                                             @if($campaign->status=='DISABLED')
