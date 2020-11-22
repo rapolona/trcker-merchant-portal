@@ -172,21 +172,7 @@
 
                 $('.table').DataTable( {
                     "destroy": true,
-                    //"ajax": "{{url('/test.json')}}?" + $.param(formFilters)/*,
-                    "ajax": "{{url('/campaign/merchant_branch')}}?" + $.param(formFilters),
-                    "columnDefs": [ {
-                        "targets": -1,
-                        "data": 0,
-                        "render": function ( data, type, row, meta ) {
-                            return '<input class="branch-input form-control" type="text" name="submissions[' + data + ']" placeholder="Max Submission">';
-                        }
-                    },{
-                        "targets": 0,
-                        "data": 0,
-                        "render": function ( data, type, row, meta ) {
-                            return '<div class="branch-input custom-control custom-checkbox custom-checkbox-success"><input class="custom-control-input" type="checkbox" name="branch_id[' + data + ']" id="' + data + '" /><label class="custom-control-label" for="' + data +'"></label></div>';
-                        }
-                    }]
+                    "ordering": false
                 } );
 
             } );

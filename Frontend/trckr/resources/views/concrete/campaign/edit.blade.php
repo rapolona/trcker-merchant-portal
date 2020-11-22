@@ -352,6 +352,18 @@
             }
         });
 
+        $(document).ready(function() {
+            setTimeout(function () {
+                $('.table').DataTable({
+                    "destroy": true,
+                    order: [[1, 'desc']],
+                    "columnDefs": [
+                        { "orderable": false, "targets": [0,2,3,4,5,6,7,8] }
+                    ]
+                });
+            }, 2000);
+        });
+
 
         let formFilters = new Object();
         var branches = [];
@@ -364,6 +376,7 @@
 
                 $('.table').DataTable( {
                     "destroy": true,
+                    "ordering": false,
                     //"ajax": "{{url('/test.json')}}?" + $.param(formFilters)/*,
                     "ajax": "{{url('/campaign/merchant_branch')}}?" + $.param(formFilters),
                     "columnDefs": [ {

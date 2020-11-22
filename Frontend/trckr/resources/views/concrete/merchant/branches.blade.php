@@ -38,7 +38,7 @@
         </div>
 
         <div class="panel-menu">
-            <div class="row row-30">      
+            <div class="row row-30">
                 <div class="col-lg-2">
                     @if(isset($filters->business_type))
                     <select class="select2 hustle-filter" data-placeholder="Business Type" name="business_type">
@@ -112,7 +112,7 @@
                     <table class="table table-striped table-hover data-table" data-table-searching="true" data-table-lengthChange="true" data-page-length="5">
                         <thead>
                         <tr>
-                            <td style="width: 40px" data-orderable="false" data-targets="0" >
+                            <td>
                                 <div class="custom-control custom-checkbox custom-checkbox-light">
                                     <input class="custom-control-input" type="checkbox" id="selectAll"/>
                                     <label class="custom-control-label" for="selectAll"></label>
@@ -162,15 +162,20 @@
     </div>
 @stop
 
-@section('css')
-    <link rel="stylesheet" href="/css/admin_custom.css">
-@stop
-
 @section('js')
     <script type="text/javascript" src="{{url('/vendor/trckr/trckr.js')}}"></script>
     <script type="text/javascript">
 
         $(document).ready(function (e) {
+
+            setTimeout(function(){
+                $('.table').DataTable( {
+                    "destroy": true,
+                    "ordering": false
+                } );
+            }, 2000);
+
+
 
             $('#selectAll').click(function(e){
                 let table= $(e.target).closest('table');

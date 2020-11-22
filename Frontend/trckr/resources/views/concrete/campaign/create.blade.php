@@ -100,19 +100,19 @@
             <div class="container-fluid">
                 <div class="panel">
                     <div class="panel-header">
-                      <div class="group-5 d-flex flex-wrap align-items-center justify-content-between">
-                        <div class="panel-title">Branch Details</div>
-                        <div class="col-lg-3">
-                          <input class="form-control form-control-sm" required type="number" min="1" name="nobranch_submissions" id="nobranch_submissions" value="{{ old('nobranch_submissions') }}" placeholder="Max Submission" />
+                        <div class="group-5 d-flex flex-wrap align-items-center justify-content-between">
+                            <div class="panel-title">Branch Details</div>
+                            <div class="col-lg-3">
+                                <input class="form-control form-control-sm" required type="number" min="1" name="nobranch_submissions" id="nobranch_submissions" value="{{ old('nobranch_submissions') }}" placeholder="Max Submission" />
 
-                            <div class="input-group form-group">
-                                <div class="custom-control custom-switch custom-switch-success">
-                                    <input class="custom-control-input" type="checkbox" name="branch_id-nobranch" {{ old('nobranch_submissions', 1) > 0? 'checked=""' : '' }} id="branch_id-nobranch">
-                                    <label class="custom-control-label" for="branch_id-nobranch">Do-It-At-Home</label>
+                                <div class="input-group form-group">
+                                    <div class="custom-control custom-switch custom-switch-success">
+                                        <input class="custom-control-input" type="checkbox" name="branch_id-nobranch" {{ old('nobranch_submissions', 1) > 0? 'checked=""' : '' }} id="branch_id-nobranch">
+                                        <label class="custom-control-label" for="branch_id-nobranch">Do-It-At-Home</label>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                      </div>
                     </div>
 
                     <div class="panel-header branchSection" style="display: none">
@@ -192,12 +192,13 @@
                             <table class="table table-striped table-hover data-table"style="min-width: 800px">
                                 <thead>
                                 <tr>
-                                    <td style="width: 40px">
+                                    <!--<td class="td-buffer"></td>-->
+                                    <th>
                                         <div class="custom-control custom-checkbox custom-checkbox-light">
                                             <input class="custom-control-input" type="checkbox" id="selectAll"/>
                                             <label class="custom-control-label" for="selectAll"></label>
                                         </div>
-                                    </td>
+                                    </th>
                                     <th>Name</th>
                                     <th>BusinessType</th>
                                     <th>StoreType</th>
@@ -205,13 +206,14 @@
                                     <th>Address</th>
                                     <th>City</th>
                                     <th>Region</th>
-                                    <th style="width:15%">Branch Submissions</th>
+                                    <th>Branch Submissions</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 @foreach ($branches as $branch)
                                     <tr>
-                                        <td style="width: 40px">
+                                        <!--<td class="td-buffer"></td>-->
+                                        <td>
                                             <div class="custom-control custom-checkbox custom-checkbox-light">
                                                 <input class="branch-input custom-control-input branch-id-checkbox" type="checkbox" name="branch_id[]" id="{{ $branch->branch_id }}" value="{{ $branch->branch_id }}"
                                                        @if(is_array(old('branch_id')) && in_array($branch->branch_id, old('branch_id'))) checked @endif />
@@ -227,10 +229,10 @@
                                         <td>{{ $branch->region }}</td>
                                         <td class="text-right" width="15%">
                                             @php
-                                            if(old('branch_id'))
-{
-    $branchIdKey = array_search($branch->branch_id, old('branch_id'));
-}
+                                                if(old('branch_id'))
+    {
+        $branchIdKey = array_search($branch->branch_id, old('branch_id'));
+    }
                                             @endphp
                                             <input @if(is_array(old('branch_id')) && in_array($branch->branch_id, old('branch_id'))) name="submission[]" value="{{ old('submission.' . $branchIdKey ) }}" @else disabled @endif class="branch-input form-control max-submission" type="number" min="1" placeholder="Max Submission">
                                         </td>
@@ -256,39 +258,39 @@
                         <div id="taskBody">
                             @for($x = 0; $x <= 5; $x++)
                                 @if($x==0 || old('task_type.' . $x))
-                            <div class="row row-30 task-container">
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <select class="form-control task_type" required name="task_type[]" style="width: 100%;">
-                                            <option value="">Select Task Type</option>
-                                            @foreach ($task_type as $ct)
-                                                <option {{ (old('task_type.' . $x) == $ct->task_classification_id)? 'selected="selected"' : '' }} value="{{$ct->task_classification_id}}">{{$ct->name}}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-group task-action-container">
-                                        <select class="form-control select2 task_actions" required name="task_id[]" style="width: 100%;">
-                                            <option value="">Select Task</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend"><span class="input-group-text"><span class="fa-building"></span></span></div>
-                                        <input class="form-control reward_amount" required type="number" min="1" name="reward_amount[]" value="{{old('reward_amount.' . $x)}}" placeholder="Reward">
-                                    </div>
-                                </div>
+                                    <div class="row row-30 task-container">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <select class="form-control task_type" required name="task_type[]" style="width: 100%;">
+                                                    <option value="">Select Task Type</option>
+                                                    @foreach ($task_type as $ct)
+                                                        <option {{ (old('task_type.' . $x) == $ct->task_classification_id)? 'selected="selected"' : '' }} value="{{$ct->task_classification_id}}">{{$ct->name}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group task-action-container">
+                                                <select class="form-control select2 task_actions" required name="task_id[]" style="width: 100%;">
+                                                    <option value="">Select Task</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend"><span class="input-group-text"><span class="fa-building"></span></span></div>
+                                                <input class="form-control reward_amount" required type="number" min="1" name="reward_amount[]" value="{{old('reward_amount.' . $x)}}" placeholder="Reward">
+                                            </div>
+                                        </div>
 
-                                <div class="col-md-3">
-                                    <!-- <button class="btn btn-primary" type="submit">Add more</button> -->
-                                    <button style="display:none;" type="button" class="btn btn-danger btn-md remove_task" {{ $x > 0 ? '' : 'style="display: none"' }}>
-                                        <span class="fa-remove"></span>
-                                    </button>
-                                </div>
+                                        <div class="col-md-3">
+                                            <!-- <button class="btn btn-primary" type="submit">Add more</button> -->
+                                            <button style="display:none;" type="button" class="btn btn-danger btn-md remove_task" {{ $x > 0 ? '' : 'style="display: none"' }}>
+                                                <span class="fa-remove"></span>
+                                            </button>
+                                        </div>
 
-                            </div>
+                                    </div>
                                 @endif
                             @endfor
                         </div>
@@ -332,6 +334,18 @@
             }
         });
 
+        $(document).ready(function() {
+            setTimeout(function () {
+                $('.table').DataTable({
+                    "destroy": true,
+                    order: [[1, 'desc']],
+                    "columnDefs": [
+                        { "orderable": false, "targets": [0,2,3,4,5,6,7,8] }
+                    ]
+                });
+            }, 2000);
+        });
+
 
         let formFilters = new Object();
         var branches = [];
@@ -340,28 +354,26 @@
                 formFilters[$(el).parent().attr('name')] = $(el).val();
             }).get();
 
-            $(document).ready(function() {
-
-                $('.table').DataTable( {
-                    "destroy": true,
-                    //"ajax": "{{url('/test.json')}}?" + $.param(formFilters)/*,
-                    "ajax": "{{url('/campaign/merchant_branch')}}?" + $.param(formFilters),
-                    "columnDefs": [ {
-                        "targets": -1,
-                        "data": 0,
-                        "render": function ( data, type, row, meta ) {
-                            return '<input class="branch-input form-control" type="text" name="submissions[' + data + ']" placeholder="Max Submission">';
-                        }
-                    },{
-                        "targets": 0,
-                        "data": 0,
-                        "render": function ( data, type, row, meta ) {
-                            return '<div class="branch-input custom-control custom-checkbox custom-checkbox-light"><input class="custom-control-input" type="checkbox" name="branch_id[' + data + ']" id="' + data + '" /><label class="custom-control-label" for="' + data +'"></label></div>';
-                        }
-                    }]
-                } );
-
+            $('.table').DataTable( {
+                "destroy": true,
+                "ordering" : false,
+                "ajax": "{{url('/campaign/merchant_branch')}}?" + $.param(formFilters),
+                "columnDefs": [ {
+                    "targets": -1,
+                    "data": 0,
+                    "render": function ( data, type, row, meta ) {
+                        return '<input class="branch-input form-control" type="text" name="submissions[' + data + ']" placeholder="Max Submission">';
+                    }
+                },{
+                    "targets": 0,
+                    "data": 0,
+                    "bSortable": false,
+                    "render": function ( data, type, row, meta ) {
+                        return '<div class="branch-input custom-control custom-checkbox custom-checkbox-light"><input class="custom-control-input" type="checkbox" name="branch_id[' + data + ']" id="' + data + '" /><label class="custom-control-label" for="' + data +'"></label></div>';
+                    }
+                } ]
             } );
+
         });
 
 
