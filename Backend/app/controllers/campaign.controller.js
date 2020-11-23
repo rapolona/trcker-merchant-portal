@@ -345,9 +345,7 @@ exports.update = (req, res) => {
       campaign_type: req.body.campaign_type,
     }
 
-    console.log(campaignBody)
-    console.log(req.body.tasks)
-    console.log(req.body.branches)
+
     
     Campaign.update(campaignBody, {where: { campaign_id: id, merchant_id : req.body.merchantid, status:{[Op.or]:["INACTIVE", "DISABLED"]}},})
     .then(num => {
