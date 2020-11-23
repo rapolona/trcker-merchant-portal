@@ -272,6 +272,8 @@ class CampaignController extends Controller
             );
         }
 
+        //print_r($data['branch_id']); exit();
+
         $response = $this->campaignService->create($request_data);
 
         if ( ! empty($response->campaign_id))

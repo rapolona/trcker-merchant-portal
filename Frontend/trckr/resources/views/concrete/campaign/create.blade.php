@@ -314,6 +314,10 @@
 @section('js')
     <script type="text/javascript" src="{{url('/vendor/trckr/trckr.js')}}"></script>
     <script type="text/javascript">
+
+        let oTable = null,
+            allPages = null;
+
         //input_end_date
         $('#input_start_date').datepicker({
             dateFormat: 'yy-mm-dd',
@@ -335,14 +339,20 @@
         });
 
         $(document).ready(function() {
+
+
+
             setTimeout(function () {
-                $('.table').DataTable({
+                oTable = $('.table').dataTable({
                     "destroy": true,
+                    stateSave: true,
                     order: [[1, 'desc']],
                     "columnDefs": [
                         { "orderable": false, "targets": [0,2,3,4,5,6,7,8] }
                     ]
                 });
+
+                allPages = oTable.fnGetNodes();
             }, 2000);
         });
 
@@ -379,12 +389,22 @@
 
         $(document).on("click", "#selectAll" , function() {
             let table= $(this).closest('table');
-            $('td input:checkbox',table).prop('checked',this.checked);
-            $('input.branch-id-checkbox').change();
+            $('td input:checkbox',allPages).prop('checked',this.checked);
+            if (this.checked) {
+                $('td input.max-submission', allPages).removeAttr('disabled');
+                $('td input.max-submission', allPages).attr('name', 'submission[]');
+                $('td input.max-submission', allPages).attr('required', true);
+                $('td input.max-submission', allPages).val($('#defaultMaxSubmission').val() || 1);
+            }else{
+                $('td input.max-submission', allPages).attr('disabled', true);
+                $('td input.max-submission', allPages).removeAttr('name');
+                $('td input.max-submission', allPages).removeAttr('required');
+                $('td input.max-submission', allPages).val('');
+            }
         });
 
         $(document).on("change", "input#defaultMaxSubmission" , function() {
-            $( "input.max-submission:enabled" ).val( $('#defaultMaxSubmission').val() );
+            $( "input.max-submission:enabled", allPages).val( $('#defaultMaxSubmission').val() );
         });
 
         $(document).on("change", "input.branch-id-checkbox" , function() {
@@ -542,6 +562,8 @@
                     });
                     return false;
                 }
+
+                $('.table').DataTable().destroy();
 
                 return true;
             });
