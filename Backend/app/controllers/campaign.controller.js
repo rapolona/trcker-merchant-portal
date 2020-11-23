@@ -315,6 +315,12 @@ exports.update = (req, res) => {
         req.body.branches[i].campaign_id = id
       }
     }
+    if(req.body.at_home_campaign){
+      req.body.branches = [];
+      var at_home_respondent_count=req.body.at_home_respondent_count;
+      var at_home_branch_id = "fbe9b0cf-5a77-4453-a127-9a8567ff3aa7";
+      req.body.branches.push({"campaign_id":id ,"branch_id":at_home_branch_id, "respondent_count":at_home_respondent_count});
+    }
     var total_reward_amount = 0;
     for(i=0;i<req.body.tasks.length;i++){
       total_reward_amount = total_reward_amount + parseFloat(req.body.tasks[i].reward_amount)
@@ -339,7 +345,8 @@ exports.update = (req, res) => {
       campaign_type: req.body.campaign_type,
     }
 
-    console.log(req.body.tasks)
+
+    
     Campaign.update(campaignBody, {where: { campaign_id: id, merchant_id : req.body.merchantid, status:{[Op.or]:["INACTIVE", "DISABLED"]}},})
     .then(num => {
       if(num == 1){
@@ -348,15 +355,13 @@ exports.update = (req, res) => {
             Campaign_Task_Association.destroy({
               where: {campaign_id: id},
               transaction:transaction}),
-            Campaign_Task_Association.bulkCreate(req.body.tasks, {transaction:transaction})
+            Campaign_Task_Association.bulkCreate(req.body.tasks, {transaction:transaction}),
+              Campaign_Branch_Association.destroy({
+                where: {campaign_id: id},
+                transaction:transaction
+              }),
+              Campaign_Branch_Association.bulkCreate(req.body.branches, {transaction:transaction})
           ]
-          if(!req.body.at_home_campaign){
-            campaignUpdateTransactions.push([Campaign_Branch_Association.destroy({
-              where: {campaign_id: id},
-              transaction:transaction
-            }),
-            Campaign_Branch_Association.bulkCreate(req.body.branches, {transaction:transaction})]) 
-          }
           return Promise.all(campaignUpdateTransactions)
         })
         .then(data => {
