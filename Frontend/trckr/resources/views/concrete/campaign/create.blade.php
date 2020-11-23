@@ -362,14 +362,14 @@
                     "targets": -1,
                     "data": 0,
                     "render": function ( data, type, row, meta ) {
-                        return '<input class="branch-input form-control" type="text" name="submissions[' + data + ']" placeholder="Max Submission">';
+                        return '<input disabled class="branch-input form-control max-submission" type="number" min="1" name="submissions[]" placeholder="Max Submission">';
                     }
                 },{
                     "targets": 0,
                     "data": 0,
                     "bSortable": false,
                     "render": function ( data, type, row, meta ) {
-                        return '<div class="branch-input custom-control custom-checkbox custom-checkbox-light"><input class="custom-control-input" type="checkbox" name="branch_id[' + data + ']" id="' + data + '" /><label class="custom-control-label" for="' + data +'"></label></div>';
+                        return '<div class="branch-input custom-control custom-checkbox custom-checkbox-light"><input class="custom-control-input branch-id-checkbox" type="checkbox" name="branch_id[]" id="' + data + '" value="' + data + '"  /><label class="custom-control-label" for="' + data +'"></label></div>';
                     }
                 } ]
             } );
@@ -381,6 +381,10 @@
             let table= $(this).closest('table');
             $('td input:checkbox',table).prop('checked',this.checked);
             $('input.branch-id-checkbox').change();
+        });
+
+        $(document).on("change", "input#defaultMaxSubmission" , function() {
+            $( "input.max-submission:enabled" ).val( $('#defaultMaxSubmission').val() );
         });
 
         $(document).on("change", "input.branch-id-checkbox" , function() {
