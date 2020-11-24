@@ -582,6 +582,7 @@
             $("#branch_id-nobranch").change();
 
             $("form#create_campaign").submit(function(e){
+                $('.table').DataTable().destroy();
                 let isNoBranch = $("#branch_id-nobranch").is(':checked');
                 let budget = parseInt($("#budget").val());
                 let totalSubmission = 0;
@@ -595,6 +596,7 @@
 
                     if(totalSubmission==0)
                     {
+                        reinstateDataTable();
                         $.alert({
                             title: 'Hustle',
                             type: 'red',
@@ -611,6 +613,7 @@
                 let computeBudget = totalSubmission * totalRewards;
 
                 if(budget < computeBudget){
+                    reinstateDataTable();
                     $.alert({
                         title: 'Hustle',
                         type: 'red',
@@ -619,7 +622,7 @@
                     return false;
                 }
 
-                $('.table').DataTable().destroy();
+
 
                 return true;
             });
