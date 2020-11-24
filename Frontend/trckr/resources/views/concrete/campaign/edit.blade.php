@@ -392,30 +392,49 @@
                 formFilters[$(el).parent().attr('name')] = $(el).val();
             }).get();
 
-            $(document).ready(function() {
-
-                $('.table').DataTable( {
-                    "destroy": true,
-                    "ordering": false,
-                    //"ajax": "{{url('/test.json')}}?" + $.param(formFilters)/*,
-                    "ajax": "{{url('/campaign/merchant_branch')}}?" + $.param(formFilters),
-                    "columnDefs": [ {
-                        "targets": -1,
-                        "data": 0,
-                        "render": function ( data, type, row, meta ) {
-                            return '<input disabled class="branch-input form-control  max-submission" type="number" min="1" name="submissions[]" placeholder="Max Submission">';
-                        }
-                    },{
-                        "targets": 0,
-                        "data": 0,
-                        "render": function ( data, type, row, meta ) {
-                            return '<div class="branch-input custom-control custom-checkbox custom-checkbox-success"><input class="custom-control-input branch-id-checkbox" type="checkbox" name="branch_id[]" id="' + data + '" value="' + data + '" /><label class="custom-control-label" for="' + data +'"></label></div>';
-                        }
-                    }]
-                } );
-
+            $('.table').dataTable( {
+                "destroy": true,
+                "ordering" : false,
+                "ajax": {
+                    "type" : "GET",
+                    "url" : "{{url('/campaign/merchant_branch')}}?" + $.param(formFilters),
+                    "dataSrc": function ( json ) {
+                        reinstateDataTable();
+                        return json.data;
+                    }
+                },
+                "columnDefs": [ {
+                    "targets": -1,
+                    "data": 0,
+                    "render": function ( data, type, row, meta ) {
+                        return '<input disabled class="branch-input form-control max-submission" type="number" min="1" name="submissions[]" placeholder="Max Submission">';
+                    }
+                },{
+                    "targets": 0,
+                    "data": 0,
+                    "bSortable": false,
+                    "render": function ( data, type, row, meta ) {
+                        return '<div class="branch-input custom-control custom-checkbox custom-checkbox-light"><input class="custom-control-input branch-id-checkbox" type="checkbox" name="branch_id[]" id="' + data + '" value="' + data + '"  /><label class="custom-control-label" for="' + data +'"></label></div>';
+                    }
+                } ]
             } );
+
         });
+
+        function reinstateDataTable(){
+            setTimeout(function () {
+                oTable = $('.table').dataTable({
+                    "destroy": true,
+                    stateSave: true,
+                    order: [[1, 'desc']],
+                    "columnDefs": [
+                        { "orderable": false, "targets": [0,2,3,4,5,6,7,8] }
+                    ]
+                });
+
+                allPages = oTable.fnGetNodes();
+            }, 800);
+        }
 
 
         $(document).on("click", "#selectAll" , function() {

@@ -339,9 +339,6 @@
         });
 
         $(document).ready(function() {
-
-
-
             setTimeout(function () {
                 oTable = $('.table').dataTable({
                     "destroy": true,
@@ -364,10 +361,17 @@
                 formFilters[$(el).parent().attr('name')] = $(el).val();
             }).get();
 
-            $('.table').DataTable( {
+            $('.table').dataTable( {
                 "destroy": true,
                 "ordering" : false,
-                "ajax": "{{url('/campaign/merchant_branch')}}?" + $.param(formFilters),
+                "ajax": {
+                    "type" : "GET",
+                    "url" : "{{url('/campaign/merchant_branch')}}?" + $.param(formFilters),
+                    "dataSrc": function ( json ) {
+                        reinstateDataTable();
+                        return json.data;
+                    }
+                },
                 "columnDefs": [ {
                     "targets": -1,
                     "data": 0,
@@ -385,6 +389,21 @@
             } );
 
         });
+
+        function reinstateDataTable(){
+            setTimeout(function () {
+                oTable = $('.table').dataTable({
+                    "destroy": true,
+                    stateSave: true,
+                    order: [[1, 'desc']],
+                    "columnDefs": [
+                        { "orderable": false, "targets": [0,2,3,4,5,6,7,8] }
+                    ]
+                });
+
+                allPages = oTable.fnGetNodes();
+            }, 800);
+        }
 
 
         $(document).on("click", "#selectAll" , function() {
