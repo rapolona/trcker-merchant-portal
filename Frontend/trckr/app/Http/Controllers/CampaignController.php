@@ -551,6 +551,7 @@ class CampaignController extends Controller
     public function edit_campaign($campaignId, Request $request)
     {
         $data = $request->all();
+
         $validations = [
             "start_date" => "required|date|after_or_equal:today",
             "end_date" => "required|date|after_or_equal:start_date",

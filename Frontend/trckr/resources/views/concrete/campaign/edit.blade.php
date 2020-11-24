@@ -13,13 +13,13 @@
                         </div>
                         <div class="col-md-6">
                             <div class="pull-right">
-                            <strong>Status: </strong>
-                            <span>{{ $campaign['status'] }}</span>
-                            @if($campaign['status']=='DISABLED')
-                                <a class="btn btn-sm btn-danger" href="{{ url('campaign/status/enable/' . $campaign['campaign_id'] )}}">Activate</a>
-                            @elseif($campaign['status']=='ONGOING')
-                                <a class="btn btn-sm btn-success" href="{{ url('campaign/status/disable/' . $campaign['campaign_id'] )}}">Disable</a>
-                            @endif
+                                <strong>Status: </strong>
+                                <span>{{ $campaign['status'] }}</span>
+                                @if($campaign['status']=='DISABLED')
+                                    <a class="btn btn-sm btn-danger" href="{{ url('campaign/status/enable/' . $campaign['campaign_id'] )}}">Activate</a>
+                                @elseif($campaign['status']=='ONGOING')
+                                    <a class="btn btn-sm btn-success" href="{{ url('campaign/status/disable/' . $campaign['campaign_id'] )}}">Disable</a>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -86,9 +86,14 @@
                                     <div class="input-group-prepend"><span class="input-group-text"><span class="fa-calendar"></span></span></div>
                                     <input  required class="form-control  {{ $errors->first('start_date') || $errors->first('end_date')? 'form-control-danger' : '' }}" id="daterange1" type="text" value="{{ old('daterange', $campaign['daterange']) }}" name="daterange" placeholder="Date Range">
                                 </div>
-                                @if($errors->first('daterange'))
+                                @if($errors->first('start_date'))
                                     <div class="tag-manager-container">
-                                        <span class="tm-tag badge badge-danger" ><span>{{ $errors->first('start_date') }}{{ $errors->first('end_date') }}</span></span>
+                                        <span class="tm-tag badge badge-danger" ><span>{{ $errors->first('start_date') }}</span></span>
+                                    </div>
+                                @endif
+                                @if($errors->first('end_date'))
+                                    <div class="tag-manager-container">
+                                        <span class="tm-tag badge badge-danger" ><span>{{ $errors->first('end_date') }}</span></span>
                                     </div>
                                 @endif
                                 <div class="form-group col-md-5 {{ $errors->first('campaign_name')? 'form-control-danger' : '' }}">
@@ -247,12 +252,20 @@
                                         <td>{{ $branch->region }}</td>
                                         <td class="text-right" width="15%">
                                             @php
-                                                if(old('branch_id', $campaign['branch_id']))
-    {
-        $branchIdKey = array_search($branch->branch_id, old('branch_id', $campaign['branch_id']));
-    }
+                                                $branchIdKey = array_search($branch->branch_id, old('branch_id', $campaign['branch_id']));
                                             @endphp
-                                            <input @if(is_array(old('branch_id', $campaign['branch_id'])) && in_array($branch->branch_id, old('branch_id', $campaign['branch_id']))) name="submission[]" value="{{ old('submission.' . $branchIdKey, $campaign['submission'][$branchIdKey] ) }}" @else disabled @endif class="branch-input form-control max-submission" type="number" min="1" placeholder="Max Submission">
+                                            <input
+                                                @if($branchIdKey > -1)
+                                                name="submission[]"
+                                                @if(isset($campaign['submission'][$branchIdKey]))
+                                                value="{{ $campaign['submission'][$branchIdKey] }}"
+                                                @else
+                                                value="{{ old('submission.'.$branchIdKey) }}"
+                                                @endif
+                                                @else
+                                                disabled
+                                                @endif
+                                                class="branch-input form-control max-submission" type="number" min="1" placeholder="Max Submission">
                                         </td>
                                     </tr>
                                 @endforeach
@@ -332,6 +345,10 @@
 @section('js')
     <script type="text/javascript" src="{{url('/vendor/trckr/trckr.js')}}"></script>
     <script type="text/javascript">
+
+        let oTable = null,
+            allPages = null;
+
         //input_end_date
         $('#input_start_date').datepicker({
             dateFormat: 'yy-mm-dd',
@@ -354,13 +371,16 @@
 
         $(document).ready(function() {
             setTimeout(function () {
-                $('.table').DataTable({
+                oTable = $('.table').dataTable({
                     "destroy": true,
+                    stateSave: true,
                     order: [[1, 'desc']],
                     "columnDefs": [
                         { "orderable": false, "targets": [0,2,3,4,5,6,7,8] }
                     ]
                 });
+
+                allPages = oTable.fnGetNodes();
             }, 2000);
         });
 
@@ -400,12 +420,22 @@
 
         $(document).on("click", "#selectAll" , function() {
             let table= $(this).closest('table');
-            $('td input:checkbox',table).prop('checked',this.checked);
-            $('input.branch-id-checkbox').change();
+            $('td input:checkbox',allPages).prop('checked',this.checked);
+            if (this.checked) {
+                $('td input.max-submission', allPages).removeAttr('disabled');
+                $('td input.max-submission', allPages).attr('name', 'submission[]');
+                $('td input.max-submission', allPages).attr('required', true);
+                $('td input.max-submission', allPages).val($('#defaultMaxSubmission').val() || 1);
+            }else{
+                $('td input.max-submission', allPages).attr('disabled', true);
+                $('td input.max-submission', allPages).removeAttr('name');
+                $('td input.max-submission', allPages).removeAttr('required');
+                $('td input.max-submission', allPages).val('');
+            }
         });
 
         $(document).on("change", "input#defaultMaxSubmission" , function() {
-            $( "input.max-submission:enabled" ).val( $('#defaultMaxSubmission').val() );
+            $( "input.max-submission:enabled", allPages).val( $('#defaultMaxSubmission').val() );
         });
 
         $(document).on("change", "input.branch-id-checkbox" , function() {
@@ -569,6 +599,8 @@
                     });
                     return false;
                 }
+
+                $('.table').DataTable().destroy();
 
                 return true;
             });
