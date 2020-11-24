@@ -272,8 +272,6 @@ class CampaignController extends Controller
             );
         }
 
-        //print_r($data['branch_id']); exit();
-
         $response = $this->campaignService->create($request_data);
 
         if ( ! empty($response->campaign_id))
@@ -506,6 +504,7 @@ class CampaignController extends Controller
         $branches = $this->branchService->getAll($data);
         $branch_filters = $this->branchService->getFilters();
         $campaign = (array) $this->campaignService->get($campaignId);
+
         $campaign['audience'] = ($campaign['allow_everyone']==1)? 'All' : 'super_shopper';
         $campaign['daterange'] = date('m/d/Y', strtotime($campaign['start_date'])) . " - " . date('m/d/Y', strtotime($campaign['end_date']));
         $campaign['branch_id-nobranch'] = ($campaign['branches'][0]->branch_id == 'fbe9b0cf-5a77-4453-a127-9a8567ff3aa7')? true : false;
@@ -531,10 +530,10 @@ class CampaignController extends Controller
             $campaign['submission'][$bKey] = $branch->respondent_count;
         }
 
+        //print_r($campaign); exit();
+
         foreach ($tasks as &$k)
             $k->task_id = $k->task_classification_id . "|" . $k->task_id;
-
-        //print_r($campaign); exit();
 
         return view('concrete.campaign.edit', [
             'campaign_type' => $campaign_type,

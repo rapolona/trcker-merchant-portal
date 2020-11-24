@@ -36,7 +36,13 @@ class CampaignService
     public function duplicate($campaign)
     {
         unset($campaign['campaign_id']);
+        $campaign['start_date'] = date('Y-m-d');
+        $campaign['end_date'] = date('Y-m-d');
         $campaign['campaign_name'] = $campaign['campaign_name'] . " copy";
+        if(count($campaign['branches']) > 2 || $campaign['branches'][0]->branch_id!='fbe9b0cf-5a77-4453-a127-9a8567ff3aa7' ){
+            unset($campaign['at_home_campaign']);
+        }
+        //print_r($campaign); exit();
         return $this->repository->create($campaign);
     }
 

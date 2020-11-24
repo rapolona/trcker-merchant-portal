@@ -129,7 +129,7 @@
                             <div class="col-md-5 pull-right">
                                 <div class="input-group form-group">
                                     <div class="custom-control custom-switch custom-switch-success">
-                                        <input class="custom-control-input" type="checkbox" name="branch_id-nobranch" {{ old('nobranch_submissions', isset($campaign['branch_id-nobranch_value'])? $campaign['branch_id-nobranch_value'] : 0 ) > 0? 'checked=""' : '' }} id="branch_id-nobranch">
+                                        <input class="custom-control-input" type="checkbox" name="branch_id-nobranch" {{ old('branch_id-nobranch', $campaign['at_home_campaign']) > 0? 'checked=""' : '' }} id="branch_id-nobranch">
                                         <label class="custom-control-label" for="branch_id-nobranch">Do-It-At-Home</label>
                                     </div>
                                 </div>
