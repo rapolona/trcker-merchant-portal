@@ -244,7 +244,7 @@ exports.findAll = (req, res) => {
       condition.merchant_id = id;
     }
   
-    Campaign.findAll({ attributes:{exclude:['thumbnail_url']},where: condition , include: [Branch], order:[["createdAt", "DESC"]]})
+    Campaign.findAll({ attributes:{exclude:['thumbnail_url']},where: condition , order:[["createdAt", "DESC"]]})
       .then(data => {
         console.log(data)   
         res.json(data);
