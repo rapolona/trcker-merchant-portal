@@ -9,15 +9,19 @@ use Validator,Redirect,File;
 use Config, Session;
 use DateTime;
 use App\Services\CapabilityService;
+use App\Services\MerchantService;
 
 class TicketController extends Controller
 {
 
     private $capabilityService;
 
-    public function __construct(CapabilityService $capabilityService)
+    private $merchantService;
+
+    public function __construct(CapabilityService $capabilityService, MerchantService $merchantService)
     {
         $this->capabilityService = $capabilityService;
+        $this->merchantService = $merchantService;
     }
     public function index()
     {
@@ -31,28 +35,8 @@ class TicketController extends Controller
      */
     public function view(Request $request)
     {
-        $campaigns = $this->capabilityService->getCampaigns();
-        $tickets = array();
 
-        foreach($campaigns as $k)
-        {
-            //skip completed campaigns
-            if ( ! $k->campaign_id) continue;
-
-            $data = ['campaign_id' => $k->campaign_id];
-            $response = $this->capabilityService->getTicket($data);
-            foreach ($response as $j) {
-                $j->campaign_name = ($k->campaign_name) ? $k->campaign_name : 'NO Campaign Name';
-                $j->updatedAt = new DateTime($j->updatedAt);
-                $j->updatedAt = $j->updatedAt->format("F d, Y");
-                $j->createdAt = new DateTime($j->createdAt);
-                $j->createdAt = $j->createdAt->format("F d, Y");
-                $tickets[] = $j;
-            }
-        }
-
-      //  print_r($tickets); exit();
-
+        $tickets = $this->merchantService->getAllTickets(); 
         return view('concrete.ticket.ticket', ['tickets' => $tickets]);
     }
 

@@ -93,4 +93,13 @@ class MerchantRepository extends Repository
             $this->sessionExpired($e);
         }
     }
+
+    public function getAllTickets()
+    {
+        try {
+            return $this->trackerApi('get', $this->api . 'alltickets', []);
+        } catch(\Exception $e) {
+            $this->sessionExpired($e);
+        }
+    }
 }

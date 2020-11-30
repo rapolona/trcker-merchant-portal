@@ -33,7 +33,7 @@
                             </th>
                             <th>Name</th>
                             <th>Email</th>
-                            <th>Mobile</th>
+                            <!--<th>Mobile</th>-->
                             <th>Device ID</th>
                             <th>Campaign Name</th>
                             <th>Date Submitted</th>
@@ -52,10 +52,10 @@
                                 </td>
                                 <td>{{ $t->user_detail->first_name . " " . $t->user_detail->last_name }}</td>
                                 <td>{{ $t->user_detail->email }}</td>
-                                <td>09178478820 -- add in the API</td>
+                                <!--<td>09178478820 -- add in the API</td>-->
                                 <td>{{ $t->device_id}}</td>
-                                <td>{{ $t->campaign_name }}</td>
-                                <td>{{ $t->createdAt }}</td>
+                                <td>{{ $t->campaign->campaign_name }}</td>
+                                <td>{{ date('Y-m-d', strtotime($t->createdAt)) }}</td>
                                 <td class="text-{{ config('concreteadmin')['ticket_status'][$t->approval_status ] }}">{{ $t->approval_status }}</td>
                                 <td>
                                     <div class="btn-group">
