@@ -138,12 +138,11 @@ exports.approve = (req, res) => {
    
     Task_Ticket.findAll({
       include: [
-        {model: Task_Detail, as:'task_details', include: [{
+        {model: Task_Detail, as:'task_details', attributes:{exclude:['response']},include: [{
           model:Task_Question, as: 'task_question', attributes: ['question']}]
         },
         {model: User_Detail, as:'user_detail', attributes: ['first_name', 'last_name', 'account_level', 'email', 'settlement_account_number', 'settlement_account_type']},
-        {model: Campaign, as:'campaign', where:{merchant_id : id}, attributes:{exclude:["thumbnail_url", "description_image_url"]}},
-        {model: Branches, as:'branch', attributes:{exclude:["photo_url"]}}
+        {model: Campaign, as:'campaign', where:{merchant_id : id}, attributes:{exclude:[,'thumbnail_url', 'description_image_url','campaign_description','audience_age_min','audience_age_max','audience_gender','super_shoppers','allow_everyone']}}
       ],
       order: [["createdAt", "DESC"]]
       })
