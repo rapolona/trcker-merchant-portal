@@ -142,8 +142,8 @@ exports.approve = (req, res) => {
           model:Task_Question, as: 'task_question', attributes: ['question']}]
         },
         {model: User_Detail, as:'user_detail', attributes: ['first_name', 'last_name', 'account_level', 'email', 'settlement_account_number', 'settlement_account_type']},
-        {model: Campaign, as:'campaign', where:{merchant_id : id}},
-        {model: Branches, as:'branch'}
+        {model: Campaign, as:'campaign', where:{merchant_id : id}, attributes:{exclude:["thumbnail_url", "description_image_url"]}},
+        {model: Branches, as:'branch', attributes:{exclude:["photo_url"]}}
       ],
       order: [["createdAt", "DESC"]]
       })
