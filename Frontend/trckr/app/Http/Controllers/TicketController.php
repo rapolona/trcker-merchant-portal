@@ -67,7 +67,7 @@ class TicketController extends Controller
 
         $msg = [
             "type" => "success",
-            "message" => "Reject Ticket(s) Success!",
+            "message" => "Approve Ticket(s) Success!",
         ];
 
         return redirect('/ticket/view/' . "{$campaignId}/$ticketId")

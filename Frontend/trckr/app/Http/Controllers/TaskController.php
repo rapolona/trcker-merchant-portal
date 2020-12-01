@@ -47,9 +47,12 @@ class TaskController extends Controller
         ];
 
         $task = $this->taskService->getTaskById($data);
+
+        $taskForm = $this->taskService->generateFormBuilder($task->task_questions);
+
         $task_classification = $this->taskService->getTaskActionClassification();
 
-        return view('concrete.task.view', ['task' => $task, 'task_id' => $taskId, 'task_classification' => $task_classification]);
+        return view('concrete.task.view', ['task' => $task, 'task_id' => $taskId, 'task_classification' => $task_classification, 'taskForm' => $taskForm]);
     }
 
     /**
@@ -181,8 +184,9 @@ class TaskController extends Controller
         ];
 
         $task = $this->taskService->getTaskById($data);
+        $taskForm = $this->taskService->generateFormBuilder($task->task_questions);
         $task_classification = $this->taskService->getTaskActionClassification();
-        return view('concrete.task.edit', ['task' => $task, 'task_id' => $taskId, 'task_classification' => $task_classification]);
+        return view('concrete.task.edit', ['task' => $task, 'task_id' => $taskId, 'task_classification' => $task_classification, 'taskForm' => $taskForm]);
     }
 
     /**

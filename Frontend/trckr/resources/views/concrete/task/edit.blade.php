@@ -155,30 +155,7 @@
             var formBuilder = $('.build-wrap').formBuilder(options);
 
             formBuilder.promise.then(function(fb) {
-                var addField = new Array();
-                //never mix javascript with laravel data :) zzz
-                @foreach($task->task_questions as $question)
-                    var temp = findObjectInArrayByProperty(fields, "className", "{{$question->required_inputs}}");
-                    temp.name = "{{$question->task_question_id}}";
-                    temp.label = "{{$question->question}}";
-                    @if (count($question->task_question_choices) > 0)
-                        tempvalues = new Array();
-                        //console.log("{{count($question->task_question_choices)}}");
-                        @foreach($question->task_question_choices as $values)
-                            tempvalues.push(
-                                {
-                                    "label": "{{$values->choices_value}}",
-                                    "value": "{{$values->choices_id}}"
-                                }
-                            );
-                        @endforeach
-                        temp.values = tempvalues;
-                    @endif
-                    console.log(temp);
-                    //formBuilder.actions.addField(temp,1);
-                    addField.push(temp);
-                @endforeach
-
+                var addField = {!! json_encode($taskForm) !!};
                 fb.actions.setData(addField);
             });
 

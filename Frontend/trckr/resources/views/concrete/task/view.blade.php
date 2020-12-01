@@ -124,37 +124,8 @@
                 }
                 ];
 
-            var addField = new Array();
-            //never mix javascript with laravel data :) zzz
-
-
-            @foreach($task->task_questions as $question)
-
-                var temp = findObjectInArrayByProperty(fields, "className", "{{$question->required_inputs}}");
-                temp.name = "{{$question->task_question_id}}";
-                temp.label = "{{$question->question}}";
-                console.log("{{json_encode($question->task_question_choices)}}");
-                @if (count($question->task_question_choices) > 0)
-                    tempvalues = new Array();
-                    //console.log("{{count($question->task_question_choices)}}");
-                    @foreach($question->task_question_choices as $values)
-                        tempvalues.push(
-                            {
-                                "label": "{{$values->choices_value}}",
-                                "value": "{{$values->choices_id}}"
-                            }
-                        );
-                    @endforeach
-                    temp.values = tempvalues;
-                @endif
-                console.log(temp);
-
-                addField.push(temp);
-            @endforeach
-
-            console.log(JSON.stringify(options));
-
-
+            var addField = {!! json_encode($taskForm) !!};
+            
             var options = {
                 container,
                 addField,
@@ -163,18 +134,11 @@
             };
             //$(container).formRender(options);
 
-            $("#back").click(function(){
-                window.location.href = "{{url('/task/view')}}";
-            });
-
-            $("#edit").click(function(){
-                window.location.href = "{{url('/task/edit?task_action_id=')}}{{$task->task_id}}";
-            });
 
             var formData = JSON.stringify(addField);
+            console.log(formData);
 
             var container = $('.build-wrap');
-            //var formData = '[{"label":"True or False","className":"true_or_false","placeholder":"True or False","type":"radio-group","subType":"true-or-false","values":[{"label":"True","value":"tof-4458"},{"label":"False","value":"tof-7692"}],"icon":"🌟","name":"361eeaef-38eb-4c73-8e0a-ce5266db36c7"},{"label":"Float","className":"FLOAT","placeholder":"float","type":"number","icon":"🌟","name":"4233ca1f-30b6-4840-aed9-42ae39362a37","values":[]},{"label":"Single Select Dropdown","className":"SINGLE SELECT DROPDOWN","placeholder":"Single Select Dropdown","type":"select","icon":"🌟","name":"898570d7-dd13-44eb-80c8-9eb98f570612","values":[]},{"label":"Calculated Value","className":"CALCULATED VALUE","placeholder":"Calculated Value","type":"number","icon":"🌟","name":"945b3a0c-9aed-4da5-870c-1bdb3cb53a17","values":[]},{"label":"Text","className":"TEXT","placeholder":"Text","type":"textarea","icon":"🌟","name":"aa6cdb51-1415-4a89-a3c2-fe8a25ebbf70","values":[]},{"label":"Take a Photo","className":"PHOTO","placeholder":"Take a Photo","type":"file","icon":"🌟","name":"ba7a059f-8170-45e9-a5d8-ffb9dea6be97","values":[]},{"label":"Date","className":"DATEFIELD","placeholder":"date","type":"date","icon":"🌟","name":"d84d32ba-8480-49e6-840b-5bb8ebd48622","values":[]},{"label":"Checkbox","className":"CHECKBOX","placeholder":"Checkbox","type":"checkbox-group","icon":"🌟","name":"ec1ea6f5-54e8-4340-8fe8-3c82bc4183e0","values":[]},{"label":"Amount","className":"CURRENCY","placeholder":"Amount","type":"number","icon":"🌟","name":"f1109f0b-a84a-4ed7-85b2-81fdecb21cab","values":[]}]';
 
             var formRenderOpts = {
                 container,
@@ -183,7 +147,6 @@
                 dataType: 'json'
             };
 
-            console.log(formRenderOpts);
             $(container).formRender(formRenderOpts);
 
         });

@@ -8,6 +8,19 @@ class TaskService
 {
     protected $repository;
 
+    protected $taskType = [
+        "TRUE OR FALSE" => "radio-group",
+        "FLOAT" => "number",
+        "DATETIME" => "date",
+        "TEXT" => "text",
+        "CURRENCY" => "number",
+        "CALCULATED VALUE" => "number",
+        "SINGLE SELECT DROPDOWN" => "select",
+        "CHECKBOX" => "checkbox-group",
+        "IMAGE" => "file",
+        "INTEGER" => "number"
+    ];
+
     public function __construct(TaskRepository $repository)
     {
         $this->repository = $repository;
@@ -36,6 +49,33 @@ class TaskService
     public function getTaskActionClassification()
     {
         return $this->repository->getTaskActionClassification();
+    }
+
+    public function generateFormBuilder($questions)
+    {
+        $taskForm = [];
+        foreach ($questions as $key => $value) {
+            $nQuestion =  [
+                'type' => $this->taskType[$value->required_inputs],
+                'label' => $value->question,
+                'className' => '', //"form-control",
+                'name' => $this->taskType[$value->required_inputs]."-1478701075825",
+            ];
+            if(count($value->task_question_choices) > 0){
+                $myChoice = [];
+                foreach ($value->task_question_choices as $keyChoice => $choice) {
+                    $myChoice[$keyChoice] = [
+                        'label' => $choice->choices_value,
+                        'value' => $choice->choices_value
+                    ];
+                }
+
+                $nQuestion['values'] = $myChoice;
+            }
+
+            $taskForm[$key] = $nQuestion;
+        }
+        return $taskForm;
     }
 
 }
