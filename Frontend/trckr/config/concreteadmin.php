@@ -75,7 +75,17 @@ return [
             ],
         'merchant' => [
             'branch' => [
-                'url' => 'merchant/branch',
+                'url' => 'merchant/branches',
+                'icon' => 'fa-sitemap',
+                'text' => 'Branches',
+                'in_menu' => true,
+                'sub_url'  => [
+                    'add' => [ 'text' => 'Add'],
+                    'edit' => [ 'text' => 'Update']
+                ]
+            ],
+            'branches' => [
+                'url' => 'merchant/branches',
                 'icon' => 'fa-sitemap',
                 'text' => 'Branches',
                 'in_menu' => true,
