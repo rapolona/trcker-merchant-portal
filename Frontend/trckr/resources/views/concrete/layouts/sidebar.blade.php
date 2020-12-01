@@ -20,7 +20,7 @@
             </a>
         </li>
         <li class="rd-navbar-nav-item {{ Request::is('merchant/branch/*')? 'active' : '' }}">
-            <a class="rd-navbar-link" href="{{ url('merchant/branch') }}">
+            <a class="rd-navbar-link" href="{{ url('merchant/branches') }}">
                 <span class="rd-navbar-icon mdi-sitemap"></span><span class="rd-navbar-link-text">Branches</span>
             </a>
         </li>
