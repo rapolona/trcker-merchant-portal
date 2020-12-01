@@ -58,7 +58,7 @@ class TaskService
             $nQuestion =  [
                 'type' => $this->taskType[$value->required_inputs],
                 'label' => $value->question,
-                'className' => '', //"form-control",
+                'className' => "form-control",
                 'name' => $this->taskType[$value->required_inputs]."-1478701075825",
             ];
             if(count($value->task_question_choices) > 0){
@@ -66,7 +66,7 @@ class TaskService
                 foreach ($value->task_question_choices as $keyChoice => $choice) {
                     $myChoice[$keyChoice] = [
                         'label' => $choice->choices_value,
-                        'value' => $choice->choices_value
+                        'value' => $choice->choices_id
                     ];
                 }
 
