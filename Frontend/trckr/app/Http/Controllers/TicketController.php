@@ -134,87 +134,7 @@ class TicketController extends Controller
 
     public function export_csv(Request $request)
     {
-        $api_endpoint = Config::get('trckr.capability_url') . "capability/campaign";
-
-        $session = $request->session()->get('session_merchant');
-
-        if ( ! $session) return redirect('/');
-        $token = ( ! empty($session->token)) ? $session->token : "";
-
-        //pull all campaign info
-        $response = Http::withToken($token)->get($api_endpoint, []);
-
-        if ($response->status() !== 200)
-        {
-            if ($response->status() === 403) {
-                $validator = Validator::make($request->all(), []);
-                $validator->getMessageBag()->add('email', "Session Expired. Please login again. {$response->body()}");
-
-                return redirect('/')
-                    ->withErrors($validator)
-                    ->withInput();
-            }
-
-            if ($response->status() === 500) {
-                $handler = json_decode($response->body());
-
-                if ($handler->message->name == "JsonWebTokenError")
-
-                $validator = Validator::make($request->all(), []);
-                $validator->getMessageBag()->add('email', "Session Expired. Please login again. {$response->body()}");
-
-                return redirect('/')
-                    ->withErrors($validator)
-                    ->withInput();
-            }
-
-            //general handling
-            return redirect('/dashboard');
-        }
-
-        $campaign = json_decode($response);
-
-        $tickets = array();
-
-        //pull tickets
-        foreach($campaign as $k)
-        {
-            //skip completed campaigns
-            if ( ! $k->campaign_id) continue;
-
-            $api_endpoint = Config::get('trckr.capability_url') . "capability/tasktickets";
-
-            $session = $request->session()->get('session_merchant');
-
-            if ( ! $session) return redirect('/');
-            $token = ( ! empty($session->token)) ? $session->token : "";
-
-            $data = array('campaign_id' => $k->campaign_id);
-
-            $headers = array(
-                'Content-Type:application/json',
-                'Authorization:Bearer ' . $token
-            );
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, $api_endpoint);
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
-            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
-
-            $response = json_decode(curl_exec($ch));
-            curl_close($ch);
-
-            foreach ($response as $j) {
-                $j->campaign = $k;
-                $j->campaign_name = $k->campaign_name;
-                $j->createdAt = new DateTime($j->createdAt);
-                $j->createdAt = $j->createdAt->format("Y-m-d H:i:s");
-                $tickets[] = $j;
-            }
-        }
-
+       
         //creating the csv data
         $csv_data = array();
         $csv_data[0] = [
@@ -230,10 +150,13 @@ class TicketController extends Controller
             'Mobile Number',
             'Location',
             'Ticket Status',
-            'Branch',
-            'Question',
-            'Answer'
+            //'Branch',
+            //'Question',
+            //'Answer'
         ];
+        
+        $tickets = $this->merchantService->getAllTickets(); 
+
         foreach ($tickets as $k)
         {
             $k->createdAt = new DateTime($k->createdAt);
@@ -244,15 +167,15 @@ class TicketController extends Controller
                 'Email' => $k->user_detail->email,
                 'Device ID' => $k->device_id,
                 'Approval Status' => $k->approval_status,
-                'Campaign ID' => $k->campaign_id,
-                'Campaign Name' => $k->campaign_name,
+                'Campaign ID' => $k->campaign->campaign_id,
+                'Campaign Name' => $k->campaign->campaign_name,
                 'Ticket Submitted' => $k->createdAt->format("Y-m-d H:i:s"),
-                'Mobile Number' => "No info available yet",
+                'Mobile Number' => $k->user_detail->settlement_account_number,
                 'Location' => "No info available yet",
                 'Ticket Status' => $k->approval_status,
             );
 
-            //branch name
+           /* //branch name
             foreach ($k->campaign->branches as $branches)
             {
                 if ($k->branch_id == $branches->branch_id) {
@@ -273,7 +196,7 @@ class TicketController extends Controller
                 $row_data['Answer'] = $individual_task->response;
 
                 $csv_data[] = $row_data;
-            }
+            }*/
         }
 
         //echo $this->array2csv($csv_data);exit;
