@@ -157,7 +157,7 @@ class TicketController extends Controller
         
         $tickets = $this->merchantService->getAllTickets(); 
 
-        foreach ($tickets as $k)
+        foreach ($tickets as $key => $k)
         {
             $k->createdAt = new DateTime($k->createdAt);
             $base_data = array(
@@ -175,6 +175,8 @@ class TicketController extends Controller
                 'Ticket Status' => $k->approval_status,
             );
 
+            $csv_data[$key + 1] = $base_data;
+ 
            /* //branch name
             foreach ($k->campaign->branches as $branches)
             {
