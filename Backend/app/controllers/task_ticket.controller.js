@@ -157,3 +157,36 @@ exports.approve = (req, res) => {
       });
     });
     }
+
+    exports.findAllTicketsForReport = (req,res)=> {
+      const id = req.body.merchantid
+     
+      Task_Ticket.findAll({
+        attributes: ['task_ticket_id','device_id','approval_status','createdAt','updatedAt'],
+        include: [
+          {model: Task_Detail, as:'task_details',
+            where:{
+              response: {[Op.notLike]: 'data:image%'}
+            },
+            attributes:['response'],
+            include: [
+              {model:Task_Question, as: 'task_question', attributes: ['question']},
+            ]
+          },
+          {model: Branches, attributes:['name','address','city']},
+          {model: User_Detail, as:'user_detail', attributes: ['first_name', 'last_name', 'account_level', 'email', 'settlement_account_number', 'settlement_account_type']},
+          {model: Campaign, as:'campaign',where:{merchant_id : id}, attributes:['campaign_id','campaign_name']}
+        ],
+        order: [["createdAt", "DESC"]]
+        })
+      .then(data => {
+        res.send(data);
+      })
+      .catch(err => {
+        console.log(err)
+        res.status(500).send({
+          message:
+            err.message || "Some error occurred while retrieving task tickets."
+        });
+      });
+      }

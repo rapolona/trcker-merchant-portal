@@ -8,5 +8,6 @@ module.exports = app => {
     router.get("/tasktickets", adminMiddleware.isAuthenticated,task_tickets.findTicketsByUser);
     router.get("/usertickets", adminMiddleware.isAuthenticated,task_tickets.findTicketsOfUser);
     router.get("/alltickets", adminMiddleware.isAuthenticated, task_tickets.findAllTicketsWithDetails);
+    router.get("/ticketreport", adminMiddleware.isAuthenticated, task_tickets.findAllTicketsForReport);
     app.use('/merchant', router);
   };
