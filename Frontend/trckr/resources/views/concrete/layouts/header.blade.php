@@ -19,7 +19,7 @@
                     <div class="btn btn-navbar-panel" data-multi-switch='{"targets":"#subpanel-user","scope":"#subpanel-user","isolate":"[data-multi-switch]"}'>
                       <div class="media align-items-center"><img class="rounded-circle" src="{{ asset('images/users/user-03-50x50.jpg') }}" width="30" height="30" alt=""/>
                         <div class="media-body ml-2">
-                          <a href="{{ url('merchant/profile') }}" class="white">{{ Config::get('gbl_profile')->merchant->authorized_representative }}</a>
+                          <a href="{{ url('m/profile') }}" class="white">{{ Config::get('gbl_profile')->merchant->authorized_representative }}</a>
                         </div>
                       </div>
                     </div>

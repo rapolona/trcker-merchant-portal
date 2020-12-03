@@ -27,7 +27,7 @@ Route::group(["middleware" => ["merchantAuth"]], function() {
     Route::get('/dashboard', 'MainController@index');
 
     // MERCHANT
-    Route::group(['prefix' => 'merchant'], function() {
+    Route::group(['prefix' => 'm'], function() {
         Route::get('/debug', 'MerchantController@debug');
         Route::get('/', 'MerchantController@view_profile');
         Route::get('/profile', 'MerchantController@view_profile');

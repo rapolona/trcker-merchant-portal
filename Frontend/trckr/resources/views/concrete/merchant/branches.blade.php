@@ -4,7 +4,7 @@
     <div class="group-10">
         <!-- <a class="btn btn-light" href="{{ url('/merchant/branch/add') }}"><span class="fa-plus"></span><span class="pl-2">Add New Branch</span></a> -->
         <div class="btn-group">
-          <a class="btn btn-outline-primary" href="{{ url('/merchant/branch/add') }}"><span class="fa-plus">Add a new branch</span></a>
+          <a class="btn btn-outline-primary" href="{{ url('/m/branch/add') }}"><span class="fa-plus">Add a new branch</span></a>
 <!--           <a class="btn btn-dark" href="#"><span class="fa-upload">Upload CSV</span></a> -->
         </div>
 
@@ -16,7 +16,7 @@
         <div class="panel-header d-flex flex-wrap align-items-center justify-content-between">
             <div class="panel-title">Merchant Branches</div>
             <div class="btn-group">
-                <form method="POST" enctype="multipart/form-data" id="file_upload" action="{{ url('merchant/branch/upload') }}" >
+                <form method="POST" enctype="multipart/form-data" id="file_upload" action="{{ url('m/branch/upload') }}" >
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                     <input type="file" name="file" id="file" style="display:none">
                     <button class="btn btn-light btn-sm" type="button" value="Upload CSV" id="upload_csv">
@@ -25,7 +25,7 @@
                         Upload CSV
                     </button>
                 </form>
-                <form method="POST" id="deleteForm" action="{{ url('merchant/branch/bulkdelete')  }}" >
+                <form method="POST" id="deleteForm" action="{{ url('m/branch/bulkdelete')  }}" >
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                     <input type="hidden" name="delete_ids" id="delete_ids"  value="">
                     <button class="btn btn-danger btn-sm" type="button" id="delete">
@@ -148,8 +148,8 @@
                                 <div class="dropdown">
                                     <button class="btn dropdown-toggle btn-light btn-sm" data-toggle="dropdown"><span>Action</span></button>
                                     <div class="dropdown-menu">
-                                        <a class="dropdown-item" href="{{url('/merchant/branch/edit/' . $branch->branch_id )}}"> Update</a>
-                                        <a class="dropdown-item deleteBranch" href="#" target-href="{{url('/merchant/branch/delete/' . $branch->branch_id )}}"> Delete</a>
+                                        <a class="dropdown-item" href="{{url('/m/branch/edit/' . $branch->branch_id )}}"> Update</a>
+                                        <a class="dropdown-item deleteBranch" href="#" target-href="{{url('/m/branch/delete/' . $branch->branch_id )}}"> Delete</a>
                                     </div>
                                 </div>
                             </td>
@@ -196,7 +196,7 @@
                     formFilters[$(el).parent().attr('name')] = (oVal=='all')? '' : oVal;
                 }).get();
 
-                window.location.href = "{{ url('merchant/branch') }}?" + $.param(formFilters);
+                window.location.href = "{{ url('m/branch') }}?" + $.param(formFilters);
             });
 
 

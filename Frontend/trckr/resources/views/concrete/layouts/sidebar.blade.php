@@ -19,8 +19,8 @@
                 <span class="rd-navbar-icon fa-home"></span><span class="rd-navbar-link-text">Dashboard</span>
             </a>
         </li>
-        <li class="rd-navbar-nav-item {{ Request::is('merchant/branch/*')? 'active' : '' }}">
-            <a class="rd-navbar-link" href="{{ url('merchant/branches') }}">
+        <li class="rd-navbar-nav-item {{ Request::is('m/branch/*')? 'active' : '' }}">
+            <a class="rd-navbar-link" href="{{ url('m/branches') }}">
                 <span class="rd-navbar-icon mdi-sitemap"></span><span class="rd-navbar-link-text">Branches</span>
             </a>
         </li>

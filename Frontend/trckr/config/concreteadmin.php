@@ -73,9 +73,9 @@ return [
             'in_menu' => true,
             'sub_url'  => null
             ],
-        'merchant' => [
+        'm' => [
             'branch' => [
-                'url' => 'merchant/branches',
+                'url' => 'm/branches',
                 'icon' => 'fa-sitemap',
                 'text' => 'Branches',
                 'in_menu' => true,
@@ -85,7 +85,7 @@ return [
                 ]
             ],
             'branches' => [
-                'url' => 'merchant/branches',
+                'url' => 'm/branches',
                 'icon' => 'fa-sitemap',
                 'text' => 'Branches',
                 'in_menu' => true,
@@ -95,7 +95,7 @@ return [
                 ]
             ],
             'product' => [
-                'url' => 'merchant/product',
+                'url' => 'm/product',
                 'icon' => 'fa-sitemap',
                 'text' => 'Products',
                 'in_menu' => true,
@@ -106,7 +106,7 @@ return [
             ],
 
             'users' => [
-                'url' => 'merchant/users',
+                'url' => 'm/users',
                 'icon' => 'fa-sitemap',
                 'text' => 'User',
                 'in_menu' => true,
@@ -117,7 +117,7 @@ return [
             ],
 
             'profile' => [
-                'url' => 'merchant/profile',
+                'url' => 'm/profile',
                 'icon' => 'fa-sitemap',
                 'text' => 'Merchant Profile',
                 'in_menu' => true,
@@ -138,7 +138,7 @@ return [
             ]
         ],
         'campaign' => [
-            'url' => 'merchant/branch',
+            'url' => 'm/campaign',
             'icon' => 'fa-star',
             'text' => 'Campaigns',
             'in_menu' => true,

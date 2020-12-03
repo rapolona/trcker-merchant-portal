@@ -157,6 +157,8 @@ class TicketController extends Controller
         
         $tickets = $this->merchantService->getAllTickets(); 
 
+        print_r($tickets); exit();
+
         foreach ($tickets as $key => $k)
         {
             $k->createdAt = new DateTime($k->createdAt);

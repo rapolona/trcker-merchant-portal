@@ -11,7 +11,7 @@
             <div class="panel-title">Merchant Profile</div>
         </div>
         <div class="panel-body">
-            <form class="form-horizontal" id="modify_merchant" method="post" action="{{ url('merchant/profile')  }}" enctype="multipart/form-data">
+            <form class="form-horizontal" id="modify_merchant" method="post" action="{{ url('m/profile')  }}" enctype="multipart/form-data">
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
                 <div class="row row-30">

@@ -242,7 +242,7 @@ class ProductController extends Controller
             "message" => "Product was successfully deleted!",
         ];
 
-        return redirect('/merchant/product')
+        return redirect('/m/product')
             ->with("formMessage", $msg);
     }
 
@@ -270,7 +270,7 @@ class ProductController extends Controller
             "message" => "Products were successfully deleted!",
         ];
 
-        return redirect('/merchant/product')
+        return redirect('/m/product')
             ->with("formMessage", $msg);
     }
 }

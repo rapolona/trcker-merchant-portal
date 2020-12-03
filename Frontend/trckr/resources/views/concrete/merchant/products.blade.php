@@ -19,11 +19,11 @@
                                 Upload CSV
                             </button>
                         </form>
-                        <a href="{{url('/merchant/product/add')}}" type="button" class="btn btn-success btn-sm pull-right" id="add">
+                        <a href="{{url('/m/product/add')}}" type="button" class="btn btn-success btn-sm pull-right" id="add">
                             <span class="fa-plus"></span>
                             Add
                         </a>
-                        <form method="POST" id="deleteForm" action="{{ url('merchant/product/bulkdelete')  }}" >
+                        <form method="POST" id="deleteForm" action="{{ url('m/product/bulkdelete')  }}" >
                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
                             <input type="hidden" name="delete_ids" id="delete_ids"  value="">
                             <button class="btn btn-danger btn-sm" type="button" id="delete">
@@ -67,8 +67,8 @@
                             <td> {{ $product->product_description }}</td>
                             <td>
                                 <div class="btn-group">
-                                    <a class="btn btn-warning btn-sm" type="button" href="{{url('/merchant/product/edit/' . $product->product_id )}}"><span class="fa-edit"></span></a>
-                                    <a class="btn btn-danger btn-sm deleteProduct" type="button" target-href="{{url('/merchant/product/delete/' . $product->product_id )}}"><span class="mdi-delete"></span></a>
+                                    <a class="btn btn-warning btn-sm" type="button" href="{{url('/m/product/edit/' . $product->product_id )}}"><span class="fa-edit"></span></a>
+                                    <a class="btn btn-danger btn-sm deleteProduct" type="button" target-href="{{url('/m/product/delete/' . $product->product_id )}}"><span class="mdi-delete"></span></a>
                                 </div>
                             </td>
                         </tr>
@@ -122,7 +122,7 @@
             $('#file_upload').submit(function(e) {
                 var formData = new FormData(this);
 
-                post("{{url('/merchant/product/upload')}}", "Upload CSV", "upload_csv", formData, "{{url('/merchant/product')}}");
+                post("{{url('/m/product/upload')}}", "Upload CSV", "upload_csv", formData, "{{url('/m/product')}}");
             });
         });
   </script>

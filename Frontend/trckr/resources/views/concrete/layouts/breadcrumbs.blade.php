@@ -7,10 +7,10 @@
                     @php
                         $uri = explode('/', Request::path());
                         $breadCrumbs = config('concreteadmin.menu');
-                        $breadKeyStart = ($uri[0] == 'merchant')? 1 : 0;
+                        $breadKeyStart = ($uri[0] == 'm')? 1 : 0;
                         $list = $breadCrumbs[$uri[0]];
                         $crud = ['add', 'edit'];
-                        if($uri[0] == 'merchant'){
+                        if($uri[0] == 'm'){
                             $list = $list[$uri[1]];
                         }
                     @endphp
