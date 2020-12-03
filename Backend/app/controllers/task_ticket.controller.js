@@ -166,7 +166,13 @@ exports.approve = (req, res) => {
         include: [
           {model: Task_Detail, as:'task_details',
             where:{
-              response: {[Op.notLike]: 'data:image%'}
+              [Op.and]: [
+                {response: {[Op.notLike]: 'data:image%'}},
+                db.Sequelize.where(db.Sequelize.fn('char_length', db.Sequelize.col('response')), {
+                  [Op.lt]: 1000
+                })
+
+              ]
             },
             attributes:['response'],
             include: [
