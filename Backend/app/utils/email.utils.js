@@ -2,7 +2,7 @@ var nodemailer = require("nodemailer");
 
 exports.sendMail = (to, from, subject, message, callback)=>{
     var transporter = nodemailer.createTransport({
-        service: '172.31.16.201',
+        host: '172.31.16.201',
         port:25,
         secure:false,
         auth: {
