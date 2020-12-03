@@ -150,14 +150,14 @@ class TicketController extends Controller
             'Mobile Number',
             'Location',
             'Ticket Status',
-            //'Branch',
-            //'Question',
-            //'Answer'
+            'Branch',
+            'Question',
+            'Answer'
         ];
         
         $tickets = $this->merchantService->getAllTickets(); 
 
-        print_r($tickets); exit();
+        //print_r($tickets); exit();
 
         foreach ($tickets as $key => $k)
         {
