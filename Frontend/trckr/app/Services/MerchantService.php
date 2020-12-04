@@ -52,4 +52,9 @@ class MerchantService
     {
         return $this->repository->getAllTickets();
     }
+
+    public function getTicketReport()
+    {
+        return $this->repository->getTicketReport();
+    }
 }

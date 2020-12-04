@@ -148,59 +148,42 @@ class TicketController extends Controller
             'Campaign Name',
             'Ticket Submitted',
             'Mobile Number',
-            'Location',
+            //'Location',
             'Ticket Status',
             'Branch',
             'Question',
             'Answer'
         ];
         
-        $tickets = $this->merchantService->getAllTickets(); 
-
-        //print_r($tickets); exit();
+        $tickets = $this->merchantService->getTicketReport(); 
 
         foreach ($tickets as $key => $k)
         {
             $k->createdAt = new DateTime($k->createdAt);
-            $base_data = array(
-                'Ticket ID' => $k->task_ticket_id,
-                'Full Name' => "{$k->user_detail->first_name} {$k->user_detail->last_name}",
-                'Account Level' => $k->user_detail->account_level,
-                'Email' => $k->user_detail->email,
-                'Device ID' => $k->device_id,
-                'Approval Status' => $k->approval_status,
-                'Campaign ID' => $k->campaign->campaign_id,
-                'Campaign Name' => $k->campaign->campaign_name,
-                'Ticket Submitted' => $k->createdAt->format("Y-m-d H:i:s"),
-                'Mobile Number' => $k->user_detail->settlement_account_number,
-                'Location' => "No info available yet",
-                'Ticket Status' => $k->approval_status,
-            );
 
-            $csv_data[$key + 1] = $base_data;
- 
-           /* //branch name
-            foreach ($k->campaign->branches as $branches)
-            {
-                if ($k->branch_id == $branches->branch_id) {
-                    $base_data['Branch Name'] = $branches->name;
-                    break;
-                }
-                continue;
+            foreach ($k->task_details as $detailKey => $details) {
+                # code...
+          
+                $base_data = array(
+                    'Ticket ID' => $k->task_ticket_id,
+                    'Full Name' => "{$k->user_detail->first_name} {$k->user_detail->last_name}",
+                    'Account Level' => $k->user_detail->account_level,
+                    'Email' => $k->user_detail->email,
+                    'Device ID' => $k->device_id,
+                    'Approval Status' => $k->approval_status,
+                    'Campaign ID' => $k->campaign->campaign_id,
+                    'Campaign Name' => $k->campaign->campaign_name,
+                    'Ticket Submitted' => $k->createdAt->format("Y-m-d H:i:s"),
+                    'Mobile Number' => $k->user_detail->settlement_account_number,
+                    //'Location' => "No info available yet",
+                    'Ticket Status' => $k->approval_status,
+                    'Branch' => "{$k->branch->name} {$k->branch->address} {$k->branch->city}",
+                    'Question' => $details->task_question->question,
+                    'Answer' => $details->response
+                );
+
+                array_push($csv_data, $base_data);
             }
-
-            //creating rows per number of questions per task
-            foreach($k->task_details as $individual_task)
-            {
-                //skipping images for now
-                if (substr($individual_task->response, 0, 11) == "data:image/")
-                    continue;
-                $row_data = $base_data;
-                $row_data['Task Question'] = $individual_task->task_question->question;
-                $row_data['Answer'] = $individual_task->response;
-
-                $csv_data[] = $row_data;
-            }*/
         }
 
         //echo $this->array2csv($csv_data);exit;
