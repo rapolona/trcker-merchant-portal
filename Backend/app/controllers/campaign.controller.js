@@ -239,14 +239,17 @@ exports.findAll = (req, res) => {
     const id = req.body.merchantid;
     var condition = req.query;
     
-    if(req.body.merchantid){
+
+    if((req.query.page)&&(req.query.count_per_page)){
+      var page_number = parseInt(req.query.page);
+      var count_per_page = parseInt(req.query.count_per_page);
+      var skip_number_of_items = (page_number * count_per_page) - count_per_page
       
-      condition.merchant_id = id;
-    }
-  
-    Campaign.findAll({ attributes:{exclude:['thumbnail_url']},where: condition , order:[["createdAt", "DESC"]]})
+
+      Campaign.findAndCountAll({ offset:skip_number_of_items, limit: count_per_page ,attributes:{exclude:['thumbnail_url']},where: {merchant_id: id} , order:[["createdAt", "DESC"]]})
       .then(data => {
-        console.log(data)   
+        data.total_pages = Math.ceil(data.count/count_per_page);
+        data.current_page = page_number;   
         res.json(data);
       })
       .catch(err => {
@@ -255,6 +258,24 @@ exports.findAll = (req, res) => {
             err.message || "Some error occurred while retrieving campaigns."
         });
       });
+    }
+    else{
+      Campaign.findAll({ attributes:{exclude:['thumbnail_url']},where: {merchant_id: id} , order:[["createdAt", "DESC"]]})
+      .then(data => { 
+        res.json(data);
+      })
+      .catch(err => {
+        res.status(500).send({
+          message:
+            err.message || "Some error occurred while retrieving campaigns."
+        });
+      });
+    }
+
+
+
+  
+
   };
 
 // Find a single Campaign with an id
