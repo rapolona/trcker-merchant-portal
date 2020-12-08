@@ -151,8 +151,10 @@ class TicketController extends Controller
             //'Location',
             'Ticket Status',
             'Branch',
+            'Task Name',
             'Question',
-            'Answer'
+            'Answer',
+            'Reward'
         ];
         
         $tickets = $this->merchantService->getTicketReport(); 
@@ -178,8 +180,10 @@ class TicketController extends Controller
                     //'Location' => "No info available yet",
                     'Ticket Status' => $k->approval_status,
                     'Branch' => "{$k->branch->name} {$k->branch->address} {$k->branch->city}",
+                    'Task Name' => $details->task_question->task_name,
                     'Question' => $details->task_question->question,
-                    'Answer' => $details->response
+                    'Answer' => $details->response,
+                    'Reward' => $details->task_question->reward_amount
                 );
 
                 array_push($csv_data, $base_data);
