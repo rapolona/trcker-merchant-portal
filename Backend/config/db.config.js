@@ -1,9 +1,8 @@
 module.exports = {
-  HOST: "hustleph-rds-db.czotjo3wguec.ap-southeast-1.rds.amazonaws.com",
-  PORT: 3306,
-  USER: "huslteph_dbadmin",
-  PASSWORD: "xaRdC85fqt",
-  DB: "trckerdb",
+  HOST: "localhost",
+  USER: "root",
+  PASSWORD: "password",
+  DB: "trckerdev",
   dialect: "mysql",
   pool: {
     max: 5,
