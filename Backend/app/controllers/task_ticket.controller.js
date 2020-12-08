@@ -183,7 +183,7 @@ exports.approve = (req, res) => {
           },
           {model: Branches, attributes:['name','address','city']},
           {model: User_Detail, as:'user_detail', attributes: ['first_name', 'last_name', 'account_level', 'email', 'settlement_account_number', 'settlement_account_type']},
-          {model: Campaign, as:'campaign',where:{merchant_id : id}, attributes:['campaign_id','campaign_name'], include: [{model:campaign_task_associations, attributes: ['reward_amount','task_id'], where:{task_id : db.Sequelize.col('task_details.task_question.task.task_id'), campaign_id: db.Sequelize.col('campaign.campaign_id')}} ]}
+          {model: Campaign, as:'campaign',where:{merchant_id : id}, attributes:['campaign_id','campaign_name'], include: [{model:campaign_task_associations, attributes: ['reward_amount','task_id']} ]}
         ],
         order: [["createdAt", "DESC"]]
         })
