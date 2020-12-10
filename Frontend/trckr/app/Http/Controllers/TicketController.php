@@ -159,6 +159,8 @@ class TicketController extends Controller
         
         $tickets = $this->merchantService->getTicketReport(); 
 
+
+
         foreach ($tickets as $key => $k)
         {
             $k->createdAt = new DateTime($k->createdAt);
