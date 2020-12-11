@@ -227,7 +227,12 @@ class TaskController extends Controller
         foreach ($temp_task_questions as $k)
         {
             $temp = array();
-            $temp['task_question_id'] = $k->name;
+            $task_question_id = $k->name;
+            if (!is_string($task_question_id) || (preg_match('/^[a-f\d]{8}(-[a-f\d]{4}){4}[a-f\d]{8}$/i', $task_question_id) !== 1)) {
+                $task_question_id = '';
+            }
+
+            $temp['task_question_id'] = $task_question_id ;
             $temp['question'] = $k->label;
             $temp['required_inputs'] = $k->className;
             if (in_array($k->className, array('CHECKBOX', 'SINGLE SELECT DROPDOWN')))
