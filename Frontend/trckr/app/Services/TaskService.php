@@ -53,13 +53,14 @@ class TaskService
 
     public function generateFormBuilder($questions)
     {
+        //print_r($questions); exit();
         $taskForm = [];
         foreach ($questions as $key => $value) {
             $nQuestion =  [
                 'type' => $this->taskType[$value->required_inputs],
                 'label' => $value->question,
                 'id' => $value->task_question_id,
-                'className' => "form-control",
+                'className' => $value->required_inputs,
                 'name' => $value->task_question_id//$this->taskType[$value->required_inputs]."-1478701075825",
             ];
             if(count($value->task_question_choices) > 0){

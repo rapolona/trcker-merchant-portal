@@ -244,6 +244,8 @@ class TaskController extends Controller
             $request_data['task_questions'][] = $temp;
         }
 
+        //print_r($request_data); exit();
+
         $this->taskService->update($request_data);
 
         $task = $this->taskService->getTaskById(['task_id' => $request_data['task_id']]);
@@ -258,6 +260,7 @@ class TaskController extends Controller
         ];
         $data['formMessage'] = $msg;
         $data['task'] = $task;
+        $data['taskForm'] = $this->taskService->generateFormBuilder($task->task_questions);
 
         return view('concrete.task.edit', $data);
     }
