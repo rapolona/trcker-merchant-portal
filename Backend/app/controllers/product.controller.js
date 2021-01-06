@@ -38,9 +38,14 @@ exports.create = (req, res) => {
 exports.findAll = (req, res) => {
 
   const id = req.body.merchantid;
-  var condition = id ? { merchant_id: { [Op.eq]: `${id}` } } : null;
+  var condition = req.query;
+  
+  if(req.body.merchantid){
+    
+    condition.merchant_id = id;
+  }
 
-  Product.findAll({ where: condition })
+  Product.findAll({ where: condition , order: [["createdAt", "DESC"]]})
     .then(data => {
       res.send(data);
     })
@@ -54,15 +59,23 @@ exports.findAll = (req, res) => {
 
 // Find a single Product with an id
 exports.findOne = (req, res) => {
-    const id = req.params.id;
+  const product_id = req.params.product_id;
+  const merchant_id = req.body.merchantid;
   
-    Product.findByPk(id)
+    Product.findByPk(product_id)
       .then(data => {
-        res.send(data);
+        if(data.merchant_id==merchant_id){
+          res.send(data);
+        }
+        else{
+          res.status(422).send({
+            message: "Error retrieving Product with id=" + product_id + ". Product does not belong to merchant."
+          });
+        }
       })
       .catch(err => {
         res.status(500).send({
-          message: "Error retrieving Product with id=" + id
+          message: "Error retrieving Product with id=" + product_id
         });
       });
   };
@@ -80,7 +93,7 @@ exports.update = (req, res) => {
             message: "Product was updated successfully."
           });
         } else {
-          res.send({
+          res.status(422).send({
             message: `Cannot update Product with id=${id}. Maybe Product was not found or req.body is empty!`
           });
         }
@@ -106,7 +119,7 @@ exports.delete = (req, res) => {
             message: "Product was deleted successfully!"
           });
         } else {
-          res.send({
+          res.status(422).send({
             message: `Cannot delete Product with id=${id}. Maybe Product was not found!`
           });
         }

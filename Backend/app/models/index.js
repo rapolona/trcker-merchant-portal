@@ -23,6 +23,7 @@ db.sequelize = sequelize;
 db.admins = require("./admin.model.js")(sequelize, Sequelize);
 db.admindetails = require("./admindetail.model.js")(sequelize, Sequelize);
 db.adminsessions = require("./adminsession.model.js")(sequelize, Sequelize);
+db.adminpasswordtokens = require("./admin_password_token.model.js")(sequelize, Sequelize);
 
 db.users = require("./user.model.js")(sequelize, Sequelize);
 db.userdetails = require("./userdetail.model.js")(sequelize, Sequelize);
@@ -48,8 +49,9 @@ db.task_details = require("./task_detail.model.js")(sequelize, Sequelize);
 
 db.admins.hasOne(db.admindetails, { foreignKey: "admin_id", as:"adminDetails"});
 db.admins.hasOne(db.adminsessions, {foreignKey: "admin_id", as:"adminSessions"});
+db.admins.belongsTo(db.merchants, {foreignKey: "merchant_id", as:"merchant"});
 db.merchants.hasMany(db.admins, {foreignKey: "merchant_id", as:"merchantAdmins"})
-
+db.admins.hasMany(db.adminpasswordtokens, {foreignKey: "admin_id", as:"passwordTokens"})
 db.users.hasOne(db.userdetails, { foreignKey: "user_id", as:"userDetails"});
 
 //Merchant Related Associations

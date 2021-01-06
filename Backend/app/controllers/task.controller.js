@@ -53,7 +53,7 @@ exports.createCustom = (req, res) => {
       return;
     }
     if (!req.body.task_questions) {
-      res.status(400).send({
+      res.status(422).send({
         message: "The Task currently has no questions!"
       });
       return;
@@ -64,7 +64,7 @@ exports.createCustom = (req, res) => {
     for(i=0;i<req.body.task_questions.length;i++){
       var matchedInput = allowedInputValues.find(element => element == req.body.task_questions[i].required_inputs.toUpperCase())
       if(!matchedInput){
-        res.status(400).send({
+        res.status(422).send({
           message: "One of the required Input not supported"
         });
         return;
@@ -155,12 +155,19 @@ exports.findAllforMerchant = (req, res) => {
   }
   
 
-  Task.findAll({attributes:{exclude:exclude_condition}, where: where_condition,order:[
+  Task.findAll({attributes:{exclude:exclude_condition}, where: where_condition,order:[['createdAt', 'DESC'],
      [{model: Task_Question},'index', 'ASC']], 
   include: include_condition
  })
     .then(data => {
-      res.send(data);
+      if(task_id){
+        console.log(data[0])
+        res.send(data[0]);
+      }
+      else{
+        res.send(data);
+      }
+      
     })
     .catch(err => {
       res.status(500).send({
@@ -199,7 +206,7 @@ exports.update = (req, res) => {
             message: "Task was updated successfully."
           });
         } else {
-          res.send({
+          res.status(422).send({
             message: `Cannot update Task with id=${id}. Maybe Task was not found or req.body is empty!`
           });
         }
@@ -228,7 +235,7 @@ exports.chainedUpdate = (req, res) => {
         }, transaction
     }).then(num => {
       if (num != 1) {
-        res.status(500).send({
+        res.status(422).send({
           message: `Cannot update Task with id=${id}. Maybe task does not belong to merchant or was not found.`
         });
       }
@@ -252,7 +259,7 @@ exports.chainedUpdate = (req, res) => {
             }, transaction
         }).then(num => {
           if (num != 1) {
-            res.status(500).send({
+            res.status(422).send({
               message: `Cannot update Task Question with id=${element.task_question_id}. Maybe task question does not belong to merchant or was not found.`
             });
           }
@@ -264,11 +271,11 @@ exports.chainedUpdate = (req, res) => {
           });
         })
       );
-    
+
     }
     else{
       chainedPromises.push(
-        Task_Question.create(element, transaction
+        Task_Question.create(element, {transaction}
         ).catch(err => {
           res.status(500).send({
             message:
@@ -277,25 +284,25 @@ exports.chainedUpdate = (req, res) => {
         })
       );
     }
-
   //If question has choices, Push query to update each choice
     if(element.task_question_choices)
     {
       element.task_question_choices.forEach((choice) => {
         console.log(choice)
         choice.task_question_id = element.task_question_id;
-        Task_Question_Choices.upsert(choice, {
+        chainedPromises.push(Task_Question_Choices.upsert(choice, {
           where: {
               choices_id: choice.choices_id,
           }, transaction
       }).catch(err => {
-    
         res.status(500).send({
           message:
             err.message || "Some error occurred while updating the Task Question Choices."
         });
       })
+        )
       })
+      
     }
 
     });
@@ -324,7 +331,6 @@ exports.chainedUpdate = (req, res) => {
 // Delete a Task with the specified id in the request
 exports.delete = (req, res) => {
     const id = req.body.task_id;
-  
     Task.destroy({
       where: { id: id }
     })

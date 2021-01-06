@@ -73,7 +73,7 @@ exports.update = (req, res) => {
             message: "Task_Question was updated successfully."
           });
         } else {
-          res.send({
+          res.status(422).send({
             message: `Cannot update Task_Question with id=${id}. Maybe Task_Question was not found or req.body is empty!`
           });
         }
@@ -98,7 +98,7 @@ exports.delete = (req, res) => {
             message: "Task_Question was deleted successfully!"
           });
         } else {
-          res.send({
+          res.status(422).send({
             message: `Cannot delete Task_Question with id=${id}. Maybe Task_Question was not found!`
           });
         }

@@ -50,6 +50,9 @@ module.exports = (sequelize, Sequelize) => {
       },
       product_type: {
         type: Sequelize.STRING(64)
+      },
+      profile_image:{
+        type: Sequelize.TEXT('long')
       }
     });
     return Merchant;

@@ -19,7 +19,13 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.STRING(64)
       },
       campaign_description: {
-        type: Sequelize.STRING(255)
+        type: Sequelize.TEXT('long')
+      },
+      thumbnail_url: {
+        type: Sequelize.TEXT('long')
+      },
+      description_image_url: {
+        type: Sequelize.TEXT('long')
       },
       start_date: {
         type: Sequelize.DATE
@@ -42,14 +48,20 @@ module.exports = (sequelize, Sequelize) => {
       budget: {
         type: Sequelize.FLOAT
       },
+      total_reward_amount: {
+        type: Sequelize.FLOAT
+      },
       super_shoppers: {
         type: Sequelize.BOOLEAN
       },
       allow_everyone: {
         type: Sequelize.BOOLEAN
       },
-      status: {
+      at_home_campaign: {
         type: Sequelize.BOOLEAN
+      },
+      status: {
+        type: Sequelize.STRING(64)
       },
       campaign_type: {
         type: Sequelize.STRING(64)

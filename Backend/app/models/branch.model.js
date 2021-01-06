@@ -12,11 +12,26 @@ module.exports = (sequelize, Sequelize) => {
         unique:true,
         allowNull: false
       },
+      business_type: {
+        type: Sequelize.STRING(255)
+      },
+      store_type: {
+        type: Sequelize.STRING(255)
+      },
+      brand: {
+        type: Sequelize.STRING(255)
+      },
       address: {
         type: Sequelize.STRING(255)
       },
       city: {
         type: Sequelize.STRING(64)
+      },
+      region: {
+        type: Sequelize.STRING(255)
+      },
+      province: {
+        type: Sequelize.STRING(255)
       },
       latitude: {
         type: Sequelize.STRING(64),
@@ -35,7 +50,7 @@ module.exports = (sequelize, Sequelize) => {
       },
       merchant_id: {
         type: DataTypes.UUID,
-        allowNull: false,
+        allowNull: true,
         references: {         // Branches belongsTo Merchant N:1
           model: 'merchants',
           key: 'merchant_id'

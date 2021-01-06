@@ -21,7 +21,7 @@ module.exports = app => {
 
     router.get("/products",adminMiddleware.isAuthenticated ,products.findAll);
 
-    router.get("/campaign",adminMiddleware.isAuthenticated ,campaigns.findAllMerchant);
+    router.get("/campaign",adminMiddleware.isAuthenticated ,campaigns.findAllCustom);
 
     
     router.post("/campaign/create",adminMiddleware.isAuthenticated, campaigns.createCustom);
@@ -43,6 +43,10 @@ module.exports = app => {
     router.get("/dashboard/activecampaign", adminMiddleware.isAuthenticated, campaigns.getActiveCampaigns);
 
     router.get("/dashboard/totalrespondents", adminMiddleware.isAuthenticated, campaigns.countRespondents);
+
+    router.get("/dashboard/countcampaign", adminMiddleware.isAuthenticated, campaigns.countCampaign);
+    
+    router.get("/dashboard/respondentperstatus", adminMiddleware.isAuthenticated, campaigns.countStatusTicketPerCampaign);
   
     app.use('/merchant/', router);
   };

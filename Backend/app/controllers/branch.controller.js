@@ -16,8 +16,13 @@ exports.create = (req, res) => {
     // Create a branch
     const branch = {
       name: req.body.name,
+      business_type: req.body.business_type,
+      store_type: req.body.store_type,
+      brand: req.body.brand,
       address: req.body.address,
       city: req.body.city,
+      region: req.body.region,
+      province: req.body.province,
       latitude: req.body.latitude,
       longitude: req.body.longitude,
       photo_url: req.body.photo_url,
@@ -40,17 +45,47 @@ exports.create = (req, res) => {
       });
   };
 
+
+  exports.createMany = (req, res) => {
+    // Validate request
+    if (!req.body.branches) {
+      res.status(400).send({
+        message: "Content can not be empty!"
+      });
+      return;
+    }
+    
+    branches_container = req.body.branches;
+    branches_container.forEach((element)=> {
+      element.merchant_id = req.body.merchantid;
+    })
+
+
+    console.log(branches_container)
+  
+    // Save Branch in the database
+    Branch.bulkCreate(branches_container)
+      .then(data => {
+        res.send(data);
+      })
+      .catch(err => {
+        res.status(500).send({
+          message:
+            err.message || "Some error occurred while creating the Branch."
+        });
+      });
+  };
+
 // Retrieve all Branches from the database.
 exports.findAll = (req, res) => {
-
   const id = req.body.merchantid;
-  var condition = null;
+  var condition = req.query;
+  
   if(req.body.merchantid){
-    condition = {merchant_id: id};
+    condition.merchant_id = id;
   }
   console.log(condition)
-
-  Branch.findAll({ where: condition })
+  Branch.findAll({ where: condition , order: [["createdAt", "DESC"]]})
     .then(data => {
       res.send(data);
     })
@@ -64,15 +99,26 @@ exports.findAll = (req, res) => {
 
 // Find a single Branch with an id
 exports.findOne = (req, res) => {
-    const id = req.params.id;
+    const branch_id = req.params.branch_id;
+    const merchant_id = req.body.merchantid;
+
   
-    Branch.findByPk(id)
+    Branch.findByPk(branch_id)
       .then(data => {
-        res.send(data);
+        console.log(data.merchant_id)
+        if(data.merchant_id==merchant_id){
+          res.send(data);
+        }
+        else{
+          res.status(422).send({
+            message: "Error retrieving Branch with id=" + branch_id + ". Branch does not belong to merchant."
+          });
+        }
+        
       })
       .catch(err => {
         res.status(500).send({
-          message: "Error retrieving Branch with id=" + id
+          message: "Error retrieving Branch with id=" + branch_id
         });
       });
   };
@@ -90,7 +136,7 @@ exports.update = (req, res) => {
             message: "Branch was updated successfully."
           });
         } else {
-          res.send({
+          res.status(422).send({
             message: `Cannot update Branch with id=${id}. Maybe Branch was not found or req.body is empty!`
           });
         }
@@ -116,7 +162,7 @@ exports.delete = (req, res) => {
             message: "Branch was deleted successfully!"
           });
         } else {
-          res.send({
+          res.status(422).send({
             message: `Cannot delete Branch with id=${id}. Maybe Branch was not found!`
           });
         }
@@ -144,4 +190,69 @@ exports.deleteAll = (req, res) => {
         });
       });
   };
+
+  // Retrieve all Branches from the database.
+exports.findDistinctFilters = (req, res) => {
+  const id = req.body.merchantid;
+
+
+  var condition = null;
+  if(req.body.merchantid){
+    condition = {merchant_id: id};
+  }
+  console.log(condition)
+
+  var chainedPromises = [];
+  
+  var columns = ['region','business_type',]
+  var result_data = {
+    region:[],
+    business_type:[],
+    store_type:[],
+    brand:[],
+    city:[],
+    region:[],
+    province:[]
+  }
+
+  db.sequelize.transaction({autocommit:false},transaction => {
+
+  Object.keys(result_data).forEach((element)=> {
+    chainedPromises.push(
+      Branch.findAll({
+        where: {
+            merchant_id: id
+        }, 
+        attributes: [[db.Sequelize.literal(`DISTINCT \`${element}\``), element], element],
+        transaction
+      })
+      .then(data => {
+        data.forEach((item)=>{result_data[element].push(item[element])})
+      })
+      .catch(err => {
+        res.status(500).send({
+          message:
+            err.message || "Some error occurred while retrieving filter values."
+        });
+      })
+
+    
+    );
+
+  })
+  //console.log(chainedPromises)
+  return Promise.all(chainedPromises)
+    .then(data => {
+          res.send(result_data)
+        })
+        .catch(err => {
+          res.status(500).send({
+            message:
+              err.message || "Some error occurred while retrieving Filters."
+          });
+        });
+  })
+
+
+};
 

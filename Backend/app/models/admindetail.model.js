@@ -21,7 +21,10 @@ module.exports = (sequelize, Sequelize) => {
         },
         contact_number:{
             type: Sequelize.STRING
-        }
+        },
+        profile_image:{
+            type: Sequelize.TEXT('long')
+        },
     });
     return AdminDetail
 }
