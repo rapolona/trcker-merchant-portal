@@ -16,6 +16,33 @@ module.exports = (sequelize, Sequelize) => {
         account_level:{
             type: Sequelize.STRING
         },
+        birthday:{
+            type: Sequelize.DATE
+        },
+        age:{
+            type: Sequelize.INTEGER
+        },
+        gender:{
+            type: Sequelize.STRING(64)
+        },
+        city:{
+            type: Sequelize.STRING(64)
+        },
+        province:{
+            type: Sequelize.STRING(64)
+        },
+        region:{
+            type: Sequelize.STRING(64)
+        },
+        country:{
+            type: Sequelize.STRING(64)
+        },
+        settlement_account_number:{
+            type: Sequelize.STRING(64)
+        },
+        settlement_account_type:{
+            type: Sequelize.STRING(64)
+        },
         email:{
             type: Sequelize.STRING
         },

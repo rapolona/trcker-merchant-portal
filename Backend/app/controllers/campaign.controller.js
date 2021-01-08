@@ -147,6 +147,10 @@ exports.create = (req, res) => {
     campaign_status = "ONGOING";
   }
 
+  //Set age filters if null
+  if(req.body.audience_age_min==null){ req.body.audience_age_min = 0};
+  if(req.body.audience_age_max==null){ req.body.audience_age_max = 999};
+
   const campaign = {
       merchant_id: req.body.merchantid,
       start_date: req.body.start_date,
@@ -160,11 +164,13 @@ exports.create = (req, res) => {
       audience_age_min: req.body.audience_age_min,
       audience_age_max: req.body.audience_age_max,
       audience_gender: req.body.audience_gender,
+      audience_city: req.body.audience_city,
       allowed_account_level: req.body.allowed_account_level,
       super_shoppers: req.body.super_shoppers,
       allow_everyone: req.body.allow_everyone,
       status: campaign_status,
       at_home_campaign: at_home_campaign,
+      permanent_campaign: req.body.permanent_campaign,
       campaign_type: req.body.campaign_type,
       campaign_task_associations: req.body.tasks,
       campaign_branch_associations: branches_container

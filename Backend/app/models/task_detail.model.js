@@ -8,8 +8,14 @@ module.exports = (sequelize, Sequelize) => {
         unique:true
       },
       response: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT('long'),
         allowNull: false
+      },
+      image_source: {
+        type: Sequelize.STRING(64)
+      },
+      file_name: {
+        type: Sequelize.TEXT('long')
       },
       task_ticket_id: {
         type:DataTypes.UUID,

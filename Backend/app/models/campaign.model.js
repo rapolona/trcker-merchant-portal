@@ -42,6 +42,9 @@ module.exports = (sequelize, Sequelize) => {
       audience_gender: {
         type: Sequelize.STRING(64)
       },
+      audience_city: {
+        type: Sequelize.STRING(64)
+      },
       allowed_account_level: {
         type: Sequelize.STRING(64)
       },
@@ -60,12 +63,18 @@ module.exports = (sequelize, Sequelize) => {
       at_home_campaign: {
         type: Sequelize.BOOLEAN
       },
+      permanent_campaign: {
+        type: Sequelize.BOOLEAN
+      },
       status: {
         type: Sequelize.STRING(64)
       },
       campaign_type: {
         type: Sequelize.STRING(64)
       },
+      last_updated_by: {
+        type: Sequelize.STRING(64)
+      }
     });
     
     return Campaign;

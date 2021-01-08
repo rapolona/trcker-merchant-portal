@@ -23,6 +23,9 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.INTEGER,
         allowNull: true
       },
+      mandatory:{
+        type: Sequelize.BOOLEAN
+      },
       task_id: {
         type: DataTypes.UUID,
         allowNull: false,

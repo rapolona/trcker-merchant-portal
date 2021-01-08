@@ -11,6 +11,15 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.STRING(255),
         allowNull: false
       },
+      latitude: {
+        type: Sequelize.STRING(64)
+      },
+      longitude: {
+        type: Sequelize.STRING(64)
+      },
+      rejection_reason: {
+        type: Sequelize.TEXT
+      },
       approval_status: {
         type: Sequelize.STRING(64)
       },
