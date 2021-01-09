@@ -15,8 +15,23 @@ exports.s3Upload = (base64, fileName, bucket, metadataObj)=>{
         ContentType: base64.split(":")[1].split(";")[0],
         Metadata: metadataObj || {}
     }
-    var s3PutObjectPromise = s3.putObject(params).promise()
-    return s3PutObjectPromise
+    
+    var checkHeadthenPutObject = new Promise((resolve, reject) => {
+        this.s3getHeadObject(bucket, fileName)
+        .then(data=>{
+            console.log(data)
+            if(data){
+                reject({message: "Filename already exists"})
+            }
+        })
+        .catch((err)=>{
+            if(err.code="NotFound"){
+                var s3PutObjectPromise = s3.putObject(params).promise()
+                resolve(s3PutObjectPromise)
+            }
+        })
+    })
+    return checkHeadthenPutObject
 }
 
 
