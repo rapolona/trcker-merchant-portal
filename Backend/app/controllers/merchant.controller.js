@@ -4,6 +4,7 @@ const Merchant = db.merchants;
 const Branch = db.branches;
 const Product = db.products;
 const Op = db.Sequelize.Op;
+const s3Util = require("../utils/s3.utils.js");
 
 // Create and Save a new Merchant
 exports.create = (req, res) => {
@@ -66,12 +67,27 @@ exports.findAll = (req, res) => {
 // Find a single Merchant with an id
 exports.findOne = (req, res) => {
     const id = req.body.merchantid;
-    console.log('dingalong')
-    
     console.log(id)
+    var result = {}
     Merchant.findByPk(id)
       .then(data => {
-        res.send(data);
+        var result = data.get({plain:true})
+        if(data){
+          if(data.profile_image){
+            s3Util.s3getHeadObject("dev-trcker-merchant-images", "ProfileImages/"+result.profile_image)
+            .then(data => {
+              var signedProfileImageURL = s3Util.s3GetSignedURL("dev-trcker-merchant-images", "ProfileImages/"+result.profile_image)
+              console.log(signedProfileImageURL)
+              result.profile_image_url = signedProfileImageURL
+              res.send(result)
+            })
+            .catch(err => {
+              res.status(500).send({
+                message: err.code
+              });
+            })
+         }
+       }
       })
       .catch(err => {
         res.status(500).send({
@@ -84,14 +100,28 @@ exports.findOne = (req, res) => {
 exports.update = (req, res) => {
     const id = req.body.merchantid;
     console.log(req.body)
+    if(req.body.profile_image_name && req.body.profile_image_base64){
+      req.body.profile_image = id+"_"+req.body.profile_image_name
+    }
     Merchant.update(req.body, {
       where: { merchant_id: id }
     })
       .then(num => {
         if (num == 1) {
-          res.send({
-            message: "Merchant was updated successfully."
-          });
+          if(req.body.profile_image_base64){
+            var s3UploadData = s3Util.s3Upload(req.body.profile_image_base64, "ProfileImages/"+req.body.profile_image, "dev-trcker-merchant-images", {})
+            console.log(s3UploadData)
+            s3UploadData.then(() => {
+              res.send({
+                      message: "Merchant was updated successfully."
+                    });
+            })
+            .catch(err=>{
+              res.status(500).send({
+                      message: err.message || "Error uploading image to s3"
+                    })
+            })
+          }
         } else {
           res.status(422).send({
             message: `Cannot update Merchant with id=${id}. Maybe Merchant was not found or req.body is empty!`
