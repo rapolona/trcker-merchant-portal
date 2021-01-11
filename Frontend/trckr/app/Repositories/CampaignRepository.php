@@ -40,10 +40,12 @@ class CampaignRepository extends Repository
         }
     }
 
-    public function getAll()
+    public function getAll($data = null)
     {
         try {
-            return $this->trackerApi('get', $this->api, []);
+            $data = ($data==null) ? [] : $data;
+            $uri = http_build_query($data);
+            return $this->trackerApi('get', $this->api . '?' . $uri, $data);
         } catch(\Exception $e) {
             $this->sessionExpired($e);
         }

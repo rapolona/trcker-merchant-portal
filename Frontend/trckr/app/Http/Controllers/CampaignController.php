@@ -22,6 +22,8 @@ class CampaignController extends Controller
 
     private $branchService;
 
+    private $defaultPerPage = 1;
+
     public function __construct(
         CampaignService $campaignService,
         TaskService $taskService,
@@ -44,8 +46,19 @@ class CampaignController extends Controller
      */
     public function view(Request $request)
     {
-        $campaigns = $this->campaignService->getAll();
-        return view('concrete.campaign.campaign', ['campaigns' => $campaigns]);
+        $data = [
+            'count_per_page' => isset($request->per_page)? $request->per_page : $this->defaultPerPage,
+            'page' => isset($request->per_page)? $request->page : 1
+        ];
+        
+        $campaigns = $this->campaignService->getAll($data);
+
+        $pagination = [
+            'per_page' => $data['count_per_page'],
+            'current_page' => $campaigns->current_page,
+            'total_pages' => $campaigns->total_pages
+        ];
+        return view('concrete.campaign.campaign', ['campaigns' => $campaigns->rows, 'pagination' => $pagination ]);
     }
 
     public function merchant_branch(Request $request)
