@@ -1,3 +1,4 @@
+const { campaign_task_associations, tasks } = require("../models");
 const db = require("../models");
 const Task_Ticket = db.task_tickets;
 const Task_Detail = db.task_details;
@@ -162,25 +163,55 @@ exports.approve = (req, res) => {
       const id = req.body.merchantid
      
       Task_Ticket.findAll({
-        attributes: ['task_ticket_id','device_id','approval_status','createdAt','updatedAt'],
+        attributes: ['campaign_id','task_ticket_id','device_id','approval_status','createdAt','updatedAt'],
         include: [
           {model: Task_Detail, as:'task_details',
-            where:{
-              response: {[Op.notLike]: 'data:image%'}
+            where:{ //This filters out all base64 image
+              [Op.and]: [
+                {response: {[Op.notLike]: 'data:image%'}},
+                db.Sequelize.where(db.Sequelize.fn('char_length', db.Sequelize.col('response')), {
+                  [Op.lt]: 1000
+                })
+              ]
             },
             attributes:['response'],
             include: [
-              {model:Task_Question, as: 'task_question', attributes: ['question']},
+              {model:Task_Question, as: 'task_question', attributes: ['question'] ,
+                include: {model:tasks, as: 'task', attributes:['task_name','task_id'], 
+                   },  }, //where:{campaign_id: {[Op.col]: 'task_ticket.campaign_id'}}
             ]
           },
           {model: Branches, attributes:['name','address','city']},
           {model: User_Detail, as:'user_detail', attributes: ['first_name', 'last_name', 'account_level', 'email', 'settlement_account_number', 'settlement_account_type']},
-          {model: Campaign, as:'campaign',where:{merchant_id : id}, attributes:['campaign_id','campaign_name']}
+          {model: Campaign, as:'campaign',where:{merchant_id : id}, attributes:['campaign_id','campaign_name'], include: [{model:campaign_task_associations, attributes: ['reward_amount','task_id']} ]}
         ],
         order: [["createdAt", "DESC"]]
         })
       .then(data => {
-        res.send(data);
+        console.log(data)
+        if(data[0]){
+          var dataObj = []
+          data.forEach((element,element_index) => {
+            dataObj.push(element.get({plain:true}))
+            //Loop below is for iterating through each task within task_details.
+            for (detail_index = 0; detail_index < dataObj[element_index].task_details.length; detail_index++) {
+              dataObj[element_index].task_details[detail_index].task_question.task_name = dataObj[element_index].task_details[detail_index].task_question.task.task_name
+              
+              //Loop below is for iterating through campaign_task_associations. We look for a match in task_id and insert the correct reward amount.
+              for (reward_index = 0; reward_index < dataObj[element_index].campaign.campaign_task_associations.length; reward_index++) {
+              if(dataObj[element_index].campaign.campaign_task_associations[reward_index].task_id==dataObj[element_index].task_details[detail_index].task_question.task.task_id ){}
+                //Insert matched reward amount
+                dataObj[element_index].task_details[detail_index].task_question.reward_amount = dataObj[element_index].campaign.campaign_task_associations[reward_index].reward_amount;
+              }
+              delete dataObj[element_index].task_details[detail_index].task_question.task
+
+            }
+            delete dataObj[element_index].campaign.campaign_task_associations
+            
+          })
+
+        }
+        res.send(dataObj);
       })
       .catch(err => {
         console.log(err)

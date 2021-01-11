@@ -271,11 +271,11 @@ exports.chainedUpdate = (req, res) => {
           });
         })
       );
-    
+
     }
     else{
       chainedPromises.push(
-        Task_Question.create(element, transaction
+        Task_Question.create(element, {transaction}
         ).catch(err => {
           res.status(500).send({
             message:
@@ -284,25 +284,25 @@ exports.chainedUpdate = (req, res) => {
         })
       );
     }
-
   //If question has choices, Push query to update each choice
     if(element.task_question_choices)
     {
       element.task_question_choices.forEach((choice) => {
         console.log(choice)
         choice.task_question_id = element.task_question_id;
-        Task_Question_Choices.upsert(choice, {
+        chainedPromises.push(Task_Question_Choices.upsert(choice, {
           where: {
               choices_id: choice.choices_id,
           }, transaction
       }).catch(err => {
-    
         res.status(500).send({
           message:
             err.message || "Some error occurred while updating the Task Question Choices."
         });
       })
+        )
       })
+      
     }
 
     });
@@ -331,7 +331,6 @@ exports.chainedUpdate = (req, res) => {
 // Delete a Task with the specified id in the request
 exports.delete = (req, res) => {
     const id = req.body.task_id;
-  
     Task.destroy({
       where: { id: id }
     })
