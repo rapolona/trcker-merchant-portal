@@ -28,7 +28,7 @@
             </div>
             <div class="panel-body p-0">
                 <div class="table-responsive scroller scroller-horizontal py-3">
-                    <table class="table table-striped table-hover">
+                    <table class="table table-striped table-hover" id="hustleTableList">
                         <thead>
                         <tr>
                             <td style="width: 40px" data-orderable="false" data-targets="0" >
@@ -40,7 +40,6 @@
                             <th>Campaign Name</th>
                             <th>Budget</th>
                             <th>Reward</th>
-                            <!--<th>No. of tasks</th>-->
                             <th>Start date</th>
                             <th>End date</th>
                             <th>Status</th>
@@ -59,7 +58,6 @@
                                 <td>{{ $campaign->campaign_name }}</td>
                                 <td>{{ $campaign->budget }}</td>
                                 <td>{{ $campaign->total_reward_amount }}</td>
-                                <!--<td>N/A</td>-->
                                 <td>{{ date('Y-m-d', strtotime($campaign->start_date)) }}</td>
                                 <td>{{ date('Y-m-d', strtotime($campaign->end_date)) }}</td>
                                 <td class="text-{{ (isset(config('concreteadmin.status')[$campaign->status] ))? config('concreteadmin.status')[$campaign->status] : 'light' }}">{{ $campaign->status }}</td>
@@ -72,7 +70,6 @@
                                             @if($campaign->status!='DONE')
                                             <a class="dropdown-item" href="{{ url('campaign/edit/' . $campaign->campaign_id )}}">Edit</a>
                                             @endif
-                                        <!--<a class="dropdown-item" href="{{ url('campaign/delete/' . $campaign->campaign_id )}}">Delete</a>-->
                                             <a class="dropdown-item" href="{{ url('campaign/duplicate/' . $campaign->campaign_id )}}">Duplicate</a>
                                             @if($campaign->status=='DISABLED')
                                                 <a class="dropdown-item" href="{{ url('campaign/status/enable/' . $campaign->campaign_id )}}">Enable</a>
@@ -159,6 +156,71 @@
                 }
                 window.location.href = "{{url('/campaign/edit?campaign_id=')}}" + campaigns[0];
             });
+
+
+            // TABLE LIST WITH PAGINATION
+            $(document).on("change", "select.hustle-filter" , function(e) {
+            let selected = $("select.hustle-filter :selected").map(function(i, el) {
+                formFilters[$(el).parent().attr('name')] = $(el).val();
+            }).get();
+
+            $('#hustleTableList').dataTable( {
+                "destroy": true,
+                "ordering" : false,
+                "ajax": {
+                    "type" : "GET",
+                    "url" : "{{url('/campaign/merchant_branch')}}?" + $.param(formFilters),
+                    "dataSrc": function ( json ) {
+                        reinstateDataTable();
+                        return json.data;
+                    }
+                },
+                "columnDefs": [ {
+                    "targets": -1,
+                    "data": 0,
+                    "render": function ( data, type, row, meta ) {
+                        return '<input disabled class="branch-input form-control max-submission" type="number" min="1" name="submissions[]" placeholder="Max Submission">';
+                    }
+                },{
+                    "targets": 0,
+                    "data": 0,
+                    "bSortable": false,
+                    "render": function ( data, type, row, meta ) {
+                        return '<div class="branch-input custom-control custom-checkbox custom-checkbox-light"><input class="custom-control-input branch-id-checkbox" type="checkbox" name="branch_id[]" id="' + data + '" value="' + data + '"  /><label class="custom-control-label" for="' + data +'"></label></div>';
+                    }
+                } ]
+            });
+
+            });
+
+            function requestTableAjax(page=1, per_page=1){
+                $('#hustleTableList').dataTable( {
+                "ordering" : false,
+                "ajax": {
+                    "type" : "GET",
+                    "url" : "{{url('api/campaign/list')}}?" + $.param(formFilters),
+                    "dataSrc": function ( json ) {
+                        reinstateDataTable();
+                        return json.data;
+                    }
+                },
+                "columnDefs": [ {
+                    "targets": -1,
+                    "data": 0,
+                    "render": function ( data, type, row, meta ) {
+                        return '<input disabled class="branch-input form-control max-submission" type="number" min="1" name="submissions[]" placeholder="Max Submission">';
+                    }
+                },{
+                    "targets": 0,
+                    "data": 0,
+                    "bSortable": false,
+                    "render": function ( data, type, row, meta ) {
+                        return '<div class="branch-input custom-control custom-checkbox custom-checkbox-light"><input class="custom-control-input branch-id-checkbox" type="checkbox" name="branch_id[]" id="' + data + '" value="' + data + '"  /><label class="custom-control-label" for="' + data +'"></label></div>';
+                    }
+                } ]
+                });
+            }
+
         });
     </script>
 @stop

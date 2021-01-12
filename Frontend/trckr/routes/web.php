@@ -112,4 +112,19 @@ Route::group(["middleware" => ["merchantAuth"]], function() {
         //Ajax for Save Details
         Route::get('/export_csv', 'TicketController@export_csv');
     });
+
+    Route::group(['prefix' => 'respondent'], function() {
+        Route::get('/', 'RespondentController@getAll');
+        Route::get('/{id}', 'RespondentController@get');
+        Route::post('/block/{id}', 'RespondentController@block');
+        Route::get('/export_csv', 'RespondentController@exportList');
+        Route::get('/export_csv/{id}', 'RespondentController@exportRespondentCsv');
+    });
+
+    Route::group(['prefix' => 'payout'], function() {
+        Route::get('/', 'PayoutController@getAll');
+        Route::get('/{id}', 'PayoutController@get');
+        Route::post('/{id}', 'PayoutController@update');
+        Route::get('/export_csv', 'PayoutController@exportList');
+    });
 });

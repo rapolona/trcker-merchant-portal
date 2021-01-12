@@ -11,16 +11,39 @@ use App\Services\MerchantService;
 
 class MerchantController extends Controller
 {
+    
     private $merchantService;
+
+    private $defaultPerPage;
 
     public function __construct(MerchantService $merchantService)
     {
         $this->merchantService = $merchantService;
+        $this->defaultPerPage = Config::get('trckr.table_pagination');
     }
 
     public function index()
     {
         $this->view_profile();
+    }
+
+    public function listAjax(Request $request)
+    {
+        $data = [
+            'count_per_page' => isset($request->per_page)? $request->per_page : $this->defaultPerPage,
+            'page' => isset($request->per_page)? $request->page : 1
+        ];
+        
+        $list = $this->merchantService->getAll($data);
+
+        $list = [
+            'data' => $campaigns->rows,
+            'per_page' => $data['count_per_page'],
+            'current_page' => $campaigns->current_page,
+            'total_pages' => $campaigns->total_pages
+        ];
+
+        return Response::json(['data' => $list, 'msg' => 'Successfully added!' ], 201);
     }
 
     public function debug(Request $request)

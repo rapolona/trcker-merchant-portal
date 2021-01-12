@@ -19,6 +19,16 @@
                 <span class="rd-navbar-icon fa-home"></span><span class="rd-navbar-link-text">Dashboard</span>
             </a>
         </li>
+        <li class="rd-navbar-nav-item">
+            <a class="rd-navbar-link" href="{{ url('task/view') }}">
+                <span class="rd-navbar-icon mdi-account-star"></span><span class="rd-navbar-link-text">Respondents</span>
+            </a>
+        </li>
+        <li class="rd-navbar-nav-item">
+            <a class="rd-navbar-link" href="{{ url('task/view') }}">
+                <span class="rd-navbar-icon mdi-coin"></span><span class="rd-navbar-link-text">Payouts</span>
+            </a>
+        </li>
         <li class="rd-navbar-nav-item {{ Request::is('m/branch/*')? 'active' : '' }}">
             <a class="rd-navbar-link" href="{{ url('m/branches') }}">
                 <span class="rd-navbar-icon mdi-sitemap"></span><span class="rd-navbar-link-text">Branches</span>

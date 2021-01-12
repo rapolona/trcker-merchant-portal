@@ -18,14 +18,38 @@ class TicketController extends Controller
 
     private $merchantService;
 
+    private $defaultPerPage;
+
     public function __construct(CapabilityService $capabilityService, MerchantService $merchantService)
     {
         $this->capabilityService = $capabilityService;
         $this->merchantService = $merchantService;
+        $this->defaultPerPage = Config::get('trckr.table_pagination');
     }
+
+
     public function index()
     {
         $this->view();
+    }
+
+    public function listAjax(Request $request)
+    {
+        $data = [
+            'count_per_page' => isset($request->per_page)? $request->per_page : $this->defaultPerPage,
+            'page' => isset($request->per_page)? $request->page : 1
+        ];
+        
+        $list = $this->capabilityService->getAll($data);
+
+        $list = [
+            'data' => $list->rows,
+            'per_page' => $data['count_per_page'],
+            'current_page' => $list->current_page,
+            'total_pages' => $list->total_pages
+        ];
+
+        return Response::json(['data' => $list, 'msg' => 'Success!' ], 200);
     }
 
     /**

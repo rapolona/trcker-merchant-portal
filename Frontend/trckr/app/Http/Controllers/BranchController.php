@@ -13,6 +13,8 @@ class BranchController extends Controller
 {
     private $branchService;
 
+    private $defaultPerPage;
+
     // 'name','business_type', 'store_type', 'brand', 'region', 'province', 'address','city', 'longitude', 'latitude'
     private $fieldValidation = [
         'name' => 'required|max:64',
@@ -23,13 +25,14 @@ class BranchController extends Controller
         'province' => 'required|max:64',
         'address' => 'required|max:64',
         'city' => 'required|max:64',
-        'longitude' => array('required','regex:/^(\+|-)?(?:180(?:(?:\.0{1,8})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]{1,8})?))$/'),
-        'latitude' => array('required','regex:/^(\+|-)?(?:90(?:(?:\.0{1,8})?)|(?:[0-9]|[1-8][0-9])(?:(?:\.[0-9]{1,8})?))$/'),
+        //'longitude' => array('required','regex:/^(\+|-)?(?:180(?:(?:\.0{1,8})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]{1,8})?))$/'),
+        //'latitude' => array('required','regex:/^(\+|-)?(?:90(?:(?:\.0{1,8})?)|(?:[0-9]|[1-8][0-9])(?:(?:\.[0-9]{1,8})?))$/'),
     ];
 
     public function __construct(BranchService $branchService)
     {
         $this->branchService = $branchService;
+        $this->defaultPerPage = Config::get('trckr.table_pagination');
     }
 
     public function upload_branch(Request $request)

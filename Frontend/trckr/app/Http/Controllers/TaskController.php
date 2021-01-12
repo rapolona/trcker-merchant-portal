@@ -14,9 +14,31 @@ class TaskController extends Controller
 
     private $taskService;
 
+    private $defaultPerPage;
+
     public function __construct(TaskService $taskService)
     {
         $this->taskService = $taskService;
+        $this->defaultPerPage = Config::get('trckr.table_pagination');
+    }
+
+    public function listAjax(Request $request)
+    {
+        $data = [
+            'count_per_page' => isset($request->per_page)? $request->per_page : $this->defaultPerPage,
+            'page' => isset($request->per_page)? $request->page : 1
+        ];
+        
+        $list = $this->taskService->getAll($data);
+
+        $list = [
+            'data' => $list->rows,
+            'per_page' => $data['count_per_page'],
+            'current_page' => $list->current_page,
+            'total_pages' => $list->total_pages
+        ];
+
+        return Response::json(['data' => $list, 'msg' => 'Success!' ], 200);
     }
 
     public function index()
