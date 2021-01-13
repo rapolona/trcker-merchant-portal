@@ -85,13 +85,13 @@
                     </table>
                 </div>
             </div>
+            <div class="panel-footer"> 
+                @include('concrete.layouts.pagination')        
+            </div>
         </div>
     </form>
 @stop
 
-@section('css')
-    <link rel="stylesheet" href="/css/admin_custom.css">
-@stop
 
 @section('js')
     <script type="text/javascript" src="{{url('/vendor/trckr/trckr.js')}}"></script>
@@ -164,60 +164,33 @@
                 formFilters[$(el).parent().attr('name')] = $(el).val();
             }).get();
 
-            $('#hustleTableList').dataTable( {
-                "destroy": true,
-                "ordering" : false,
-                "ajax": {
-                    "type" : "GET",
-                    "url" : "{{url('/campaign/merchant_branch')}}?" + $.param(formFilters),
-                    "dataSrc": function ( json ) {
-                        reinstateDataTable();
-                        return json.data;
-                    }
-                },
-                "columnDefs": [ {
-                    "targets": -1,
-                    "data": 0,
-                    "render": function ( data, type, row, meta ) {
-                        return '<input disabled class="branch-input form-control max-submission" type="number" min="1" name="submissions[]" placeholder="Max Submission">';
-                    }
-                },{
-                    "targets": 0,
-                    "data": 0,
-                    "bSortable": false,
-                    "render": function ( data, type, row, meta ) {
-                        return '<div class="branch-input custom-control custom-checkbox custom-checkbox-light"><input class="custom-control-input branch-id-checkbox" type="checkbox" name="branch_id[]" id="' + data + '" value="' + data + '"  /><label class="custom-control-label" for="' + data +'"></label></div>';
-                    }
-                } ]
-            });
-
             });
 
             function requestTableAjax(page=1, per_page=1){
                 $('#hustleTableList').dataTable( {
-                "ordering" : false,
-                "ajax": {
-                    "type" : "GET",
-                    "url" : "{{url('api/campaign/list')}}?" + $.param(formFilters),
-                    "dataSrc": function ( json ) {
-                        reinstateDataTable();
-                        return json.data;
-                    }
-                },
-                "columnDefs": [ {
-                    "targets": -1,
-                    "data": 0,
-                    "render": function ( data, type, row, meta ) {
+                    "ordering" : false,
+                    "ajax": {
+                        "type" : "GET",
+                        "url" : "{{url('api/campaign/list')}}?" + $.param(formFilters),
+                        "dataSrc": function ( json ) {
+                            reinstateDataTable();
+                            return json.data;
+                        }
+                    },
+                    "columnDefs": [ {
+                        "targets": -1,
+                        "data": 0,
+                        "render": function ( data, type, row, meta ) {
                         return '<input disabled class="branch-input form-control max-submission" type="number" min="1" name="submissions[]" placeholder="Max Submission">';
-                    }
-                },{
-                    "targets": 0,
-                    "data": 0,
-                    "bSortable": false,
-                    "render": function ( data, type, row, meta ) {
-                        return '<div class="branch-input custom-control custom-checkbox custom-checkbox-light"><input class="custom-control-input branch-id-checkbox" type="checkbox" name="branch_id[]" id="' + data + '" value="' + data + '"  /><label class="custom-control-label" for="' + data +'"></label></div>';
-                    }
-                } ]
+                        }
+                    },{
+                        "targets": 0,
+                        "data": 0,
+                        "bSortable": false,
+                        "render": function ( data, type, row, meta ) {
+                            return '<div class="branch-input custom-control custom-checkbox custom-checkbox-light"><input class="custom-control-input branch-id-checkbox" type="checkbox" name="branch_id[]" id="' + data + '" value="' + data + '"  /><label class="custom-control-label" for="' + data +'"></label></div>';
+                        }
+                    } ]
                 });
             }
 

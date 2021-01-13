@@ -127,4 +127,5 @@ Route::group(["middleware" => ["merchantAuth"]], function() {
         Route::post('/{id}', 'PayoutController@update');
         Route::get('/export_csv', 'PayoutController@exportList');
     });
+
 });

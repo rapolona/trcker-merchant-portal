@@ -41,27 +41,6 @@ class CampaignController extends Controller
         $this->view();
     }
 
-
-    public function listAjax(Request $request)
-    {
-        $data = [
-            'count_per_page' => isset($request->per_page)? $request->per_page : $this->defaultPerPage,
-            'page' => isset($request->per_page)? $request->page : 1
-        ];
-        
-        $list = $this->campaignService->getAll($data);
-
-        $list = [
-            'data' => $campaigns->rows,
-            'per_page' => $data['count_per_page'],
-            'current_page' => $campaigns->current_page,
-            'total_pages' => $campaigns->total_pages
-        ];
-
-        return Response::json(['data' => $list, 'msg' => 'Successfully added!' ], 201);
-    }
-    
-
     /**
      * List controller instance
      *
@@ -71,7 +50,7 @@ class CampaignController extends Controller
     {
         $data = [
             'count_per_page' => isset($request->per_page)? $request->per_page : $this->defaultPerPage,
-            'page' => isset($request->per_page)? $request->page : 1
+            'page' => isset($request->page)? $request->page : 1
         ];
         
         $campaigns = $this->campaignService->getAll($data);
