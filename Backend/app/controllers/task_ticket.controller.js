@@ -51,10 +51,12 @@ exports.approve = (req, res) => {
   exports.reject = (req, res) => {
     const id = req.body.task_ticket_id;
     var statusToSet = "REJECTED"
+    if(req.body.rejection_reason){var reason = req.body.rejection_reason}
+    else{var reason = "None given"}
     Task_Ticket.findOne({where: {task_ticket_id: id, approval_status: "Pending"}})
     .then(data => {
       if(data){
-        Task_Ticket.update({approval_status: statusToSet}, {
+        Task_Ticket.update({approval_status: statusToSet, rejection_reason:reason}, {
           where: { task_ticket_id: id }
         })
           .then(num => {
@@ -136,19 +138,61 @@ exports.approve = (req, res) => {
   exports.findAllTicketsWithDetails = (req,res)=> {
     const id = req.body.merchantid
     const condition = req.query
+
+    var page_number = 1;
+    var count_per_page = 25;
+
+    if((req.query.page)&&(req.query.count_per_page)){
+      page_number = parseInt(req.query.page);
+      count_per_page = parseInt(req.query.count_per_page);  
+    }
+  
+    var skip_number_of_items = (page_number * count_per_page) - count_per_page
    
-    Task_Ticket.findAll({
+    Task_Ticket.findAndCountAll({
+      offset:skip_number_of_items, limit: count_per_page,distinct:true,
       include: [
-        {model: Task_Detail, as:'task_details', attributes:{exclude:['response']},include: [{
-          model:Task_Question, as: 'task_question', attributes: ['question']}]
+        {model: Task_Detail, as:'task_details', attributes:['createdAt'],include: [{
+          model:Task_Question, as: 'task_question', attributes: ['question'], 
+          include:{model: tasks, attributes:['task_id']}},
+          ]
         },
         {model: User_Detail, as:'user_detail', attributes: ['first_name', 'last_name', 'account_level', 'email', 'settlement_account_number', 'settlement_account_type']},
-        {model: Campaign, as:'campaign', where:{merchant_id : id}, attributes:{exclude:[,'thumbnail_url', 'description_image_url','campaign_description','audience_age_min','audience_age_max','audience_gender','super_shoppers','allow_everyone']}}
+        {model: Campaign, as:'campaign', where:{merchant_id : id}, attributes:['campaign_id','campaign_name'],
+      include:{model:campaign_task_associations,where:{}, attributes: ['task_id','reward_amount']}}//task_id: db.Sequelize.col('t')  ,attributes: ['reward_amount','task_id']
       ],
       order: [["createdAt", "DESC"]]
       })
     .then(data => {
-      res.send(data);
+      if(data.rows[0]){
+        var dataResp = {}
+        dataResp.total_pages = Math.ceil(data.count/count_per_page);
+        dataResp.current_page = page_number;   
+        dataResp.count_per_page = count_per_page
+        var dataObj = []
+        dataObj.total_pages = Math.ceil(data.count/count_per_page);
+        dataObj.current_page = page_number;  
+        data.rows.forEach((element,element_index) => {
+          dataObj.push(element.get({plain:true}))
+          //Loop below is for iterating through each task within task_details.
+          for (detail_index = 0; detail_index < dataObj[element_index].task_details.length; detail_index++) {
+            dataObj[element_index].task_details[detail_index].task_question.task_name = dataObj[element_index].task_details[detail_index].task_question.task.task_name
+            
+            //Loop below is for iterating through campaign_task_associations. We look for a match in task_id and insert the correct reward amount.
+            for (reward_index = 0; reward_index < dataObj[element_index].campaign.campaign_task_associations.length; reward_index++) {
+            if(dataObj[element_index].campaign.campaign_task_associations[reward_index].task_id==dataObj[element_index].task_details[detail_index].task_question.task.task_id ){}
+              //Insert matched reward amount
+              dataObj[element_index].task_details[detail_index].task_question.reward_amount = dataObj[element_index].campaign.campaign_task_associations[reward_index].reward_amount;
+            }
+            delete dataObj[element_index].task_details[detail_index].task_question.task
+
+          }
+          delete dataObj[element_index].campaign.campaign_task_associations
+          
+        })
+        dataResp.rows=dataObj;
+      }
+      res.send(dataResp);
     })
     .catch(err => {
       console.log(err)
