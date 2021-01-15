@@ -94,9 +94,12 @@ class TicketController extends Controller
      *
      * @return redirect
      */
-    public function reject_ticket($campaignId, $ticketId)
+    public function reject_ticket($campaignId, $ticketId, Request $request)
     {
-        $data = ['task_ticket_id' => $ticketId];
+        $data = [
+            'task_ticket_id' => $ticketId,
+            'rejection_reason' => $request->rejection_reason
+        ];
         $this->capabilityService->rejectTicket($data);
 
         $msg = [

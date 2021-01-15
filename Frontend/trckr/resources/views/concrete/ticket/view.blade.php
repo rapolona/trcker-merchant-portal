@@ -36,18 +36,16 @@
             <div class="bg-white">
                 <div class="group-15 p-3 d-flex flex-wrap justify-content-lg-between">
                     <div class="row">
-                        <div class="col-md-4">
-
-
+                        <div style="float: left">
                             <a id="approve" class="btn btn-success"><span class="fa-check"></span></a>
-                                <a id="reject" class="btn btn-danger"><span class="fa-remove"></span></a>
+                            <a id="reject" class="btn btn-danger"><span class="fa-remove"></span></a>
                         </div>
-                        <div class="col-md-8">
-                            <div class="text-right">
+                        <div style="float: left; margin-left: 20px">
+                            
                             @if($tickets->approval_status=="REJECTED")
-                                <span><strong>Reason: </strong>{{ $tickets->rejection_reason }}</span>
+                                <span><strong> Reason: </strong>{{ $tickets->rejection_reason }}</span>
                             @endif
-                            </div>
+                            
                         </div>
                     </div>
                 </div>
@@ -143,7 +141,9 @@
                                     $.alert('provide a valid reason');
                                     return false;
                                 }
-                                window.location = url;
+                                let params = { rejection_reason : reason };
+                                let str = jQuery.param( params );
+                                window.location = url + '?' + str;
                             }
                         },
                         cancel: function () {
