@@ -53,6 +53,11 @@
                                 <span class="tm-tag badge badge-danger" ><span>{{ $errors->first('banner_image') }}</span></span>
                             </div>
                         @endif
+
+                        @if(isset($task->banner_image) && !empty($task->banner_image))
+                        <div class="tower-file-details"><img class="null" src="{{ $task->banner_image }}"></div>
+                        @endif
+
                         <div class="input-group form-group">
                         </div>
                     </div>
