@@ -196,7 +196,7 @@
                     formFilters[$(el).parent().attr('name')] = (oVal=='all')? '' : oVal;
                 }).get();
 
-                window.location.href = "{{ url('m/branch') }}?" + $.param(formFilters);
+                window.location.href = "{{ url('m/branches') }}?" + $.param(formFilters);
             });
 
 

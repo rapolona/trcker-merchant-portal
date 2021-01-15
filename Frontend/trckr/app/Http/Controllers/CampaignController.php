@@ -567,7 +567,7 @@ class CampaignController extends Controller
         $data = $request->all();
 
         $validations = [
-            "start_date" => "required|date|after_or_equal:today",
+            "start_date" => "required|date|before_or_equal:today",
             "end_date" => "required|date|after_or_equal:start_date",
             'campaign_name' => 'required|max:64',
             'campaign_type' => 'required',

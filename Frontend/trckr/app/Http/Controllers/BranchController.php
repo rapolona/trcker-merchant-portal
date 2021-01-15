@@ -22,7 +22,7 @@ class BranchController extends Controller
         'brand' => 'required|max:64',
         'region' => 'required|max:64',
         'province' => 'required|max:64',
-        'address' => 'required|max:64',
+        'address' => 'required|max:255',
         'city' => 'required|max:64',
         'longitude' => 'required',
         'latitude' => 'required'
@@ -64,7 +64,7 @@ class BranchController extends Controller
                         "type" => "warning",
                         "message" => "CSV Invalid Header {$h}",
                     ];
-                    return redirect('m/branch')->with(['formMessage' => $msg]);
+                    return redirect('m/branches')->with(['formMessage' => $msg]);
                 }
             }
             unset($content[0]);
@@ -84,7 +84,7 @@ class BranchController extends Controller
                             "type" => "warning",
                             "message" => "Invalid Input on Item {$count}",
                         ];
-                        return redirect('m/branch')->with(['formMessage' => $msg]);
+                        return redirect('m/branches')->with(['formMessage' => $msg]);
                     }
 
                     //'name','business_type', 'store_type', 'brand', 'region', 'province', 'address','city', 'longitude', 'latitude'
@@ -117,7 +117,7 @@ class BranchController extends Controller
                             "type" => "warning",
                             "message" => "Failed to Upload the file, please check your csv file, {$error_string}",
                         ];
-                        return redirect('m/branch')->with(['formMessage' => $msg]);
+                        return redirect('m/branches')->with(['formMessage' => $msg]);
                     }
 
                     $branches[] = $temp_branches;
@@ -144,7 +144,7 @@ class BranchController extends Controller
                         "type" => "warning",
                         "message" => "Failed Adding Branch ",
                     ];
-                    return redirect('m/branch')->with(['formMessage' => $msg]);
+                    return redirect('m/branches')->with(['formMessage' => $msg]);
                 }
                 $count+=1;
             }
@@ -153,14 +153,14 @@ class BranchController extends Controller
                 "type" => "success",
                 "message" => "Uploaded file successfully",
             ];
-            return redirect('m/branch')->with(['formMessage' => $msg]);
+            return redirect('m/branches')->with(['formMessage' => $msg]);
         }
 
         $msg = [
             "type" => "danger",
             "message" => "Failed to Upload the file",
         ];
-        return redirect('m/branch')->with(['formMessage' => $msg]);
+        return redirect('m/branches')->with(['formMessage' => $msg]);
     }
 
     /**
@@ -291,7 +291,7 @@ class BranchController extends Controller
             "message" => "Branch was successfully deleted!",
         ];
 
-        return redirect('/m/branch')
+        return redirect('/m/branches')
             ->with("formMessage", $msg);
     }
 
@@ -319,7 +319,7 @@ class BranchController extends Controller
             "message" => "Branches were successfully deleted!",
         ];
 
-        return redirect('/m/branch')
+        return redirect('/m/branches')
             ->with("formMessage", $msg);
     }
 }
