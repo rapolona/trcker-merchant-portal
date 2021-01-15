@@ -35,10 +35,20 @@
         <div class="col-md-8 col-lg-9 col-xxl-10 border-md-left">
             <div class="bg-white">
                 <div class="group-15 p-3 d-flex flex-wrap justify-content-lg-between">
-                    <div class="btn-group">
-                        <a href="{{ url('ticket/approve_ticket/'.$tickets->campaign_id . '/' . $tickets->task_ticket_id) }}" class="btn btn-success"><span class="fa-check"></span></a>
-                        <a href="{{ url('ticket/reject_ticket/'.$tickets->campaign_id . '/' . $tickets->task_ticket_id) }}" class="btn btn-danger"><span class="fa-remove"></span></a>
-                        <!-- <button class="btn btn-primary"><span class="fa-eye"></span></button> -->
+                    <div class="row">
+                        <div class="col-md-4">
+
+
+                            <a id="approve" class="btn btn-success"><span class="fa-check"></span></a>
+                                <a id="reject" class="btn btn-danger"><span class="fa-remove"></span></a>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="text-right">
+                            @if($tickets->approval_status=="REJECTED")
+                                <span><strong>Reason: </strong>{{ $tickets->rejection_reason }}</span>
+                            @endif
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="table-responsive">
@@ -60,7 +70,16 @@
                                 <!--<td></td>-->
                                 <td>{{ ($tix->task_question->question) ? $tix->task_question->question : ''}}</td>
                                 <td>
-                                    @if (substr($tix->response, 0, 11) == "data:image/")
+                                    @if (substr($tix->response, 0, 11) == "data:image/" || is_array(@getimagesize($tix->response)))
+                                        <div class="image-details">
+                                            @if($tix->image_source)
+                                            <span><strong>Source: </strong> {{ $tix->image_source }}</span>
+                                            @endif
+                                            @if($tix->file_name)
+                                            <span><strong>Original Filename: </strong> {{ $tix->file_name }}</span>
+                                            @endif
+
+                                        </div>
                                         <span class="list-inline-item">
                                             <img src="{{ ($tix->response) ? $tix->response : ''}}"/>
                                         </span>
@@ -82,25 +101,59 @@
 
 
 @section('js')
-    <script type="text/javascript" src="{{url('/vendor/form-builder/form-builder.min.js')}}"></script>
-    <script type="text/javascript" src="{{url('/vendor/form-builder/form-render.min.js')}}"></script>
     <script type="text/javascript">
 
         $(document).ready(function (e) {
-            $('#myModal').on('hidden.bs.modal', function () {
-                window.location.href = "{{url('/ticket/view')}}";
-            });
-
-            $("#back").click(function(){
-                window.location.href = "{{url('/ticket/view')}}";
-            });
 
             $("#approve").click(function(){
-                $("#action").val('approve');
+                let url = "{{ url('ticket/approve_ticket/'.$tickets->campaign_id . '/' . $tickets->task_ticket_id) }}";
+                $.confirm({
+                    title: 'Hustle',
+                    content: 'Are you sure you want to APPROVE this ticket?',
+                    buttons: {
+                    confirm: function () {
+                        $.alert('Confirmed!');
+                    },
+                    cancel: function () {
+                        //$.alert('Canceled!');
+                    } }
+                })
+            
             });
+            
 
             $("#reject").click(function(){
-                $("#action").val('reject');
+                let url = "{{ url('ticket/reject_ticket/'.$tickets->campaign_id . '/' . $tickets->task_ticket_id) }}";
+                $.confirm({
+                    title: 'Hustle',
+                    content: '' +
+                    '<form action="" class="formName">' +
+                    '<div class="form-group">' +
+                    '<label>Reason for Rejecting this ticket:</label>' +
+                    '<input type="text" placeholder="Reason" class="reason form-control" required />' +
+                    '</div>' +
+                    '</form>',
+                    buttons: {
+                        formSubmit: {
+                            text: 'Submit',
+                            btnClass: 'btn-blue',
+                            action: function () {
+                                var reason = this.$content.find('.reason').val();
+                                if(!reason){
+                                    $.alert('provide a valid reason');
+                                    return false;
+                                }
+                                window.location = url;
+                            }
+                        },
+                        cancel: function () {
+                            //close
+                        },
+                    },
+                    onContentReady: function () {
+                        // DO NOTHING
+                    }
+                });
             });
 
         });

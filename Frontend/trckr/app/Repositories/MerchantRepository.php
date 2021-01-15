@@ -94,10 +94,12 @@ class MerchantRepository extends Repository
         }
     }
 
-    public function getAllTickets()
+    public function getAllTickets($data = null)
     {
         try {
-            return $this->trackerApi('get', $this->api . 'alltickets', []);
+            $data = ($data==null) ? [] : $data;
+            $uri = http_build_query($data);
+            return $this->trackerApi('get', $this->api . 'alltickets?' . $uri, []);
         } catch(\Exception $e) {
             $this->sessionExpired($e);
         }

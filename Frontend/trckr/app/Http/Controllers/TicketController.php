@@ -33,25 +33,6 @@ class TicketController extends Controller
         $this->view();
     }
 
-    public function listAjax(Request $request)
-    {
-        $data = [
-            'count_per_page' => isset($request->per_page)? $request->per_page : $this->defaultPerPage,
-            'page' => isset($request->per_page)? $request->page : 1
-        ];
-        
-        $list = $this->capabilityService->getAll($data);
-
-        $list = [
-            'data' => $list->rows,
-            'per_page' => $data['count_per_page'],
-            'current_page' => $list->current_page,
-            'total_pages' => $list->total_pages
-        ];
-
-        return Response::json(['data' => $list, 'msg' => 'Success!' ], 200);
-    }
-
     /**
      * List instance
      *
@@ -59,9 +40,19 @@ class TicketController extends Controller
      */
     public function view(Request $request)
     {
+        $data = [
+            'count_per_page' => isset($request->per_page)? $request->per_page : $this->defaultPerPage,
+            'page' => isset($request->page)? $request->page : 1
+        ];
+        
+        $list = $this->merchantService->getAllTickets($data); 
+        $pagination = [
+            'per_page' => $data['count_per_page'],
+            'current_page' => $list->current_page,
+            'total_pages' => $list->total_pages
+        ];
 
-        $tickets = $this->merchantService->getAllTickets(); 
-        return view('concrete.ticket.ticket', ['tickets' => $tickets]);
+        return view('concrete.ticket.ticket', ['tickets' => $list->rows, 'pagination' => $pagination ]);
     }
 
     /**

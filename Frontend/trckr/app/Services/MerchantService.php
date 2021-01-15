@@ -48,9 +48,9 @@ class MerchantService
         return $this->repository->changePassword($data);
     }
 
-    public function getAllTickets()
+    public function getAllTickets($data)
     {
-        return $this->repository->getAllTickets();
+        return $this->repository->getAllTickets($data);
     }
 
     public function getTicketReport()

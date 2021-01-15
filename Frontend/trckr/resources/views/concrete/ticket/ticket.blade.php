@@ -22,7 +22,7 @@
             </div>
             <div class="panel-body p-0">
                 <div class="table-responsive scroller scroller-horizontal py-3">
-                    <table class="table table-striped table-hover data-table" data-table-searching="true" data-table-lengthChange="true" data-page-length="5" >
+                    <table class="table table-striped table-hover" >
                         <thead>
                         <tr>
                             <th class="no-sort">
@@ -38,6 +38,7 @@
                             <th>Campaign Name</th>
                             <th>Date Submitted</th>
                             <th>Status</th>
+                            <th>Rewards</th>
                             <th>Actions</th>
                         </tr>
                         </thead>
@@ -56,7 +57,22 @@
                                 <td>{{ $t->device_id}}</td>
                                 <td>{{ $t->campaign->campaign_name }}</td>
                                 <td>{{ date('Y-m-d', strtotime($t->createdAt)) }}</td>
-                                <td class="text-{{ config('concreteadmin')['ticket_status'][$t->approval_status ] }}">{{ $t->approval_status }}</td>
+                                <td>
+                                    <div class="text-{{ config('concreteadmin')['ticket_status'][$t->approval_status ] }}">{{ $t->approval_status }}</div>
+                                    @if($t->approval_status=="REJECTED")
+                                    <div>{{ $t->rejection_reason }}</div>
+                                    @endif
+                                    
+                                </td>
+                                <td>
+                                    @php $rewards = 0; @endphp
+                                    @foreach($t->task_details as $task)
+                                        @php $rewards += $task->task_question->reward_amount;@endphp
+                                    @endforeach
+                                    {{ $rewards}}
+                                </td>
+
+
                                 <td>
                                     <div class="btn-group">
                                         <a href="{{ url('ticket/view/' . $t->campaign_id . "/" . $t->task_ticket_id ) }}"><button class="btn btn-light" type="button"><span class="fa-eye"></span></button></a>
@@ -67,6 +83,9 @@
                         </tbody>
                     </table>
                 </div>
+            </div>
+            <div class="panel-footer"> 
+                @include('concrete.layouts.pagination')        
             </div>
         </div>
     </form>
