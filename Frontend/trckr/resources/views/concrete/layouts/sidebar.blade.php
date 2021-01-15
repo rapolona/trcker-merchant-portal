@@ -20,12 +20,12 @@
             </a>
         </li>
         <li class="rd-navbar-nav-item">
-            <a class="rd-navbar-link" href="{{ url('task/view') }}">
+            <a class="rd-navbar-link" href="#">
                 <span class="rd-navbar-icon mdi-account-star"></span><span class="rd-navbar-link-text">Respondents</span>
             </a>
         </li>
         <li class="rd-navbar-nav-item">
-            <a class="rd-navbar-link" href="{{ url('task/view') }}">
+            <a class="rd-navbar-link" href="#">
                 <span class="rd-navbar-icon mdi-coin"></span><span class="rd-navbar-link-text">Payouts</span>
             </a>
         </li>
