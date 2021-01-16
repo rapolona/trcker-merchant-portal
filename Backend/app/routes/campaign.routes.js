@@ -29,6 +29,9 @@ module.exports = app => {
 
     // Disable a campaign with ID
     router.put("/campaign/enable/:campaign_id", adminMiddleware.isAuthenticated,campaigns.enable_campaign);
+
+    // Extend campaign period
+    router.put("/campaign/extend", adminMiddleware.isAuthenticated,campaigns.extendCampaign);
       
   
     app.use('/merchant/', router);
