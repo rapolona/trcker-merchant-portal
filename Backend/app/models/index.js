@@ -54,6 +54,9 @@ db.merchants.hasMany(db.admins, {foreignKey: "merchant_id", as:"merchantAdmins"}
 db.admins.hasMany(db.adminpasswordtokens, {foreignKey: "admin_id", as:"passwordTokens"})
 db.users.hasOne(db.userdetails, { foreignKey: "user_id", as:"userDetails"});
 
+//User rewards related tables
+db.user_wallets = require("./user_wallet.model.js")(sequelize, Sequelize);
+
 //Merchant Related Associations
 db.merchants.hasMany(db.branches, {foreignKey:'merchant_id'});
 db.branches.belongsTo(db.merchants, {foreignKey: "merchant_id"});
@@ -92,5 +95,10 @@ db.task_tickets.hasMany(db.task_details, {foreignKey:'task_ticket_id'});
 db.task_tickets.belongsTo(db.branches, {foreignKey:'branch_id'});
 db.task_questions.hasMany(db.task_details, {foreignKey: 'task_question_id'});
 db.task_details.belongsTo(db.task_questions, {foreignKey:'task_question_id'})
+
+
+//User rewards relationships
+db.users.hasOne(db.user_wallets, {foreignKey: "user_id"});
+db.user_wallets.belongsTo(db.users, {foreignKey: "user_id"});
 
 module.exports = db
