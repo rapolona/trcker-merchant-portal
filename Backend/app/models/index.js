@@ -47,6 +47,16 @@ db.task_question_choices = require("./task_question_choices.model.js")(sequelize
 db.task_tickets = require("./task_ticket.model.js")(sequelize, Sequelize);
 db.task_details = require("./task_detail.model.js")(sequelize, Sequelize);
 
+//Geolocation related models & Relations
+db.cities = require("./city.model.js")(sequelize, Sequelize);
+
+db.campaign_city_associations = require("./campaign_city_association.model.js")(sequelize, Sequelize);
+
+db.campaigns.hasMany(db.campaign_city_associations, {foreignKey:'campaign_id'},{ onDelete: 'cascade' });
+db.campaign_city_associations.belongsTo(db.campaigns, {foreignKey: "campaign_id"});
+db.cities.belongsToMany(db.campaigns,{through:db.campaign_city_associations,foreignKey:'city_id'})
+db.campaigns.belongsToMany(db.cities,{through:db.campaign_city_associations,foreignKey:'campaign_id'})
+
 db.admins.hasOne(db.admindetails, { foreignKey: "admin_id", as:"adminDetails"});
 db.admins.hasOne(db.adminsessions, {foreignKey: "admin_id", as:"adminSessions"});
 db.admins.belongsTo(db.merchants, {foreignKey: "merchant_id", as:"merchant"});
@@ -67,6 +77,9 @@ db.products.belongsTo(db.merchants, {foreignKey: "merchant_id"});
 //Campaign Related Associations
 db.campaigns.hasMany(db.campaign_branch_associations, {foreignKey:'campaign_id'},{ onDelete: 'cascade' });
 db.campaign_branch_associations.belongsTo(db.campaigns, {foreignKey: "campaign_id"});
+
+db.campaigns.hasMany(db.campaign_city_associations, {foreignKey:'campaign_id'},{ onDelete: 'cascade' });
+db.campaign_city_associations.belongsTo(db.campaigns, {foreignKey: "campaign_id"});
 
 db.branches.hasMany(db.campaign_branch_associations, {foreignKey:'branch_id'}, { onDelete: 'cascade' });
 db.campaign_branch_associations.belongsTo(db.branches, {foreignKey: "branch_id"});

@@ -159,7 +159,7 @@ exports.approve = (req, res) => {
         },
         {model: User_Detail, as:'user_detail', attributes: ['first_name', 'last_name', 'account_level', 'email', 'settlement_account_number', 'settlement_account_type']},
         {model: Campaign, as:'campaign', where:{merchant_id : id}, attributes:['campaign_id','campaign_name'],
-      include:{model:campaign_task_associations,where:{}, attributes: ['task_id','reward_amount']}}//task_id: db.Sequelize.col('t')  ,attributes: ['reward_amount','task_id']
+      include:{model:campaign_task_associations,where:{}, attributes: ['task_id','reward_amount']}}
       ],
       order: [["createdAt", "DESC"]]
       })

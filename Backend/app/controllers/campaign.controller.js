@@ -3,10 +3,12 @@ const moment = require("moment");
 const { branches, tasks, campaign_branch_associations, campaign_task_associations } = require("../models");
 const Campaign = db.campaigns;
 const Branch = db.branches;
+const City = db.cities;
 const Task_Questions = db.task_questions;
 const Task_Question_Choices = db.task_question_choices;
 const Campaign_Branch_Association = db.campaign_branch_associations;
 const Campaign_Task_Association = db.campaign_task_associations;
+const Campaign_City_Accociation = db.campaign_city_associations;
 const Campaign_Reward = db.campaign_rewards;
 const Task_Ticket = db.task_tickets;
 const Op = db.Sequelize.Op;
@@ -175,6 +177,13 @@ exports.create = (req, res) => {
       campaign_task_associations: req.body.tasks,
       campaign_branch_associations: branches_container
   };
+  //Setting city associations
+  if(req.body.audience_cities){
+    campaign.campaign_city_associations= req.body.audience_cities;
+  }else{
+    campaign.campaign_city_associations = {city_id:9999}
+  }
+
   if(campaign.allow_everyone){
     campaign.allowed_account_level='any'
   }
@@ -187,7 +196,7 @@ db.sequelize.transaction(transaction =>
   Campaign.create(campaign, {include: [
     {model:Campaign_Task_Association, as:"campaign_task_associations"},
     {model:Campaign_Branch_Association, as:"campaign_branch_associations"},
-    {model:Campaign_Reward, as:"campaign_reward"}
+    {model:Campaign_City_Accociation, as:"campaign_city_associations"}
   ],
     transaction
   }).then(data => {
@@ -225,8 +234,7 @@ exports.findAll = (req, res) => {
 
   exports.findAllMerchant = (req, res) => {
     const merchant_id = req.body.merchantid;
-    console.log("ding")
-    console.log(req.body)
+
 
   
     Campaign.findAll({ where: {merchant_id: merchant_id} , include: [Branch]})
