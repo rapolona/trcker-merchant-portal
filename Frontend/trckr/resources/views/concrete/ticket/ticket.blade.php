@@ -67,7 +67,7 @@
                                 <td>
                                     @php $rewards = 0; @endphp
                                     @foreach($t->task_details as $task)
-                                        @php $rewards += $task->task_question->reward_amount;@endphp
+                                        @php $rewards = $task->task_question->reward_amount;@endphp
                                     @endforeach
                                     {{ $rewards}}
                                 </td>
