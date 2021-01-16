@@ -1,7 +1,11 @@
 <div class="row">
                     <div class="col-sm-1">
                         <select class="form-control " id="pageCountselect">
-                            <option>20</option>
+                            <option>5</option>
+                            <option>10</option>
+                            <option selected="selected">25</option>
+                            <option>50</option>
+                            <option>100</option>
                         </select>
                     </div>
                     <div class="col-sm-11 text-right">

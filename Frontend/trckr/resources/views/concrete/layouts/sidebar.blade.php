@@ -19,32 +19,32 @@
                 <span class="rd-navbar-icon fa-home"></span><span class="rd-navbar-link-text">Dashboard</span>
             </a>
         </li>
-        <li class="rd-navbar-nav-item">
+        <li class="rd-navbar-nav-item {{ Request::is('respondent/*')? 'active' : '' }}">
             <a class="rd-navbar-link" href="#">
                 <span class="rd-navbar-icon mdi-account-star"></span><span class="rd-navbar-link-text">Respondents</span>
             </a>
         </li>
-        <li class="rd-navbar-nav-item">
+        <li class="rd-navbar-nav-item {{ Request::is('payout/*')? 'active' : '' }}">
             <a class="rd-navbar-link" href="#">
                 <span class="rd-navbar-icon mdi-coin"></span><span class="rd-navbar-link-text">Payouts</span>
             </a>
         </li>
-        <li class="rd-navbar-nav-item {{ Request::is('m/branch/*')? 'active' : '' }}">
+        <li class="rd-navbar-nav-item {{ Request::is('m/branches') || Request::is('m/branch/*')? 'active' : '' }}">
             <a class="rd-navbar-link" href="{{ url('m/branches') }}">
                 <span class="rd-navbar-icon mdi-sitemap"></span><span class="rd-navbar-link-text">Branches</span>
             </a>
         </li>
-        <li class="rd-navbar-nav-item">
+        <li class="rd-navbar-nav-item {{ Request::is('task/*')? 'active' : '' }}">
             <a class="rd-navbar-link" href="{{ url('task/view') }}">
                 <span class="rd-navbar-icon fa-columns"></span><span class="rd-navbar-link-text">Tasks</span>
             </a>
         </li>
-        <li class="rd-navbar-nav-item">
+        <li class="rd-navbar-nav-item {{ Request::is('campaign/*')? 'active' : '' }}">
             <a class="rd-navbar-link" href="{{ url('campaign/view') }}">
                 <span class="rd-navbar-icon fa-star"></span><span class="rd-navbar-link-text">Campaigns</span>
             </a>
         </li>
-        <li class="rd-navbar-nav-item {{ Request::is('ticket/view/*')? 'active' : '' }}">
+        <li class="rd-navbar-nav-item {{ Request::is('ticket/*')? 'active' : '' }}">
             <a class="rd-navbar-link" href="{{ url('ticket/view') }}"><span class="rd-navbar-icon fa-server"></span>Ticket Management</a>
         </li>
     </ul>

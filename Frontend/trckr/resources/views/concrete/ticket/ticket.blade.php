@@ -22,7 +22,7 @@
             </div>
             <div class="panel-body p-0">
                 <div class="table-responsive scroller scroller-horizontal py-3">
-                    <table class="table table-striped table-hover data-table" data-table-searching="true" data-table-lengthChange="true" data-page-length="25" >
+                    <table class="table table-striped table-hover">
                         <thead>
                         <tr>
                             <th class="no-sort">
@@ -59,19 +59,17 @@
                                 <td>{{ date('Y-m-d', strtotime($t->createdAt)) }}</td>
                                 <td>
                                     <div class="text-{{ config('concreteadmin')['ticket_status'][$t->approval_status ] }}">{{ $t->approval_status }}</div>
-                                    <?php /*
                                     @if($t->approval_status=="REJECTED")
-                                    <div>{ { $t->rejection_reason }}</div>
-                                    @endif */ ?>
+                                    <div>{{ $t->rejection_reason }}</div>
+                                    @endif
                                     
                                 </td>
-                                <td><?php 
-                                    /*@php $rewards = 0; @endphp
+                                <td>
+                                    @php $rewards = 0; @endphp
                                     @foreach($t->task_details as $task)
                                         @php $rewards += $task->task_question->reward_amount;@endphp
                                     @endforeach
-                                    {{ $rewards}}*/
-                                    ?> --
+                                    {{ $rewards}}
                                 </td>
 
 
@@ -87,7 +85,7 @@
                 </div>
             </div>
             <div class="panel-footer"> 
-                <?php // @include('concrete.layouts.pagination')  ?>
+                @include('concrete.layouts.pagination')
             </div>
         </div>
     </form>

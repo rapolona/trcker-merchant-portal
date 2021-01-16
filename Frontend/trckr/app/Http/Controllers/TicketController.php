@@ -45,14 +45,14 @@ class TicketController extends Controller
             'page' => isset($request->page)? $request->page : 1
         ];
         
-        $list = $this->merchantService->getAllTickets([]);  //$data
-       /* $pagination = [
+        $list = $this->merchantService->getAllTickets($data); 
+        $pagination = [
             'per_page' => $data['count_per_page'],
             'current_page' => $list->current_page,
             'total_pages' => $list->total_pages
-        ];*/
+        ];
 
-        return view('concrete.ticket.ticket', ['tickets' => $list]); //->rows, 'pagination' => $pagination ]);
+        return view('concrete.ticket.ticket', ['tickets' => $list->rows, 'pagination' => $pagination ]);
     }
 
     /**
