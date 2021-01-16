@@ -312,12 +312,18 @@
 
                     <div class="panel-body">
                         <div id="taskBody">
+                            @php 
+                                $selected_task_ids = [];
+                            @endphp
                             @for($x = 0; $x <= 5; $x++)
                                 @if($x==0 || old('task_type.' . $x))
+                                    @php 
+                                        array_push($selected_task_ids, old('task_id.' . $x));
+                                    @endphp
                                     <div class="row row-30 task-container">
                                         <div class="col-md-3">
                                             <div class="form-group">
-                                                <select class="form-control task_type" required name="task_type[]" style="width: 100%;">
+                                                <select class="form-control task_type" required name="task_type[]" style="width: 100%;" data-taskkey="{{ $x }}">
                                                     <option value="">Select Task Type</option>
                                                     @foreach ($task_type as $ct)
                                                         <option {{ (old('task_type.' . $x) == $ct->task_classification_id)? 'selected="selected"' : '' }} value="{{$ct->task_classification_id}}">{{$ct->name}}</option>
@@ -506,11 +512,12 @@
             var count = $(".task_actions").select2('data').length;
         });
 
+        let selected_task_ids = {!! json_encode($selected_task_ids) !!};
         $(document).on("change", ".task_type" , function() {
-            console.log('called task_type.change');
             let task_action = $(this).closest('.task-container').find('.task_actions');
+            let currentTaskIdKey = $(this).attr('data-taskkey');
+            let selectedTaskId = selected_task_ids[parseInt(currentTaskIdKey)];
             $(task_action).empty();
-            console.log('VAL:: ' + this.value);
             $.ajax({
                 type:'GET',
                 url: "{{url('/campaign/campaign_type/task?task_id=')}}" + this.value,
@@ -519,7 +526,8 @@
                 processData: false,
                 success: (data) => {
                     $(data.file).each(function(){
-                        $(task_action).append('<option value="'+ this.task_id +'">' + this.task_name + '</option>');
+                        let isSel = (this.task_id==selectedTaskId)? 'selected="selected"' : '' ;
+                        $(task_action).append('<option '+isSel+' value="'+ this.task_id +'">' + this.task_name + '</option>');
                     });
                     console.log(data);
                 },
@@ -527,6 +535,7 @@
                     console.log(data);
                 }
             });
+
         });
 
         $(document).ready(function (e) {
@@ -647,7 +656,10 @@
                     $.alert({
                         title: 'Hustle',
                         type: 'red',
-                        content: 'You are over your budget please adjust your rewards or max submissions or increase your budget',
+                        content: 'You are over your budget please adjust your rewards or max submissions or increase your budget <br /> ' +
+                            'Current Budget : ' + budget + '<br />' + 
+                            'Total Budget Needed : ' + computeBudget + '<br />' + 
+                            '',
                     });
                     return false;
                 }
