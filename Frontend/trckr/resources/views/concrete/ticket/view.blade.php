@@ -35,8 +35,9 @@
         <div class="col-md-8 col-lg-9 col-xxl-10 border-md-left">
             <div class="bg-white">
                 <div class="group-15 p-3 d-flex flex-wrap justify-content-lg-between">
-                    <div class="row">
-                        <div style="float: left">
+                    @if($tickets->approval_status!="APPROVED")
+                    <div class="row" >
+                        <div style="float: left" >
                             <a id="approve" class="btn btn-success"><span class="fa-check"></span></a>
                             <a id="reject" class="btn btn-danger"><span class="fa-remove"></span></a>
                         </div>
@@ -48,6 +49,7 @@
                             
                         </div>
                     </div>
+                     @endif
                 </div>
                 <div class="table-responsive">
                     <table class="table table-hover table-align-1 table-vertical-align">
@@ -70,10 +72,10 @@
                                 <td>
                                     @if (substr($tix->response, 0, 11) == "data:image/" || is_array(@getimagesize($tix->response)))
                                         <div class="image-details">
-                                            @if($tix->image_source)
+                                            @if(isset($tix->image_source))
                                             <span><strong>Source: </strong> {{ $tix->image_source }}</span>
                                             @endif
-                                            @if($tix->file_name)
+                                            @if(isset($tix->file_name))
                                             <span><strong>Original Filename: </strong> {{ $tix->file_name }}</span>
                                             @endif
 
