@@ -51,10 +51,12 @@ exports.approve = (req, res) => {
   exports.reject = (req, res) => {
     const id = req.body.task_ticket_id;
     var statusToSet = "REJECTED"
+    if(req.body.rejection_reason){var reason = req.body.rejection_reason}
+    else{var reason = "None given"}
     Task_Ticket.findOne({where: {task_ticket_id: id, approval_status: "Pending"}})
     .then(data => {
       if(data){
-        Task_Ticket.update({approval_status: statusToSet}, {
+        Task_Ticket.update({approval_status: statusToSet, rejection_reason:reason}, {
           where: { task_ticket_id: id }
         })
           .then(num => {
