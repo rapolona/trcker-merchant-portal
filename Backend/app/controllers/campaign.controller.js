@@ -419,6 +419,47 @@ exports.update = (req, res) => {
     })  
   };
 
+  exports.extendCampaign = (req, res) => {
+    const campaign_id = req.body.campaign_id;
+    const merchant_id = req.body.merchantid;
+  
+    //var time_to_check = moment()
+  
+    if (moment(req.body.end_date).isBefore(moment(Date.now()).subtract(1,'days'))){
+      res.status(422).send({
+        message: "Cannot extend end date to a date that has already passed"
+      });
+    return;
+    }
+  
+    var campaignBody = {
+      end_date: req.body.end_date + ' 23:59:00.000Z',
+      status: "ONGOING"
+    }
+  
+  
+  
+      Campaign.update(campaignBody, {
+        where: { merchant_id: merchant_id, campaign_id: campaign_id }
+      })
+        .then(num => {
+          if (num == 1) {
+            res.send({
+              message: "Campaign was updated successfully."
+            });
+          } else {
+            res.status(422).send({
+              message: `Error updating Campaign with id=${campaign_id}.`
+            });
+          }
+        })
+        .catch(err => {
+          res.status(500).send({
+            message: err.message || "Error updating Campaign with id=" + campaign_id
+          });
+        });
+    };
+
 // Delete a Campaign with the specified id in the request
 exports.delete = (req, res) => {
   const campaign_id = req.body.campaign_id;
