@@ -251,7 +251,32 @@ exports.findAll = (req, res) => {
   };
   exports.findAllCustom = (req, res) => {
     const id = req.body.merchantid;
-    var condition = req.query;
+    var condition = {
+      merchant_id:id
+    }
+    
+
+    //Check for filters
+    if(req.query.campaign_name){
+      condition.campaign_name = { [Op.like]: `%${req.query.campaign_name}%` } ; //Searching by campaign name
+    }
+    if(req.query.status){
+      condition.status = { [Op.like]: `%${req.query.status}%` }
+    }
+    //TO:DO Filters for date
+    if(req.query.date_range_start && req.query.date_range_end){
+      condition.end_date = {[Op.gte]: req.query.date_range_start,[Op.lte]: req.query.date_range_end+' 23:59:00.000Z'};
+    } 
+    else {
+      if(req.query.date_range_start){
+        condition.end_date= {[Op.gte]: req.query.date_range_start};
+      }
+      if(req.query.date_range_end){
+        condition.end_date= {[Op.lte]: req.query.date_range_end+' 23:59:00.000Z'};
+      }
+    }
+    console.log(condition)
+ 
     
 
     if((req.query.page)&&(req.query.count_per_page)){
@@ -260,7 +285,7 @@ exports.findAll = (req, res) => {
       var skip_number_of_items = (page_number * count_per_page) - count_per_page
       
 
-      Campaign.findAndCountAll({ offset:skip_number_of_items, limit: count_per_page ,attributes:{exclude:['thumbnail_url']},where: {merchant_id: id} , order:[["createdAt", "DESC"]]})
+      Campaign.findAndCountAll({ offset:skip_number_of_items, limit: count_per_page ,attributes:{exclude:['thumbnail_url']},where:condition , order:[["createdAt", "DESC"]]})
       .then(data => {
         data.total_pages = Math.ceil(data.count/count_per_page);
         data.current_page = page_number;   
