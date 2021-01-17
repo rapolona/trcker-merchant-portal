@@ -137,7 +137,10 @@ exports.approve = (req, res) => {
 
   exports.findAllTicketsWithDetails = (req,res)=> {
     const id = req.body.merchantid
-    const condition = req.query
+    var task_ticket_condition = {}// For status & date of submission
+    var campaign_condition = {merchant_id:id} // For campaign name
+    var user_detail_condition = {} //For respondent email or name
+
 
     var page_number = 1;
     var count_per_page = 25;
@@ -149,16 +152,54 @@ exports.approve = (req, res) => {
   
     var skip_number_of_items = (page_number * count_per_page) - count_per_page
    
+
+    //Build filter conditions
+    //Build condition for user detail
+    if(req.query.respondent){
+      user_detail_condition = {
+        [Op.or]:[
+        {first_name: { [Op.like]: `%${req.query.respondent}%` }},
+        {last_name: { [Op.like]: `%${req.query.respondent}%` }},
+        {email: { [Op.like]: `%${req.query.respondent}%` }}
+      ]}
+    }
+    //Build condition for campaign
+    if(req.query.campaign_name){
+      campaign_condition.campaign_name = { [Op.like]: `%${req.query.campaign_name}%` } ; //Searching by campaign name
+    }
+    //Build condition for task ticket
+    if(req.query.status){
+      task_ticket_condition.approval_status = { [Op.like]: `%${req.query.status}%` } //Search by approval status
+    }
+    // Search by submission date 
+    if(req.query.submission_date_start && req.query.submission_date_end){
+      task_ticket_condition.createdAt = {[Op.gte]: req.query.submission_date_start,[Op.lte]: req.query.submission_date_end+' 23:59:00.000Z'};
+    } 
+    else {
+      if(req.query.submission_date_start){
+        task_ticket_condition.createdAt= {[Op.gte]: req.query.submission_date_start};
+      }
+      if(req.query.submission_date_end){
+        task_ticket_condition.createdAt= {[Op.lte]: req.query.submission_date_end+' 23:59:00.000Z'};
+      }
+    }
+
+    console.log(user_detail_condition)
+    console.log(task_ticket_condition)
+
+
+
     Task_Ticket.findAndCountAll({
       offset:skip_number_of_items, limit: count_per_page,distinct:true,
+      where:task_ticket_condition,
       include: [
         {model: Task_Detail, as:'task_details', attributes:['createdAt'],include: [{
           model:Task_Question, as: 'task_question', attributes: ['question'], 
           include:{model: tasks, attributes:['task_id']}},
           ]
         },
-        {model: User_Detail, as:'user_detail', attributes: ['first_name', 'last_name', 'account_level', 'email', 'settlement_account_number', 'settlement_account_type']},
-        {model: Campaign, as:'campaign', where:{merchant_id : id}, attributes:['campaign_id','campaign_name'],
+        {model: User_Detail, as:'user_detail', where:user_detail_condition,attributes: ['first_name', 'last_name', 'account_level', 'email', 'settlement_account_number', 'settlement_account_type']},
+        {model: Campaign, as:'campaign', where:campaign_condition, attributes:['campaign_id','campaign_name'],
       include:{model:campaign_task_associations,where:{}, attributes: ['task_id','reward_amount']}}
       ],
       order: [["createdAt", "DESC"]]
