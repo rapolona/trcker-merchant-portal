@@ -42,7 +42,7 @@
                         </div>
                         <div style="float: left; margin-left: 20px">
                             
-                            @if($tickets->approval_status=="REJECTED")
+                            @if($tickets->approval_status=="REJECTED" && isset($tickets->rejection_reason))
                                 <span><strong> Reason: </strong>{{ $tickets->rejection_reason }}</span>
                             @endif
                             
