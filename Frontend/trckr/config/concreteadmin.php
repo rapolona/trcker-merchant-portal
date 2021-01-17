@@ -156,6 +156,26 @@ return [
                 'add' => [ 'text' => 'Add'],
                 'edit' => [ 'text' => 'Update']
             ]
+        ],
+        'payout' => [
+            'url' => 'payout',
+            'icon' => 'mdi-coin',
+            'text' => 'Payout Requests',
+            'in_menu' => true,
+            'sub_url'  => [
+                'add' => [ 'text' => 'Add'],
+                'edit' => [ 'text' => 'Update']
+            ]
+        ],
+        'respondent' => [
+            'url' => 'respondent',
+            'icon' => 'mdi-account-star',
+            'text' => 'Respondents',
+            'in_menu' => true,
+            'sub_url'  => [
+                'add' => [ 'text' => 'Add'],
+                'edit' => [ 'text' => 'Update']
+            ]
         ]
     ],
 
