@@ -20,12 +20,12 @@
             </a>
         </li>
         <li class="rd-navbar-nav-item {{ Request::is('respondent/*')? 'active' : '' }}">
-            <a class="rd-navbar-link" href="#">
+            <a class="rd-navbar-link" href="{{ url('respondent') }}">
                 <span class="rd-navbar-icon mdi-account-star"></span><span class="rd-navbar-link-text">Respondents</span>
             </a>
         </li>
         <li class="rd-navbar-nav-item {{ Request::is('payout/*')? 'active' : '' }}">
-            <a class="rd-navbar-link" href="#">
+            <a class="rd-navbar-link" href="{{ url('payout') }}">
                 <span class="rd-navbar-icon mdi-coin"></span><span class="rd-navbar-link-text">Payouts</span>
             </a>
         </li>

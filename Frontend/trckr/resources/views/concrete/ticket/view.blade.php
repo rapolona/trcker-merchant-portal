@@ -35,7 +35,6 @@
         <div class="col-md-8 col-lg-9 col-xxl-10 border-md-left">
             <div class="bg-white">
                 <div class="group-15 p-3 d-flex flex-wrap justify-content-lg-between">
-                    @if($tickets->approval_status!="APPROVED")
                     <div class="row" >
                         <div style="float: left" >
                             <a id="approve" class="btn btn-success"><span class="fa-check"></span></a>
@@ -49,7 +48,6 @@
                             
                         </div>
                     </div>
-                     @endif
                 </div>
                 <div class="table-responsive">
                     <table class="table table-hover table-align-1 table-vertical-align">
@@ -112,7 +110,7 @@
                     content: 'Are you sure you want to APPROVE this ticket?',
                     buttons: {
                     confirm: function () {
-                        $.alert('Confirmed!');
+                        window.location = url;
                     },
                     cancel: function () {
                         //$.alert('Canceled!');
