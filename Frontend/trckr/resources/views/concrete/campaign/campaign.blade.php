@@ -8,6 +8,36 @@
     </div>
 @endsection
 
+@section('tableFilters')
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="input-group form-group">
+                <div class="input-group-prepend"><span class="input-group-text" id="basic-addon3">Name</span></div>
+            <input class="form-control" id="basic-url" type="text" aria-describedby="basic-addon3">
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <select class="form-control" id="status">
+                <option value="">--Status--</option>
+                <option value-"ONGOING">ONGOING</option>
+                <option value-"DONE">DONE</option>
+                <option value-"INACTIVE">INACTIVE</option>
+                <option value-"CANCELED">CANCELED</option>
+            </select>
+        </div>
+        <div class="col-sm-3">
+            <div class="input-group form-group">
+                <div class="input-group-prepend"><span class="input-group-text"><span class="fa-calendar"></span></span></div>
+                <input class="form-control" id="daterange" type="text" value="" placeholder="Date Range">
+                <input type="text" name="daterange" style="display: none">
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <button type="button" class="btn btn-primary">Search</button>
+        </div>
+    </div>
+@endsection
+
 @section('content')
     <form method="post" action="{{ url('campaign/bulk-action') }}" id="tableList">
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -25,6 +55,9 @@
                         <input id="campaign-status" name="status" type="hidden" />
                     </div>
                 </div>
+            </div>
+            <div class="panel-menu">
+                @include('concrete.layouts.filters')  
             </div>
             <div class="panel-body p-0">
                 <div class="table-responsive scroller scroller-horizontal py-3">
@@ -96,6 +129,24 @@
     <script type="text/javascript">
 
         $(document).ready(function (e) {
+
+setTimeout(function () {
+  $('input[id="daterange"]').daterangepicker({
+      autoUpdateInput: false,
+      locale: {
+          cancelLabel: 'Clear'
+      }
+  });
+
+  $('input[id="daterange"]').on('apply.daterangepicker', function(ev, picker) {
+      $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
+  });
+
+  $('input[id="daterange"]').on('cancel.daterangepicker', function(ev, picker) {
+      $(this).val('');
+  });
+  }, 2000);
+
 
             $('#selectAll').click(function(e){
                 let table= $(e.target).closest('table');

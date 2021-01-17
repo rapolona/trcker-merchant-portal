@@ -4,6 +4,35 @@
     <a class="btn btn-outline-primary" href="{{ url('/ticket/export_csv') }}"><span class="fa-cloud-download"></span><span class="pl-2">Download Report</span></a>
 @endsection
 
+@section('tableFilters')
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="input-group form-group">
+                <div class="input-group-prepend"><span class="input-group-text" id="basic-addon3">Name</span></div>
+            <input class="form-control" id="basic-url" type="text" aria-describedby="basic-addon3">
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <select class="form-control" id="status">
+                <option value="">--Status--</option>
+                <option value-"ONGOING">ONGOING</option>
+                <option value-"DONE">DONE</option>
+                <option value-"INACTIVE">INACTIVE</option>
+                <option value-"CANCELED">CANCELED</option>
+            </select>
+        </div>
+        <div class="col-sm-3">
+            <div class="input-group form-group">
+                <div class="input-group-prepend"><span class="input-group-text"><span class="fa-calendar"></span></span></div>
+                <input class="form-control" id="daterange1" type="text" value="" name="daterange" placeholder="Date Range">
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <button type="button" class="btn btn-primary">Search</button>
+        </div>
+    </div>
+@endsection
+
 @section('content')
     <form method="post" action="{{ url('ticket/bulk-action') }}" id="tableList">
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -20,6 +49,9 @@
                     </div>
                 </div>
             </div>
+            <div class="panel-menu">
+                @include('concrete.layouts.filters')  
+            </div>
             <div class="panel-body p-0">
                 <div class="table-responsive scroller scroller-horizontal py-3">
                     <table class="table table-striped table-hover">
@@ -33,7 +65,6 @@
                             </th>
                             <th>Name</th>
                             <th>Email</th>
-                            <!--<th>Mobile</th>-->
                             <th>Device ID</th>
                             <th>Campaign Name</th>
                             <th>Date Submitted</th>
@@ -53,7 +84,6 @@
                                 </td>
                                 <td>{{ $t->user_detail->first_name . " " . $t->user_detail->last_name }}</td>
                                 <td>{{ $t->user_detail->email }}</td>
-                                <!--<td>09178478820 -- add in the API</td>-->
                                 <td>{{ $t->device_id}}</td>
                                 <td>{{ $t->campaign->campaign_name }}</td>
                                 <td>{{ date('Y-m-d', strtotime($t->createdAt)) }}</td>
