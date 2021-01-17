@@ -22,8 +22,9 @@ module.exports = {
           }
         })
         .catch(err => {
+          console.log(err)
           res.status(500).send({
-            message: err||"Internal error"
+            message: "Error retrieving session"
           })
         })
       }
@@ -34,8 +35,9 @@ module.exports = {
           })
         }
         else{
+          console.log(err)
           res.status(500).send({
-            message: err||"Internal error"
+            message: "Error verifying token"
           }) 
         }
       }
