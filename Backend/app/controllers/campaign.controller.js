@@ -276,6 +276,7 @@ exports.findAll = (req, res) => {
       }
     }
     console.log(condition)
+
  
     
 
@@ -328,8 +329,9 @@ exports.findOne = (req, res) => {
       campaign_id: campaign_id
     } , 
     include: [
-      {model:Branch, attributes:['branch_id'], through: {attributes: ['respondent_count']} },
-      {model:tasks, attributes:['task_id'], through: {attributes: ['reward_amount']}}
+      {model:Branch, attributes:['branch_id','name'], through: {attributes: ['respondent_count']} },
+      {model:tasks, attributes:['task_id','task_name'], through: {attributes: ['reward_amount']}},
+      {model:City, attributes:['Id','label'],through: {attributes:[]}}
 
     ],
     attributes: { exclude: ['total_reward_amount','createdAt','updatedAt','merchant_id','campaign_id']}
@@ -364,32 +366,49 @@ exports.findOne = (req, res) => {
 // Update a Campaign by the id in the request
 exports.update = (req, res) => {
     const id = req.body.campaign_id;
+    var at_home_flag = null
     if(req.body.tasks){
       for(var i = 0; i < req.body.tasks.length; i++){
         req.body.tasks[i].campaign_id = id
         req.body.tasks[i].index = i+1;
       }
-    }
-    if(req.body.branches){
-      for(var i=0; i<req.body.branches.length;i++){
-        req.body.branches[i].campaign_id = id
+      for(i=0;i<req.body.tasks.length;i++){
+        total_reward_amount = total_reward_amount + parseFloat(req.body.tasks[i].reward_amount)
       }
     }
+    if(req.body.branches){
+      at_home_flag = false;
+      for(var i=0; i<req.body.branches.length;i++){
+        req.body.branches[i].campaign_id = id
+        req.body.branches[i].submitted_response_count = 0;
+        req.body.branches[i].status = 0;
+      }
+    }
+    if(req.body.audience_cities){
+      for(var i=0; i<req.body.audience_cities.length;i++){
+        req.body.audience_cities[i].campaign_id = id
+      }
+    }
+
     if(req.body.at_home_campaign){
       req.body.branches = [];
+      at_home_flag = true
       var at_home_respondent_count=req.body.at_home_respondent_count;
       var at_home_branch_id = "fbe9b0cf-5a77-4453-a127-9a8567ff3aa7";
       req.body.branches.push({"campaign_id":id ,"branch_id":at_home_branch_id, "respondent_count":at_home_respondent_count});
     }
     var total_reward_amount = 0;
-    for(i=0;i<req.body.tasks.length;i++){
-      total_reward_amount = total_reward_amount + parseFloat(req.body.tasks[i].reward_amount)
+
+
+    if(req.body.end_date){
+      req.body.end_date = req.body.end_date + ' 23:59:00.000Z'
     }
     var campaignBody = {
       start_date: req.body.start_date,
-      end_date: req.body.end_date + ' 23:59:00.000Z',
-      budget: req.body.budget,
+      end_date: req.body.end_date,
+      budget: req.body.budget,                                                                        
       total_reward_amount: total_reward_amount,
+      status: req.body.status,
       campaign_name: req.body.campaign_name,
       campaign_description: req.body.campaign_description,
       thumbnail_url: req.body.thumbnail_url,
@@ -400,28 +419,44 @@ exports.update = (req, res) => {
       allowed_account_level: req.body.allowed_account_level,
       super_shoppers: req.body.super_shoppers,
       allow_everyone: req.body.allow_everyone,
-      at_home_campaign: req.body.at_home_campaign,
+      at_home_campaign: at_home_flag,
       at_home_respondent_count: req.body.at_home_respondent_count,
       campaign_type: req.body.campaign_type,
     }
 
 
     
-    Campaign.update(campaignBody, {where: { campaign_id: id, merchant_id : req.body.merchantid, status:{[Op.or]:["INACTIVE", "DISABLED"]}},})
+    Campaign.update(campaignBody, {where: { campaign_id: id, merchant_id : req.body.merchantid },})
     .then(num => {
       if(num == 1){
         db.sequelize.transaction({autocommit:false},transaction => {
-          var campaignUpdateTransactions = [
-            Campaign_Task_Association.destroy({
+          var campaignUpdateTransactions = []
+          //If merchant wants to update tasks, push task destroy & create promises
+          if(req.body.tasks){
+            campaignUpdateTransactions.push(
+              Campaign_Task_Association.destroy({
               where: {campaign_id: id},
-              transaction:transaction}),
-            Campaign_Task_Association.bulkCreate(req.body.tasks, {transaction:transaction}),
-              Campaign_Branch_Association.destroy({
-                where: {campaign_id: id},
-                transaction:transaction
-              }),
-              Campaign_Branch_Association.bulkCreate(req.body.branches, {transaction:transaction})
-          ]
+              transaction:transaction}));
+            campaignUpdateTransactions.push(Campaign_Task_Association.bulkCreate(req.body.tasks, {transaction:transaction}),);
+          }
+          //If merchant wants to update branches, push branch destroy & create promises
+          if(req.body.branches || req.body.at_home_campaign){
+            campaignUpdateTransactions.push(Campaign_Branch_Association.destroy({
+              where: {campaign_id: id},
+              transaction:transaction
+            }));
+
+            campaignUpdateTransactions.push(Campaign_Branch_Association.bulkCreate(req.body.branches, {transaction:transaction}))
+          }
+          //If merchant wants to update audience_cities, cities task destroy & create promises
+          if(req.body.audience_cities){
+            campaignUpdateTransactions.push(Campaign_City_Accociation.destroy({
+              where: {campaign_id: id},
+              transaction:transaction
+            }));
+            campaignUpdateTransactions.push(Campaign_City_Accociation.bulkCreate(req.body.audience_cities, {transaction:transaction}))
+          }
+
           return Promise.all(campaignUpdateTransactions)
         })
         .then(data => {

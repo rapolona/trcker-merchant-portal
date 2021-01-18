@@ -132,6 +132,9 @@ exports.findAllforMerchant = (req, res) => {
   const merchant_id = req.body.merchantid;
   const task_type = req.query.task_type;
   const task_id = req.query.task_id;
+  const task_name = req.query.task_name;
+
+
   var include_condition = [{model: Task_Classification},{model: Task_Question, include:[{model:Task_Question_Choices}]}]
   var exclude_condition = ['banner_image']
   var where_condition = {
@@ -139,6 +142,9 @@ exports.findAllforMerchant = (req, res) => {
       { merchant_id: merchant_id },
       { merchant_id: null }
     ]
+  }
+  if(task_name){
+    where_condition.task_name = { [Op.like]: `%${task_name}%` }
   }
 
   if(task_type){
@@ -153,6 +159,30 @@ exports.findAllforMerchant = (req, res) => {
     }
     exclude_condition =[]
   }
+
+  if((req.query.page)&&(req.query.count_per_page)){
+    var page_number = parseInt(req.query.page);
+    var count_per_page = parseInt(req.query.count_per_page);  
+    var skip_number_of_items = (page_number * count_per_page) - count_per_page;
+
+    Task.findAndCountAll({
+      offset:skip_number_of_items, limit: count_per_page,distinct:true,
+      attributes:{exclude:exclude_condition}, 
+      where: where_condition,
+      order:[['createdAt', 'DESC'],
+      [{model: Task_Question},'index', 'ASC']], 
+      include: include_condition
+      })
+      .then(data => {
+        res.send(data);
+      })
+      .catch(err => {
+        res.status(500).send({
+          message:
+            err.message || "Some error occurred while retrieving task_actions."
+        });
+      });
+  }
   
 
   Task.findAll({attributes:{exclude:exclude_condition}, where: where_condition,order:[['createdAt', 'DESC'],
@@ -161,13 +191,12 @@ exports.findAllforMerchant = (req, res) => {
  })
     .then(data => {
       if(task_id){
-        console.log(data[0])
+        
         res.send(data[0]);
       }
       else{
         res.send(data);
-      }
-      
+      }  
     })
     .catch(err => {
       res.status(500).send({
