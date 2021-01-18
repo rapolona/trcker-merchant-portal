@@ -101,8 +101,6 @@ exports.findOne = (req, res) => {
 exports.update = (req, res) => {
     const id = req.body.merchantid;
     const now = moment().format('XX')
-    console.log(now)
-    console.log(req.body)
     if(req.body.profile_image_name && req.body.profile_image_base64){
       req.body.profile_image = "Profile_"+id+"_"+now+"_"+req.body.profile_image_name
     }
