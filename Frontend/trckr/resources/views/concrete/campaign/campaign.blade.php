@@ -13,27 +13,27 @@
         <div class="col-sm-4">
             <div class="input-group form-group">
                 <div class="input-group-prepend"><span class="input-group-text" id="basic-addon3">Name</span></div>
-            <input class="form-control" id="basic-url" type="text" aria-describedby="basic-addon3">
+            <input class="form-control" id="name" type="text" value="{{ $filter['name'] }}">
             </div>
         </div>
         <div class="col-sm-3">
             <select class="form-control" id="status">
                 <option value="">--Status--</option>
-                <option value-"ONGOING">ONGOING</option>
-                <option value-"DONE">DONE</option>
-                <option value-"INACTIVE">INACTIVE</option>
-                <option value-"CANCELED">CANCELED</option>
+                <option {{ ($filter['status']=="ONGOING")? 'selected' : '' }} value="ONGOING">ONGOING</option>
+                <option {{ ($filter['status']=="DONE")? 'selected' : '' }} value="DONE">DONE</option>
+                <option {{ ($filter['status']=="INACTIVE")? 'selected' : '' }} value="INACTIVE">INACTIVE</option>
+                <option {{ ($filter['status']=="CANCELED")? 'selected' : '' }} value="CANCELED">CANCELED</option>
             </select>
         </div>
         <div class="col-sm-3">
             <div class="input-group form-group">
                 <div class="input-group-prepend"><span class="input-group-text"><span class="fa-calendar"></span></span></div>
-                <input class="form-control" id="daterange" type="text" value="" placeholder="Date Range">
+                <input class="form-control" id="daterange" type="text" value="{{ $filter['daterange'] }}" placeholder="Date Range">
                 <input type="text" name="daterange" style="display: none">
             </div>
         </div>
         <div class="col-sm-2">
-            <button type="button" class="btn btn-primary">Search</button>
+            <button type="button" id="searchBtn" class="btn btn-primary">Search</button>
         </div>
     </div>
 @endsection
@@ -145,7 +145,18 @@ setTimeout(function () {
   $('input[id="daterange"]').on('cancel.daterangepicker', function(ev, picker) {
       $(this).val('');
   });
-  }, 2000);
+}, 2000);   
+            
+            $('#searchBtn').click(function(e){
+                let url = "{{ url('campaign/view') }}?";
+                let params = { 
+                    daterange : $('#daterange').val(),
+                    status : $('#status').val(),
+                    name : $('#name').val() 
+                };
+                let str = jQuery.param( params );
+                window.location = url + str;
+            });
 
 
             $('#selectAll').click(function(e){

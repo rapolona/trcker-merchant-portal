@@ -48,9 +48,30 @@ class CampaignController extends Controller
      */
     public function view(Request $request)
     {
+        $filter = [
+            'name' => $request->name,
+            'status' => $request->status,
+            'daterange' => $request->daterange
+        ];
+
+        $dateStart = "";
+        $dateEnd = "";
+
+        if(isset($request->daterange) && !empty($request->daterange)){
+            $date_range = explode(" - ", $request->daterange);
+            $dateStart = DateTime::createFromFormat("m/d/Y" , $date_range[0]);
+            $dateStart  = $dateStart ->format('Y-m-d');
+            $dateEnd= DateTime::createFromFormat("m/d/Y" , $date_range[1]);
+            $dateEnd = $dateEnd->format('Y-m-d');          
+        }
+
         $data = [
             'count_per_page' => isset($request->per_page)? $request->per_page : $this->defaultPerPage,
-            'page' => isset($request->page)? $request->page : 1
+            'page' => isset($request->page)? $request->page : 1,
+            'campaign_name' => $request->name,
+            'status' => $request->status,
+            'date_range_start' => $dateStart,
+            'date_range_end' => $dateEnd
         ];
         
         $campaigns = $this->campaignService->getAll($data);
@@ -60,7 +81,8 @@ class CampaignController extends Controller
             'current_page' => $campaigns->current_page,
             'total_pages' => $campaigns->total_pages
         ];
-        return view('concrete.campaign.campaign', ['campaigns' => $campaigns->rows, 'pagination' => $pagination ]);
+
+        return view('concrete.campaign.campaign', ['campaigns' => $campaigns->rows, 'pagination' => $pagination, 'filter' => $filter ]);
     }
 
     public function merchant_branch(Request $request)
