@@ -40,19 +40,43 @@ class TicketController extends Controller
      */
     public function view(Request $request)
     {
+        $filter = [
+            'name' => $request->name,
+            'campaignname' => $request->campaignname,
+            'status' => $request->status,
+            'daterange' => $request->daterange
+        ];
+
+        $dateStart = "";
+        $dateEnd = "";
+
+        if(isset($request->daterange) && !empty($request->daterange)){
+            $date_range = explode(" - ", $request->daterange);
+            $dateStart = DateTime::createFromFormat("m/d/Y" , $date_range[0]);
+            $dateStart  = $dateStart ->format('Y-m-d');
+            $dateEnd= DateTime::createFromFormat("m/d/Y" , $date_range[1]);
+            $dateEnd = $dateEnd->format('Y-m-d');          
+        }
+
         $data = [
             'count_per_page' => isset($request->per_page)? $request->per_page : $this->defaultPerPage,
-            'page' => isset($request->page)? $request->page : 1
+            'page' => isset($request->page)? $request->page : 1,
+            'respondent' => $request->name,
+            'campaign_name' => $request->campaignname,
+            'status' => $request->status,
+            'submission_date_start' => $dateStart,
+            'submission_date_end' => $dateEnd
         ];
         
         $list = $this->merchantService->getAllTickets($data); 
+
         $pagination = [
             'per_page' => $data['count_per_page'],
             'current_page' => $list->current_page,
             'total_pages' => $list->total_pages
         ];
 
-        return view('concrete.ticket.ticket', ['tickets' => $list->rows, 'pagination' => $pagination ]);
+        return view('concrete.ticket.ticket', ['tickets' => $list->rows, 'pagination' => $pagination, 'filter' => $filter ]);
     }
 
     /**

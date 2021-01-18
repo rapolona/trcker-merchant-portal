@@ -6,19 +6,19 @@
 
 @section('tableFilters')
     <div class="row">
-        <div class="col-sm-4">
-            <div class="input-group form-group">
-                <div class="input-group-prepend"><span class="input-group-text" id="basic-addon3">Name</span></div>
-            <input class="form-control" id="name" type="text" value="{{ $filter['name'] }}">
-            </div>
+        <div class="col-sm-2">
+            <input class="form-control" id="name" type="text" value="{{ $filter['name'] }}" placeholder="Respondent">
+        </div>
+        <div class="col-sm-2">
+            <input class="form-control" id="campaignname" type="text" value="{{ $filter['campaignname'] }}" placeholder="Campaign">
         </div>
         <div class="col-sm-3">
             <select class="form-control" id="status">
-                <option {{ ($filter['status']=="ONGOING")? 'selected' : '' }} value="">--Status--</option>
-                <option {{ ($filter['status']=="ONGOING")? 'selected' : '' }} value="PENDING">PENDING</option>
-                <option {{ ($filter['status']=="ONGOING")? 'selected' : '' }} value="APPROVED">APPROVED</option>
-                <option {{ ($filter['status']=="ONGOING")? 'selected' : '' }} value="REJECTED">REJECTED</option>
-                <option {{ ($filter['status']=="ONGOING")? 'selected' : '' }} value="RESUBMISSION">RESUBMISSION</option>
+                <option value="">--Status--</option>
+                <option {{ ($filter['status']=="PENDING")? 'selected' : '' }} value="PENDING">PENDING</option>
+                <option {{ ($filter['status']=="APPROVED")? 'selected' : '' }} value="APPROVED">APPROVED</option>
+                <option {{ ($filter['status']=="REJECTED")? 'selected' : '' }} value="REJECTED">REJECTED</option>
+                <option {{ ($filter['status']=="RESUBMISSION")? 'selected' : '' }} value="RESUBMISSION">RESUBMISSION</option>
             </select>
         </div>
         <div class="col-sm-3">
@@ -149,8 +149,8 @@ setTimeout(function () {
                 let params = { 
                     daterange : $('#daterange').val(),
                     status : $('#status').val(),
-                    campaignaname : $('#name').val(),
-                    email : $('#name').val(),
+                    campaignname : $('#campaignname').val(),
+                    name : $('#name').val(),
                 };
                 let str = jQuery.param( params );
                 window.location = url + str;
