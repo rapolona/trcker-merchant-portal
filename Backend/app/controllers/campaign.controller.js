@@ -462,7 +462,7 @@ exports.update = (req, res) => {
         .then(data => {
           if(data){
             res.send({
-              message: "Campaign, Tasks, Rewards, and Branches are updated succesfully"
+              message: "Campaign updated succesfully"
             })
           }
         })
@@ -473,7 +473,7 @@ exports.update = (req, res) => {
         })
       }
       else{
-        res.status(422).send({message:"Cannot update campaign that is ongoing"})
+        res.status(422).send({message:"Error updating campaign"})
         return;
       }
     })  
