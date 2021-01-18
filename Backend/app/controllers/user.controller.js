@@ -14,18 +14,20 @@ exports.listUsers = (req,res) => {
 
     UserDetails.findAndCountAll({include: [{model:Users ,as:"users", attributes:["status"]}], order: [["createdAt", "DESC"]], offset:skip_number_of_items, limit: count_per_page})
     .then(userData => {
-        if(userData){
-            userData.total_pages = Math.ceil(userData.count/count_per_page);
-            userData.current_page = page_number;   
+        if(userData){   
             var userDataArr = []
             userData.rows.forEach(element => {
                 userDataArr.push(element.get({plain:true}))
             })
-            var resultData = userDataArr.map(element => {
+            var resultData = {}
+            resultData.rows =  userDataArr.map(element => {
                 element.status = element.users.status
                 delete element.users
                 return element
             })
+            resultData.count = userData.count
+            resultData.total_pages = Math.ceil(userData.count/count_per_page);
+            resultData.current_page = page_number;
             res.send(resultData);   
         }
     })
