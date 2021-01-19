@@ -1,6 +1,7 @@
-const { campaign_task_associations, tasks } = require("../models");
+const { campaign_task_associations, tasks, task_ticket_audit } = require("../models");
 const db = require("../models");
 const Task_Ticket = db.task_tickets;
+const Task_Ticket_Audit = db.task_ticket_audit;
 const Task_Detail = db.task_details;
 const User_Detail = db.userdetails;
 const Task_Question = db.task_questions;
@@ -12,28 +13,57 @@ const Op = db.Sequelize.Op;
 exports.approve = (req, res) => {
   const id = req.body.task_ticket_id;
   var statusToSet = "APPROVED"
-  Task_Ticket.findOne({where: {task_ticket_id: id, approval_status: "Pending"}})
+  Task_Ticket.findOne({where: {task_ticket_id: id, approval_status: ["Pending", "RESUBMISSION", "REJECTED"]}})
   .then(data => {
     if(data){
-      Task_Ticket.update({approval_status: statusToSet}, {
-        where: { task_ticket_id: id }
+      var taskTicketAuditObj = {
+        task_ticket_id: id,
+        status_changed_to: statusToSet,
+        last_updated_by: req.body.merchantid,
+        last_updated_by_type: "MERCHANT",
+      }
+      db.sequelize.transaction({autocommit:false}, transaction => {
+        var chainedPromise = []
+
+        chainedPromise.push(
+          Task_Ticket.update({approval_status: statusToSet}, {
+            where: { task_ticket_id: id }
+          })
+            .then(num => {
+              if (num != 1) {
+                transaction.rollback();
+                console.log("No Task Ticket Updated with id " + id)
+                res.status(422).send({
+                  message: `Cannot update Task_Ticket with id=${id}. Maybe Task_Ticket was not found or req.body is empty!`
+                });
+              }
+            })
+            .catch(err => {
+              console.log(`Error updating task ticket ${id} due to ${err}`)
+              res.status(500).send({
+                message: "Error updating Task Ticket with id=" + id
+              });
+            })
+            );
+        chainedPromise.push(
+          Task_Ticket_Audit.create(taskTicketAuditObj)
+          .catch(err => {
+            console.log(`Error creating audit for ${id} due to ${err}`)
+            res.status(500).send({
+              message: "Error updating Task Ticket with id=" + id
+            });
+          })
+          )
+          return Promise.all(chainedPromise)
+          .then(data => {
+            res.send({message:"Task Ticket Updated Succesfully"})
+          })
+          .catch(err => {
+            res.status(500).send({
+              message: "Error updating Task Ticket with id=" + id
+            });
+          })
       })
-        .then(num => {
-          if (num == 1) {
-            res.send({
-              message: "Task Ticket was updated successfully."
-            });
-          } else {
-            res.status(422).send({
-              message: `Cannot update Task_Ticket with id=${id}. Maybe Task_Ticket was not found or req.body is empty!`
-            });
-          }
-        })
-        .catch(err => {
-          res.status(500).send({
-            message: "Error updating Task Ticket with id=" + id
-          });
-        });
     }
     else{
       res.status(422).send({
@@ -53,28 +83,57 @@ exports.approve = (req, res) => {
     var statusToSet = "REJECTED"
     if(req.body.rejection_reason){var reason = req.body.rejection_reason}
     else{var reason = "None given"}
-    Task_Ticket.findOne({where: {task_ticket_id: id, approval_status: "Pending"}})
+    Task_Ticket.findOne({where: {task_ticket_id: id, approval_status: ["Pending", "APPROVED", "RESUBMISSION"]}})
     .then(data => {
       if(data){
-        Task_Ticket.update({approval_status: statusToSet, rejection_reason:reason}, {
-          where: { task_ticket_id: id }
+        var taskTicketAuditObj = {
+          task_ticket_id: id,
+          status_changed_to: statusToSet,
+          last_updated_by: req.body.merchantid,
+          last_updated_by_type: "MERCHANT",
+        }
+        db.sequelize.transaction({autocommit:false}, transaction => {
+          var chainedPromise = []
+  
+          chainedPromise.push(
+            Task_Ticket.update({approval_status: statusToSet}, {
+              where: { task_ticket_id: id }
+            })
+              .then(num => {
+                if (num != 1) {
+                  transaction.rollback();
+                  console.log("No Task Ticket Updated with id " + id)
+                  res.status(422).send({
+                    message: `Cannot update Task_Ticket with id=${id}. Maybe Task_Ticket was not found or req.body is empty!`
+                  });
+                }
+              })
+              .catch(err => {
+                console.log(`Error updating task ticket ${id} due to ${err}`)
+                res.status(500).send({
+                  message: "Error updating Task Ticket with id=" + id
+                });
+              })
+              );
+          chainedPromise.push(
+            Task_Ticket_Audit.create(taskTicketAuditObj)
+            .catch(err => {
+              console.log(`Error creating audit for ${id} due to ${err}`)
+              res.status(500).send({
+                message: "Error updating Task Ticket with id=" + id
+              });
+            })
+            )
+            return Promise.all(chainedPromise)
+            .then(data => {
+              res.send({message:"Task Ticket Updated Succesfully"})
+            })
+            .catch(err => {
+              res.status(500).send({
+                message: "Error updating Task Ticket with id=" + id
+              });
+            })
         })
-          .then(num => {
-            if (num == 1) {
-              res.send({
-                message: "Task Ticket was updated successfully."
-              });
-            } else {
-              res.status(422).send({
-                message: `Cannot update Task_Ticket with id=${id}. Maybe Task_Ticket was not found or req.body is empty!`
-              });
-            }
-          })
-          .catch(err => {
-            res.status(500).send({
-              message: "Error updating Task Ticket with id=" + id
-            });
-          });
       }
       else{
         res.status(422).send({
@@ -339,3 +398,103 @@ exports.approve = (req, res) => {
         });
       });
       }
+
+    exports.getNextAndPrev = (req,res) => {
+      var task_ticket_id = req.body.task_ticket_id
+      if((req.query.page)&&(req.query.count_per_page)){
+        page_number = parseInt(req.query.page);
+        count_per_page = parseInt(req.query.count_per_page);  
+      }
+      var skip_number_of_items = (page_number * count_per_page) - count_per_page
+
+      Task_Ticket.findAndCountAll({
+        offset:skip_number_of_items, limit: count_per_page,distinct:true,
+        attributes:["task_ticket_id"],
+        order: [["createdAt", "DESC"]]
+        })
+        .then(data => {
+          if(data){
+            var dataObj = []
+            var nextAndPrevData = {}
+            data.rows.forEach((element,element_index) => {
+              dataObj.push(element.get({plain:true}))
+            })
+            data.total_pages = Math.ceil(data.count/count_per_page);
+            data.current_page = page_number;  
+            var currentIndex = dataObj.findIndex(element => {
+              if(element.task_ticket_id == task_ticket_id){
+                return true
+              }
+            })
+            console.log(dataObj)
+            if(currentIndex == (dataObj.length-1) && page_number != data.total_pages){
+              console.log("Last Item, but not last page")
+              skip_number_of_items = (page_number+1 * count_per_page) - count_per_page
+              Task_Ticket.findAndCountAll({
+                offset:skip_number_of_items, limit: count_per_page,distinct:true,
+                attributes:["task_ticket_id"],
+                order: [["createdAt", "DESC"]]
+                })
+                .then(nextPageData => {
+                  nextAndPrevData.current_page = page_number;   
+                  nextAndPrevData.count_per_page = count_per_page
+                  nextAndPrevData.next = nextPageData[0]
+                  nextAndPrevData.next.page = page_number+1
+                  nextAndPrevData.prev = dataObj[currentIndex-1]
+                  nextAndPrevData.prev.page = page_number
+                  res.send(nextAndPrevData)
+                })
+            }
+            else if (currentIndex == 0 && page_number !=1) {
+              console.log("First Item but not first page")
+              skip_number_of_items =((page_number-1) * count_per_page) - count_per_page
+              Task_Ticket.findAndCountAll({
+                offset:skip_number_of_items, limit: count_per_page,distinct:true,
+                attributes:["task_ticket_id"],
+                order: [["createdAt", "DESC"]]
+                })
+                .then(prevPageData => {
+                  nextAndPrevData.current_page = page_number;   
+                  nextAndPrevData.count_per_page = count_per_page
+                  nextAndPrevData.next = dataObj[currentIndex+1]
+                  nextAndPrevData.next.page = page_number
+                  nextAndPrevData.prev = prevPageData[prevPageData.length-1]
+                  nextAndPrevData.prev.page = page_number-1
+                  res.send(nextAndPrevData)
+                })  
+
+            }
+            else{
+              console.log("Either first page first item, last page last item, everything in between")
+              console.log(currentIndex)
+              if(currentIndex == 0){
+                console.log("First item and assuming first page")
+                nextAndPrevData.current_page = page_number;   
+                nextAndPrevData.count_per_page = count_per_page
+                if(dataObj[currentIndex+1]){
+                  nextAndPrevData.next = dataObj[currentIndex+1]
+                  nextAndPrevData.next.page = page_number
+                }
+              }
+              else if(currentIndex == dataObj.length-1){
+                console.log("Last item and assuming last page")
+                nextAndPrevData.current_page = page_number;   
+                nextAndPrevData.count_per_page = count_per_page
+                nextAndPrevData.prev = dataObj[currentIndex-1]
+                nextAndPrevData.prev.page = page_number
+              }
+              else{
+                console.log("Everything in between")
+                nextAndPrevData.current_page = page_number;   
+                nextAndPrevData.count_per_page = count_per_page
+                nextAndPrevData.next = dataObj[currentIndex+1]
+                nextAndPrevData.next.page = page_number
+                nextAndPrevData.prev = dataObj[currentIndex-1]
+                nextAndPrevData.prev.page = page_number
+              }
+              res.send(nextAndPrevData)
+            }
+          }
+        })
+
+    }

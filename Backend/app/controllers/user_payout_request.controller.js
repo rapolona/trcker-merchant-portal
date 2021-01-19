@@ -46,5 +46,71 @@ exports.findOne = (req, res) => {
       });
   };
 
+  exports.updatePayoutRequest = (req,res)=> {
+    var chainedPromises = []
+    var payoutRequestBody = {
+        user_payout_request_id: req.body.user_payout_request_id,
+    }
+    console.log(req.body)
+    switch(req.body.status){
+        case "APPROVE":
+            payoutRequestBody.status = "APPROVED";
+            payoutRequestBody.reference_id = req.body.reference_id;
+            break;
+        case "REJECT":
+            payoutRequestBody.status = "REJECTED";
+            break;
+        default:
+            res.status(422).send({message:"Unknown status to set to"})
+            return
+    }
+    db.sequelize.transaction({autocommit:false}, transaction => {
+        chainedPromises.push(
+            UserPayoutRequest.update(payoutRequestBody, {where: {user_payout_request_id: req.body.user_payout_request_id, status:"PENDING"}, transaction})
+            .then(num => {
+                if(num != 1){
+                    throw new Error({message: "No payout request updated"})
+                }
+            })
+            .catch(err => {
+                res.status(500).send({
+                    message: err.message | "Error updating user payout request"
+                })
+            })
+        );
+
+        if(payoutRequestBody.status = "REJECTED"){
+            chainedPromises.push(
+                UserPayoutRequest.findOne({where: {user_payout_request_id: req.body.user_payout_request_id}, attributes: ["user_id", "amount"], transaction})
+                    .then(data => {
+                        if(data){
+                            data = data.get({plain:true})
+                            chainedPromises.push(
+                                UserWallet.update({
+                                    current_amount: db.sequelize.literal(`current_amount + ${data.amount}`)},
+                                    {where: {user_id: data.user_id}, 
+                                    transaction
+                                }))
+                        }
+                    })
+            )
+        }
+        return Promise.all(chainedPromises)
+        .then(data => {
+            console.log(data)
+            res.send({message: `Succesfully ${payoutRequestBody.status} payout request`})
+        })
+        .catch(err => {
+            console.log(err)
+            res.status(500).send({
+                message: "Error processing payout request"
+            })
+        })
+    })
+   
+}
+
+
+
 
 

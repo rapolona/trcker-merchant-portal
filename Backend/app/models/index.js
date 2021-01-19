@@ -45,6 +45,7 @@ db.task_questions = require("./task_question.model.js")(sequelize, Sequelize);
 db.task_question_choices = require("./task_question_choices.model.js")(sequelize, Sequelize);
 
 db.task_tickets = require("./task_ticket.model.js")(sequelize, Sequelize);
+db.task_ticket_audit = require("./task_ticket_audit.model.js")(sequelize, Sequelize);
 db.task_details = require("./task_detail.model.js")(sequelize, Sequelize);
 
 //Geolocation related models & Relations
@@ -110,6 +111,8 @@ db.task_tickets.hasMany(db.task_details, {foreignKey:'task_ticket_id'});
 db.task_tickets.belongsTo(db.branches, {foreignKey:'branch_id'});
 db.task_questions.hasMany(db.task_details, {foreignKey: 'task_question_id'});
 db.task_details.belongsTo(db.task_questions, {foreignKey:'task_question_id'})
+
+db.task_tickets.hasMany(db.task_ticket_audit, {foreignKey:'task_ticket_id'});
 
 
 //User rewards relationships
