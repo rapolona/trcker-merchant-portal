@@ -7,6 +7,7 @@ module.exports = app => {
 
 
     router.get("/payout_requests/listall", adminMiddleware.isAuthenticated, user_payout_requests.findAll);
+    router.get("/payout_requests/findone/:user_payout_request_id", adminMiddleware.isAuthenticated, user_payout_requests.findOne);
 
     
 

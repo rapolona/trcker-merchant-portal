@@ -26,8 +26,25 @@ exports.findAll = (req, res) => {
     });
 };
 
+//Find single payout request
+exports.findOne = (req, res) => {
+    const user_payout_request_id = req.params.user_payout_request_id;
+    const merchant_id = req.body.merchantid;
 
-
+  
+    User_payout_request.findByPk(user_payout_request_id)
+      .then(data => {
+        
+        res.send(data);
+     
+        
+      })
+      .catch(err => {
+        res.status(500).send({
+          message: "Error retrieving Payout request with id=" + user_payout_request_id
+        });
+      });
+  };
 
 
 
