@@ -8,7 +8,7 @@ module.exports = app => {
     router.get("/users/listall", adminMiddleware.isAuthenticated, users.listUsers);
     router.get("/users/:user_id", adminMiddleware.isAuthenticated, users.getUserDetails)
 
-    router.get("/users/payout_requests/listall", adminMiddleware.isAuthenticated, users.listUsers);
+    
 
     
 
