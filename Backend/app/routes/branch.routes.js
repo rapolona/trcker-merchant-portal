@@ -7,7 +7,7 @@ module.exports = app => {
     router.post("/", adminMiddleware.isAuthenticated,branches.create);
   
     // // Retrieve all branches
-    // router.get("/",branches.findAll);
+    router.get("/listall",adminMiddleware.isAuthenticated,branches.listAllPaginate);
 
     // Create bulk
     router.post("/bulk_add", adminMiddleware.isAuthenticated,branches.createMany);
