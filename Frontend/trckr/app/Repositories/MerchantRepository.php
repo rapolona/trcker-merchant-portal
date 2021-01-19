@@ -99,7 +99,7 @@ class MerchantRepository extends Repository
         try {
             $data = ($data==null) ? [] : $data;
             $uri = http_build_query($data);
-            return $this->trackerApi('get', $this->api . 'alltickets' , $data);
+            return $this->trackerApi('get', $this->api . 'alltickets?' . $uri , $data);
         } catch(\Exception $e) {
             $this->sessionExpired($e);
         }

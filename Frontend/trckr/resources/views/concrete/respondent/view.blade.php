@@ -1,0 +1,128 @@
+@extends('concrete.layouts.main')
+
+@section('content')
+<section>
+    <div class="row no-gutters">
+        <div class="col-md-4 col-lg-3 col-xxl-2 bg-100">
+            <div class="px-3 py-4">
+                <div class="panel">
+                    <div class="panel-body">
+                        <div class="list-block-container">
+                            <div class="list-block-title">User Details</div>
+                            <table class="table table-hover table-align-1 table-vertical-align">
+                            	<tbody>
+                            		<tr>
+                            			<td align="right"><strong>Name: </strong></td>
+                            			<td>{{ $user->first_name }} {{ $user->last_name }}</td>
+                            		</tr>
+                            		<tr>
+                            			<td><strong>Level: </strong></td>
+                            			<td>{{ $user->account_level }}</td>
+                            		</tr>
+                            		<tr>
+                            			<td><strong>Age: </strong></td>
+                            			<td>{{ $user->age }}</td>
+                            		</tr>
+                            		<tr>
+                            			<td><strong>Birthday: </strong></td>
+                            			<td>{{ date('Y-m-d', strtotime($user->birthday)) }}</td>
+                            		</tr>
+                            		<tr>
+                            			<td><strong>Gender: </strong></td>
+                            			<td>{{ $user->gender }}</td>
+                            		</tr>
+                            		<tr>
+                            			<td><strong>Email: </strong></td>
+                            			<td>{{ $user->email }}</td>
+                            		</tr>
+                            		<tr>
+                            			<td><strong>Settlement: </strong></td>
+                            			<td>{{ $user->settlement_account_type }}: {{ $user->settlement_account_number }}</td>
+                            		</tr>
+                            		<tr>
+                            			<td><strong>Location: </strong></td>
+                            			<td>{{ $user->country }} {{ $user->region }} {{ $user->province }} {{ $user->city }}</td>
+                            		</tr>
+                            		<tr>
+                            			<td><strong>Account Creation: </strong></td>
+                            			<td>{{ date('Y-m-d', strtotime($user->createdAt)) }}</td>
+                            		</tr>
+                            	</tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8 col-lg-9 col-xxl-10 border-md-left">
+            <div class="bg-white">
+                <div class="group-15 p-3 d-flex flex-wrap justify-content-lg-between">
+                    <div class="row" >
+                        <div style="float: left" >
+                            <a id="block" class="btn btn-danger"><span class="fa-remove"></span> Block</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-responsive" style="padding-left: 10px; padding-right: 10px">
+                	<div><strong>Payout Requests</strong></div>
+                    <table class="table table-hover table-align-1 table-vertical-align data-table" data-table-lengthChange="true" data-page-length="5">
+                        <thead>
+                        <tr>
+                            <th scope="col">Request Date</th>
+                            <th scope="col">Amount</th>
+                            <th scope="col">Remarks</th>
+                            <th scope="col">Status</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+                <hr />
+                <div class="table-responsive" style="padding-left: 10px; padding-right: 10px">
+                	<div><strong>Campaigns</strong></div>
+                    <table class="table table-hover table-align-1 table-vertical-align data-table" data-table-lengthChange="true" data-page-length="10">
+                        <thead>
+                        <tr>
+                            <th scope="col">Campaign</th>
+                            <th scope="col">Task</th>
+                            <th scope="col">Reward</th>
+                            <th scope="col">Status</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+@stop
+
+
+@section('js')
+    <script type="text/javascript">
+
+        $(document).ready(function (e) {
+
+            $("#block").click(function(){
+                let url = "{{ url('respondent/block/'.$user->user_id ) }}";
+                $.confirm({
+                    title: 'Hustle',
+                    content: 'Are you sure you want to BLOCK this user?',
+                    buttons: {
+                    confirm: function () {
+                        window.location = url;
+                    },
+                    cancel: function () {
+                        //$.alert('Canceled!');
+                    } }
+                })
+            
+            });
+
+        });
+    </script>
+@stop

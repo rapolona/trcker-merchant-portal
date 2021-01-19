@@ -123,7 +123,6 @@
 @stop
 
 @section('js')
-    <script type="text/javascript" src="{{url('/vendor/trckr/trckr.js')}}"></script>
     <script type="text/javascript">
         $(document).ready(function (e) {
 

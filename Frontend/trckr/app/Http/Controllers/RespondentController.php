@@ -22,12 +22,39 @@ class RespondentController extends Controller
 
     public function getAll(Request $request)
     {
-        return view('concrete.respondent.list');
+        $filter = [
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'status' => $request->status,
+            'email' => $request->email,
+            'mobile' => $request->mobile
+        ];
+
+        $data = [
+            'count_per_page' => isset($request->per_page)? $request->per_page : $this->defaultPerPage,
+            'page' => isset($request->page)? $request->page : 1,
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'status' => $request->status,
+            'email' => $request->email,
+            'settlement_account_number' => $request->mobile
+        ];
+        
+        $list = $this->respondentService->getAll($data);
+        $pagination = [
+            'per_page' => $data['count_per_page'],
+            'current_page' => $list->current_page,
+            'total_pages' => $list->total_pages
+        ];
+
+        return view('concrete.respondent.list', ['users' => $list->rows, 'pagination' => $pagination, 'filter' => $filter ]);
     }
 
-     public function get(Request $request)
+
+    public function get($id, Request $request)
     {
-        return view('concrete.respondent.view');
+        $user = $this->respondentService->get($id);
+        return view('concrete.respondent.view', ['user' => $user]);
     }
 
      public function block(Request $request)

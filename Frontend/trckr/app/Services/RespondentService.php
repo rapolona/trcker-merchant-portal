@@ -18,4 +18,9 @@ class RespondentService
         return $this->repository->getAll($data);
     }
 
+    public function get($id)
+    {
+        return $this->repository->get($id);
+    }
+
 }
