@@ -7,37 +7,23 @@ const PayoutRequests = db.userpayoutrequests;
 const Op = db.Sequelize.Op;
 
 exports.listUsers = (req,res) => {
-    var condition = []
-    var innerCondition = {}
-  
-    //Check for filters
-    if(req.query.name){
-        condition.push(sequelize.where(sequelize.fn('concat', sequelize.col('first_name'), ' ', sequelize.col('last_name')), {
-            [Op.like]: '%' + req.query.name + '%'
-        }))
-      }
-      if(req.query.status){
-        innerCondition.status = { [Op.like]: `%${req.query.status}%` }
-      }
-      if(req.query.email){
-        condition.push({email:{[Op.like]: `%${req.query.email}%`}})
-      } 
-      if(req.query.mobile){
-        condition.push({settlement_account_number:{[Op.like]: `%${req.query.mobile}%`}})  
-      } 
-      console.log(condition)
+    var detail_condition = {}
+    var user_condition = {}
 
+    if(req.query.first_name){detail_condition.first_name=req.query.first_name}
+    if(req.query.last_name){detail_condition.last_name=req.query.last_name}
+    if(req.query.email){detail_condition.email=req.query.email}
+    if(req.query.status){user_condition.status=req.query.status}
 
     if((req.query.page)&&(req.query.count_per_page)){
         var page_number = parseInt(req.query.page);
         var count_per_page = parseInt(req.query.count_per_page);
         var skip_number_of_items = (page_number * count_per_page) - count_per_page
+        delete req.query.page
+        delete req.query.count_per_page
     }
 
-    UserDetails.findAndCountAll({include: [{model:Users ,as:"users", attributes:["status"], where:innerCondition}], order: [["createdAt", "DESC"]], 
-        offset:skip_number_of_items, 
-        limit: count_per_page,
-        where: condition})
+    UserDetails.findAndCountAll({where:detail_condition,include: [{model:Users ,as:"users", where:user_condition,attributes:["status"]}], order: [["createdAt", "DESC"]], offset:skip_number_of_items, limit: count_per_page})
     .then(userData => {
         if(userData){   
             var userDataArr = []

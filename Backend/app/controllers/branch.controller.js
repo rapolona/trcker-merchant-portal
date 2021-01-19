@@ -97,6 +97,39 @@ exports.findAll = (req, res) => {
     });
 };
 
+// Retrieve all Branches from the database.
+exports.listAllPaginate = (req, res) => {
+  const id = req.body.merchantid;
+  var condition = req.query
+  console.log(condition)
+  var page_number = 1;
+  var count_per_page = 25;
+  if((req.query.page)&&(req.query.count_per_page)){
+    var page_number = parseInt(req.query.page);
+    var count_per_page = parseInt(req.query.count_per_page);
+    delete req.query.page
+    delete req.query.count_per_page
+    
+  }
+
+  var skip_number_of_items = (page_number * count_per_page) - count_per_page;
+  
+  if(req.body.merchantid){
+    condition.merchant_id = id;
+  }
+  console.log(condition)
+  Branch.findAndCountAll({ offset:skip_number_of_items, limit: count_per_page, where: condition , order: [["createdAt", "DESC"]]})
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving products."
+      });
+    });
+};
+
 // Find a single Branch with an id
 exports.findOne = (req, res) => {
     const branch_id = req.params.branch_id;
