@@ -1,18 +1,43 @@
+const { sequelize } = require("../models");
 const db = require("../models");
 const Users = db.users;
 const UserDetails = db.userdetails;
 const TaskTickets = db.task_tickets;
 const PayoutRequests = db.userpayoutrequests;
-const Op = db.sequelize.Op;
+const Op = db.Sequelize.Op;
 
 exports.listUsers = (req,res) => {
+    var condition = []
+    var innerCondition = {}
+  
+    //Check for filters
+    if(req.query.name){
+        condition.push(sequelize.where(sequelize.fn('concat', sequelize.col('first_name'), ' ', sequelize.col('last_name')), {
+            [Op.like]: '%' + req.query.name + '%'
+        }))
+      }
+      if(req.query.status){
+        innerCondition.status = { [Op.like]: `%${req.query.status}%` }
+      }
+      if(req.query.email){
+        condition.push({email:{[Op.like]: `%${req.query.email}%`}})
+      } 
+      if(req.query.mobile){
+        condition.push({settlement_account_number:{[Op.like]: `%${req.query.mobile}%`}})  
+      } 
+      console.log(condition)
+
+
     if((req.query.page)&&(req.query.count_per_page)){
         var page_number = parseInt(req.query.page);
         var count_per_page = parseInt(req.query.count_per_page);
         var skip_number_of_items = (page_number * count_per_page) - count_per_page
     }
 
-    UserDetails.findAndCountAll({include: [{model:Users ,as:"users", attributes:["status"]}], order: [["createdAt", "DESC"]], offset:skip_number_of_items, limit: count_per_page})
+    UserDetails.findAndCountAll({include: [{model:Users ,as:"users", attributes:["status"], where:innerCondition}], order: [["createdAt", "DESC"]], 
+        offset:skip_number_of_items, 
+        limit: count_per_page,
+        where: condition})
     .then(userData => {
         if(userData){   
             var userDataArr = []
