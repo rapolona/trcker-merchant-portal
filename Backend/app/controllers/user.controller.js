@@ -13,7 +13,9 @@ exports.listUsers = (req,res) => {
     if(req.query.first_name){detail_condition.first_name=req.query.first_name}
     if(req.query.last_name){detail_condition.last_name=req.query.last_name}
     if(req.query.email){detail_condition.email=req.query.email}
+    if(req.query.mobile){detail_condition.settlement_account_number=req.query.mobile}
     if(req.query.status){user_condition.status=req.query.status}
+    
 
     if((req.query.page)&&(req.query.count_per_page)){
         var page_number = parseInt(req.query.page);
