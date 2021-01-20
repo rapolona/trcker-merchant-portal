@@ -96,7 +96,7 @@ exports.approve = (req, res) => {
           var chainedPromise = []
   
           chainedPromise.push(
-            Task_Ticket.update({approval_status: statusToSet}, {
+            Task_Ticket.update({approval_status: statusToSet, rejection_reason:reason}, {
               where: { task_ticket_id: id }
             })
               .then(num => {
