@@ -324,6 +324,7 @@ exports.findAll = (req, res) => {
 exports.findOne = (req, res) => {
   const campaign_id = req.params.campaign_id;
   const merchant_id = req.body.merchantid;
+  const duplicate = req.query.duplicate;
   var condition = { 
     where: 
     {
@@ -331,9 +332,9 @@ exports.findOne = (req, res) => {
       campaign_id: campaign_id
     } , 
     include: [
-      {model:Branch, attributes:['branch_id','name'], through: {attributes: ['respondent_count']} },
-      {model:tasks, attributes:['task_id','task_name'], through: {attributes: ['reward_amount']}},
-      {model:City, attributes:['Id','label'],through: {attributes:[]}}
+      {model:Branch, attributes:['branch_id','name'], through: {attributes: ['campaign_branch_association_id','respondent_count']} },
+      {model:tasks, attributes:['task_id','task_name'], through: {attributes: ['campaign_task_association_id','reward_amount']}},
+      {model:City, attributes:['Id']}
 
     ],
     attributes: { exclude: ['total_reward_amount','createdAt','updatedAt','merchant_id','campaign_id']}
@@ -345,12 +346,23 @@ exports.findOne = (req, res) => {
         new_result = data.get({plain:true});
         for (i = 0; i < new_result.branches.length; i++){
           new_result.branches[i].respondent_count = new_result.branches[i].campaign_branch_association.respondent_count;
+          if(duplicate==0){new_result.branches[i].campaign_branch_association_id = new_result.branches[i].campaign_branch_association.campaign_branch_association_id}
           delete new_result.branches[i].campaign_branch_association;
         }
         for (i = 0; i < new_result.tasks.length; i++){
           new_result.tasks[i].reward_amount = new_result.tasks[i].campaign_task_association.reward_amount;
+          if(duplicate==0){new_result.tasks[i].campaign_task_association_id = new_result.tasks[i].campaign_task_association.campaign_task_association_id}
           delete new_result.tasks[i].campaign_task_association;
         }
+        for (i = 0; i < new_result.cities.length; i++){
+          new_result.cities[i].city_id = new_result.cities[i].Id
+          if(duplicate==0){new_result.cities[i].campaign_city_association_id = new_result.cities[i].campaign_city_association.campaign_city_association_id}
+          delete new_result.cities[i].campaign_city_association;
+          delete new_result.cities[i].Id
+        }
+        
+        new_result.audience_cities = new_result.cities
+        delete new_result.cities;
         new_result.start_date = new_result.start_date.toISOString().substring(0,10);
         new_result.end_date = new_result.end_date.toISOString().substring(0,10);
 

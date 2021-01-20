@@ -111,6 +111,18 @@ db.task_tickets.hasMany(db.task_details, {foreignKey:'task_ticket_id'});
 db.task_tickets.belongsTo(db.branches, {foreignKey:'branch_id'});
 db.task_questions.hasMany(db.task_details, {foreignKey: 'task_question_id'});
 db.task_details.belongsTo(db.task_questions, {foreignKey:'task_question_id'})
+db.task_tickets.hasOne(db.tasks, {foreignKey: 'task_id'})
+
+
+
+
+
+
+
+
+
+
+
 
 db.task_tickets.hasMany(db.task_ticket_audit, {foreignKey:'task_ticket_id'});
 

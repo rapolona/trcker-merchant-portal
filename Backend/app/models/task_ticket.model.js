@@ -23,6 +23,18 @@ module.exports = (sequelize, Sequelize) => {
       approval_status: {
         type: Sequelize.STRING(64)
       },
+      awarded: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false
+      },
+      task_id: {
+        type: DataTypes.UUID,
+        allowNull: false,
+        references: {         // Product belongsTo Merchant 1:1
+          model: 'tasks',
+          key: 'task_id'
+        }  
+      },
       campaign_id:{
         type: DataTypes.UUID,
         allowNull: false,
@@ -49,7 +61,7 @@ module.exports = (sequelize, Sequelize) => {
       },
       task_classification_id: {
         type: DataTypes.UUID,
-        allowNull: false,
+        allowNull: true,
         references: {         // Product belongsTo Merchant 1:1
           model: 'task_classifications',
           key: 'task_classification_id'
