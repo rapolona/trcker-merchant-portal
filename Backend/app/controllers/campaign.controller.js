@@ -473,7 +473,7 @@ exports.update = (req, res) => {
           if(req.body.branches || req.body.at_home_campaign){
             req.body.branches.forEach(element => {
               if(element.campaign_branch_association_id){
-                campaignUpdateTransactions.push(Campaign_Branch_Association.update(element, {where: {campaign_branch_association_id: element.campaign_branch_association_id},transaction:transaction})
+                campaignUpdateTransactions.push(Campaign_Branch_Association.update(element, {where: {campaign_id: id,campaign_branch_association_id: element.campaign_branch_association_id},transaction:transaction})
                 .catch(err => {
                   console.log(`Error updating Campaign Branch Association with id = ${element.campaign_branch_association_id}`)
                   console.log(err)
@@ -494,7 +494,7 @@ exports.update = (req, res) => {
           if(req.body.audience_cities){
             req.body.audience_cities.forEach(element => {
               if(element.campaign_city_association_id){
-                campaignUpdateTransactions.push(Campaign_City_Association.update(element,  {where: {campaign_city_association_id: element.campaign_city_association_id},transaction:transaction})
+                campaignUpdateTransactions.push(Campaign_City_Association.update(element,  {where: {campaign_id:id,campaign_city_association_id: element.campaign_city_association_id},transaction:transaction})
                 .catch(err => {
                   console.log(`Error updating Campaign City Association with id = ${element.campaign_city_association_id}`)
                   console.log(err)

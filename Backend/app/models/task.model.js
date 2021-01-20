@@ -30,7 +30,7 @@ module.exports = (sequelize, Sequelize) => {
       },
       task_classification_id: {
         type: DataTypes.UUID,
-        allowNull: false,
+        allowNull: true,
         references: {         // Product belongsTo Merchant 1:1
           model: 'task_classifications',
           key: 'task_action_classification_id'
