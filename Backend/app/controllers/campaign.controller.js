@@ -8,7 +8,7 @@ const Task_Questions = db.task_questions;
 const Task_Question_Choices = db.task_question_choices;
 const Campaign_Branch_Association = db.campaign_branch_associations;
 const Campaign_Task_Association = db.campaign_task_associations;
-const Campaign_City_Accociation = db.campaign_city_associations;
+const Campaign_City_Association = db.campaign_city_associations;
 const Campaign_Reward = db.campaign_rewards;
 const Task_Ticket = db.task_tickets;
 const Op = db.Sequelize.Op;
@@ -198,7 +198,7 @@ db.sequelize.transaction(transaction =>
   Campaign.create(campaign, {include: [
     {model:Campaign_Task_Association, as:"campaign_task_associations"},
     {model:Campaign_Branch_Association, as:"campaign_branch_associations"},
-    {model:Campaign_City_Accociation, as:"campaign_city_associations"}
+    {model:Campaign_City_Association, as:"campaign_city_associations"}
   ],
     transaction
   }).then(data => {
@@ -448,28 +448,67 @@ exports.update = (req, res) => {
           var campaignUpdateTransactions = []
           //If merchant wants to update tasks, push task destroy & create promises
           if(req.body.tasks){
-            campaignUpdateTransactions.push(
-              Campaign_Task_Association.destroy({
-              where: {campaign_id: id},
-              transaction:transaction}));
-            campaignUpdateTransactions.push(Campaign_Task_Association.bulkCreate(req.body.tasks, {transaction:transaction}),);
+            req.body.tasks.forEach(element => {
+              if(element.campaign_task_association_id){
+                campaignUpdateTransactions.push(
+                  Campaign_Task_Association.update(element, {where: {campaign_id: id, campaign_task_association_id: element.campaign_task_association_id}, transaction})
+                  .catch(err => {
+                    console.log(`Error updating Campaign Task Association with id = ${element.campaign_task_association_id}`)
+                    console.log(err)
+                  })
+                )
+              }
+              else{
+                campaignUpdateTransactions.push(
+                  Campaign_Task_Association.create(element, {transaction:transaction})
+                  .catch(err => {
+                    console.log("Error creating new Campaign Task Association")
+                    console.log(err)
+                  })
+                )
+              }
+            });
           }
           //If merchant wants to update branches, push branch destroy & create promises
           if(req.body.branches || req.body.at_home_campaign){
-            campaignUpdateTransactions.push(Campaign_Branch_Association.destroy({
-              where: {campaign_id: id},
-              transaction:transaction
-            }));
-
-            campaignUpdateTransactions.push(Campaign_Branch_Association.bulkCreate(req.body.branches, {transaction:transaction}))
+            req.body.branches.forEach(element => {
+              if(element.campaign_branch_association_id){
+                campaignUpdateTransactions.push(Campaign_Branch_Association.update(element, {where: {campaign_branch_association_id: element.campaign_branch_association_id},transaction:transaction})
+                .catch(err => {
+                  console.log(`Error updating Campaign Branch Association with id = ${element.campaign_branch_association_id}`)
+                  console.log(err)
+                })
+                )
+              }
+              else{
+                campaignUpdateTransactions.push(Campaign_Branch_Association.create(element, {transaction:transaction})
+                .catch(err => {
+                  console.log("Error creating new Campaign Branch Association")
+                  console.log(err)
+                })
+                )
+              }
+            });
           }
           //If merchant wants to update audience_cities, cities task destroy & create promises
           if(req.body.audience_cities){
-            campaignUpdateTransactions.push(Campaign_City_Accociation.destroy({
-              where: {campaign_id: id},
-              transaction:transaction
-            }));
-            campaignUpdateTransactions.push(Campaign_City_Accociation.bulkCreate(req.body.audience_cities, {transaction:transaction}))
+            req.body.audience_cities.forEach(element => {
+              if(element.campaign_city_association_id){
+                campaignUpdateTransactions.push(Campaign_City_Association.update(element,  {where: {campaign_city_association_id: element.campaign_city_association_id},transaction:transaction})
+                .catch(err => {
+                  console.log(`Error updating Campaign City Association with id = ${element.campaign_city_association_id}`)
+                  console.log(err)
+                })
+                )
+              }
+              else{
+                campaignUpdateTransactions.push(Campaign_City_Association.create(element, {transaction:transaction})
+                .catch(err => {
+                  console.log("Error creating new Campaign City Association")
+                  console.log(err)
+                }))
+              }
+            })
           }
 
           return Promise.all(campaignUpdateTransactions)
