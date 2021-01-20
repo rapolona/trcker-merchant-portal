@@ -103,6 +103,7 @@ exports.create = (req, res) => {
     if(at_home_campaign==true){
       var at_home_respondent_count=req.body.at_home_respondent_count;
       var at_home_branch_id = "fbe9b0cf-5a77-4453-a127-9a8567ff3aa7";
+      if(req.body.permanent_campaign){at_home_respondent_count=0;}
       branches_container.push({"branch_id":at_home_branch_id, "respondent_count":at_home_respondent_count});
     }
     else{
@@ -136,6 +137,7 @@ exports.create = (req, res) => {
   for(i=0;i<branches_container.length;i++){
     branches_container[i]["submitted_response_count"]=0;
     branches_container[i]["status"]=0
+    if(req.body.permanent_campaign==1){branches_container[i]["respondent_count"]=0;}
   }
   var total_reward_amount = 0;
   for(i=0;i<req.body.tasks.length;i++){
@@ -399,6 +401,7 @@ exports.update = (req, res) => {
     }
     var total_reward_amount = 0;
 
+    
 
     if(req.body.end_date){
       req.body.end_date = req.body.end_date + ' 23:59:00.000Z'
