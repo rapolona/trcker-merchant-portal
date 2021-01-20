@@ -409,7 +409,7 @@ exports.approve = (req, res) => {
 
       Task_Ticket.findAndCountAll({
         offset:skip_number_of_items, limit: count_per_page,distinct:true,
-        attributes:["task_ticket_id"],
+        attributes:["task_ticket_id", "campaign_id"],
         order: [["createdAt", "DESC"]]
         })
         .then(data => {
@@ -426,9 +426,7 @@ exports.approve = (req, res) => {
                 return true
               }
             })
-            console.log(dataObj)
             if(currentIndex == (dataObj.length-1) && page_number != data.total_pages){
-              console.log("Last Item, but not last page")
               skip_number_of_items = (page_number+1 * count_per_page) - count_per_page
               Task_Ticket.findAndCountAll({
                 offset:skip_number_of_items, limit: count_per_page,distinct:true,
@@ -446,7 +444,6 @@ exports.approve = (req, res) => {
                 })
             }
             else if (currentIndex == 0 && page_number !=1) {
-              console.log("First Item but not first page")
               skip_number_of_items =((page_number-1) * count_per_page) - count_per_page
               Task_Ticket.findAndCountAll({
                 offset:skip_number_of_items, limit: count_per_page,distinct:true,
@@ -465,10 +462,7 @@ exports.approve = (req, res) => {
 
             }
             else{
-              console.log("Either first page first item, last page last item, everything in between")
-              console.log(currentIndex)
               if(currentIndex == 0){
-                console.log("First item and assuming first page")
                 nextAndPrevData.current_page = page_number;   
                 nextAndPrevData.count_per_page = count_per_page
                 if(dataObj[currentIndex+1]){
@@ -477,14 +471,12 @@ exports.approve = (req, res) => {
                 }
               }
               else if(currentIndex == dataObj.length-1){
-                console.log("Last item and assuming last page")
                 nextAndPrevData.current_page = page_number;   
                 nextAndPrevData.count_per_page = count_per_page
                 nextAndPrevData.prev = dataObj[currentIndex-1]
                 nextAndPrevData.prev.page = page_number
               }
               else{
-                console.log("Everything in between")
                 nextAndPrevData.current_page = page_number;   
                 nextAndPrevData.count_per_page = count_per_page
                 nextAndPrevData.next = dataObj[currentIndex+1]
