@@ -33,7 +33,7 @@
 
 
 
-                                <!--<div class="input-group form-group">
+                                <div class="input-group form-group">
                                     <div class="input-group-prepend"><span class="input-group-text"><span class="mdi-account-minus"></span></span></div>
                                     <input required class="form-control  {{ $errors->first('audience_age_min')? 'form-control-danger' : '' }}" type="number" min="1" value="{{ old('audience_age_min') }}" name="audience_age_min" id="audience_age_min" placeholder="Audience Minimum Age">
                                 </div>
@@ -50,7 +50,7 @@
                                     <div class="tag-manager-container">
                                         <span class="tm-tag badge badge-danger" ><span>{{ $errors->first('audience_age_max') }}</span></span>
                                     </div>
-                                @endif -->
+                                @endif
 
 
 
@@ -96,7 +96,7 @@
 
 
 
-                                <!--<div class="input-group form-group">
+                                <div class="input-group form-group">
                                     <div class="input-group-prepend"><span class="input-group-text"><span class="mdi-gender-male-female"></span></span></div>
                                     <select required class="form-control" name="audience_gender" id="audience_gender">
                                         <option value="">Target Gender</option>
@@ -119,7 +119,7 @@
                                     <div class="tag-manager-container">
                                         <span class="tm-tag badge badge-danger" ><span>{{ $errors->first('audience_city') }}</span></span>
                                     </div>
-                                @endif-->
+                                @endif
 
 
 
@@ -371,6 +371,8 @@
 
 @section('css')
     <link rel="stylesheet" href="{{ asset('css/jquery.tagsinput-revisited.min.css') }}">
+    <link href="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.css" rel="stylesheet"/>
+
 @stop
 
 @section('js')

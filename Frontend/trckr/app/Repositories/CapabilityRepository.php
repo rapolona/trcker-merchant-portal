@@ -77,4 +77,13 @@ class CapabilityRepository extends Repository
             $this->sessionExpired($e);
         }
     }
+
+    public function getCities()
+    {
+        try {
+            return $this->trackerApi('get', $this->api . 'capability/cityGetAll', []);
+        } catch(\Exception $e) {
+            $this->sessionExpired($e);
+        }
+    }
 }

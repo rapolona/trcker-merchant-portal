@@ -13,6 +13,7 @@ use Response;
 use App\Services\CampaignService;
 use App\Services\TaskService;
 use App\Services\BranchService;
+use App\Services\CapabilityService;
 use Illuminate\Mail\Markdown;
 
 class CampaignController extends Controller
@@ -23,16 +24,20 @@ class CampaignController extends Controller
 
     private $branchService;
 
+    private $capabilityService;
+
     private $defaultPerPage;
 
     public function __construct(
         CampaignService $campaignService,
         TaskService $taskService,
+        CapabilityService $capabilityService,
         BranchService $branchService)
     {
         $this->campaignService = $campaignService;
         $this->taskService = $taskService;
         $this->branchService = $branchService;
+        $this->capabilityService = $capabilityService;
         $this->defaultPerPage = Config::get('trckr.table_pagination');
     }
 
@@ -203,11 +208,14 @@ class CampaignController extends Controller
 
         $branches = $this->branchService->getAll($data);
         $branch_filters = $this->branchService->getFilters();
+        $cities = $this->capabilityService->getCities();
+
+        print_r($cities);
 
         foreach ($tasks as &$k)
             $k->task_id = $k->task_classification_id . "|" . $k->task_id;
 
-        return view('concrete.campaign.create', ['campaign_type' => $campaign_type, 'branches' => $branches, 'branch_filters' => $branch_filters, 'task_type' => $task_type, 'tasks' => $tasks]);
+        return view('concrete.campaign.create', ['campaign_type' => $campaign_type, 'branches' => $branches, 'branch_filters' => $branch_filters, 'task_type' => $task_type, 'tasks' => $tasks, 'cities' => $cities]);
     }
 
     public function create_campaign(Request $request)

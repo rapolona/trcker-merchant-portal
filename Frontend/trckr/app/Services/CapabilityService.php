@@ -63,5 +63,10 @@ class CapabilityService
     {
         return $this->repository->getCampaignDetails($data);
     }
+
+    public function getCities()
+    {
+        return $this->repository->getCities();
+    }
 }
 
