@@ -7,11 +7,7 @@ module.exports = app => {
 
     router.get("/users/listall", adminMiddleware.isAuthenticated, users.listUsers);
     router.get("/users/:user_id", adminMiddleware.isAuthenticated, users.getUserDetails)
-
-    
-
-    
-
+    router.post("/users/blockUser", adminMiddleware.isAuthenticated, users.blockUser)
 
     app.use('/merchant/', router);
 }

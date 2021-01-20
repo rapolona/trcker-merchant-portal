@@ -28,6 +28,8 @@ db.adminpasswordtokens = require("./admin_password_token.model.js")(sequelize, S
 db.users = require("./user.model.js")(sequelize, Sequelize);
 db.userdetails = require("./userdetail.model.js")(sequelize, Sequelize);
 db.userpayoutrequests = require("./user_payout_request.model.js")(sequelize,Sequelize);
+db.usersessions = require("./usersession.model.js")(sequelize, Sequelize);
+db.useraudit = require("./user_audit.model.js")(sequelize,Sequelize)
 //Merchant Related Tables
 db.merchants = require("./merchant.model.js")(sequelize, Sequelize);
 db.branches = require("./branch.model.js")(sequelize, Sequelize);
@@ -109,23 +111,13 @@ db.task_tickets.belongsTo(db.branches, {foreignKey:'branch_id'});
 db.task_questions.hasMany(db.task_details, {foreignKey: 'task_question_id'});
 db.task_details.belongsTo(db.task_questions, {foreignKey:'task_question_id'})
 db.task_tickets.belongsTo(db.tasks, {foreignKey: 'task_id'})
-
-
-
-
-
-
-
-
-
-
-
-
 db.task_tickets.hasMany(db.task_ticket_audit, {foreignKey:'task_ticket_id'});
 
 
 //User rewards relationships
 db.users.hasOne(db.user_wallets, {foreignKey: "user_id"});
+db.users.hasMany(db.useraudit, {foreignKey: "user_id"});
 db.user_wallets.belongsTo(db.users, {foreignKey: "user_id"});
+db.user
 
 module.exports = db

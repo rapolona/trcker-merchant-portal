@@ -4,6 +4,8 @@ const Users = db.users;
 const UserDetails = db.userdetails;
 const TaskTickets = db.task_tickets;
 const PayoutRequests = db.userpayoutrequests;
+const UserSessions = db.usersessions;
+const UserAudit = db.useraudit;
 const Op = db.Sequelize.Op;
 
 exports.listUsers = (req,res) => {
@@ -79,4 +81,50 @@ exports.getUserDetails = (req,res) => {
                 message: err.message | "error getting users details"
             })
         })
+}
+
+exports.blockUser = (req,res) => {
+    var userAuditObj = {
+        status_changed_to: "BLOCKED",
+        last_updated_by: req.body.adminid,
+        last_updated_by_type: "MERCHANT",
+        user_id: req.body.user_id
+    }
+    if(req.body.reason){
+        userAuditObj.reason = req.body.reason
+    }
+
+    Users.update({status: "BLOCKED"},{where: {user_id: req.body.user_id}})
+    .then(num=>{
+        if(num == 1){
+            UserAudit.create(userAuditObj)
+            .then(data => {
+                if(data){
+                    UserSessions.destroy({where: {user_id:req.body.user_id}})
+                    .then(num =>{
+                        res.send({
+                            message: "User blocked succesfully"
+                        })
+                    })
+                    .catch(err=>{
+                        console.log("Error deleting user session")
+                        console.log(err)
+                    })
+                }
+            })
+            .catch(err =>{
+                console.log("Error creating user audit")
+                console.log(err)
+            })
+        }
+        else{
+            res.status(500).send({
+                message: "Error updating user "
+            })
+        }
+    })
+    .catch(err => {
+        console.log("Error updating user")
+        console.log(err)
+    })
 }
