@@ -13,6 +13,7 @@ const Campaign_Reward = db.campaign_rewards;
 const Task_Ticket = db.task_tickets;
 const Op = db.Sequelize.Op;
 const sequelize = db.sequelize;
+const s3Util = require("../utils/s3.utils.js");
 
 
 
@@ -116,18 +117,6 @@ exports.create = (req, res) => {
         branches_container.push(req.body.branches[i])
       }
     }
-    // if (moment(req.body.end_date).isBefore(moment(Date.now()).subtract(1,'days'))){
-    //   res.status(400).send({
-    //     message: "Cannot create campaign whose end date has already passed"
-    //   });
-    //   return;
-    // }
-    // if (moment(req.body.start_date).isBefore(moment(Date.now()).subtract(1,'days'))){
-    //   res.status(400).send({
-    //     message: "Cannot create campaign whose start date has already passed"
-    //   });
-    //   return;
-    // }
 
   // Create a campaign
   
@@ -194,25 +183,72 @@ exports.create = (req, res) => {
 
 
 
-db.sequelize.transaction(transaction =>
-  Campaign.create(campaign, {include: [
-    {model:Campaign_Task_Association, as:"campaign_task_associations"},
-    {model:Campaign_Branch_Association, as:"campaign_branch_associations"},
-    {model:Campaign_City_Association, as:"campaign_city_associations"}
-  ],
-    transaction
-  }).then(data => {
-    res.send(data);
-  })
-  .catch(err => {
-    transaction.rollback();
-    res.status(500).send({
-      message:
-        err.message || "Some error occurred while creating the Campaign."
-    });
-  })
-)
-};
+  var chainedPromises = [];
+  db.sequelize.transaction(transaction =>
+    Campaign.create(campaign, {include: [
+      {model:Campaign_Task_Association, as:"campaign_task_associations"},
+      {model:Campaign_Branch_Association, as:"campaign_branch_associations"},
+      {model:Campaign_City_Association, as:"campaign_city_associations"}
+    ],
+      transaction
+    }).then(data => {
+      if(req.body.thumbnail_image_name && req.body.thumbnail_image_base64){
+        const now = moment().format('XX')
+        var thumbnail_file_name = "Thumbnail_"+data.campaign_id+"_"+ now+"_"+req.body.thumbnail_image_name
+        chainedPromises.push(
+          s3Util.s3Upload(req.body.thumbnail_image_base64, "ThumbnailImages"+"/" + thumbnail_file_name, "dev-trcker-campaign-images",{})
+          .catch(err=>{
+            transaction.rollback()
+            console.log("Error uploading to S3" + " "+ err.message)
+            res.status(500).send({
+              message: err.code || "Error uploading image to s3"
+            })
+          }))
+        console.log('editing campaign id '+ data.campaign_id)
+          chainedPromises.push(
+            Campaign.update({thumbnail_url: thumbnail_file_name}, {
+              where: { campaign_id: data.campaign_id }, transaction
+            })
+              .then(num => {
+                if (num == 1) {
+                  //res.send(data);
+                } else {
+                  res.status(422).send({
+                    message: `Cannot update Campaign with id=${data.campaign_id}. Maybe Campaign was not found or req.body is empty!`
+                  });
+                }
+              })
+              .catch(err => {
+                res.status(500).send({
+                  message: err.code+" Error updating Campaign with id=" + data.campaign_id
+                });
+              })
+    
+          )
+          return Promise.all(chainedPromises)
+          .then(newdata=> {
+            res.send(data)
+          })
+          .catch(err => {
+            console.log("Error creating campaign")
+          })
+      } else{
+        res.send(data);
+      }
+      
+
+  
+      
+    })
+    .catch(err => {
+      transaction.rollback();
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while creating the Campaign."
+      });
+    })
+  )
+  };
 
 // Retrieve all Campaigns from the database.
 exports.findAll = (req, res) => {
@@ -365,11 +401,29 @@ exports.findOne = (req, res) => {
         delete new_result.cities;
         new_result.start_date = new_result.start_date.toISOString().substring(0,10);
         new_result.end_date = new_result.end_date.toISOString().substring(0,10);
+        console.log(data.thumbnail_url)
+        if(data.thumbnail_url){
+          s3Util.s3getHeadObject("dev-trcker-campaign-images", "ThumbnailImages/"+data.thumbnail_url)
+          .then(new_data => {
+            console.log(new_data)
+            var signedThumbnailImageURL = s3Util.s3GetSignedURL("dev-trcker-campaign-images", "ThumbnailImages/"+data.thumbnail_url)
 
-
-
-
+            new_result.signed_thumbnail_url = signedThumbnailImageURL
+            console.log(new_result)
+            res.send(new_result)
+          })
+          .catch(err => {
+            res.status(500).send({
+              message: err.code 
+            });
+          })
+       } else {
         res.send(new_result);
+       }
+
+
+
+        
 
       })
       .catch(err => {
