@@ -42,9 +42,6 @@ module.exports = (sequelize, Sequelize) => {
       audience_gender: {
         type: Sequelize.STRING(64)
       },
-      audience_city: {
-        type: Sequelize.STRING(64)
-      },
       allowed_account_level: {
         type: Sequelize.STRING(64)
       },
