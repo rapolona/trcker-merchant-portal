@@ -135,7 +135,7 @@ exports.findAllforMerchant = (req, res) => {
   const task_name = req.query.task_name;
 
 
-  var include_condition = [{model: Task_Classification},{model: Task_Question, include:[{model:Task_Question_Choices}]}]
+  var include_condition = [{model: Task_Question, include:[{model:Task_Question_Choices}]}]
   var exclude_condition = ['banner_image']
   var where_condition = {
     [Op.or]: [
@@ -149,7 +149,6 @@ exports.findAllforMerchant = (req, res) => {
 
   if(task_type){
     include_condition = [
-      {model: Task_Classification, where: {task_type: task_type}},
       {model: Task_Question, include:[{model:Task_Question_Choices}]}
     ]
   }
