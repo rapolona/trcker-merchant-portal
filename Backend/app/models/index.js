@@ -118,6 +118,6 @@ db.task_tickets.hasMany(db.task_ticket_audit, {foreignKey:'task_ticket_id'});
 db.users.hasOne(db.user_wallets, {foreignKey: "user_id"});
 db.users.hasMany(db.useraudit, {foreignKey: "user_id"});
 db.user_wallets.belongsTo(db.users, {foreignKey: "user_id"});
-db.user
+db.users.hasOne(db.usersessions, {foreignKey: "user_id", as:"userSessions"});
 
 module.exports = db
