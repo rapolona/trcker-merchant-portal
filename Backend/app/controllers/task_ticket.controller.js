@@ -8,6 +8,7 @@ const Task_Question = db.task_questions;
 const Campaign = db.campaigns;
 const Branches = db.branches;
 const Op = db.Sequelize.Op;
+const s3Utils = require("../utils/s3.utils.js");
 
 // Update a Task_Ticketn by the id in the request
 exports.approve = (req, res) => {
@@ -490,3 +491,58 @@ exports.approve = (req, res) => {
         })
 
     }
+
+exports.getCampaignGallery = (req,res) => {
+  var campaign_id = req.body.campaign_id
+  var resultUrls= []
+  var resultObj = {}
+  var chainedPromise = []
+  var page_number = 1
+  var count_per_page = 25
+  if((req.query.page)&&(req.query.count_per_page)){
+    page_number = parseInt(req.query.page);
+    count_per_page = parseInt(req.query.count_per_page);  
+  }
+  var skip_number_of_items = (page_number * count_per_page) - count_per_page
+  Task_Ticket.findAndCountAll({
+    where: {campaign_id: campaign_id}, include: [{model:Task_Detail, include:[{model:Task_Question, where:{required_inputs: "IMAGE"}}]}],
+    limit:count_per_page, offset:skip_number_of_items
+  })
+  .then(data =>{
+    resultObj.total_pages = Math.ceil(data.count/count_per_page);
+    resultObj.current_page = page_number;
+    resultObj.count = data.count  
+    var dataObj = []
+    data.rows.forEach(element=>{
+      dataObj.push(element.get({plain:true}))
+    })
+    dataObj.map(element => {
+      element.task_details.forEach(taskDetail => {
+        chainedPromise.push(
+          s3Utils.s3getHeadObject("dev-trcker-task-ticket-images", campaign_id+"/"+taskDetail.response)
+          .then(data => {
+            resultUrls.push(s3Utils.s3GetSignedURL("dev-trcker-task-ticket-images", campaign_id+"/"+taskDetail.response)) 
+            })
+            .catch(err => {
+              console.log(err)
+              res.status(500).send({
+                message: err.code
+              });
+            })
+          )
+      })
+    })
+    Promise.all(chainedPromise)
+    .then(data => {
+      resultObj.rows = resultUrls
+      res.send(resultObj)
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: "Something went wrong retrieving the s3 urls"
+      })
+    })
+  })
+
+
+}
