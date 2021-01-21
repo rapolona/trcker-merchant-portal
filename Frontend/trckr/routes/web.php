@@ -82,6 +82,7 @@ Route::group(["middleware" => ["merchantAuth"]], function() {
         Route::get('/duplicate/{id}', 'CampaignController@duplicate_campaign');
         Route::get('/status/{status}/{id}', 'CampaignController@status_campaign');
         Route::post('/bulk-action', 'CampaignController@bulk_action');
+        Route::get('/getCities', 'CampaignController@getCities' );
     });
 
     // TASK
