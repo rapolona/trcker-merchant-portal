@@ -28,6 +28,7 @@ db.adminpasswordtokens = require("./admin_password_token.model.js")(sequelize, S
 db.users = require("./user.model.js")(sequelize, Sequelize);
 db.userdetails = require("./userdetail.model.js")(sequelize, Sequelize);
 db.userpayoutrequests = require("./user_payout_request.model.js")(sequelize,Sequelize);
+db.userpayoutrequestsaudit = require("./user_payout_request_audit.model.js")(sequelize, Sequelize);
 db.usersessions = require("./usersession.model.js")(sequelize, Sequelize);
 db.useraudit = require("./user_audit.model.js")(sequelize,Sequelize)
 //Merchant Related Tables

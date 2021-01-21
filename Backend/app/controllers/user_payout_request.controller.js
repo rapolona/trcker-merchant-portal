@@ -1,5 +1,8 @@
+const { userpayoutrequestsaudit } = require("../models");
 const db = require("../models");
 const User_payout_request = db.userpayoutrequests;
+const User_Payout_Requests_Audit = db.userpayoutrequestsaudit;
+const UserWallet = db.user_wallets
 const Op = db.Sequelize.Op;
 
 
@@ -66,10 +69,11 @@ exports.findOne = (req, res) => {
     }
     db.sequelize.transaction({autocommit:false}, transaction => {
         chainedPromises.push(
-            UserPayoutRequest.update(payoutRequestBody, {where: {user_payout_request_id: req.body.user_payout_request_id, status:"PENDING"}, transaction})
+            User_payout_request.update(payoutRequestBody, {where: {user_payout_request_id: req.body.user_payout_request_id, status:"PENDING"}, transaction})
             .then(num => {
                 if(num != 1){
-                    throw new Error({message: "No payout request updated"})
+                    res.status(422).send({message: "Updating a payout request that has already been settled"})
+                    transaction.rollback();
                 }
             })
             .catch(err => {
@@ -79,25 +83,36 @@ exports.findOne = (req, res) => {
             })
         );
 
-        if(payoutRequestBody.status = "REJECTED"){
+        if(payoutRequestBody.status == "REJECTED"){
             chainedPromises.push(
-                UserPayoutRequest.findOne({where: {user_payout_request_id: req.body.user_payout_request_id}, attributes: ["user_id", "amount"], transaction})
-                    .then(data => {
-                        if(data){
-                            data = data.get({plain:true})
-                            chainedPromises.push(
-                                UserWallet.update({
-                                    current_amount: db.sequelize.literal(`current_amount + ${data.amount}`)},
-                                    {where: {user_id: data.user_id}, 
-                                    transaction
-                                }))
-                        }
-                    })
+                User_payout_request.findOne({where: {user_payout_request_id: req.body.user_payout_request_id}, attributes: ["user_id", "amount"]})
             )
         }
+        var userPayoutRequestAuditObj = {
+            status_changed_to: payoutRequestBody.status,
+            last_updated_by : req.body.adminid,
+            last_updated_by_type: "MERCHANT",
+            user_payout_request_id: req.body.user_payout_request_id,        
+        }
+        chainedPromises.push(
+            User_Payout_Requests_Audit.create(userPayoutRequestAuditObj, {transaction: transaction})
+            .catch(err=>{
+                console.log("Error creating payout request audit")
+                console.log(err)
+            })
+        )
         return Promise.all(chainedPromises)
         .then(data => {
-            console.log(data)
+            if(data[1]){
+                var UserPayoutData = data[1].get({plain:true})
+                UserWallet.update({
+                    current_amount: db.sequelize.literal(`current_amount + ${UserPayoutData.amount}`)},
+                    {where: {user_id: UserPayoutData.user_id}, 
+                })
+                .catch(err=>{
+                    console.log(err)
+                })
+            }
             res.send({message: `Succesfully ${payoutRequestBody.status} payout request`})
         })
         .catch(err => {
