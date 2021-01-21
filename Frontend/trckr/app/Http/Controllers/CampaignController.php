@@ -126,6 +126,14 @@ class CampaignController extends Controller
         */
     }
 
+    public function getCities()
+    {
+        $cities = $this->capabilityService->getCities();
+        return Response()->json([
+            "data" => $cities
+        ], 200);
+    }
+
     public function view_campaign($campaignId)
     {
         $task_type = $this->taskService->getTaskActionClassification();
@@ -208,14 +216,11 @@ class CampaignController extends Controller
 
         $branches = $this->branchService->getAll($data);
         $branch_filters = $this->branchService->getFilters();
-        $cities = $this->capabilityService->getCities();
-
-        print_r($cities);
 
         foreach ($tasks as &$k)
             $k->task_id = $k->task_classification_id . "|" . $k->task_id;
 
-        return view('concrete.campaign.create', ['campaign_type' => $campaign_type, 'branches' => $branches, 'branch_filters' => $branch_filters, 'task_type' => $task_type, 'tasks' => $tasks, 'cities' => $cities]);
+        return view('concrete.campaign.create', ['campaign_type' => $campaign_type, 'branches' => $branches, 'branch_filters' => $branch_filters, 'task_type' => $task_type, 'tasks' => $tasks]);
     }
 
     public function create_campaign(Request $request)

@@ -35,7 +35,7 @@
 
                                 <div class="input-group form-group">
                                     <div class="input-group-prepend"><span class="input-group-text"><span class="mdi-account-minus"></span></span></div>
-                                    <input required class="form-control  {{ $errors->first('audience_age_min')? 'form-control-danger' : '' }}" type="number" min="1" value="{{ old('audience_age_min') }}" name="audience_age_min" id="audience_age_min" placeholder="Audience Minimum Age">
+                                    <input class="form-control  {{ $errors->first('audience_age_min')? 'form-control-danger' : '' }}" type="number" min="1" value="{{ old('audience_age_min') }}" name="audience_age_min" id="audience_age_min" placeholder="Audience Minimum Age">
                                 </div>
                                 @if($errors->first('audience_age_min'))
                                     <div class="tag-manager-container">
@@ -44,7 +44,7 @@
                                 @endif
                                 <div class="input-group form-group">
                                     <div class="input-group-prepend"><span class="input-group-text"><span class="mdi-account-plus"></span></span></div>
-                                    <input required class="form-control  {{ $errors->first('audience_age_max')? 'form-control-danger' : '' }}" type="number" min="1" value="{{ old('audience_age_max') }}" name="audience_age_max" id="audience_age_max" placeholder="Audience Maximum Age">
+                                    <input class="form-control  {{ $errors->first('audience_age_max')? 'form-control-danger' : '' }}" type="number" min="1" value="{{ old('audience_age_max') }}" name="audience_age_max" id="audience_age_max" placeholder="Audience Maximum Age">
                                 </div>
                                 @if($errors->first('audience_age_max'))
                                     <div class="tag-manager-container">
@@ -98,9 +98,8 @@
 
                                 <div class="input-group form-group">
                                     <div class="input-group-prepend"><span class="input-group-text"><span class="mdi-gender-male-female"></span></span></div>
-                                    <select required class="form-control" name="audience_gender" id="audience_gender">
+                                    <select class="form-control" name="audience_gender" id="audience_gender">
                                         <option value="">Target Gender</option>
-                                        <option value="">Any</option>
                                         <option {{ (old('audience_gender')=="Male")? 'selected="selected"' : '' }} value="Male">Male</option>
                                         <option {{ (old('audience_gender')=="Female")? 'selected="selected"' : '' }} value="Female">Female</option>
                                     </select>
@@ -112,8 +111,9 @@
                                 @endif
 
                                 <div class="input-group form-group">
-                                    <div class="input-group-prepend"><span class="input-group-text"><span class="mdi-city"></span></span></div>
-                                    <input required class="form-control  {{ $errors->first('audience_city')? 'form-control-danger' : '' }}" type="number" min="1" value="{{ old('audience_age_min') }}" name="audience_city" id="audience_city" placeholder="Target City">
+                                    <select class="form-control select2"  data-placeholder="  --Select Audience City--" id="audience_city" name="audience_city[]" multiple="multiple">
+                                        <option label="placeholder"></option>
+                                    </select>
                                 </div>
                                 @if($errors->first('audience_city'))
                                     <div class="tag-manager-container">
@@ -369,18 +369,13 @@
     </form>
 @stop
 
-@section('css')
-    <link rel="stylesheet" href="{{ asset('css/jquery.tagsinput-revisited.min.css') }}">
-    <link href="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.css" rel="stylesheet"/>
-
-@stop
 
 @section('js')
-    <script type="text/javascript" src="{{ asset('js/jquery.tagsinput-revisited.min.js') }}"></script>
     <script type="text/javascript">
 
         let oTable = null,
-            allPages = null;
+            allPages = null,
+            cities = [];
 
         //input_end_date
         $('#input_start_date').datepicker({
@@ -415,6 +410,18 @@
 
                 allPages = oTable.fnGetNodes();
             }, 2000);
+
+            $.get( "{{ url('campaign/getCities') }}", function( data ) {
+                let cities = data.data;
+                
+                for (i = 0; i < cities.length; i++) {
+                    $('#audience_city').append($('<option>', {
+                        value: cities[i]['Id'],
+                        text: cities[i]['label']
+                    }));
+                }
+
+            });
         });
 
 
@@ -589,19 +596,6 @@
                 });
             })
 
-
-            $('#audience_city').tagsInput({
-                placeholder:'Target City',
-                'autocomplete': {
-                    source: [
-                        'Caloocan',
-                        'Makati',
-                        'Mandaluyong',
-                        'Taguig'
-                    ]
-                }
-
-            });
 
         });
 
