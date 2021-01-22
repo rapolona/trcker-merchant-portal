@@ -364,7 +364,6 @@
                                         </div>
 
                                         <div class="col-md-1">
-                                            <!-- <button class="btn btn-primary" type="submit">Add more</button> -->
                                             <button style="display:none;" type="button" class="btn btn-danger btn-md remove_task" {{ $x > 0 ? '' : 'style="display: none"' }}>
                                                 <span class="fa-remove"></span>
                                             </button>

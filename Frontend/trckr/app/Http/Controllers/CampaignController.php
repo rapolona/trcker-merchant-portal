@@ -234,8 +234,6 @@ class CampaignController extends Controller
             "reward.*" => "required|numeric|lt:budget",
             "task_actions.*" => "required",
             "status" => "",
-            "audience_age_max" => "numeric",
-            "audience_age_min" => "numeric",
             "audience" => "required",
             "thumbnail_url" => "required|max:100"
         ];
@@ -266,6 +264,14 @@ class CampaignController extends Controller
             $data['tasks'][$k]['mandatory']= ($data['man'][$k]=='true')? 1 : 0;
         }
 
+        $data['audience_cities'] = [];
+
+        if(isset($data['audience_city'])){
+            foreach ($data['audience_city'] as $key => $value) {
+                $data['audience_cities'][$key] = ['city_id' => $value] ;
+            }
+        }
+
         $validator = Validator::make($data, $validations);
 
         if ($validator->fails())
@@ -288,7 +294,12 @@ class CampaignController extends Controller
             "campaign_type" => $data['campaign_type'],
             "branches" => array(),
             "tasks" => $data['tasks'],
-            "permanent_campaign" => isset($data['permanent_campaign'])? 1 : 0        
+            "permanent_campaign" => isset($data['permanent_campaign'])? 1 : 0,
+            "audience_age_max" => $data['audience_age_max'],
+            "audience_age_min" => $data['audience_age_min'],
+            "audience_gender" => $data['audience_gender'],
+            "audience_cities" => $data['audience_cities']
+
         );
 
         $request_data['campaign_description'] = Markdown::parse($request_data['campaign_description'])->toHtml();
@@ -299,12 +310,6 @@ class CampaignController extends Controller
         if ( ! empty($data["branch_id-nobranch"]) && $data["branch_id-nobranch"] == "on") {
             $request_data["at_home_campaign"] = 1;
             $request_data["at_home_respondent_count"] = $data["nobranch_submissions"];
-           /* $request_data["reward"] = array(
-                "reward_name" => "Cash",
-                "reward_description" => "Cash reward",
-                "type" => "CASH",
-                "amount" => array_sum($data["reward"])
-            );*/
         }
         else {
             foreach($data['branch_id'] as $k => $v){
@@ -322,6 +327,8 @@ class CampaignController extends Controller
             );
         }
 
+        ///print_r($request_data); exit();
+
         $response = $this->campaignService->create($request_data);
 
         if ( ! empty($response->campaign_id))
@@ -334,8 +341,6 @@ class CampaignController extends Controller
                 "type" => "danger",
                 "message" => "Create Campaign Failed - {$response->message}",
             ];
-
-        $task_type = $this->taskService->getTaskActionClassification();
 
         $tasks = $this->taskService->getTaskByMerchant();
 
@@ -356,11 +361,9 @@ class CampaignController extends Controller
 
         $branches = $this->branchService->getAll($request);
         $branch_filters = $this->branchService->getFilters();
+        $cities = $this->capabilityService->getCities();
 
-        foreach ($tasks as &$k)
-            $k->task_id = $k->task_classification_id . "|" . $k->task_id;
-
-        return view('concrete.campaign.create', ['formMessage' => $msg, 'campaign_type' => $campaign_type, 'branches' => $branches, 'branch_filters' => $branch_filters, 'task_type' => $task_type, 'tasks' => $tasks]);
+        return view('concrete.campaign.create', ['formMessage' => $msg, 'campaign_type' => $campaign_type, 'branches' => $branches, 'branch_filters' => $branch_filters, 'tasks' => $tasks, 'cities' => $cities]);
     }
 
     public function campaign_type(Request $request)
@@ -572,16 +575,15 @@ class CampaignController extends Controller
             $campaign['submission'][$bKey] = $branch->respondent_count;
         }
 
-        //mcess yung gprint_r($campaign); exit();
-
-        foreach ($tasks as &$k)
-            $k->task_id = $k->task_classification_id . "|" . $k->task_id;
+        $cities = $this->capabilityService->getCities();
+        //print_r($campaign); exit();
 
         return view('concrete.campaign.edit', [
             'campaign_type' => $campaign_type,
             'branches' => $branches,
             'branch_filters' => $branch_filters,
             'tasks' => $tasks,
+            'cities' => $cities,
             'campaign' => $campaign
         ]);
 

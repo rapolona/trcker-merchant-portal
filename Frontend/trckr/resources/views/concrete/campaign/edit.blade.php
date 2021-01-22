@@ -8,10 +8,11 @@
             <div class="container-fluid">
                 <div class="panel panel-nav">
                     <div class="panel-header d-flex flex-wrap align-items-center justify-content-between">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="panel-title">Campaign Details</div>
                         </div>
-                        <div class="col-md-6">
+
+                        <div class="col-md-4">
                             <div class="pull-right">
                                 <strong>Status: </strong>
                                 <span>{{ $campaign['status'] }}</span>
@@ -20,6 +21,14 @@
                                 @elseif($campaign['status']=='ONGOING')
                                     <a class="btn btn-sm btn-success" href="{{ url('campaign/status/disable/' . $campaign['campaign_id'] )}}">Disable</a>
                                 @endif
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="pull-right">
+                                <div class="custom-control custom-switch custom-switch-primary">
+                                    <input class="custom-control-input" type="checkbox" id="permanent_campaign" name="permanent_campaign" />
+                                    <label class="custom-control-label" for="permanent_campaign">Permanent Campaign?</label>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -347,22 +356,21 @@
                                 $selected_task_ids = [];
                             @endphp
                             @for($x = 0; $x <= 5; $x++)
-                                @if($x==0 || old('task_type.' . $x, (isset($campaign['tasks'][$x]->task_id))? $campaign['tasks'][$x]->task_id : ''))
+                                @if($x==0 || old('task_id.' . $x, (isset($campaign['tasks'][$x]->task_id))? $campaign['tasks'][$x]->task_id : ''))
                                     @php 
+                                        $cur_task_id = old('task_id.' . $x);
+                                        $man_value = old('man.' . $x);
                                         array_push($selected_task_ids, $campaign['tasks'][$x]->task_id);
                                     @endphp
                                     <div class="row row-30 task-container">
-                                        <div class="col-md-3">
-                                            <div class="form-group">
-                                                <select class="form-control task_type" required name="task_type[]" style="width: 100%;" data-taskkey="{{ $x }}">
-                                                    <option value="">Select Task Type</option>
-                                                    @foreach ($task_type as $ct)
-                                                        <option {{ (old('task_type.' . $x, $campaign['tasks'][$x]->task_type) == $ct->task_classification_id)? 'selected="selected"' : '' }} value="{{$ct->task_classification_id}}">{{$ct->name}}</option>
-                                                    @endforeach
-                                                </select>
+                                        <div class="col-md-2">
+                                            <div class="custom-control custom-switch custom-switch-primary">
+                                                <input class="custom-control-input mandatory" {{ ($man_value=='true' || $man_value=='')? 'checked' : '' }} type="checkbox" id="mandatory{{ $x }}" name="mandatory[]" />
+                                                <label class="custom-control-label" for="mandatory{{ $x }}">Mandatory?</label>
+                                                <input class="mandatory-buffer" type='hidden' value="{{ old('man.' . $x) }}" name='man[]'>
                                             </div>
                                         </div>
-                                        <div class="col-md-3">
+                                        <div class="col-md-6">
                                             <div class="form-group task-action-container">
                                                 <select class="form-control select2 task_actions" required name="task_id[]" style="width: 100%;">
                                                     <option value="">Select Task</option>
@@ -376,8 +384,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-md-3">
-                                            <!-- <button class="btn btn-primary" type="submit">Add more</button> -->
+                                        <div class="col-md-1">
                                             <button type="button" class="btn btn-danger btn-md remove_task" {{ $x > 0 ? '' : 'style="display: none"' }}>
                                                 <span class="fa-remove"></span>
                                             </button>
