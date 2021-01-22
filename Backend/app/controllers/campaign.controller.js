@@ -369,7 +369,7 @@ exports.findOne = (req, res) => {
     } , 
     include: [
       {model:Branch, attributes:['branch_id','name'], through: {attributes: ['campaign_branch_association_id','respondent_count']} },
-      {model:tasks, attributes:['task_id','task_name'], through: {attributes: ['campaign_task_association_id','reward_amount']}},
+      {model:tasks, attributes:['task_id','task_name'], through: {attributes: ['campaign_task_association_id','reward_amount', 'mandatory']}},
       {model:City, attributes:['Id']}
 
     ],
@@ -387,6 +387,7 @@ exports.findOne = (req, res) => {
         }
         for (i = 0; i < new_result.tasks.length; i++){
           new_result.tasks[i].reward_amount = new_result.tasks[i].campaign_task_association.reward_amount;
+          new_result.tasks[i].mandatory = new_result.tasks[i].campaign_task_association.mandatory;
           if(duplicate==0){new_result.tasks[i].campaign_task_association_id = new_result.tasks[i].campaign_task_association.campaign_task_association_id}
           delete new_result.tasks[i].campaign_task_association;
         }
