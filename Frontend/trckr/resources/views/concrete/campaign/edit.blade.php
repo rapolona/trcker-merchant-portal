@@ -358,7 +358,7 @@
                             @for($x = 0; $x <= 5; $x++)
                                 @if($x==0 || old('task_id.' . $x, (isset($campaign['tasks'][$x]->task_id))? $campaign['tasks'][$x]->task_id : ''))
                                     @php 
-                                        $cur_task_id = old('task_id.' . $x);
+                                        $cur_task_id = old('task_id.' . $x, $campaign['tasks'][$x]->task_id );
                                         $man_value = old('man.' . $x);
                                         array_push($selected_task_ids, $campaign['tasks'][$x]->task_id);
                                     @endphp
@@ -374,6 +374,9 @@
                                             <div class="form-group task-action-container">
                                                 <select class="form-control select2 task_actions" required name="task_id[]" style="width: 100%;">
                                                     <option value="">Select Task</option>
+                                                    @foreach($tasks as $task)
+                                                    <option {!! ($task->task_id==$cur_task_id)? 'selected=""' : '' !!} value="{{ $task->task_id }}">{{ $task->task_name }}</option>
+                                                    @endforeach
                                                 </select>
                                             </div>
                                         </div>
@@ -385,7 +388,7 @@
                                         </div>
 
                                         <div class="col-md-1">
-                                            <button type="button" class="btn btn-danger btn-md remove_task" {{ $x > 0 ? '' : 'style="display: none"' }}>
+                                            <button type="button" class="btn btn-danger btn-md remove_task" style="display: none" >
                                                 <span class="fa-remove"></span>
                                             </button>
                                         </div>
