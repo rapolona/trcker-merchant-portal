@@ -7,7 +7,17 @@
             <div class="container-fluid">
                 <div class="panel panel-nav">
                     <div class="panel-header d-flex flex-wrap align-items-center justify-content-between">
-                        <div class="panel-title">Campaign Details</div>
+                        <div class="col-md-6">
+                            <div class="panel-title">Campaign Details</div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="pull-right">
+                                <div class="custom-control custom-switch custom-switch-primary">
+                                    <input class="custom-control-input" type="checkbox" id="permanent_campaign" name="permanent_campaign" />
+                                    <label class="custom-control-label" for="permanent_campaign">Permanent Campaign?</label>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="panel-body">
                         <div class="row row-30">
@@ -109,10 +119,16 @@
                                         <span class="tm-tag badge badge-danger" ><span>{{ $errors->first('audience_gender') }}</span></span>
                                     </div>
                                 @endif
-
+                                @php
+                                $audience_city_old = (old('audience_city')) ? old('audience_city') : [];
+                                @endphp
                                 <div class="input-group form-group">
-                                    <select class="form-control select2"  data-placeholder="  --Select Audience City--" id="audience_city" name="audience_city[]" multiple="multiple">
+                                    <select class="form-control select2"  data-placeholder="  --Select Audience City--" id="audience_city" name="audience_city[]"  multiple="multiple">
                                         <option label="placeholder"></option>
+                                        @foreach($cities as $newCity)
+
+                                        <option {{ in_array($newCity->Id, $audience_city_old)? 'selected' : '' }} value="{{ $newCity->Id }}">{{ $newCity->label }}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                                 @if($errors->first('audience_city'))
@@ -307,7 +323,7 @@
                 <div class="panel panel-nav">
                     <div class="panel-header d-flex flex-wrap align-items-center justify-content-between">
                         <div class="panel-title">Task Details</div>
-                        <button class="btn btn-sm" type="button" id="add_task"><span class="fa-plus">Add more task</span></button>
+                        <button class="btn btn-sm btn-success" type="button" id="add_task"><span class="fa-plus">Add more task</span></button>
                     </div>
 
                     <div class="panel-body">
@@ -316,25 +332,27 @@
                                 $selected_task_ids = [];
                             @endphp
                             @for($x = 0; $x <= 5; $x++)
-                                @if($x==0 || old('task_type.' . $x))
+                                @if($x==0 || old('task_id.' . $x))
                                     @php 
-                                        array_push($selected_task_ids, old('task_id.' . $x));
+                                        $cur_task_id = old('task_id.' . $x);
+                                        $man_value = old('man.' . $x);
+                                        array_push($selected_task_ids, $cur_task_id );
                                     @endphp
                                     <div class="row row-30 task-container">
-                                        <div class="col-md-3">
-                                            <div class="form-group">
-                                                <select class="form-control task_type" required name="task_type[]" style="width: 100%;" data-taskkey="{{ $x }}">
-                                                    <option value="">Select Task Type</option>
-                                                    @foreach ($task_type as $ct)
-                                                        <option {{ (old('task_type.' . $x) == $ct->task_classification_id)? 'selected="selected"' : '' }} value="{{$ct->task_classification_id}}">{{$ct->name}}</option>
-                                                    @endforeach
-                                                </select>
+                                        <div class="col-md-2">
+                                            <div class="custom-control custom-switch custom-switch-primary">
+                                                <input class="custom-control-input mandatory" {{ ($man_value=='true' || $man_value=='')? 'checked' : '' }} type="checkbox" id="mandatory{{ $x }}" name="mandatory[]" />
+                                                <label class="custom-control-label" for="mandatory{{ $x }}">Mandatory?</label>
+                                                <input class="mandatory-buffer" type='hidden' value="{{ old('man.' . $x) }}" name='man[]'>
                                             </div>
                                         </div>
-                                        <div class="col-md-3">
+                                        <div class="col-md-6">
                                             <div class="form-group task-action-container">
-                                                <select class="form-control select2 task_actions" required name="task_id[]" style="width: 100%;">
+                                                <select class="form-control task_actions select2" required name="task_id[]" style="width: 100%;">
                                                     <option value="">Select Task</option>
+                                                    @foreach($tasks as $task)
+                                                    <option {!! ($task->task_id==$cur_task_id)? 'selected=""' : '' !!} value="{{ $task->task_id }}">{{ $task->task_name }}</option>
+                                                    @endforeach
                                                 </select>
                                             </div>
                                         </div>
@@ -345,7 +363,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-md-3">
+                                        <div class="col-md-1">
                                             <!-- <button class="btn btn-primary" type="submit">Add more</button> -->
                                             <button style="display:none;" type="button" class="btn btn-danger btn-md remove_task" {{ $x > 0 ? '' : 'style="display: none"' }}>
                                                 <span class="fa-remove"></span>
@@ -375,7 +393,27 @@
 
         let oTable = null,
             allPages = null,
-            cities = [];
+            cities = [],
+            taskOptions = [
+                @foreach($tasks as $task)
+                    '<option value="{{ $task->task_id }}">{{ $task->task_name }}</option>',
+                @endforeach
+            ],
+            audience_city_old = [
+                @php
+                $audience_city = old('audience_city');
+
+                if (is_array($audience_city)) {
+                    foreach ($audience_city as $key=>$value) {
+                        echo "$value,";
+                    }
+                }
+                @endphp
+            ];
+
+            console.log(audience_city_old);
+
+
 
         //input_end_date
         $('#input_start_date').datepicker({
@@ -409,9 +447,10 @@
                 });
 
                 allPages = oTable.fnGetNodes();
+
             }, 2000);
 
-            $.get( "{{ url('campaign/getCities') }}", function( data ) {
+            /*$.get( "{{ url('campaign/getCities') }}", function( data ) {
                 let cities = data.data;
                 
                 for (i = 0; i < cities.length; i++) {
@@ -419,9 +458,20 @@
                         value: cities[i]['Id'],
                         text: cities[i]['label']
                     }));
+   
+                    let curId = cities[i]['Id'],
+                    curLabel = cities[i]['label'];
+                    
+                    if(audience_city_old.includes(curId)){
+                        setTimeout(function () {
+                            $('#audience_city').select2('data', {id: curId, text: curLabel});
+                            console.log('ID :: ' + curId);
+                        }, 2000, curId, curLabel);
+                    }
+
                 }
 
-            });
+            });*/
         });
 
 
@@ -517,35 +567,7 @@
             $(this).closest('.task-container').remove();
         });
 
-        $(document).on("change", ".task_actions", function(){
-            var count = $(".task_actions").select2('data').length;
-        });
-
         let selected_task_ids = {!! json_encode($selected_task_ids) !!};
-        $(document).on("change", ".task_type" , function() {
-            let task_action = $(this).closest('.task-container').find('.task_actions');
-            let currentTaskIdKey = $(this).attr('data-taskkey');
-            let selectedTaskId = selected_task_ids[parseInt(currentTaskIdKey)];
-            $(task_action).empty();
-            $.ajax({
-                type:'GET',
-                url: "{{url('/campaign/campaign_type/task?task_id=')}}" + this.value,
-                cache:true,
-                contentType: false,
-                processData: false,
-                success: (data) => {
-                    $(data.file).each(function(){
-                        let isSel = (this.task_id==selectedTaskId)? 'selected="selected"' : '' ;
-                        $(task_action).append('<option '+isSel+' value="'+ this.task_id +'">' + this.task_name + '</option>');
-                    });
-                    console.log(data);
-                },
-                error: function(data){
-                    console.log(data);
-                }
-            });
-
-        });
 
         $(document).ready(function (e) {
             $("#branch_id-nobranch").change(function(){
@@ -572,6 +594,11 @@
                 window.location.href = "{{url('/campaign/view')}}";
             });
 
+            $(document).on('click', 'input.mandatory', function(){
+                let val = $(this).is(':checked');
+                $(this).closest('.task-container').find('input.mandatory-buffer').val(val);
+            });
+
             $(document).on('click', '#add_task', function(){
                 let index = $(".task-container").length;
                 if (index >= 5) {
@@ -585,14 +612,20 @@
 
                 let clonedTask = $("div.task-container:first").clone();
 
-                $('.task-action-container',clonedTask).html('<select required class="form-control select2 task_actions" name="task_id[]" style="width: 100%;">' +
+                let mandatoryCBoxID = "mandatory" + Math.random();
+
+                $('.task-action-container',clonedTask).html('<select required class="form-control task_actions" name="task_id[]" style="width: 100%;">' +
                     '<option value="">Select Task</option>' +
+                    taskOptions.join('') +
                     '</select>');
                 $('#taskBody').append(clonedTask);
                 $("div.task-container .remove_task:last").show();
-                $('#taskBody select.task_actions:last').select2({ //apply select2 to my element
-                    placeholder: "Select One",
-                    //allowClear: true
+ 
+                $("div.task-container:last label").attr('for', mandatoryCBoxID);
+                $("div.task-container:last input.mandatory").attr('id', mandatoryCBoxID);
+
+                $('#taskBody select.task_actions:last').select2({ 
+                    placeholder: "Select Task",
                 });
             })
 
@@ -616,7 +649,7 @@
         });
 
         $(document).ready(function (e) {
-            setTimeout(function(){ $(".task_type").change(); }, 3000);
+
             $("#branch_id-nobranch").change();
 
             $("form#create_campaign").submit(function(e){

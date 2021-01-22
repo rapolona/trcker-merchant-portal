@@ -197,7 +197,6 @@ class CampaignController extends Controller
     {
         $data = (array) $request->all();
 
-        $task_type = $this->taskService->getTaskActionClassification();
         $tasks = $this->taskService->getTaskByMerchant();
         $campaign_type = (object) array(
             (object) array(
@@ -216,16 +215,15 @@ class CampaignController extends Controller
 
         $branches = $this->branchService->getAll($data);
         $branch_filters = $this->branchService->getFilters();
+        $cities = $this->capabilityService->getCities();
 
-        foreach ($tasks as &$k)
-            $k->task_id = $k->task_classification_id . "|" . $k->task_id;
-
-        return view('concrete.campaign.create', ['campaign_type' => $campaign_type, 'branches' => $branches, 'branch_filters' => $branch_filters, 'task_type' => $task_type, 'tasks' => $tasks]);
+        return view('concrete.campaign.create', ['campaign_type' => $campaign_type, 'branches' => $branches, 'branch_filters' => $branch_filters, 'tasks' => $tasks, 'cities' => $cities]);
     }
 
     public function create_campaign(Request $request)
     {
         $data = $request->all();
+
         $validations = [
             "start_date" => "required|date|after_or_equal:today",
             "end_date" => "required|date|after_or_equal:start_date",
@@ -236,7 +234,8 @@ class CampaignController extends Controller
             "reward.*" => "required|numeric|lt:budget",
             "task_actions.*" => "required",
             "status" => "",
-            "task_type" => "",
+            "audience_age_max" => "numeric",
+            "audience_age_min" => "numeric",
             "audience" => "required",
             "thumbnail_url" => "required|max:100"
         ];
@@ -253,19 +252,18 @@ class CampaignController extends Controller
 
         //validation on task action classifiations, tasks and rewards
         $temp_task_actions = $data['task_id'];
-        $temp_task_type = $data['task_type'];
         $temp_reward= $data['reward_amount'];
         unset($data['task_actions']);
-        unset($data['task_type']);
         unset($data['reward']);
+        $data['tasks'] = [];
         $data['task_actions'] = array();
 
         $count = 0;
         foreach($temp_task_actions as $k => $v)
         {
-            $data['task_actions'][] = $temp_task_actions[$k];
-            $data['task_type'][] = $temp_task_type[$k];
-            $data['reward'][] = $temp_reward[$k];
+            $data['tasks'][$k]['task_id'] = $temp_task_actions[$k];
+            $data['tasks'][$k]['reward_amount'] = $temp_reward[$k];
+            $data['tasks'][$k]['mandatory']= ($data['man'][$k]=='true')? 1 : 0;
         }
 
         $validator = Validator::make($data, $validations);
@@ -281,30 +279,32 @@ class CampaignController extends Controller
             "budget" => $data['budget'],
             "campaign_name" => $data['campaign_name'],
             "campaign_description" => $data['campaign_description'],
-            "thumbnail_url" => $data['thumbnail_url'],
+            "thumbnail_image_base64" => $data['thumbnail_url'],
+            "thumbnail_image_name" => "",
             "description_image_url" => "",
             "super_shoppers" => ($data['audience'] == "super_shopper") ? 1 : 0,
             "allow_everyone" => ($data['audience'] == "All") ? 1 : 0,
             "task_type" => $data['campaign_type'],
             "campaign_type" => $data['campaign_type'],
             "branches" => array(),
-            "tasks" => array()
+            "tasks" => $data['tasks'],
+            "permanent_campaign" => isset($data['permanent_campaign'])? 1 : 0        
         );
 
         $request_data['campaign_description'] = Markdown::parse($request_data['campaign_description'])->toHtml();
 
         if ( ! empty($data['thumbnail_url']))
-            $request_data['thumbnail_url'] = 'data:' . $data['thumbnail_url']->getMimeType() . ';base64,' . base64_encode(file_get_contents($data['thumbnail_url']));
+            $request_data['thumbnail_image_base64'] = 'data:' . $data['thumbnail_url']->getMimeType() . ';base64,' . base64_encode(file_get_contents($data['thumbnail_url']));
 
         if ( ! empty($data["branch_id-nobranch"]) && $data["branch_id-nobranch"] == "on") {
             $request_data["at_home_campaign"] = 1;
             $request_data["at_home_respondent_count"] = $data["nobranch_submissions"];
-            $request_data["reward"] = array(
+           /* $request_data["reward"] = array(
                 "reward_name" => "Cash",
                 "reward_description" => "Cash reward",
                 "type" => "CASH",
                 "amount" => array_sum($data["reward"])
-            );
+            );*/
         }
         else {
             foreach($data['branch_id'] as $k => $v){
@@ -534,7 +534,6 @@ class CampaignController extends Controller
     public function edit($campaignId, Request $request)
     {
         $data = (array) $request->all();
-        $task_type = $this->taskService->getTaskActionClassification();
         $tasks = $this->taskService->getTaskByMerchant();
         $campaign_type = (object) array(
             (object) array(
@@ -559,14 +558,7 @@ class CampaignController extends Controller
         $campaign['daterange'] = date('m/d/Y', strtotime($campaign['start_date'])) . " - " . date('m/d/Y', strtotime($campaign['end_date']));
         $campaign['branch_id-nobranch'] = ($campaign['branches'][0]->branch_id == 'fbe9b0cf-5a77-4453-a127-9a8567ff3aa7')? true : false;
         $campaign['branch_id-nobranch_value'] = ($campaign['branches'][0]->branch_id == 'fbe9b0cf-5a77-4453-a127-9a8567ff3aa7')? $campaign['branches'][0]->respondent_count : '';
-        // TASK ALIGNMENT TO CREATE old()
-        foreach($tasks as $k){
-            foreach ($campaign['tasks']  as $camTkey => $camTask ){
-                if($k->task_id==$camTask->task_id){
-                    $campaign['tasks'][$camTkey]->task_type = $k->task_classification->task_classification_id;
-                }
-            }
-        }
+
 
         $converter = new HtmlConverter();
         $campaign['campaign_description'] = $converter->convert($campaign['campaign_description']);
@@ -589,7 +581,6 @@ class CampaignController extends Controller
             'campaign_type' => $campaign_type,
             'branches' => $branches,
             'branch_filters' => $branch_filters,
-            'task_type' => $task_type,
             'tasks' => $tasks,
             'campaign' => $campaign
         ]);
