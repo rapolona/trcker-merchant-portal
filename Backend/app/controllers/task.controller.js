@@ -216,6 +216,8 @@ exports.findAllforMerchant = (req, res) => {
       include: include_condition
       })
       .then(data => {
+        data.total_pages = Math.ceil(data.count/count_per_page);
+        data.current_page = page_number;
         res.send(data);
       })
       .catch(err => {
