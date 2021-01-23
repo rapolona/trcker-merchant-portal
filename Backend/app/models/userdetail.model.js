@@ -25,15 +25,6 @@ module.exports = (sequelize, Sequelize) => {
         gender:{
             type: Sequelize.STRING(64)
         },
-        city:{
-            type: Sequelize.STRING(64)
-        },
-        province:{
-            type: Sequelize.STRING(64)
-        },
-        region:{
-            type: Sequelize.STRING(64)
-        },
         country:{
             type: Sequelize.STRING(64)
         },
@@ -53,7 +44,31 @@ module.exports = (sequelize, Sequelize) => {
             model: 'users',
             key: 'user_id'
             }  
-        }
+        },
+        cityId:{
+            type: DataTypes.INTEGER,
+            allowNull: true,
+            references: {
+                model:'city',
+                key: 'Id'
+            }
+        },
+        provinceId:{
+            type: DataTypes.INTEGER,
+            allowNull: true,
+            references: {
+                model:'province',
+                key: 'Id'
+            }
+        },
+        regionId:{
+            type: DataTypes.INTEGER,
+            allowNull: true,
+            references: {
+                model:'region',
+                key: 'Id'
+            }
+        },
     });
     return UserDetail
 }

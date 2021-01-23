@@ -3,6 +3,11 @@ const db = require("../models");
 const User_payout_request = db.userpayoutrequests;
 const User_Payout_Requests_Audit = db.userpayoutrequestsaudit;
 const UserWallet = db.user_wallets
+const UserDetails = db.userdetails;
+const City = db.cities;
+const Province = db.provinces;
+const Region = db.regions;
+
 const Op = db.Sequelize.Op;
 
 
@@ -17,11 +22,36 @@ exports.findAll = (req, res) => {
       }
     var skip_number_of_items = (page_number * count_per_page) - count_per_page;
 
-    User_payout_request.findAndCountAll({offset:skip_number_of_items, limit: count_per_page})
+    User_payout_request.findAndCountAll({offset:skip_number_of_items, limit: count_per_page, 
+        include:[{model:UserDetails, 
+            include: [{model:City, as:"cityData"}, {model:Province, as:"provinceData"}, {model:Region, as:"regionData"}]
+        }]
+    })
     .then(data => {
-        data.total_pages = Math.ceil(data.count/count_per_page);
-        data.current_page = page_number;
-        res.send(data);
+        var userPayoutArr = []
+        data.rows.forEach(element => {
+            userPayoutArr.push(element.get({plain:true}))
+        })
+        var resultData = {}
+        resultData.rows =  userPayoutArr.map(element => {
+            if(element.user_detail.regionData){
+                element.user_detail.region = element.user_detail.regionData.label
+                delete element.user_detail.regionData
+            }
+            if(element.user_detail.cityData){
+                element.user_detail.city = element.user_detail.cityData.label
+                delete element.user_detail.cityData
+            }
+            if(element.user_detail.provinceData){
+                element.user_detail.province = element.user_detail.provinceData.label
+                delete element.user_detail.provinceData
+            }
+            return element
+        })
+        resultData.count = data.count
+        resultData.total_pages = Math.ceil(data.count/count_per_page);
+        resultData.current_page = page_number;
+        res.send(resultData);
     })
     .catch(err => {
         res.status(500).send({

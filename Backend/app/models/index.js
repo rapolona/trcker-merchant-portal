@@ -53,6 +53,8 @@ db.task_details = require("./task_detail.model.js")(sequelize, Sequelize);
 
 //Geolocation related models & Relations
 db.cities = require("./city.model.js")(sequelize, Sequelize);
+db.provinces = require("./province.model.js")(sequelize, Sequelize);
+db.regions = require("./region.model.js")(sequelize, Sequelize);
 
 db.campaign_city_associations = require("./campaign_city_association.model.js")(sequelize, Sequelize);
 
@@ -120,5 +122,16 @@ db.users.hasOne(db.user_wallets, {foreignKey: "user_id"});
 db.users.hasMany(db.useraudit, {foreignKey: "user_id"});
 db.user_wallets.belongsTo(db.users, {foreignKey: "user_id"});
 db.users.hasOne(db.usersessions, {foreignKey: "user_id", as:"userSessions"});
+db.userpayoutrequests.belongsTo(db.userdetails, {foreignKey:"user_id", targetKey:"user_id", sourceKey:"user_id"});
+
+
+db.cities.hasOne(db.userdetails, {foreignKey: "cityId"})
+db.provinces.hasOne(db.userdetails, {foreignKey:"provinceId"})
+db.regions.hasOne(db.userdetails, {foreignKey:"regionId"})
+
+db.userdetails.belongsTo(db.cities, {foreignKey:"cityId", as:"cityData"})
+db.userdetails.belongsTo(db.provinces, {foreignKey:"provinceId", as:"provinceData"})
+db.userdetails.belongsTo(db.regions, {foreignKey: "regionId", as:"regionData"})
+
 
 module.exports = db

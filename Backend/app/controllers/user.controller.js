@@ -6,6 +6,9 @@ const TaskTickets = db.task_tickets;
 const PayoutRequests = db.userpayoutrequests;
 const UserSessions = db.usersessions;
 const UserAudit = db.useraudit;
+const City = db.cities;
+const Region = db.regions;
+const Province = db.provinces;
 const Op = db.Sequelize.Op;
 
 exports.listUsers = (req,res) => {
@@ -33,7 +36,11 @@ exports.listUsers = (req,res) => {
         delete req.query.count_per_page
     }
 
-    UserDetails.findAndCountAll({where:[detail_condition,name_condition],include: [{model:Users ,as:"users", where:user_condition,attributes:["status"]}], order: [["createdAt", "DESC"]], offset:skip_number_of_items, limit: count_per_page})
+    UserDetails.findAndCountAll({where:[detail_condition,name_condition],
+        include: [
+            {model:Users ,as:"users", where:user_condition,attributes:["status"]},
+            {model:City, as:"cityData"}, {model:Province, as:"provinceData"}, {model:Region, as:"regionData"}
+        ], order: [["createdAt", "DESC"]], offset:skip_number_of_items, limit: count_per_page})
     .then(userData => {
         if(userData){   
             var userDataArr = []
@@ -42,6 +49,19 @@ exports.listUsers = (req,res) => {
             })
             var resultData = {}
             resultData.rows =  userDataArr.map(element => {
+                console.log(element)
+                if(element.regionData){
+                    element.region = element.regionData.label
+                    delete element.regionData
+                }
+                if(element.cityData){
+                    element.city = element.cityData.label
+                    delete element.cityData
+                }
+                if(element.provinceData){
+                    element.province = element.provinceData.label
+                    delete element.provinceData
+                }
                 element.status = element.users.status
                 delete element.users
                 return element
