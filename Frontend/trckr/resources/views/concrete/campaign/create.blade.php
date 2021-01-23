@@ -13,7 +13,7 @@
                         <div class="col-md-6">
                             <div class="pull-right">
                                 <div class="custom-control custom-switch custom-switch-primary">
-                                    <input class="custom-control-input" type="checkbox" id="permanent_campaign" name="permanent_campaign" />
+                                    <input class="custom-control-input" {{ old('permanent_campaign', 0) >  0 ? 'checked=""' : '' }} type="checkbox" id="permanent_campaign" value="1" name="permanent_campaign" />
                                     <label class="custom-control-label" for="permanent_campaign">Permanent Campaign?</label>
                                 </div>
                             </div>

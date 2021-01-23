@@ -136,8 +136,6 @@ class CampaignController extends Controller
 
     public function view_campaign($campaignId)
     {
-        $task_type = $this->taskService->getTaskActionClassification();
-        $tasks = $this->taskService->getTaskByMerchant();
         $campaign_type = (object) array(
             (object) array(
                 'campaign_type_id' => 1,
@@ -160,14 +158,6 @@ class CampaignController extends Controller
         $campaign['daterange'] = date('m/d/Y', strtotime($campaign['start_date'])) . " - " . date('m/d/Y', strtotime($campaign['end_date']));
         $campaign['branch_id-nobranch'] = ($campaign['branches'][0]->branch_id == 'fbe9b0cf-5a77-4453-a127-9a8567ff3aa7')? true : false;
         $campaign['branch_id-nobranch_value'] = ($campaign['branches'][0]->branch_id == 'fbe9b0cf-5a77-4453-a127-9a8567ff3aa7')? $campaign['branches'][0]->respondent_count : '';
-        // TASK ALIGNMENT TO CREATE old()
-        foreach($tasks as $k){
-            foreach ($campaign['tasks']  as $camTkey => $camTask ){
-                if($k->task_id==$camTask->task_id){
-                    $campaign['tasks'][$camTkey]->task_type = $k->task_classification->task_classification_id;
-                }
-            }
-        }
 
         // BRANCH ALIGNMENT TO CREATE old()
         $campaign['branch_id'] = [];
@@ -178,18 +168,15 @@ class CampaignController extends Controller
             $campaign['submission'][$bKey] = $branch->respondent_count;
         }
 
-        foreach ($tasks as &$k)
-            $k->task_id = $k->task_classification_id . "|" . $k->task_id;
-
-        //print_r($campaign); exit();
+        $cities = $this->capabilityService->getCities();
+        print_r($campaign); exit();
 
         return view('concrete.campaign.view', [
             'campaign_type' => $campaign_type,
             'branches' => $branches,
             'branch_filters' => $branch_filters,
-            'task_type' => $task_type,
-            'tasks' => $tasks,
-            'campaign' => $campaign
+            'campaign' => $campaign,
+            'cities' => $cities
         ]);
     }
 
@@ -304,8 +291,12 @@ class CampaignController extends Controller
 
         $request_data['campaign_description'] = Markdown::parse($request_data['campaign_description'])->toHtml();
 
-        if ( ! empty($data['thumbnail_url']))
-            $request_data['thumbnail_image_base64'] = 'data:' . $data['thumbnail_url']->getMimeType() . ';base64,' . base64_encode(file_get_contents($data['thumbnail_url']));
+        if ( ! empty($data['thumbnail_url'])){
+            $base64_encoded_string = base64_encode(file_get_contents($data['thumbnail_url']));
+            $request_data['thumbnail_image_base64'] = 'data:' . $data['thumbnail_url']->getMimeType() . ';base64,' . $base64_encoded_string;
+            $extension = explode('/', $data['thumbnail_url']->getMimeType());
+            $request_data['thumbnail_image_name'] = date('YmdHis') . '.' . $extension[1];
+        }
 
         if ( ! empty($data["branch_id-nobranch"]) && $data["branch_id-nobranch"] == "on") {
             $request_data["at_home_campaign"] = 1;
@@ -326,8 +317,6 @@ class CampaignController extends Controller
                 'reward_amount' => $data['reward'][$i]
             );
         }
-
-        ///print_r($request_data); exit();
 
         $response = $this->campaignService->create($request_data);
 
@@ -566,6 +555,9 @@ class CampaignController extends Controller
         $converter = new HtmlConverter();
         $campaign['campaign_description'] = $converter->convert($campaign['campaign_description']);
 
+        $campaign['audience_age_min'] = $campaign['audience_age_min'] > 0 ? $campaign['audience_age_min'] : '';
+        $campaign['audience_age_max'] = $campaign['audience_age_max'] > 500 ? '' : $campaign['audience_age_max'];
+
         // BRANCH ALIGNMENT TO CREATE old()
         $campaign['branch_id'] = [];
         $campaign['submission'] = [];
@@ -735,6 +727,9 @@ class CampaignController extends Controller
 
         $converter = new HtmlConverter();
         $campaign['campaign_description'] = $converter->convert($campaign['campaign_description']);
+
+        $campaign['audience_age_min'] = $campaign['audience_age_min'] > 0 ? $campaign['audience_age_min'] : '';
+        $campaign['audience_age_max'] = $campaign['audience_age_max'] > 500 ? '' : $campaign['audience_age_max'];
 
         // BRANCH ALIGNMENT TO CREATE old()
         $campaign['branch_id'] = [];

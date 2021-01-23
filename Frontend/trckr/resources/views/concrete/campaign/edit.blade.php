@@ -26,7 +26,7 @@
                         <div class="col-md-4">
                             <div class="pull-right">
                                 <div class="custom-control custom-switch custom-switch-primary">
-                                    <input class="custom-control-input" type="checkbox" id="permanent_campaign" name="permanent_campaign" />
+                                    <input class="custom-control-input" {{ ($campaign['permanent_campaign'])? 'checked=""' : '' }} type="checkbox" id="permanent_campaign" name="permanent_campaign" />
                                     <label class="custom-control-label" for="permanent_campaign">Permanent Campaign?</label>
                                 </div>
                             </div>
@@ -177,8 +177,8 @@
                                     <div class="tower-file mt-3">
                                         <input class="tower-file-input" name="thumbnail_url" id="demo1" type="file">
                                         <label class="btn btn-xs btn-success" for="demo1"><span>Upload</span></label>
-                                        @if(isset($campaign['thumbnail_url']) && !empty($campaign['thumbnail_url']))
-                                            <div class="tower-file-details"><img class="null" src="{{ $campaign['thumbnail_url'] }}"></div>
+                                        @if(isset($campaign['signed_thumbnail_url']) && !empty($campaign['signed_thumbnail_url']))
+                                            <div class="tower-file-details"><img class="null" src="{{ $campaign['signed_thumbnail_url'] }}"></div>
                                         @endif
                                     </div>
                                 </div>
