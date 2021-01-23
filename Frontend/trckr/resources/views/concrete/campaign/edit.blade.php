@@ -58,7 +58,7 @@
 
                                 <div class="input-group form-group">
                                     <div class="input-group-prepend"><span class="input-group-text"><span class="mdi-account-minus"></span></span></div>
-                                    <input class="form-control  {{ $errors->first('audience_age_min')? 'form-control-danger' : '' }}" type="number" min="1" value="{{ old('audience_age_min') }}" name="audience_age_min" id="audience_age_min" placeholder="Audience Minimum Age">
+                                    <input class="form-control  {{ $errors->first('audience_age_min')? 'form-control-danger' : '' }}" type="number" min="1" value="{{ old('audience_age_min', $campaign['audience_age_min']) }}" name="audience_age_min" id="audience_age_min" placeholder="Audience Minimum Age">
                                 </div>
                                 @if($errors->first('audience_age_min'))
                                     <div class="tag-manager-container">
@@ -67,7 +67,7 @@
                                 @endif
                                 <div class="input-group form-group">
                                     <div class="input-group-prepend"><span class="input-group-text"><span class="mdi-account-plus"></span></span></div>
-                                    <input class="form-control  {{ $errors->first('audience_age_max')? 'form-control-danger' : '' }}" type="number" min="1" value="{{ old('audience_age_max') }}" name="audience_age_max" id="audience_age_max" placeholder="Audience Maximum Age">
+                                    <input class="form-control  {{ $errors->first('audience_age_max')? 'form-control-danger' : '' }}" type="number" min="1" value="{{ old('audience_age_max', $campaign['audience_age_max']) }}" name="audience_age_max" id="audience_age_max" placeholder="Audience Maximum Age">
                                 </div>
                                 @if($errors->first('audience_age_max'))
                                     <div class="tag-manager-container">
@@ -123,8 +123,8 @@
                                     <div class="input-group-prepend"><span class="input-group-text"><span class="mdi-gender-male-female"></span></span></div>
                                     <select class="form-control" name="audience_gender" id="audience_gender">
                                         <option value="">Target Gender</option>
-                                        <option {{ (old('audience_gender')=="Male")? 'selected="selected"' : '' }} value="Male">Male</option>
-                                        <option {{ (old('audience_gender')=="Female")? 'selected="selected"' : '' }} value="Female">Female</option>
+                                        <option {{ (old('audience_gender', $campaign['audience_gender'])=="Male")? 'selected="selected"' : '' }} value="Male">Male</option>
+                                        <option {{ (old('audience_gender', $campaign['audience_gender'])=="Female")? 'selected="selected"' : '' }} value="Female">Female</option>
                                     </select>
                                 </div>
                                 @if($errors->first('audience_gender'))
@@ -133,9 +133,20 @@
                                     </div>
                                 @endif
 
+                                @php
+                                $audience_city = [];
+                                foreach($campaign['audience_cities'] as $city){
+                                    array_push($audience_city, $city->city_id);
+                                }
+                                $audience_city_old = (old('audience_city', $audience_city)) ? old('audience_city', $audience_city) : [];
+                                @endphp
                                 <div class="input-group form-group">
-                                    <select class="form-control select2"  data-placeholder="  --Select Audience City--" id="audience_city" name="audience_city[]" multiple="multiple">
+                                    <select class="form-control select2"  data-placeholder="  --Select Audience City--" id="audience_city" name="audience_city[]"  multiple="multiple">
                                         <option label="placeholder"></option>
+                                        @foreach($cities as $newCity)
+
+                                        <option {{ in_array($newCity->Id, $audience_city_old)? 'selected' : '' }} value="{{ $newCity->Id }}">{{ $newCity->label }}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                                 @if($errors->first('audience_city'))
@@ -299,7 +310,7 @@
                                 </thead>
                                 <tbody>
                                 @foreach ($branches as $branch)
-
+                                    @if(is_array(old('branch_id', $campaign['branch_id'])  ) && in_array($branch->branch_id, old('branch_id', $campaign['branch_id'])))
                                     <tr>
                                         <td style="width: 40px">
                                             <div class="custom-control custom-checkbox custom-checkbox-success">
@@ -333,6 +344,7 @@
                                                 class="branch-input form-control max-submission" type="number" min="1" placeholder="Max Submission">
                                         </td>
                                     </tr>
+                                    @endif
                                 @endforeach
                                 </tbody>
                             </table>
@@ -359,7 +371,7 @@
                                 @if($x==0 || old('task_id.' . $x, (isset($campaign['tasks'][$x]->task_id))? $campaign['tasks'][$x]->task_id : ''))
                                     @php 
                                         $cur_task_id = old('task_id.' . $x, $campaign['tasks'][$x]->task_id );
-                                        $man_value = old('man.' . $x);
+                                        $man_value = old('man.' . $x, $x, $campaign['tasks'][$x]->mandatory );
                                         array_push($selected_task_ids, $campaign['tasks'][$x]->task_id);
                                     @endphp
                                     <div class="row row-30 task-container">
@@ -367,7 +379,7 @@
                                             <div class="custom-control custom-switch custom-switch-primary">
                                                 <input class="custom-control-input mandatory" {{ ($man_value=='true' || $man_value=='')? 'checked' : '' }} type="checkbox" id="mandatory{{ $x }}" name="mandatory[]" />
                                                 <label class="custom-control-label" for="mandatory{{ $x }}">Mandatory?</label>
-                                                <input class="mandatory-buffer" type='hidden' value="{{ old('man.' . $x) }}" name='man[]'>
+                                                <input class="mandatory-buffer" type='hidden' value="{{ ($man_value=='true' || $man_value=='')? 'true' : 'false' }} " name='man[]'>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
@@ -449,17 +461,6 @@
                 });
 
                 allPages = oTable.fnGetNodes();
-
-                $.get( "{{ url('campaign/getCities') }}", function( data ) {
-                    let cities = data.data;
-                
-                    for (i = 0; i < cities.length; i++) {
-                        $('#audience_city').append($('<option>', {
-                            value: cities[i]['Id'],
-                            text: cities[i]['label']
-                        }));
-                    }
-                });
 
             }, 2000);
         });
