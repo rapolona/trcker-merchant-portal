@@ -24,7 +24,8 @@ module.exports = (sequelize, Sequelize) => {
         allowNull: true
       },
       mandatory:{
-        type: Sequelize.BOOLEAN
+        type: Sequelize.BOOLEAN,
+        defaultValue: true
       },
       task_id: {
         type: DataTypes.UUID,

@@ -1,5 +1,7 @@
 const { task_question_choices } = require("../models");
 const db = require("../models");
+const moment = require("moment");
+const s3Util = require("../utils/s3.utils.js");
 const Task = db.tasks;
 const Task_Question = db.task_questions;
 const Task_Question_Choices = db.task_question_choices;
@@ -74,7 +76,7 @@ exports.createCustom = (req, res) => {
       task_questions_container.push(req.body.task_questions[i])
     }
     
-  
+    
     // Create a task
     const task = {
       task_name: req.body.task_name,
@@ -82,13 +84,12 @@ exports.createCustom = (req, res) => {
       subject_level: req.body.subject_level,
       merchant_id: req.body.merchantid,
       task_classification_id: req.body.task_classification_id,
-      task_questions: task_questions_container,
-      banner_image: req.body.banner_image
+      task_questions: task_questions_container
       //task_action_classification_id: "57e2c884-6cfc-4fa2-9cc8-b92f6747f535"
     };
 
     //console.log(task)
-    
+    var chainedPromises = []
     db.sequelize.transaction(transaction =>
       Task.create(task, {include: [
         //TO DO Refactor to handle changes with task questions
@@ -96,8 +97,50 @@ exports.createCustom = (req, res) => {
       ],
         transaction
       }).then(data => {
-        data.banner_image = "Image Uploaded"
-        res.send(data);
+        
+        if(req.body.banner_image_name && req.body.banner_image_base64){
+          const now = moment().format('XX')
+          var banner_file_name = "Banner_"+data.task_id+"_"+ now+"_"+req.body.banner_image_name
+          chainedPromises.push(
+            s3Util.s3Upload(req.body.banner_image_base64, "BannerImages"+"/" + banner_file_name, "dev-trcker-task-images",{})
+            .catch(err=>{
+              transaction.rollback()
+              console.log("Error uploading to S3" + " "+ err.message)
+              res.status(500).send({
+                message: err.code || "Error uploading image to s3"
+              })
+            }))
+          console.log('editing task id '+ data.task_id)
+            chainedPromises.push(
+              Task.update({banner_image: banner_file_name}, {
+                where: { task_id: data.task_id }, transaction
+              })
+                .then(num => {
+                  if (num == 1) {
+                    //res.send(data);
+                  } else {
+                    res.status(422).send({
+                      message: `Cannot update Task with id=${data.task_id}. Maybe Task was not found or req.body is empty!`
+                    });
+                  }
+                })
+                .catch(err => {
+                  res.status(500).send({
+                    message: err.code+" Error updating Task with id=" + data.task_id
+                  });
+                })
+      
+            )
+            return Promise.all(chainedPromises)
+            .then(newdata=> {
+              res.send(data)
+            })
+            .catch(err => {
+              console.log("Error creating campaign")
+            })
+        } else{
+          res.send(data);
+        }
       })
       .catch(err => {
         transaction.rollback();
@@ -189,13 +232,33 @@ exports.findAllforMerchant = (req, res) => {
   include: include_condition
  })
     .then(data => {
+      
       if(task_id){
-        
-        res.send(data[0]);
+        if(data[0].banner_image){
+          data_obj =  data[0].get({plain:true});
+          s3Util.s3getHeadObject("dev-trcker-task-images", "BannerImages/"+data[0].banner_image)
+          .then(new_data => {
+            console.log(new_data)
+            console.log(data_obj)
+            data_obj.signed_banner_image_url = ""
+            var signedBannerImageURL = s3Util.s3GetSignedURL("dev-trcker-task-images", "BannerImages/"+data[0].banner_image)
+            data_obj.signed_banner_image_url = signedBannerImageURL
+            console.log(data_obj)
+            res.send(data_obj)
+          })
+          .catch(err => {
+            res.status(500).send({
+              message: err.code 
+            });
+          })
+        }
+        else{
+          res.send(data[0]);
+        }
       }
       else{
         res.send(data);
-      }  
+      } 
     })
     .catch(err => {
       res.status(500).send({
