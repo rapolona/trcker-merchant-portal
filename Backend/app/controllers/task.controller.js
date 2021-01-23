@@ -225,47 +225,51 @@ exports.findAllforMerchant = (req, res) => {
         });
       });
   }
-  
-
-  Task.findAll({attributes:{exclude:exclude_condition}, where: where_condition,order:[['createdAt', 'DESC'],
-     [{model: Task_Question},'index', 'ASC']], 
-  include: include_condition
- })
-    .then(data => {
-      
-      if(task_id){
-        if(data[0].banner_image){
-          data_obj =  data[0].get({plain:true});
-          s3Util.s3getHeadObject("dev-trcker-task-images", "BannerImages/"+data[0].banner_image)
-          .then(new_data => {
-            console.log(new_data)
-            console.log(data_obj)
-            data_obj.signed_banner_image_url = ""
-            var signedBannerImageURL = s3Util.s3GetSignedURL("dev-trcker-task-images", "BannerImages/"+data[0].banner_image)
-            data_obj.signed_banner_image_url = signedBannerImageURL
-            console.log(data_obj)
-            res.send(data_obj)
-          })
-          .catch(err => {
-            res.status(500).send({
-              message: err.code 
-            });
-          })
+  else{
+    Task.findAll({attributes:{exclude:exclude_condition}, where: where_condition,order:[['createdAt', 'DESC'],
+      [{model: Task_Question},'index', 'ASC']], 
+      include: include_condition
+      })
+      .then(data => {
+        
+        if(task_id){
+          if(data[0].banner_image){
+            data_obj =  data[0].get({plain:true});
+            s3Util.s3getHeadObject("dev-trcker-task-images", "BannerImages/"+data[0].banner_image)
+            .then(new_data => {
+              console.log(new_data)
+              console.log(data_obj)
+              data_obj.signed_banner_image_url = ""
+              var signedBannerImageURL = s3Util.s3GetSignedURL("dev-trcker-task-images", "BannerImages/"+data[0].banner_image)
+              data_obj.signed_banner_image_url = signedBannerImageURL
+              console.log(data_obj)
+              res.send(data_obj)
+            })
+            .catch(err => {
+              res.status(500).send({
+                message: err.code 
+              });
+            })
+          }
+          else{
+            res.send(data[0]);
+          }
         }
         else{
-          res.send(data[0]);
-        }
-      }
-      else{
-        res.send(data);
-      } 
-    })
-    .catch(err => {
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while retrieving task_actions."
+          res.send(data);
+        } 
+      })
+      .catch(err => {
+        res.status(500).send({
+          message:
+            err.message || "Some error occurred while retrieving task_actions."
+        });
       });
-    });
+
+  }
+  
+
+  
 };
 
 // Find a single Task with an id
