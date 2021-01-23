@@ -169,7 +169,7 @@ class CampaignController extends Controller
         }
 
         $cities = $this->capabilityService->getCities();
-        print_r($campaign); exit();
+        //print_r($campaign); exit();
 
         return view('concrete.campaign.view', [
             'campaign_type' => $campaign_type,

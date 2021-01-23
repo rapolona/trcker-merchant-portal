@@ -59,6 +59,17 @@ class TaskRepository extends Repository
         }
     }
 
+    public function getTaskByCurrentMerchantWithFilters($data = null)
+    {
+        try {
+            $data = ($data==null) ? [] : $data;
+            $uri = http_build_query($data);
+            return $this->trackerApi('get', $this->api . '?' . $uri, $data);
+        } catch(\Exception $e) {
+            $this->sessionExpired($e);
+        }
+    }
+
     public function getTaskActionClassification()
     {
         try {

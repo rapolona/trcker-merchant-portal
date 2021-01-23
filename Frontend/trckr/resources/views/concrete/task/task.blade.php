@@ -6,6 +6,20 @@
     </div>
 @endsection
 
+@section('tableFilters')
+    <div class="row">
+        <div class="col-sm-10">
+            <div class="input-group form-group">
+                <div class="input-group-prepend"><span class="input-group-text" id="basic-addon3">Task name</span></div>
+            <input class="form-control" id="task_name" type="text" value="{{ $filter['task_name'] }}" name="task_name">
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <button type="button" id="searchBtn" class="btn btn-primary">Search</button>
+        </div>
+    </div>
+@endsection
+
 @section('content')
     <div class="panel">
         <div class="panel-header">
@@ -16,9 +30,12 @@
                 </div>
             </div>
         </div>
+        <div class="panel-menu">
+                @include('concrete.layouts.filters')  
+            </div>
         <div class="panel-body p-0">
             <div class="table-responsive scroller scroller-horizontal py-3">
-                <table class="table table-striped table-hover data-table" data-table-searching="true" data-table-lengthChange="true" data-page-length="5">
+                <table class="table table-striped table-hover">
                     <thead>
                     <tr>
                         <th>Task Name</th>
@@ -46,6 +63,9 @@
                     </tbody>
                 </table>
             </div>
+        </div>
+        <div class="panel-footer"> 
+            @include('concrete.layouts.pagination')        
         </div>
     </div>
 @stop

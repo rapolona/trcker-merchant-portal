@@ -18,4 +18,14 @@ class PayoutService
         return $this->repository->getAll($data);
     }
 
+    public function get($data)
+    {
+        return $this->repository->get($data);
+    }
+
+    public function award($data)
+    {
+        return $this->repository->award($data);
+    }
+
 }

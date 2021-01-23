@@ -22,7 +22,29 @@ class PayoutController extends Controller
 
     public function getAll(Request $request)
     {
-        return view('concrete.payout.list');
+        $filter = [
+            'name' => $request->name,
+            'status' => $request->status
+        ];
+
+        $data = [
+            'count_per_page' => isset($request->per_page)? $request->per_page : $this->defaultPerPage,
+            'page' => isset($request->page)? $request->page : 1,
+            'name' => $request->name,
+            'status' => $request->status
+        ];
+        
+        $payouts = $this->payoutService->getAll($data);
+
+        //print_r($payouts); exit();
+
+        $pagination = [
+            'per_page' => $data['count_per_page'],
+            'current_page' => $payouts->current_page,
+            'total_pages' => $payouts->total_pages
+        ];
+
+        return view('concrete.payout.list', ['payouts' => $payouts->rows, 'pagination' => $pagination, 'filter' => $filter ]);
     }
 
     public function get(Request $request)

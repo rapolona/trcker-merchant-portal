@@ -22,25 +22,6 @@ class TaskController extends Controller
         $this->defaultPerPage = Config::get('trckr.table_pagination');
     }
 
-    public function listAjax(Request $request)
-    {
-        $data = [
-            'count_per_page' => isset($request->per_page)? $request->per_page : $this->defaultPerPage,
-            'page' => isset($request->per_page)? $request->page : 1
-        ];
-        
-        $list = $this->taskService->getAll($data);
-
-        $list = [
-            'data' => $list->rows,
-            'per_page' => $data['count_per_page'],
-            'current_page' => $list->current_page,
-            'total_pages' => $list->total_pages
-        ];
-
-        return Response::json(['data' => $list, 'msg' => 'Success!' ], 200);
-    }
-
     public function index()
     {
         $this->view();
@@ -53,8 +34,27 @@ class TaskController extends Controller
      */
     public function view(Request $request)
     {
-        $tasks = $this->taskService->getTaskByMerchant();
-        return view('concrete.task.task', ['tasks' => $tasks]);
+        $filter = [
+            'task_name' => $request->task_name
+        ];
+
+        $data = [
+            'count_per_page' => isset($request->per_page)? $request->per_page : $this->defaultPerPage,
+            'page' => isset($request->page)? $request->page : 1,
+            'task_name' => $request->task_name
+        ];
+
+        $tasks = $this->taskService->getTaskByMerchantWithFilters($data);
+
+        //print_r($tasks); exit();
+
+        $pagination = [
+            'per_page' => $data['count_per_page'],
+            'current_page' => $tasks->current_page,
+            'total_pages' => $tasks->total_pages
+        ];
+
+        return view('concrete.task.task', ['tasks' => $tasks->rows, 'pagination' => $pagination, 'filter' => $filter ]);
     }
 
     /**

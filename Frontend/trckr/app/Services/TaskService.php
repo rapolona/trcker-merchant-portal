@@ -41,6 +41,11 @@ class TaskService
         return $this->repository->getTaskByCurrentMerchant();
     }
 
+    public function getTaskByMerchantWithFilters($data)
+    {
+        return $this->repository->getTaskByCurrentMerchantWithFilters($data);
+    }
+
     public function getTaskById($data)
     {
         return $this->repository->get($data);
