@@ -118,9 +118,16 @@ class TaskController extends Controller
             'task_description' => $data['task_description'],
             //'subject_level' => $data['subject_level'],
             'task_classification_id' => $data['task_classification_id'],
-            'banner_image' => 'data:' . $data['banner_image']->getMimeType() . ';base64,' . base64_encode(file_get_contents($data['banner_image'])),
             'task_questions' => array()
         );
+
+        if ( ! empty($data['banner_image'])){
+            $base64_encoded_string = base64_encode(file_get_contents($data['banner_image']));
+            $request_data['banner_image_base64'] = 'data:' . $data['banner_image']->getMimeType() . ';base64,' . $base64_encoded_string;
+            $extension = explode('/', $data['banner_image']->getMimeType());
+            $request_data['banner_image_name'] = date('YmdHis') . '.' . $extension[1];
+        }
+
 
         $temp_task_questions = json_decode($data['form_builder']);
 

@@ -54,8 +54,8 @@
                             </div>
                         @endif
 
-                        @if(isset($task->banner_image) && !empty($task->banner_image))
-                        <div class="tower-file-details"><img class="null" src="{{ $task->banner_image }}"></div>
+                        @if(isset($task->signed_banner_image_url) && !empty($task->signed_banner_image_url))
+                        <div class="tower-file-details"><img class="null" src="{{ $task->signed_banner_image_url }}"></div>
                         @endif
 
                         <div class="input-group form-group">
