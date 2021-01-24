@@ -89,7 +89,8 @@
             disabledFieldButtons['radio-group'] = ['remove', 'copy'];
             disabledFieldButtons['checkbox-group'] = ['remove', 'copy'];
 
-            let fields = [{
+            let fields = [
+                {
                     label: 'True or False',
                     className: 'TRUE OR FALSE',
                     placeholder: 'True or False',
@@ -147,6 +148,25 @@
                     className: 'FLOAT',
                     placeholder: 'float',
                     type: 'number'
+                },
+                {
+                    label: 'Ranking',
+                    className: 'RANKING',
+                    placeholder: 'Ranking',
+                    type: 'checkbox-group'
+                },{
+                    label: '',
+                    className: 'BRANCHING QUESTION ',
+                    placeholder: 'Branching Question',
+                    type: 'radio-group',
+                    subType: 'branching-question',
+                    values: [{
+                        label: 'True',
+                        value: 'tof-' + Math.floor((Math.random() * 9999) + 1),
+                    }, {
+                        label: 'False',
+                        value: 'tof-' + Math.floor((Math.random() * 9999) + 1),
+                    }],
                 }
             ];
             let options = {

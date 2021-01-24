@@ -98,6 +98,12 @@
                     placeholder: 'float',
                     type: 'number',
                 },{
+                    label: 'Ranking',
+                    className: 'RANKING',
+                    placeholder: 'Ranking',
+                    type: 'checkbox-group',
+                    subType: 'ranking'
+                },{
                     label: 'Integer',
                     className: 'INTEGER',
                     placeholder: 'Integer',
@@ -123,6 +129,19 @@
                     placeholder: 'True or False',
                     type: 'radio-group',
                     subType: 'true-or-false',
+                    values: [{
+                        label: 'True',
+                        value: 'tof-' + Math.floor((Math.random() * 9999) + 1),
+                    }, {
+                        label: 'False',
+                        value: 'tof-' + Math.floor((Math.random() * 9999) + 1),
+                    }],
+                },{
+                    label: '',
+                    className: 'BRANCHING QUESTION ',
+                    placeholder: 'Branching Question',
+                    type: 'radio-group',
+                    subType: 'branching-question',
                     values: [{
                         label: 'True',
                         value: 'tof-' + Math.floor((Math.random() * 9999) + 1),

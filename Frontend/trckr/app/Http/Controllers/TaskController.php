@@ -137,7 +137,7 @@ class TaskController extends Controller
             $temp['question'] = $k->label;
             $temp['required_inputs'] = $k->className;
 
-            if (in_array($k->className, array('CHECKBOX', 'SINGLE SELECT DROPDOWN')))
+            if (in_array($k->className, array('CHECKBOX', 'SINGLE SELECT DROPDOWN', 'RANKING')))
             {
                 $temp['task_question_choices'] = array();
                 foreach ($k->values as $j)
@@ -149,6 +149,8 @@ class TaskController extends Controller
             }
             $request_data['task_questions'][] = $temp;
         }
+
+        //print_r($request_data); exit();
 
         $this->taskService->create($request_data);
 
@@ -213,7 +215,7 @@ class TaskController extends Controller
         ];
 
         $task = $this->taskService->getTaskById($data);
-        //print_r($task); exit();
+        // /print_r($task); exit();
         $taskForm = $this->taskService->generateFormBuilder($task->task_questions);
         $task_classification = $this->taskService->getTaskActionClassification();
         return view('concrete.task.edit', ['task' => $task, 'task_id' => $taskId, 'task_classification' => $task_classification, 'taskForm' => $taskForm]);
