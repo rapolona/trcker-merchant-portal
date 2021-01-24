@@ -117,7 +117,7 @@ Route::group(["middleware" => ["merchantAuth"]], function() {
     Route::group(['prefix' => 'respondent'], function() {
         Route::get('/', 'RespondentController@getAll');
         Route::get('/{id}', 'RespondentController@get');
-        Route::post('/block/{id}', 'RespondentController@block');
+        Route::get('/block/{id}', 'RespondentController@block');
         Route::get('/export_csv', 'RespondentController@exportList');
         Route::get('/export_csv/{id}', 'RespondentController@exportRespondentCsv');
     });

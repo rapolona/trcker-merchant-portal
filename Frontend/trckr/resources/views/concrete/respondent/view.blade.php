@@ -40,10 +40,6 @@
                             			<td>{{ $user->settlement_account_type }}: {{ $user->settlement_account_number }}</td>
                             		</tr>
                             		<tr>
-                            			<td><strong>Location: </strong></td>
-                            			<td>{{ $user->country }} {{ $user->region }} {{ $user->province }} {{ $user->city }}</td>
-                            		</tr>
-                            		<tr>
                             			<td><strong>Account Creation: </strong></td>
                             			<td>{{ date('Y-m-d', strtotime($user->createdAt)) }}</td>
                             		</tr>
@@ -111,16 +107,36 @@
                 let url = "{{ url('respondent/block/'.$user->user_id ) }}";
                 $.confirm({
                     title: 'Hustle',
-                    content: 'Are you sure you want to BLOCK this user?',
+                    content: '' +
+                    '<form action="" class="formName">' +
+                    '<div class="form-group">' +
+                    '<label>Reason for Blocking this user:</label>' +
+                    '<input type="text" placeholder="Reason" class="reason form-control" required />' +
+                    '</div>' +
+                    '</form>',
                     buttons: {
-                    confirm: function () {
-                        window.location = url;
+                        formSubmit: {
+                            text: 'Submit',
+                            btnClass: 'btn-blue',
+                            action: function () {
+                                var reasons = this.$content.find('.reason').val();
+                                if(!reasons){
+                                    $.alert('provide a valid reason');
+                                    return false;
+                                }
+                                let params = { reason : reasons };
+                                let str = jQuery.param( params );
+                                window.location = url + '?' + str;
+                            }
+                        },
+                        cancel: function () {
+                            //close
+                        },
                     },
-                    cancel: function () {
-                        //$.alert('Canceled!');
-                    } }
-                })
-            
+                    onContentReady: function () {
+                        // DO NOTHING
+                    }
+                });
             });
 
         });

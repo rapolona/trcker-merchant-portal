@@ -60,7 +60,6 @@
                             <td>{{ $user->settlement_account_type }}: {{ $user->settlement_account_number }}</td>
                             <td>
                                 <a href="{{ url('respondent/'. $user->user_id  ) }}" class="btn btn-primary">view</a>
-                                <button type="button" class="btn btn-danger">block</button>
                             </td>
                         </tr>
                         @endforeach

@@ -23,4 +23,9 @@ class RespondentService
         return $this->repository->get($id);
     }
 
+    public function block($data)
+    {
+        return $this->repository->block($data);
+    }
+
 }

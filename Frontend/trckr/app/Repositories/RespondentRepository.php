@@ -33,4 +33,13 @@ class RespondentRepository extends Repository
         }
     }
 
+    public function block($data)
+    {
+        try {
+            return $this->trackerApi('get', $this->api . 'blockUser', $data);
+        } catch(\Exception $e) {
+            $this->sessionExpired($e);
+        }
+    }
+
 }

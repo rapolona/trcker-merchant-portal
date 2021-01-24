@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use App\Services\RespondentService;
-use Response, Config;
+use Response, Config, Validator;
 
 class RespondentController extends Controller
 {
@@ -57,9 +57,30 @@ class RespondentController extends Controller
         return view('concrete.respondent.view', ['user' => $user]);
     }
 
-     public function block(Request $request)
+    public function block($id, Request $request)
     {
-        
+        $validator = Validator::make($request->all(), [
+            "reason" => "required"
+        ]);
+
+        if ($validator->fails())
+        {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        $data = [
+            'user_id' => $id,
+            'reason' => $request->reason
+        ];
+
+        $this->respondentService->block($data);
+
+        $msg = [
+            "type" => "success",
+            "message" =>  "User was Blocked Successfully!",
+        ];
+
+        return redirect('/respondent')->with("formMessage", $msg);
     }
 
      public function exportList(Request $request)
