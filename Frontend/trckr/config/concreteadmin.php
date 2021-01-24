@@ -59,6 +59,13 @@ return [
         'REJECTED' => 'danger',
         'APPROVED' => 'success',
     ],
+    
+    'payout_status' =>[
+        'Pending' => 'primary',
+        'PENDING' => 'primary',
+        'REJECTED' => 'danger',
+        'APPROVED' => 'success',
+    ],
     /*
     |--------------------------------------------------------------------------
     | MENU / BREADCRUMBS

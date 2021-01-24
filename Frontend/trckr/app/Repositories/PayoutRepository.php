@@ -33,10 +33,10 @@ class PayoutRepository extends Repository
         }
     }
 
-    public function award($data)
+    public function updatePayout($data)
     {
         try {
-            return $this->trackerApi('post', Config::get('trckr.backend_url') . '/merchant/award/' , $data);
+            return $this->trackerApi('put', Config::get('trckr.backend_url') . 'merchant/payoutrequest' , $data);
         } catch(\Exception $e) {
             $this->sessionExpired($e);
         }

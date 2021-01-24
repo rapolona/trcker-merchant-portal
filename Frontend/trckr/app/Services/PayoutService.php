@@ -23,9 +23,9 @@ class PayoutService
         return $this->repository->get($data);
     }
 
-    public function award($data)
+    public function updatePayout($data)
     {
-        return $this->repository->award($data);
+        return $this->repository->updatePayout($data);
     }
 
 }

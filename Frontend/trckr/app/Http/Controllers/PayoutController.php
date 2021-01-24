@@ -5,18 +5,22 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use App\Services\PayoutService;
-use Response, Config;
+use App\Services\RespondentService;
+use Response, Config, Validator;
 
 class PayoutController extends Controller
 {
 
     private $payoutService;
 
+    private $respondentService;
+
     private $defaultPerPage;
 
-    public function __construct(PayoutService $payoutService)
+    public function __construct(PayoutService $payoutService, RespondentService $respondentService)
     {
         $this->payoutService = $payoutService;
+        $this->respondentService = $respondentService;
         $this->defaultPerPage = Config::get('trckr.table_pagination');
     }
 
@@ -47,14 +51,47 @@ class PayoutController extends Controller
         return view('concrete.payout.list', ['payouts' => $payouts->rows, 'pagination' => $pagination, 'filter' => $filter ]);
     }
 
-    public function get(Request $request)
+    public function get($id, Request $request)
     {
-        return view('concrete.payout.view');
+        $data = [
+            'user_payout_request_id' => $id
+        ];
+        $payout = $this->payoutService->get($data);
+
+        $user = $this->respondentService->get($payout->user_id);
+        return view('concrete.payout.view', [
+            'payout' => $payout,
+            'user' => $user
+        ]);
     }
 
-    public function update(Request $request)
+    public function update($id, Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            "reference_id" => "required",
+            "remarks" => "required"
+        ]);
 
+        if ($validator->fails())
+        {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        $data = [
+            'user_payout_request_id' => $id,
+            'status' => $request->status,
+            'reference_id' => $request->reference_id,
+            'remarks' => $request->remarks
+        ];
+
+        $this->payoutService->updatePayout($data);
+
+        $msg = [
+            "type" => "success",
+            "message" =>  "Payout Approve Success!",
+        ];
+
+        return redirect('/payout')->with("formMessage", $msg);
     }
 
     public function exportList(Request $request)

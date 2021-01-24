@@ -125,7 +125,7 @@ Route::group(["middleware" => ["merchantAuth"]], function() {
     Route::group(['prefix' => 'payout'], function() {
         Route::get('/', 'PayoutController@getAll');
         Route::get('/{id}', 'PayoutController@get');
-        Route::post('/{id}', 'PayoutController@update');
+        Route::post('/{id}/update', 'PayoutController@update');
         Route::get('/export_csv', 'PayoutController@exportList');
     });
 
