@@ -74,7 +74,7 @@ class AuthController extends Controller
     public function forgot_post(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'email' => 'required|email|min:4'
+            'email_address' => 'required|email|min:4'
         ]);
 
         if ($validator->fails())
@@ -82,11 +82,13 @@ class AuthController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $data = ['email_address' => $request->input('email')];
+        $data = ['email_address' => $request->input('email_address')];
 
-        $this->merchantService->forgotPassword($data);
+        $forgot = $this->merchantService->forgotPassword($data);
+ 
+        print_r($forgot); exit();
 
-        return "email sent"; //view('concrete.auth.passwords.forgot');
+        return view('concrete.auth.passwords.forgotPin');
 
     }
 }

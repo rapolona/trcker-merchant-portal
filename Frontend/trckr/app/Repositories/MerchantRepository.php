@@ -61,7 +61,7 @@ class MerchantRepository extends Repository
     public function forgotPassword($data)
     {
         try {
-            return $this->trackerApi('post', $this->api . 'forgotpassword', $data,false);
+            return $this->trackerApi('post', $this->api . 'forgotpassword', $data, false);
         } catch(\Exception $e) {
             $this->sessionExpired($e);
         }

@@ -1,44 +1,29 @@
-@extends('concrete.layouts.auth')
+@extends('concrete.layouts.custom')
 
 @section('content')
-    <div class="col-lg-5">
-        <div class="row row-10 align-items-end">
-            <div class="col-6 col-sm-7 logo"><a  href="#"><img src="{{ config('concreteadmin.logo_img', 'logo_img')  }}" alt=""></a></div>
-            <div class="col-6 col-sm-5 text-right"><a class="font-weight-bold" href="{{ url('/login') }}">Login</a><!--<span class="px-2">|</span><a href="register.html">Register</a>--></div>
-        </div>
-        <form class="panel" method="post" action="{{ url('forgot-password') }}">
-            <input type="hidden" name="_token" value="{{ csrf_token() }}">
-            <div class="panel-body">
-                <div class="row">
-                    <div class="col-lg-12 order-lg-1">
-                        @if($errors->has('email'))
-                            <div class="alert alert-dismissible alert-danger alert-sm" role="alert"><span class="alert-icon fa-remove"></span><span>{{ $errors->first('email') }}</span>
-                                <button class="close" type="button" data-dismiss="alert" aria-label="Close"><span class="fa-close" aria-hidden="true"></span></button>
-                            </div>
-                        @endif
+    <form class="login100-form validate-form" method="post" action="{{ url('forgot-password') }}">
+        <span class="login100-form-title">
+            <img src="{{ config('concreteadmin.logo_img', 'logo_img')  }}" alt="Hustle Logo">
+        </span>
+        <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
-                        @if (session('formMessage'))
-                                <div class="alert alert-dismissible alert-{{ session('formMessage')['type'] }} mt-1" role="alert"><span class="alert-icon fa-trophy"></span><span>{{ session('formMessage')['message'] }}</span><button class="close" type="button" data-dismiss="alert" aria-label="Close"><span class="fa-close" aria-hidden="true"></span></button></div>
-
-                            @endif
-
-                        <div class="form-group">
-                            <label for="user">Please input your username or email</label>
-                            <div class="input-group">
-                                <div class="input-group-prepend"><span class="input-group-text fa fa-user"></span></div>
-                                <input class="form-control" id="email" type="text" name="email" placeholder="Enter Email">
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="alert alert-primary alert-border-left" role="alert"><span class="alert-icon fa-info"></span><span>Enter your Email and a PIN will be sent to you!</span>
             </div>
-            <div class="panel-footer">
-                <div class="row row-10">
-                    <div class="col-sm-12 text-sm-right">
-                        <button class="btn btn-primary" type="submit">Send</button>
-                    </div>
-                </div>
+
+            @if($errors->has('email'))
+            <!--NOTE: To fix inline style-->
+            <div class="alert alert-dismissible alert-danger alert-sm" role="alert" style="width: 100%;"><span class="alert-icon fa-remove"></span><span>{{ $errors->first('email') }}</span>
+                <button class="close" type="button" data-dismiss="alert" aria-label="Close"><span class="fa-close" aria-hidden="true"></span></button>
             </div>
-        </form>
-    </div>
+            @endif
+
+            <div class="wrap-input100 validate-input m-b-16">
+                <input class="input100" type="text" name="email_address" id="email" placeholder="email">
+                <span class="focus-input100"></span>
+            </div>
+
+            <div class="container-login100-form-btn">
+                <button class="login100-form-btn" type="submit">Reset</button>
+            </div>
+    </form>
 @endsection

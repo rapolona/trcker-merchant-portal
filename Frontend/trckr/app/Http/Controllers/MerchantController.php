@@ -145,7 +145,12 @@ class MerchantController extends Controller
 
         if ($validator->fails())
         {
-            return redirect()->back()->withErrors($validator)->withInput();
+            $msg = [
+                "type" => "danger",
+                "message" =>  "Error: please make sure password and retype password are same and has 6 minimum characters !",
+            ];
+
+            return redirect('/m/change-password')->with("formMessage", $msg);
         }
 
         $this->merchantService->changePassword($data);

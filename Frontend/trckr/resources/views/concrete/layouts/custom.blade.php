@@ -23,10 +23,6 @@
                 <div class="row justify-content-center">
                     @yield('content')
                 </div>
-                <div class="row row-10 align-items-end">
-                    <div class="col-6 col-sm-7"><a href="index.html"><img src="images/logo-1-white-230x35.png" alt=""></a></div>
-                    <div class="col-6 col-sm-5 text-right"><a class="font-weight-bold" href="{{ url('forgot-password') }}">Forgot Password</a></div>
-                </div>
             </div>
         </div>
     </body>
