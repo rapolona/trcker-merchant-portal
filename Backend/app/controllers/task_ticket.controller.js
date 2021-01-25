@@ -493,7 +493,7 @@ exports.approve = (req, res) => {
     }
 
 exports.getCampaignGallery = (req,res) => {
-  var campaign_id = req.body.campaign_id
+  var campaign_id = req.query.campaign_id
   var resultUrls= []
   var resultObj = {}
   var chainedPromise = []

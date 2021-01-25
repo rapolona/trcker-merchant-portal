@@ -85,12 +85,25 @@ exports.getUserDetails = (req,res) => {
         include: [
             {model:Users ,as:"users", attributes:["status"]}, 
             {model: TaskTickets},
-            {model: PayoutRequests}
+            {model: PayoutRequests},
+            {model:City, as:"cityData"}, {model:Province, as:"provinceData"}, {model:Region, as:"regionData"}
         ]})
         .then(userData => {
             if(userData){
                 userData = userData.get({plain:true})
                 userData.status = userData.users.status
+                if(userData.regionData){
+                    userData.region = userData.regionData.label
+                    delete userData.regionData
+                }
+                if(userData.cityData){
+                    userData.city = userData.cityData.label
+                    delete userData.cityData
+                }
+                if(userData.provinceData){
+                    userData.province = userData.provinceData.label
+                    delete userData.provinceData
+                }
                 delete userData.users
             }
             res.send(userData);   
