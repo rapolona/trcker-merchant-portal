@@ -38,9 +38,9 @@ class MerchantService
         return $this->repository->logout();
     }
 
-    public function forgotPassword($data)
+    public function forgotPassword($data, $validate)
     {
-        return $this->repository->forgotPassword($data);
+        return $this->repository->forgotPassword($data, $validate);
     }
 
     public function changePassword($data)

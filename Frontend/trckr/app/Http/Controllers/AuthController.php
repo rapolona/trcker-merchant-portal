@@ -84,11 +84,18 @@ class AuthController extends Controller
 
         $data = ['email_address' => $request->input('email_address')];
 
-        $forgot = $this->merchantService->forgotPassword($data);
+        $forgot = $this->merchantService->forgotPassword($data, false);
  
-        print_r($forgot); exit();
+        if($forgot->message){
+            return view('concrete.auth.passwords.forgot', ['message' => $forgot->message]);
+        }
 
         return view('concrete.auth.passwords.forgotPin');
+
+    }
+
+    public function forgotpin_post()
+    {
 
     }
 }

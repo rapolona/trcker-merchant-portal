@@ -84,7 +84,7 @@ Class Repository
         Log::info($log);
     }
 
-    public function trackerApi($method, $url, $data, $useToken=true)
+    public function trackerApi($method, $url, $data, $useToken=true, $validate=true)
     {
         Log::info('----------- Log start --------');
 
@@ -111,9 +111,17 @@ Class Repository
             'form_params' => $data
         ]);
 
-        $this->validateResponse($response);
+        if($validate){
+            $this->validateResponse($response);
+        }
 
+        $content = $response->getBody();
+        $code = $response->getStatusCode();
+        if($code > 300){
+            $content->error = $code;
+        }
+        
         //print_r(json_decode($response->getStatusCode())); exit();
-        return json_decode($response->getBody());
+        return json_decode($content);
     }
 }

@@ -11,16 +11,20 @@
             <div class="alert alert-danger alert-border-left" role="alert"><span class="alert-icon fa-info"></span><span>{{ $message }}</span>
             </div>
             @else
-            <div class="alert alert-primary alert-border-left" role="alert"><span class="alert-icon fa-info"></span><span>Enter your Email and a PIN will be sent to you!</span>
+            <div class="alert alert-success alert-border-left" role="alert"><span class="alert-icon fa-info"></span><span>Change password success, pls login!</span>
             </div>
             @endif
 
-            @if($errors->has('email'))
-            <!--NOTE: To fix inline style-->
-            <div class="alert alert-dismissible alert-danger alert-sm" role="alert" style="width: 100%;"><span class="alert-icon fa-remove"></span><span>{{ $errors->first('email') }}</span>
-                <button class="close" type="button" data-dismiss="alert" aria-label="Close"><span class="fa-close" aria-hidden="true"></span></button>
+
+            <div class="wrap-input100 validate-input m-b-16">
+                <input class="input100" type="text" name="email_address" id="email" placeholder="email">
+                <span class="focus-input100"></span>
             </div>
-            @endif
+
+            <div class="wrap-input100 validate-input m-b-16">
+                <input class="input100" type="text" name="email_address" id="email" placeholder="email">
+                <span class="focus-input100"></span>
+            </div>
 
             <div class="wrap-input100 validate-input m-b-16">
                 <input class="input100" type="text" name="email_address" id="email" placeholder="email">
@@ -28,7 +32,7 @@
             </div>
 
             <div class="container-login100-form-btn">
-                <button class="login100-form-btn" type="submit">Reset</button>
+                <button class="login100-form-btn" type="submit">Submit</button>
             </div>
     </form>
 @endsection
