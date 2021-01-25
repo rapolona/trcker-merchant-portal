@@ -26,6 +26,10 @@
                 </div>
 
                 <div class="rd-navbar-panel-cell">
+                    <button class="btn btn-navbar-panel"><a href="{{ url('m/change-password') }}" class="white"><span class="fa-key"></span></a></button>
+                </div>
+
+                <div class="rd-navbar-panel-cell">
                     <button class="btn btn-navbar-panel"><a href="{{ url('logout') }}" class="white"><span class="fa-sign-out"></span></a></button>
                 </div>
 

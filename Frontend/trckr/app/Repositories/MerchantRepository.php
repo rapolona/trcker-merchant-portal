@@ -70,7 +70,7 @@ class MerchantRepository extends Repository
     public function changePassword($data)
     {
         try {
-            return $this->trackerApi('post', $this->api . 'changepassword', $data);
+            return $this->trackerApi('put', $this->api . 'changepassword', $data);
         } catch(\Exception $e) {
             $this->sessionExpired($e);
         }

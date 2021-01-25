@@ -112,6 +112,14 @@ return [
                 ]
             ],
 
+            'change-password' => [
+                'url' => 'm/change-password',
+                'icon' => 'fa-key',
+                'text' => 'Change Password',
+                'in_menu' => true,
+                'sub_url'  => []
+            ],
+
             'users' => [
                 'url' => 'm/users',
                 'icon' => 'fa-sitemap',

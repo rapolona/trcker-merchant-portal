@@ -156,7 +156,7 @@
                     type: 'checkbox-group'
                 },{
                     label: '',
-                    className: 'BRANCHING QUESTION ',
+                    className: 'BRANCHING QUESTION',
                     placeholder: 'Branching Question',
                     type: 'radio-group',
                     subType: 'branching-question',

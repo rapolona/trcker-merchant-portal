@@ -27,25 +27,6 @@ class MerchantController extends Controller
         $this->view_profile();
     }
 
-    public function listAjax(Request $request)
-    {
-        $data = [
-            'count_per_page' => isset($request->per_page)? $request->per_page : $this->defaultPerPage,
-            'page' => isset($request->per_page)? $request->page : 1
-        ];
-        
-        $list = $this->merchantService->getAll($data);
-
-        $list = [
-            'data' => $campaigns->rows,
-            'per_page' => $data['count_per_page'],
-            'current_page' => $campaigns->current_page,
-            'total_pages' => $campaigns->total_pages
-        ];
-
-        return Response::json(['data' => $list, 'msg' => 'Successfully added!' ], 201);
-    }
-
     public function debug(Request $request)
     {
         $arr = [
@@ -151,12 +132,30 @@ class MerchantController extends Controller
 
     public function changePassword()
     {
-
+        return view('concrete.merchant.changePassword');
     }
 
     public function changePasswordPost(Request $request)
     {
+        $data = (array) $request->all();
 
+        $validator = Validator::make($request->all(), [
+            'password' => 'required|confirmed|min:6'
+        ]);
+
+        if ($validator->fails())
+        {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        $this->merchantService->changePassword($data);
+
+        $msg = [
+            "type" => "success",
+            "message" =>  "You have successfully change your password!",
+        ];
+
+        return redirect('/m/change-password')->with("formMessage", $msg);
     }
 
 
