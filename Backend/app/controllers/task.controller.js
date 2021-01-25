@@ -45,7 +45,7 @@ exports.create = (req, res) => {
   };
 
 exports.createCustom = (req, res) => {
-    var allowedInputValues = ["TEXT", "SINGLE SELECT DROPDOWN", "CHECKBOX", "TRUE OR FALSE", "FLOAT", "IMAGE", "INTEGER", "TIMESTAMP", "CALCULATED VALUE", "DATETIME"]
+    var allowedInputValues = ["TEXT", "SINGLE SELECT DROPDOWN", "CHECKBOX", "TRUE OR FALSE", "FLOAT", "IMAGE", "INTEGER", "TIMESTAMP", "CALCULATED VALUE", "DATETIME","RANKING","BRANCHING QUESTION"]
     // Validate request
     //console.log(req.body)
     if (!req.body.task_name) {

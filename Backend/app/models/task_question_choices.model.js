@@ -11,6 +11,10 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.STRING,
         allowNull: false,
       },
+      next_label: {
+        type: Sequelize.STRING(64),
+        allowNull: true
+      },
       task_question_id: {
         type: DataTypes.UUID,
         allowNull: false,
