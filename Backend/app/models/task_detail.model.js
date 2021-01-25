@@ -11,6 +11,10 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.TEXT('long'),
         allowNull: false
       },
+      ranking: {
+        type: Sequelize.INTEGER,
+        allowNull: true
+      },
       image_source: {
         type: Sequelize.STRING(64)
       },
