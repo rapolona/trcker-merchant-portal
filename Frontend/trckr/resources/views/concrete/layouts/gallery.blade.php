@@ -29,6 +29,9 @@
                   	@foreach($gallery as $image)
                     <div class="col-sm-6 col-lg-4"><a class="lightgallery-item" href="{{ $image }}"><img src="{{ $image }}" width="400" height="300" alt=""></a></div>
                     @endforeach
+                    @if(count($gallery) < 1)
+                    <h3>No images</h3>
+                    @endif
                   </div>
                 </div>
               </div>
