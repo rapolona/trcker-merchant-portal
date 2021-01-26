@@ -68,4 +68,15 @@ class CampaignRepository extends Repository
             $this->sessionExpired($e);
         }
     }
+
+    public function getGalleryByCampaign($data)
+    {
+        try {
+            $data = ($data==null) ? [] : $data;
+            $uri = http_build_query($data);
+            return $this->trackerApi('get', Config::get('trckr.backend_url') .'merchant/taskticket/gallery?' . $uri, $data,false);
+        } catch(\Exception $e) {
+            $this->sessionExpired($e);
+        }
+    }
 }

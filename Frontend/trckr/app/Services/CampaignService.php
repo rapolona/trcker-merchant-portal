@@ -54,4 +54,9 @@ class CampaignService
         return $this->repository->disableCampaign($campaignId);
     }
 
+    public function getGalleryByCampaign($data)
+    {
+        return $this->repository->getGalleryByCampaign($data);
+    }
+
 }

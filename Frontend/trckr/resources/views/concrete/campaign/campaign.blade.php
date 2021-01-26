@@ -107,6 +107,8 @@
                                             @else
                                                 <a class="dropdown-item" href="{{ url('campaign/status/disable/' . $campaign->campaign_id )}}">Disable</a>
                                             @endif
+
+                                            <a  class="dropdown-item"  href="{{ url('gallery/' . $campaign->campaign_id) }}" target="new"> View Gallery</a>
                                         </div>
                                     </div>
                                 </td>

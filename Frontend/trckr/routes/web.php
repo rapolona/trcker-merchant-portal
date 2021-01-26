@@ -23,6 +23,8 @@ Route::post('/forgot-password-pin', 'AuthController@forgotpin_post');
 Route::post('/forgot-password', 'AuthController@forgot_post');
 Route::get('/forgot-password', 'AuthController@forgot');
 
+Route::get('/gallery/{id}', 'CampaignController@gallery');
+
 // AUTH
 Route::group(["middleware" => ["merchantAuth"]], function() {
     Route::get('/dashboard', 'MainController@index');

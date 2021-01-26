@@ -849,4 +849,22 @@ class CampaignController extends Controller
             ->with("formMessage", $msg);
     }
 
+    public function gallery($id, Request $request)
+    {
+        $data = [
+            'count_per_page' => isset($request->per_page)? $request->per_page : $this->defaultPerPage,
+            'page' => isset($request->page)? $request->page : 1,
+            'campaign_id' => $id,
+        ];
+        $gallery = $this->campaignService->getGalleryByCampaign($data);
+
+        $pagination = [
+            'per_page' => $data['count_per_page'],
+            'current_page' => $gallery->current_page,
+            'total_pages' => $gallery->total_pages
+        ];
+
+        return view('concrete.layouts.gallery', ['gallery' => $gallery->rows, 'pagination' => $pagination ]);
+    }
+
 }
