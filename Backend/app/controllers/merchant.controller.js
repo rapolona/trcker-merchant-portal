@@ -127,6 +127,11 @@ exports.update = (req, res) => {
                     })
             })
           }
+          else{
+            res.send({
+              message: "Merchant was updated successfully."
+            });
+          }
         } else {
           res.status(422).send({
             message: `Cannot update Merchant with id=${id}. Maybe Merchant was not found or req.body is empty!`
