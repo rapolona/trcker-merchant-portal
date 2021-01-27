@@ -103,14 +103,13 @@ exports.listAllPaginate = (req, res) => {
   var condition = req.query
   console.log(condition)
   var page_number = 1;
-  var count_per_page = 25;
+  var count_per_page = null;
   if((req.query.page)&&(req.query.count_per_page)){
     var page_number = parseInt(req.query.page);
     var count_per_page = parseInt(req.query.count_per_page);
     delete req.query.page
     delete req.query.count_per_page
-    
-  }
+  } 
 
   var skip_number_of_items = (page_number * count_per_page) - count_per_page;
   

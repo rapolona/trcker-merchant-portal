@@ -15,6 +15,8 @@ exports.listUsers = (req,res) => {
     var detail_condition = {}
     var user_condition = {}
     var name_condition = {}
+    var page_number = 1;
+    var count_per_page = null;
 
     if(req.query.first_name){detail_condition.first_name=req.query.first_name}
     if(req.query.last_name){detail_condition.last_name=req.query.last_name}
@@ -27,7 +29,7 @@ exports.listUsers = (req,res) => {
         })
       }
     
-
+    
     if((req.query.page)&&(req.query.count_per_page)){
         var page_number = parseInt(req.query.page);
         var count_per_page = parseInt(req.query.count_per_page);
