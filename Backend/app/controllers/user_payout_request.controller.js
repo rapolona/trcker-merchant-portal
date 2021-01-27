@@ -14,11 +14,10 @@ const Op = db.Sequelize.Op;
 // Retrieve all Payout requests from the database.
 exports.findAll = (req, res) => {
     var page_number = 1;
-    var count_per_page = 25;
+    var count_per_page = null;
     if((req.query.page)&&(req.query.count_per_page)){
         var page_number = parseInt(req.query.page);
         var count_per_page = parseInt(req.query.count_per_page);
-        
       }
     var skip_number_of_items = (page_number * count_per_page) - count_per_page;
 

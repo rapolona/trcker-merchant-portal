@@ -74,6 +74,7 @@ exports.findOne = (req, res) => {
       .then(data => {
         var result = data.get({plain:true})
         if(data){
+          console.log(data)
           if(data.profile_image){
             s3Util.s3getHeadObject("dev-trcker-merchant-images", "ProfileImages/"+result.profile_image)
             .then(data => {
@@ -87,6 +88,9 @@ exports.findOne = (req, res) => {
                 message: err.code
               });
             })
+         }
+         else{
+           res.send(result)
          }
        }
       })
@@ -122,6 +126,11 @@ exports.update = (req, res) => {
                       message: err.message || "Error uploading image to s3"
                     })
             })
+          }
+          else{
+            res.send({
+              message: "Merchant was updated successfully."
+            });
           }
         } else {
           res.status(422).send({
