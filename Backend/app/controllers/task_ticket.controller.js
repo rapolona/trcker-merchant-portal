@@ -532,15 +532,31 @@ exports.getCampaignGallery = (req,res) => {
           )
       })
     })
+    chainedPromise.push(
+      Campaign.findOne({where: {campaign_id:campaign_id}})
+      .catch(err => {
+        console.log(err)
+        res.status(500).send({message: "Error retrieving campaign"})
+      })
+    )
     Promise.all(chainedPromise)
     .then(data => {
       resultObj.rows = resultUrls
+      if(data[1]){
+        resultObj.campaign_details = data[1]
+      }
       res.send(resultObj)
     })
     .catch(err => {
       res.status(500).send({
         message: "Something went wrong retrieving the s3 urls"
       })
+    })
+  })
+  .catch(err => {
+    console.log(err)
+    res.status(500).send({
+      message: "Something went wrong retrieving task tickets"
     })
   })
 
