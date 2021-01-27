@@ -203,7 +203,7 @@ exports.approve = (req, res) => {
 
 
     var page_number = 1;
-    var count_per_page = 25;
+    var count_per_page = null;
 
     if((req.query.page)&&(req.query.count_per_page)){
       page_number = parseInt(req.query.page);
