@@ -34,20 +34,29 @@
         </div>
         <div class="col-md-8 col-lg-9 col-xxl-10 border-md-left">
             <div class="bg-white">
-                <div class="group-15 p-3 d-flex flex-wrap justify-content-lg-between">
-                    <div class="row" >
-                        <div style="float: left" >
-                            <a id="approve" class="btn btn-success"><span class="fa-check"></span></a>
-                            <a id="reject" class="btn btn-danger"><span class="fa-remove"></span></a>
+                <div class="row" style="padding: 10px">
+                  
+                        <div class="col-md-3">
+                            @if(!$tickets->awarded)
+                                <a id="approve" class="btn btn-success"><span class="fa-check"></span></a>
+                                <a id="reject" class="btn btn-danger"><span class="fa-remove"></span></a>
+                                @if($tickets->approval_status=="APPROVED")
+                                    <a id="award" class="btn btn-warning">Award</a>
+                                @endif
+                            @else
+                                <div class="badge badge-secondary">AWARDED</div>
+                            @endif
                         </div>
-                        <div style="float: left; margin-left: 20px">
-                            
+                        <div class="col-md-7">
                             @if($tickets->approval_status=="REJECTED" && isset($tickets->rejection_reason))
                                 <span><strong> Reason: </strong>{{ $tickets->rejection_reason }}</span>
-                            @endif
-                            
+                            @endif 
                         </div>
-                    </div>
+                        <div class="col-md-2 pull-right text-right">
+                            <a href="#" class="btn btn-primary"><span class="fa-arrow-circle-left"></span></a>
+                            <a href="#" class="btn btn-primary"><span class="fa-arrow-circle-right"></span></a>
+                        </div>
+                    
                 </div>
                 <div class="table-responsive">
                     <table class="table table-hover table-align-1 table-vertical-align">
@@ -154,6 +163,22 @@
                         // DO NOTHING
                     }
                 });
+            });
+
+             $("#award").click(function(){
+                let url = "{{ url('ticket/award_ticket/'.$tickets->campaign_id . '/' . $tickets->task_ticket_id) }}";
+                $.confirm({
+                    title: 'Hustle',
+                    content: 'Are you sure you want to AWARD the reward? (you can no longer change its status upon awarding)',
+                    buttons: {
+                    confirm: function () {
+                        window.location = url;
+                    },
+                    cancel: function () {
+                        //$.alert('Canceled!');
+                    } }
+                })
+            
             });
 
         });

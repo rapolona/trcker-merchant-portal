@@ -113,4 +113,23 @@ class MerchantRepository extends Repository
             $this->sessionExpired($e);
         }
     }
+
+    public function awardTicket($data)
+    {
+        try {
+            return $this->trackerApi('post', $this->api . 'award', $data);
+        } catch(\Exception $e) {
+            $this->sessionExpired($e);
+        }
+    }
+
+    public function nextPrevTicket($data)
+    {
+        try {
+            return $this->trackerApi('get', $this->api . 'nextAndPrev', $data);
+        } catch(\Exception $e) {
+            $this->sessionExpired($e);
+        }
+    }
+
 }

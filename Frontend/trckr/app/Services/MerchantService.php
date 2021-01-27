@@ -57,4 +57,14 @@ class MerchantService
     {
         return $this->repository->getTicketReport();
     }
+
+    public function awardTicket($data)
+    {
+        return $this->repository->awardTicket($data);
+    }
+
+    public function nextPrevTicket($data)
+    {
+        return $this->repository->nextPrevTicket($data);
+    }
 }

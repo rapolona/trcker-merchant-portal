@@ -69,14 +69,22 @@ class TicketController extends Controller
         ];
         
         $list = $this->merchantService->getAllTickets($data); 
+        $rows = [];
+        $current_page = 1;
+        $total_pages = 1;
+        if($list){
+            $rows = $list->rows;
+            $current_page = $list->current_page;
+            $total_pages = $list->total_pages;
+        }
 
         $pagination = [
             'per_page' => $data['count_per_page'],
-            'current_page' => $list->current_page,
-            'total_pages' => $list->total_pages
+            'current_page' => $current_page,
+            'total_pages' => $total_pages
         ];
 
-        return view('concrete.ticket.ticket', ['tickets' => $list->rows, 'pagination' => $pagination, 'filter' => $filter ]);
+        return view('concrete.ticket.ticket', ['tickets' => $rows, 'pagination' => $pagination, 'filter' => $filter ]);
     }
 
     /**
@@ -90,7 +98,14 @@ class TicketController extends Controller
             'task_ticket_id' => $ticketId,
             'campaign_id' => $campaignId,
         ]);
-        //print_r($ticket); exit();
+     
+        /*$next = $this->merchantService->nextPrevTicket([
+            'task_ticket_id' => $ticketId,
+            'page' => 1,
+            'count_per_page' => 25
+        ]);
+
+        print_r($next); exit();*/
         return view('concrete.ticket.view', ['tickets' => $ticket[0]]);
     }
 
@@ -129,6 +144,27 @@ class TicketController extends Controller
         $msg = [
             "type" => "success",
             "message" => "Reject Ticket(s) Success!",
+        ];
+
+        return redirect('/ticket/view/' . "{$campaignId}/$ticketId")
+            ->with("formMessage", $msg);
+    }
+
+    /**
+     * award instance
+     *
+     * @return redirect
+     */
+    public function award_ticket($campaignId, $ticketId, Request $request)
+    {
+        $data = [
+            'task_ticket_id' => $ticketId
+        ];
+        $this->merchantService->awardTicket($data);
+
+        $msg = [
+            "type" => "success",
+            "message" => "Award Ticket(s) Success!",
         ];
 
         return redirect('/ticket/view/' . "{$campaignId}/$ticketId")

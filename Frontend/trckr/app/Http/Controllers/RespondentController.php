@@ -83,14 +83,47 @@ class RespondentController extends Controller
         return redirect('/respondent')->with("formMessage", $msg);
     }
 
-     public function exportList(Request $request)
+    public function exportRespondentCsvexportList(Request $request)
     {
         
     }
 
-     public function exportRespondentCsv(Request $request)
+
+    public function exportList(Request $request)
     {
+        $headers = array(
+            "Content-type" => "text/csv",
+            "Content-Disposition" => "attachment; filename=file.csv",
+            "Pragma" => "no-cache",
+            "Cache-Control" => "must-revalidate, post-check=0, pre-check=0",
+            "Expires" => "0"
+        );
+
+        $data = [
+            //'first_name' => $request->first_name,
+           // 'last_name' => $request->last_name,
+           // 'status' => $request->status,
+           // 'email' => $request->email,
+           // 'settlement_account_number' => $request->mobile
+        ];
         
-    }
+        $list = $this->respondentService->getAll($data);
+
+        print_r($list); exit();
+
+        $columns = array('ReviewID', 'Provider', 'Title', 'Review', 'Location', 'Created', 'Anonymous', 'Escalate', 'Rating', 'Name');
+
+        $callback = function() use ($reviews, $columns)
+        {
+            $file = fopen('php://output', 'w');
+            fputcsv($file, $columns);
+
+            foreach($reviews as $review) {
+                fputcsv($file, array($review->reviewID, $review->provider, $review->title, $review->review, $review->location, $review->review_created, $review->anon, $review->escalate, $review->rating, $review->name));
+            }
+            fclose($file);
+        };
+        return Response::stream($callback, 200, $headers);
+}
 
 }

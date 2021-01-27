@@ -89,7 +89,9 @@
                                 <td>{{ $t->campaign->campaign_name }}</td>
                                 <td>{{ date('Y-m-d', strtotime($t->createdAt)) }}</td>
                                 <td>
-                                    <div class="text-{{ config('concreteadmin')['ticket_status'][$t->approval_status ] }}">{{ $t->approval_status }}</div>
+                                    <div class="text-{{ config('concreteadmin')['ticket_status'][$t->approval_status] }}">
+                                        {!! ($t->awarded)? '<div class="badge badge-secondary">AWARDED</div>' : $t->approval_status !!}
+                                    </div>
                                     @if($t->approval_status=="REJECTED")
                                     <div>{{ $t->rejection_reason }}</div>
                                     @endif
@@ -111,6 +113,9 @@
                                 </td>
                             </tr>
                         @endforeach
+                        @if(count($tickets) < 1)
+                        <tr><td colspan="9"><center><strong>No available ticket!</strong></center></td></tr>
+                        @endif
                         </tbody>
                     </table>
                 </div>
