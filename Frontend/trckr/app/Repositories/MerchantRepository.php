@@ -126,7 +126,9 @@ class MerchantRepository extends Repository
     public function nextPrevTicket($data)
     {
         try {
-            return $this->trackerApi('get', $this->api . 'nextAndPrev', $data);
+            $data = ($data==null) ? [] : $data;
+            $uri = http_build_query($data);
+            return $this->trackerApi('get', $this->api . 'nextAndPrev?' . $uri , $data);
         } catch(\Exception $e) {
             $this->sessionExpired($e);
         }

@@ -53,8 +53,13 @@
                             @endif 
                         </div>
                         <div class="col-md-2 pull-right text-right">
-                            <a href="#" class="btn btn-primary"><span class="fa-arrow-circle-left"></span></a>
-                            <a href="#" class="btn btn-primary"><span class="fa-arrow-circle-right"></span></a>
+                            @if(isset($pagination->prev))
+                            <a href="{{ url('ticket/view/' . $pagination->prev->campaign_id . '/' . $pagination->prev->task_ticket_id ) }}" class="btn btn-primary"><span class="fa-arrow-circle-left"></span></a>
+                            @endif
+
+                            @if($pagination->next)
+                            <a href="{{ url('ticket/view/' . $pagination->next->campaign_id . '/' . $pagination->next->task_ticket_id ) }}" class="btn btn-primary"><span class="fa-arrow-circle-right"></span></a>
+                            @endif
                         </div>
                     
                 </div>

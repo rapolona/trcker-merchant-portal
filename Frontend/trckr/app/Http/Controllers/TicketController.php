@@ -99,14 +99,13 @@ class TicketController extends Controller
             'campaign_id' => $campaignId,
         ]);
      
-        /*$next = $this->merchantService->nextPrevTicket([
+        $pagination = $this->merchantService->nextPrevTicket([
             'task_ticket_id' => $ticketId,
             'page' => 1,
             'count_per_page' => 25
         ]);
 
-        print_r($next); exit();*/
-        return view('concrete.ticket.view', ['tickets' => $ticket[0]]);
+        return view('concrete.ticket.view', ['tickets' => $ticket[0], 'pagination' => $pagination]);
     }
 
     /**
