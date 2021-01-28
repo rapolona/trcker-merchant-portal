@@ -105,6 +105,8 @@ class TicketController extends Controller
             'count_per_page' => 25
         ]);
 
+        //print_r($ticket); exit();
+
         return view('concrete.ticket.view', ['tickets' => $ticket[0], 'pagination' => $pagination]);
     }
 

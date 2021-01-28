@@ -18,7 +18,8 @@ class TaskService
         "SINGLE SELECT DROPDOWN" => "select",
         "CHECKBOX" => "checkbox-group",
         "IMAGE" => "file",
-        "INTEGER" => "number"
+        "INTEGER" => "number",
+        "RANKING" => "checkbox-group"
     ];
 
     public function __construct(TaskRepository $repository)
