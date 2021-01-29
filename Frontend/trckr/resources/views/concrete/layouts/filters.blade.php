@@ -9,11 +9,11 @@
         </select>
     </div>
 
-    <div class="col-sm-8">
+    <div class="col-sm-9">
         @yield('tableFilters')
     </div>
     
-    <div class="col-sm-3 text-right">
+    <div class="col-sm-2 text-right">
         <nav aria-label="Page navigation">
         <ul class="pagination" style="float: right">
     	   @if($pagination['current_page'] > 1)

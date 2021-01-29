@@ -24,7 +24,8 @@
             <input class="form-control" id="mobile" type="text" value="{{ $filter['mobile'] }}" placeholder="Mobile">
         </div>
         <div class="col-sm-2">
-            <button type="button" id="searchBtn" class="btn btn-primary">Search</button>
+            <button type="button" id="searchBtn" class="btn btn-primary"><span class="fa-search"></span></button>
+            <button type="button" id="downloadBtn" class="btn btn-primary"><span class="fa-cloud-download"></span></button>
         </div>
     </div>
 @endsection
@@ -90,6 +91,20 @@
             let str = jQuery.param( params );
             window.location = url + str;
         });    
+
+        $('#downloadBtn').click(function(e){
+            let url = "{{ url('respondent/export_csv/download') }}?";
+            let params = { 
+                    last_name : $('#last_name').val(),
+                    first_name : $('#first_name').val(),
+                    status : $('#status').val(),
+                    email : $('#email').val(),
+                    mobile : $('#mobile').val(),
+            };
+            let str = jQuery.param( params );
+            window.location = url + str;
+        }); 
+        
     })
 </script>    
 @stop

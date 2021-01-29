@@ -72,6 +72,14 @@
                         </tr>
                         </thead>
                         <tbody>
+                            @foreach($user->user_payout_requests as $payout)
+                            <tr>
+                                <td>{{ date('Y-m-d', strtotime($payout->createdAt)) }}</td>
+                                <td>{{ $payout->amount }}</td>
+                                <td>{{ $payout->reference_id }}</td>
+                                <td>{{ $payout->status }}</td>
+                            </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>

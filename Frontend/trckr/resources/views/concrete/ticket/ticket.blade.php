@@ -1,7 +1,8 @@
 @extends('concrete.layouts.main')
 
 @section('breadcrumbs_pull_right')
-    <a class="btn btn-outline-primary" href="{{ url('/ticket/export_csv') }}"><span class="fa-cloud-download"></span><span class="pl-2">Download Report</span></a>
+    <!--<a class="btn btn-outline-primary" href="{{ url('/ticket/export_csv') }}"><span class="fa-cloud-download"></span><span class="pl-2">Download Report</span></a>-->
+
 @endsection
 
 @section('tableFilters')
@@ -10,7 +11,10 @@
             <input class="form-control" id="name" type="text" value="{{ $filter['name'] }}" placeholder="Respondent">
         </div>
         <div class="col-sm-2">
-            <input class="form-control" id="campaignname" type="text" value="{{ $filter['campaignname'] }}" placeholder="Campaign">
+            <!--<input class="form-control" id="campaignname" type="text" value="{{ $filter['campaignname'] }}" placeholder="Campaign">-->
+            <select class="form-control" name="campaign_id" id="campaign_id">
+                <option>--Campaign--</option>
+            </select>
         </div>
         <div class="col-sm-3">
             <select class="form-control" id="status">
@@ -29,7 +33,8 @@
             </div>
         </div>
         <div class="col-sm-2">
-            <button type="button" id="searchBtn" class="btn btn-primary">Search</button>
+            <button type="button" id="searchBtn" class="btn btn-primary"><span class="fa-search"></span></button>
+            <button type="button" id="downloadBtn" class="btn btn-primary"><span class="fa-cloud-download"></span></button>
         </div>
     </div>
 @endsection
@@ -153,7 +158,19 @@ setTimeout(function () {
                 let params = { 
                     daterange : $('#daterange').val(),
                     status : $('#status').val(),
-                    campaignname : $('#campaignname').val(),
+                    campaign_id : $('#campaign_id').val(),
+                    name : $('#name').val(),
+                };
+                let str = jQuery.param( params );
+                window.location = url + str;
+            });
+
+            $('#downloadBtn').click(function(e){
+                let url = "{{ url('/ticket/export_csv') }}?";
+                let params = { 
+                    daterange : $('#daterange').val(),
+                    status : $('#status').val(),
+                    campaign_id : $('#campaign_id').val(),
                     name : $('#name').val(),
                 };
                 let str = jQuery.param( params );
@@ -197,34 +214,6 @@ setTimeout(function () {
                 $("#action").val('reject');
             });
 
-            $('#handle_ticket').submit(function(e){
-                var formData = new FormData(this);
-
-                var action = formData.get('action');
-
-                var task_ticket_id = [];
-
-                console.log(task_ticket_id);
-                $.each($("input[name='task_ticket_id']:checked"), function(){
-                    task_ticket_id.push($(this).attr("value"));
-                });
-
-                if (task_ticket_id.length < 1){
-                    $(".modal-title").text("Invalid Delete Selection!");
-                    $(".modal-body").html("<p>Please check at least one product!</p>");
-                    $("#myModal").modal('show');
-                    return;
-                }
-
-                console.log(task_ticket_id);
-
-                formData.append('task_ticket_id', task_ticket_id);
-                formData.append('_token', "{{ csrf_token() }}");
-
-                var actiontext = action.charAt(0).toUpperCase() + action.slice(1);
-
-                post("{{url('/ticket/')}}/" + action + "_ticket", actiontext + " Ticket(s)", action, formData, "{{url('/ticket/view')}}");
-            });
         });
     </script>
 @stop

@@ -54,6 +54,8 @@ class RespondentController extends Controller
     public function get($id, Request $request)
     {
         $user = $this->respondentService->get($id);
+
+        //print_r( $user ); exit();
         return view('concrete.respondent.view', ['user' => $user]);
     }
 
@@ -91,39 +93,72 @@ class RespondentController extends Controller
 
     public function exportList(Request $request)
     {
+        $filename = 'hustle-users' . now() . '.csv';
         $headers = array(
             "Content-type" => "text/csv",
-            "Content-Disposition" => "attachment; filename=file.csv",
+            "Content-Disposition" => "attachment; filename=" . $filename,
             "Pragma" => "no-cache",
             "Cache-Control" => "must-revalidate, post-check=0, pre-check=0",
             "Expires" => "0"
         );
 
         $data = [
-            //'first_name' => $request->first_name,
-           // 'last_name' => $request->last_name,
-           // 'status' => $request->status,
-           // 'email' => $request->email,
-           // 'settlement_account_number' => $request->mobile
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'status' => $request->status,
+            'email' => $request->email,
+            'settlement_account_number' => $request->mobile
         ];
         
-        $list = $this->respondentService->getAll($data);
+        $users = $this->respondentService->getAll($data);
 
-        print_r($list); exit();
 
-        $columns = array('ReviewID', 'Provider', 'Title', 'Review', 'Location', 'Created', 'Anonymous', 'Escalate', 'Rating', 'Name');
 
-        $callback = function() use ($reviews, $columns)
+        $columns = array(
+            'Email', 
+            'Last Name', 
+            'First Name', 
+            'Account Level', 
+            'Birthday', 
+            'Age', 
+            'Gender', 
+            'Type', 
+            'Mobile', 
+            'Region', 
+            'Province', 
+            'City', 
+            'Status', 
+            'Registration Date');
+
+        $callback = function() use ($users, $columns)
         {
             $file = fopen('php://output', 'w');
             fputcsv($file, $columns);
 
-            foreach($reviews as $review) {
-                fputcsv($file, array($review->reviewID, $review->provider, $review->title, $review->review, $review->location, $review->review_created, $review->anon, $review->escalate, $review->rating, $review->name));
+            foreach($users->rows as $user) {
+
+                //print_r($user); exit();
+                fputcsv($file, array(
+                    $user->email,
+                    $user->last_name,
+                    $user->first_name,
+                    $user->account_level,
+                    date('Y-m-d', strtotime($user->birthday)),
+                    $user->age,
+                    $user->gender,
+                    $user->settlement_account_type,
+                    $user->settlement_account_number,
+                    isset($user->region)? $user->region : '',
+                    isset($user->province)? $user->province : '',
+                    isset($user->city)? $user->city : '',
+                    $user->status,
+                    date('Y-m-d', strtotime($user->createdAt))
+                    )
+                );
             }
             fclose($file);
         };
-        return Response::stream($callback, 200, $headers);
-}
+        return  Response::stream($callback, 200, $headers)->sendContent();
+    }
 
 }
