@@ -85,17 +85,46 @@ class AuthController extends Controller
         $data = ['email_address' => $request->input('email_address')];
 
         $forgot = $this->merchantService->forgotPassword($data, false);
+
+        //print_r($forgot); exit();
  
-        if($forgot->message){
+        if(isset($forgot->message)){
             return view('concrete.auth.passwords.forgot', ['message' => $forgot->message]);
         }
 
-        return view('concrete.auth.passwords.forgotPin');
+        return view('concrete.auth.passwords.forgotPin', ['user' => $forgot]);
 
     }
 
-    public function forgotpin_post()
+    public function forgotpin_post(Request $request)
     {
+        $data = (array) $request->all();
+        unset($data['_token']);
 
+        $validator = Validator::make($request->all(), [
+            'password' => 'required|confirmed|min:6',
+            'passwordToken' => 'required'
+        ]);
+
+        if ($validator->fails())
+        {
+            $msg = [
+                "type" => "danger",
+                "message" =>  "Error: please make sure password and retype password are same and has 6 minimum characters !",
+            ];
+
+            return redirect('forgot-password')->with("formMessage", $msg);
+        }
+
+        $forgot = $this->merchantService->changePassword($data);
+
+        print_r($forgot); exit();
+
+        $msg = [
+            "type" => "success",
+            "message" =>  "You have successfully change your password!",
+        ];
+
+        return redirect('forgot-password')->with("formMessage", $msg);
     }
 }

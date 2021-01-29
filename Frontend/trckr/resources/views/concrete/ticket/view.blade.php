@@ -48,9 +48,7 @@
                             @endif
                         </div>
                         <div class="col-md-7">
-                            @if($tickets->approval_status=="REJECTED" && isset($tickets->rejection_reason))
-                                <span><strong> Reason: </strong>{{ $tickets->rejection_reason }}</span>
-                            @endif 
+                            
                         </div>
                         <div class="col-md-2 pull-right text-right">
                             @if(isset($pagination->prev))
@@ -66,6 +64,14 @@
                 <div class="table-responsive">
                     <table class="table table-hover table-align-1 table-vertical-align">
                         <thead>
+                            <tr>
+                                <th><strong>Reward:</strong> {{ $tickets->reward_amount }}</th>
+                                <th colspan="3">
+                                    @if($tickets->approval_status=="REJECTED" && isset($tickets->rejection_reason))
+                                        <span><strong> Reason: </strong>{{ $tickets->rejection_reason }}</span>
+                                    @endif 
+                                </th>
+                            </tr>
                         <tr>
                             <!-- <th scope="col">Select</th> -->
                             <th scope="col">Timestamp</th>
@@ -74,6 +80,7 @@
                             <th scope="col">Task Answer</th>
                             <th scope="col">Status</th>
                         </tr>
+
                         </thead>
                         <tbody>
                         @foreach ($tickets->task_details as $tix)

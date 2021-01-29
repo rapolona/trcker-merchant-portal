@@ -67,4 +67,9 @@ class MerchantService
     {
         return $this->repository->nextPrevTicket($data);
     }
+
+    public function updateAdminEmail($data)
+    {
+        return $this->repository->updateAdminEmail($data);
+    }
 }

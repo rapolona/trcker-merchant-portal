@@ -1,7 +1,8 @@
 @extends('concrete.layouts.custom')
 
 @section('content')
-    <form class="login100-form validate-form" method="post" action="{{ url('forgot-password') }}"  id="pwd-container">
+    <form class="login100-form validate-form" method="post" action="{{ url('forgot-password-pin') }}"  id="pwd-container">
+        <input type="hidden" name="user_id" value="{{ $user->admin_id }}">
         <span class="login100-form-title">
             <img src="{{ config('concreteadmin.logo_img', 'logo_img')  }}" alt="Hustle Logo">
         </span>
@@ -11,13 +12,13 @@
             <div class="alert alert-danger alert-border-left" role="alert"><span class="alert-icon fa-info"></span><span>{{ $message }}</span>
             </div>
             @else
-            <div class="alert alert-success alert-border-left" role="alert"><span class="alert-icon fa-info"></span><span>Change password success, pls login!</span>
+            <div class="alert alert-success alert-border-left" role="alert"><span class="alert-icon fa-info"></span><span>Please use the CODE we sent you at your email: {{ $user->email_address }}!</span>
             </div>
             @endif
 
 
             <div class="wrap-input100 validate-input m-b-16">
-                <input class="input100" type="text" name="passwordToken" id="passwordToken" placeholder="PIN">
+                <input class="input100" type="text" name="passwordToken" id="passwordToken" placeholder="CODE">
                 <span class="focus-input100"></span>
             </div>
 

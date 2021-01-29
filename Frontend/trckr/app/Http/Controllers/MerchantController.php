@@ -49,6 +49,11 @@ class MerchantController extends Controller
      */
     public function view_profile(Request $request)
     {
+
+        /*$this->merchantService->updateAdminEmail([
+            'email_address' => 'roberto.apolona@gmail.com'
+        ]);*/
+
         $profile = $this->merchantService->getProfile();
         return view('concrete.merchant.profile', ['profile' => $profile]);
     }
