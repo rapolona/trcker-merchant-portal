@@ -100,6 +100,9 @@ class AuthController extends Controller
     {
         $data = (array) $request->all();
         unset($data['_token']);
+        $user = (object) [
+            'admin_id' => $data['admin_id']
+        ];
 
         $validator = Validator::make($request->all(), [
             'password' => 'required|confirmed|min:6',
@@ -113,18 +116,24 @@ class AuthController extends Controller
                 "message" =>  "Error: please make sure password and retype password are same and has 6 minimum characters !",
             ];
 
-            return redirect('forgot-password')->with("formMessage", $msg);
+            return view('concrete.auth.passwords.forgotPin', ['user' => $user, 'formMessage' => $msg]);
         }
 
-        $forgot = $this->merchantService->changePassword($data);
+        $forgot = $this->merchantService->changePassword($data, false);
 
-        print_r($forgot); exit();
+        if(isset($forgot->message)){
+            $msg = [
+                "type" => "danger",
+                "message" =>  $forgot->message,
+            ];
+            return view('concrete.auth.passwords.forgotPin', ['user' => $user, 'formMessage' => $msg]);
+        }
 
         $msg = [
             "type" => "success",
             "message" =>  "You have successfully change your password!",
         ];
 
-        return redirect('forgot-password')->with("formMessage", $msg);
+        return view('concrete.auth.passwords.forgotPin', ['user' => $user, 'formMessage' => $msg]);
     }
 }

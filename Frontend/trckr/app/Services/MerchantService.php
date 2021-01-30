@@ -43,9 +43,9 @@ class MerchantService
         return $this->repository->forgotPassword($data, $validate);
     }
 
-    public function changePassword($data)
+    public function changePassword($data, $validate=true)
     {
-        return $this->repository->changePassword($data);
+        return $this->repository->changePassword($data, $validate);
     }
 
     public function getAllTickets($data)

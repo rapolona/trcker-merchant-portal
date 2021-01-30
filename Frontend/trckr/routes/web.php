@@ -20,6 +20,7 @@ Route::post('/login', 'AuthController@login_post');
 Route::get('/logout', 'AuthController@logout');
 
 Route::post('/forgot-password-pin', 'AuthController@forgotpin_post');
+Route::get('/forgot-password-pin', 'AuthController@forgotpin_post');
 Route::post('/forgot-password', 'AuthController@forgot_post');
 Route::get('/forgot-password', 'AuthController@forgot');
 

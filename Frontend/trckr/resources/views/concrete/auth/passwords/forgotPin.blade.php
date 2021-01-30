@@ -2,18 +2,14 @@
 
 @section('content')
     <form class="login100-form validate-form" method="post" action="{{ url('forgot-password-pin') }}"  id="pwd-container">
-        <input type="hidden" name="user_id" value="{{ $user->admin_id }}">
+        <input type="hidden" name="admin_id" value="{{ $user->admin_id }}">
         <span class="login100-form-title">
             <img src="{{ config('concreteadmin.logo_img', 'logo_img')  }}" alt="Hustle Logo">
         </span>
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
-            @if(isset($message))
-            <div class="alert alert-danger alert-border-left" role="alert"><span class="alert-icon fa-info"></span><span>{{ $message }}</span>
-            </div>
-            @else
-            <div class="alert alert-success alert-border-left" role="alert"><span class="alert-icon fa-info"></span><span>Please use the CODE we sent you at your email: {{ $user->email_address }}!</span>
-            </div>
+            @if(isset($formMessage))
+                <div class="alert alert-dismissible alert-{{ $formMessage['type'] }} mt-1" role="alert"><span class="alert-icon fa-trophy"></span><span>{{ $formMessage['message'] }}</span><button class="close" type="button" data-dismiss="alert" aria-label="Close"><span class="fa-close" aria-hidden="true"></span></button></div>
             @endif
 
 
