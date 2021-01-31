@@ -343,7 +343,7 @@
                                             <div class="custom-control custom-switch custom-switch-primary">
                                                 <input class="custom-control-input mandatory" {{ ($man_value=='true' || $man_value=='')? 'checked' : '' }} type="checkbox" id="mandatory{{ $x }}" name="mandatory[]" />
                                                 <label class="custom-control-label" for="mandatory{{ $x }}">Mandatory?</label>
-                                                <input class="mandatory-buffer" type='hidden' value="{{ old('man.' . $x) }}" name='man[]'>
+                                                <input class="mandatory-buffer" type='hidden' value="{{ old('man.' . $x, 1) }}" name='man[]'>
                                             </div>
                                         </div>
                                         <div class="col-md-6">

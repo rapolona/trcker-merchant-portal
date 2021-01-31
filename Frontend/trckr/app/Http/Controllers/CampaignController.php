@@ -248,7 +248,7 @@ class CampaignController extends Controller
         {
             $data['tasks'][$k]['task_id'] = $temp_task_actions[$k];
             $data['tasks'][$k]['reward_amount'] = $temp_reward[$k];
-            $data['tasks'][$k]['mandatory']= ($data['man'][$k]=='true')? 1 : 0;
+            $data['tasks'][$k]['mandatory']= ($data['man'][$k] > 0)? 1 : 0;
         }
 
         $data['audience_cities'] = [];
@@ -317,6 +317,8 @@ class CampaignController extends Controller
                 'reward_amount' => $data['reward'][$i]
             );
         }
+
+        //print_r($request_data); exit();
 
         $response = $this->campaignService->create($request_data);
 

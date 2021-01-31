@@ -23,6 +23,7 @@
                             <div class="list-block">
                                 <span>Ticket ID: {{ $tickets->task_ticket_id }}</span><br />
                                 <span>Ticket Last Update: {{ date('M d, Y H:i:s', strtotime($tickets->updatedAt)) }}</span><br />
+                                <span>Ticket Created: {{ date('M d, Y H:i:s', strtotime($tickets->createdAt)) }}</span><br />
                                 <!-- <span class="text-warning">Pending</span><br /> -->
                             </div>
 
@@ -65,12 +66,18 @@
                     <table class="table table-hover table-align-1 table-vertical-align">
                         <thead>
                             <tr>
-                                <th><strong>Reward:</strong> {{ $tickets->reward_amount }}</th>
-                                <th colspan="3">
+                                <td><strong>Reward:</strong> {{ $tickets->reward_amount }}</td>
+                                <td colspan="3">
                                     @if($tickets->approval_status=="REJECTED" && isset($tickets->rejection_reason))
                                         <span><strong> Reason: </strong>{{ $tickets->rejection_reason }}</span>
                                     @endif 
-                                </th>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Latitude:</td>
+                                <td>{{ $tickets->latitude }}</td>
+                                <td>Longtitude:</td>
+                                <td>{{ $tickets->longitude }}</td>
                             </tr>
                         <tr>
                             <!-- <th scope="col">Select</th> -->
