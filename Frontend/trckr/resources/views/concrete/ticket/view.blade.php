@@ -96,7 +96,7 @@
                                 <!--<td></td>-->
                                 <td>{{ ($tix->task_question->question) ? $tix->task_question->question : ''}}</td>
                                 <td>
-                                    @if (substr($tix->response, 0, 11) == "data:image/" || is_array(@getimagesize($tix->response)))
+                                    @if (substr($tix->response, 0, 11) == "data:image/" || is_array(@getimagesize($tix->response_url)))
                                         <div class="image-details">
                                             @if(isset($tix->image_source))
                                             <span><strong>Source: </strong> {{ $tix->image_source }}</span>
@@ -107,7 +107,7 @@
 
                                         </div>
                                         <span class="list-inline-item">
-                                            <img src="{{ ($tix->response) ? $tix->response : ''}}"/>
+                                            <img src="{{ ($tix->response_url) ? $tix->response_url : ''}}"/>
                                         </span>
                                     @else
                                         {{ ($tix->response) ? $tix->response : ''}}
