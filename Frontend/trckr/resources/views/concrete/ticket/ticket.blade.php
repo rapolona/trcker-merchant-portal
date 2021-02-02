@@ -73,6 +73,7 @@
                             <th>Email</th>
                             <th>Device ID</th>
                             <th>Campaign Name</th>
+                            <th>Task Name</th>
                             <th>Date Submitted</th>
                             <th>Status</th>
                             <th>Rewards</th>
@@ -92,6 +93,7 @@
                                 <td>{{ $t->user_detail->email }}</td>
                                 <td>{{ $t->device_id}}</td>
                                 <td>{{ $t->campaign->campaign_name }}</td>
+                                <td>{{ $t->task_name }}</td>
                                 <td>{{ date('Y-m-d', strtotime($t->createdAt)) }}</td>
                                 <td>
                                     <div class="text-{{ config('concreteadmin')['ticket_status'][$t->approval_status] }}">
@@ -103,13 +105,8 @@
                                     
                                 </td>
                                 <td>
-                                    @php $rewards = 0; @endphp
-                                    @foreach($t->task_details as $task)
-                                        @php $rewards = $task->task_question->reward_amount;@endphp
-                                    @endforeach
-                                    {{ $rewards}}
+                                    {{ $t->reward_amount }}
                                 </td>
-
 
                                 <td>
                                     <div class="btn-group">
