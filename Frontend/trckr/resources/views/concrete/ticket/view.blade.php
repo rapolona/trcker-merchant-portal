@@ -94,7 +94,7 @@
                             <tr>
                                 <td>{{ date('M d, Y H:i:s', strtotime($tix->updatedAt)) }}</td>
                                 <!--<td></td>-->
-                                <td>{{ ($tix->task_question->question) ? $tix->task_question->question : ''}}</td>
+                                <td>{!! ($tix->task_question->question) ? $tix->task_question->question : '' !!}</td>
                                 <td>
                                     @if (substr($tix->response, 0, 11) == "data:image/" || is_array(@getimagesize($tix->response_url)))
                                         <div class="image-details">
