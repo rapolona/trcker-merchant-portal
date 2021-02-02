@@ -614,19 +614,25 @@ class CampaignController extends Controller
 
         //validation on task action classifiations, tasks and rewards
         $temp_task_actions = $data['task_id'];
-        $temp_task_type = $data['task_type'];
         $temp_reward= $data['reward_amount'];
         unset($data['task_actions']);
-        unset($data['task_type']);
         unset($data['reward']);
         $data['task_actions'] = array();
 
         $count = 0;
         foreach($temp_task_actions as $k => $v)
         {
-            $data['task_actions'][] = $temp_task_actions[$k];
-            $data['task_type'][] = $temp_task_type[$k];
-            $data['reward'][] = $temp_reward[$k];
+            $data['tasks'][$k]['task_id'] = $temp_task_actions[$k];
+            $data['tasks'][$k]['reward_amount'] = $temp_reward[$k];
+            $data['tasks'][$k]['mandatory']= ($data['man'][$k] > 0)? 1 : 0;
+        }
+
+        $data['audience_cities'] = [];
+
+        if(isset($data['audience_city'])){
+            foreach ($data['audience_city'] as $key => $value) {
+                $data['audience_cities'][$key] = ['city_id' => $value] ;
+            }
         }
 
         $validator = Validator::make($data, $validations);
@@ -662,12 +668,6 @@ class CampaignController extends Controller
         if ( ! empty($data["branch_id-nobranch"]) && $data["branch_id-nobranch"] == "on") {
             $request_data["at_home_campaign"] = 1;
             $request_data["at_home_respondent_count"] = $data["nobranch_submissions"];
-            $request_data["reward"] = array(
-                "reward_name" => "Cash",
-                "reward_description" => "Cash reward",
-                "type" => "CASH",
-                "amount" => array_sum($data["reward"])
-            );
         }
         else {
             foreach($data['branch_id'] as $k => $v){
@@ -718,15 +718,6 @@ class CampaignController extends Controller
         $campaign['branch_id-nobranch'] = ($campaign['branches'][0]->branch_id == 'fbe9b0cf-5a77-4453-a127-9a8567ff3aa7')? true : false;
         $campaign['branch_id-nobranch_value'] = ($campaign['branches'][0]->branch_id == 'fbe9b0cf-5a77-4453-a127-9a8567ff3aa7')? $campaign['branches'][0]->respondent_count : '';
 
-        // TASK ALIGNMENT TO CREATE old()
-        foreach($tasks as $k){
-            foreach ($campaign['tasks']  as $camTkey => $camTask ){
-                if($k->task_id==$camTask->task_id){
-                    $campaign['tasks'][$camTkey]->task_type = $k->task_classification->task_classification_id;
-                }
-            }
-        }
-
         $converter = new HtmlConverter();
         $campaign['campaign_description'] = $converter->convert($campaign['campaign_description']);
 
@@ -742,8 +733,8 @@ class CampaignController extends Controller
             $campaign['submission'][$bKey] = $branch->respondent_count;
         }
 
-        foreach ($tasks as &$k)
-            $k->task_id = $k->task_classification_id . "|" . $k->task_id;
+
+        $cities = $this->capabilityService->getCities();
 
         return view('concrete.campaign.edit', [
             'campaign_type' => $campaign_type,
@@ -752,6 +743,7 @@ class CampaignController extends Controller
             'task_type' => $task_type,
             'tasks' => $tasks,
             'campaign' => $campaign,
+            'cities' => $cities,
             'formMessage' => $msg
         ]);
 
