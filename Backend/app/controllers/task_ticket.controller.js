@@ -251,14 +251,14 @@ exports.approve = (req, res) => {
       offset:skip_number_of_items, limit: count_per_page,distinct:true,
       where:task_ticket_condition,
       include: [
+        {model: tasks, attributes: ['task_name']},
         {model: Task_Detail, as:'task_details', attributes:['createdAt'],include: [{
-          model:Task_Question, as: 'task_question', attributes: ['question'], 
-          include:{model: tasks, attributes:['task_id']}},
+          model:Task_Question, as: 'task_question', attributes: ['question']},
           ]
         },
         {model: User_Detail, as:'user_detail', where:user_detail_condition,attributes: ['first_name', 'last_name', 'account_level', 'email', 'settlement_account_number', 'settlement_account_type']},
         {model: Campaign, as:'campaign', where:campaign_condition, attributes:['campaign_id','campaign_name'],
-      include:{model:campaign_task_associations,where:{}, attributes: ['task_id','reward_amount']}}
+      include:{model:campaign_task_associations,where:{task_id: {[Op.col]: 'task_ticket.task_id' } }, attributes: ['task_id','reward_amount']}}
       ],
       order: [["createdAt", "DESC"]]
       })
@@ -271,21 +271,13 @@ exports.approve = (req, res) => {
         var dataObj = []
         dataObj.total_pages = Math.ceil(data.count/count_per_page);
         dataObj.current_page = page_number;  
+        
         data.rows.forEach((element,element_index) => {
           dataObj.push(element.get({plain:true}))
           //Loop below is for iterating through each task within task_details.
-          for (detail_index = 0; detail_index < dataObj[element_index].task_details.length; detail_index++) {
-            dataObj[element_index].task_details[detail_index].task_question.task_name = dataObj[element_index].task_details[detail_index].task_question.task.task_name
-            
-            //Loop below is for iterating through campaign_task_associations. We look for a match in task_id and insert the correct reward amount.
-            for (reward_index = 0; reward_index < dataObj[element_index].campaign.campaign_task_associations.length; reward_index++) {
-            if(dataObj[element_index].campaign.campaign_task_associations[reward_index].task_id==dataObj[element_index].task_details[detail_index].task_question.task.task_id ){}
-              //Insert matched reward amount
-              dataObj[element_index].task_details[detail_index].task_question.reward_amount = dataObj[element_index].campaign.campaign_task_associations[reward_index].reward_amount;
-            }
-            delete dataObj[element_index].task_details[detail_index].task_question.task
-
-          }
+          dataObj[element_index].reward_amount = element.campaign.campaign_task_associations[0].reward_amount
+          dataObj[element_index].task_name = element.task.task_name;
+          delete dataObj[element_index].task
           delete dataObj[element_index].campaign.campaign_task_associations
           
         })
