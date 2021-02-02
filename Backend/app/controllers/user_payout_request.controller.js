@@ -21,7 +21,7 @@ exports.findAll = (req, res) => {
       }
     var skip_number_of_items = (page_number * count_per_page) - count_per_page;
 
-    User_payout_request.findAndCountAll({offset:skip_number_of_items, limit: count_per_page, 
+    User_payout_request.findAndCountAll({offset:skip_number_of_items, limit: count_per_page, order: [["createdAt", "DESC"]],
         include:[{model:UserDetails, 
             include: [{model:City, as:"cityData"}, {model:Province, as:"provinceData"}, {model:Region, as:"regionData"}]
         }]
