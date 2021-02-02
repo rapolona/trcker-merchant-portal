@@ -250,7 +250,7 @@ exports.approve = (req, res) => {
 
 
     Task_Ticket.findAndCountAll({
-      offset:skip_number_of_items, limit: count_per_page,distinct:true,
+      offset:skip_number_of_items, limit: count_per_page,distinct:true,subQuery:false,
       where:task_ticket_condition,
       include: [
         {model: tasks, attributes: ['task_name']},
