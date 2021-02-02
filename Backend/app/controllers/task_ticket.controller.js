@@ -243,7 +243,9 @@ exports.approve = (req, res) => {
         task_ticket_condition.createdAt= {[Op.lte]: req.query.submission_date_end+' 23:59:00.000Z'};
       }
     }
-
+    if(req.query.campaign_id){
+      task_ticket_condition.campaign_id = req.query.campaign_id
+    }
 
 
 
@@ -328,7 +330,9 @@ exports.approve = (req, res) => {
           task_ticket_condition.createdAt= {[Op.lte]: req.query.submission_date_end+' 23:59:00.000Z'};
         }
       }
-
+      if(req.query.campaign_id){
+        task_ticket_condition.campaign_id = req.query.campaign_id
+      }
 
      
       Task_Ticket.findAll({
@@ -358,7 +362,6 @@ exports.approve = (req, res) => {
         order: [["createdAt", "DESC"]]
         })
       .then(data => {
-        console.log(data)
         if(data[0]){
           var dataObj = []
           data.forEach((element,element_index) => {
@@ -524,15 +527,31 @@ exports.getCampaignGallery = (req,res) => {
           )
       })
     })
+    chainedPromise.push(
+      Campaign.findOne({where: {campaign_id:campaign_id}})
+      .catch(err => {
+        console.log(err)
+        res.status(500).send({message: "Error retrieving campaign"})
+      })
+    )
     Promise.all(chainedPromise)
     .then(data => {
       resultObj.rows = resultUrls
+      if(data[1]){
+        resultObj.campaign_details = data[1]
+      }
       res.send(resultObj)
     })
     .catch(err => {
       res.status(500).send({
         message: "Something went wrong retrieving the s3 urls"
       })
+    })
+  })
+  .catch(err => {
+    console.log(err)
+    res.status(500).send({
+      message: "Something went wrong retrieving task tickets"
     })
   })
 

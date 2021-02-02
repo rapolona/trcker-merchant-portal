@@ -242,7 +242,7 @@ exports.changePassword = (req, res) => {
         return;
     }
     else if (passwordToken){
-        AdminPasswordToken.findOne({where: {admin_id: adminId, token: passwordToken, status: 1}})
+        AdminPasswordToken.findOne({where: {admin_id: adminId, token: passwordToken, status: 0}})
         .then(data => {
             if(data){
                 PasswordUtils.hash(req.body.password, (passwordObject) => {
@@ -253,7 +253,13 @@ exports.changePassword = (req, res) => {
                     Admin.update(newPass, {where: {admin_id: adminId}})
                     .then(num => {
                         if(num==1){
-                            res.send({message: "Admin password succesfuly changed"})
+                            AdminPasswordToken.update({status:1}, {where:{admin_id: adminId, token:passwordToken}})
+                            .then(num => {
+                                res.send({message: "Admin password succesfully changed"})
+                            })
+                            .catch(err => {
+                                res.status(422).send({message: "Password token not updated"})
+                            })
                         }
                         else{
                             res.status(422).send({message: "Admin not found in the system"})
