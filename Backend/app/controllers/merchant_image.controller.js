@@ -121,31 +121,16 @@ exports.listAllPaginate = (req, res) => {
 
         data.rows.forEach(element=> {
             new_element = element.get({plain:true})
-            if(element.file_name){
-                if(element.file_name.startsWith("MerchantImage_")){
-                chainedPromises.push(s3Util.s3getHeadObject("dev-trcker-merchant-images", "MerchantGalleryImages/"+element.file_name)
-                .then(new_data => {
-                    var signedThumbnailImageURL = s3Util.s3GetSignedURL("dev-trcker-merchant-images", "MerchantGalleryImages/"+element.file_name)
-                    new_element.signed_url = signedThumbnailImageURL
+            if(new_element.file_name){
+                if(new_element.file_name.startsWith("MerchantImage_")){
+                    new_element.signed_url = s3Util.s3GetSignedURL("dev-trcker-merchant-images", "MerchantGalleryImages/"+new_element.file_name)
                     new_result.rows.push(new_element)
-                    console.log(signedThumbnailImageURL)
-                })
-                .catch(err => {
-                    res.status(500).send({
-                    message: err.code 
-                    });
-                }))
                 }
             }
     
           })
-          return Promise.all(chainedPromises)
-          .then(newdata=> {
-            res.send(new_result)
-          })
-          .catch(err => {
-            console.log("Error getting Merchant Images")
-          })
+        res.send(new_result)
+
 
     })
     .catch(err => {
