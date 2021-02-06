@@ -64,6 +64,12 @@ exports.create = (req, res) => {
     
           )
           return Promise.all(chainedPromises)
+          .then(newdata=> {
+            res.send("Successfully uploaded image")
+          })
+          .catch(err => {
+            console.log("Error getting Merchant Images")
+          })
 
 
 
