@@ -36,6 +36,8 @@ db.merchants = require("./merchant.model.js")(sequelize, Sequelize);
 db.branches = require("./branch.model.js")(sequelize, Sequelize);
 db.products = require("./product.model.js")(sequelize, Sequelize);
 
+db.merchant_images = require("./merchant_image.model.js")(sequelize, Sequelize)
+
 //Campaign Related Tables
 db.campaigns = require("./campaign.model.js")(sequelize, Sequelize);
 db.campaign_branch_associations = require("./campaign_branch_association.model.js")(sequelize, Sequelize);

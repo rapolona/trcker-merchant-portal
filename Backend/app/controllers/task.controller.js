@@ -73,6 +73,12 @@ exports.createCustom = (req, res) => {
       }
       req.body.task_questions[i].required_inputs = req.body.task_questions[i].required_inputs.toUpperCase();
       req.body.task_questions[i].index = i+1;
+      if(req.body.task_questions[i].task_question_choices != null){
+        for(j=0;j<req.body.task_questions[i].task_question_choices.length;j++){
+          req.body.task_questions[i].task_question_choices[j].index = j
+          console.log(req.body.task_questions[i].task_question_choices[j])
+        }
+      }
       task_questions_container.push(req.body.task_questions[i])
     }
     
@@ -129,8 +135,8 @@ exports.createCustom = (req, res) => {
                     message: err.code+" Error updating Task with id=" + data.task_id
                   });
                 })
-      
             )
+            
             return Promise.all(chainedPromises)
             .then(newdata=> {
               res.send(data)
