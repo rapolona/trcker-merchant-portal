@@ -469,6 +469,8 @@ exports.approve = (req, res) => {
                 nextAndPrevData.prev.page = page_number
               }
               else{
+                console.log(dataObj[currentIndex+1])
+                console.log(dataObj[currentIndex-1])
                 nextAndPrevData.current_page = page_number;   
                 nextAndPrevData.count_per_page = count_per_page
                 nextAndPrevData.next = dataObj[currentIndex+1]
