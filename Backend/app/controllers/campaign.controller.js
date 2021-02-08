@@ -394,10 +394,10 @@ exports.findOne = (req, res) => {
         new_result.end_date = new_result.end_date.toISOString().substring(0,10);
         console.log(data.thumbnail_url)
         if(data.thumbnail_url){
-          s3Util.s3getHeadObject("trcker-campaign-images", "ThumbnailImages/"+data.thumbnail_url)
+          s3Util.s3getHeadObject("dev-trcker-campaign-images", "ThumbnailImages/"+data.thumbnail_url)
           .then(new_data => {
             console.log(new_data)
-            var signedThumbnailImageURL = s3Util.s3GetSignedURL("trcker-campaign-images", "ThumbnailImages/"+data.thumbnail_url)
+            var signedThumbnailImageURL = s3Util.s3GetSignedURL("dev-trcker-campaign-images", "ThumbnailImages/"+data.thumbnail_url)
 
             new_result.signed_thumbnail_url = signedThumbnailImageURL
             console.log(new_result)

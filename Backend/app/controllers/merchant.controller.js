@@ -114,7 +114,7 @@ exports.update = (req, res) => {
       .then(num => {
         if (num == 1) {
           if(req.body.profile_image_base64){
-            var s3UploadData = s3Util.s3Upload(req.body.profile_image_base64, "ProfileImages/"+req.body.profile_image, "trcker-merchant-images", {})
+            var s3UploadData = s3Util.s3Upload(req.body.profile_image_base64, "ProfileImages/"+req.body.profile_image, "dev-trcker-merchant-images", {})
             console.log(s3UploadData)
             s3UploadData.then(() => {
               res.send({
