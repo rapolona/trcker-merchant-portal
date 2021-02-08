@@ -32,7 +32,7 @@ exports.create = (req, res) => {
         const now = moment().format('XX')
         var merchant_image_file_name = "MerchantImage_"+data.merchant_image_id+"_"+ now+"_"+req.body.merchant_image_file_name
         chainedPromises.push(
-          s3Util.s3Upload(req.body.merchant_image_base64, "MerchantGalleryImages"+"/" + merchant_image_file_name, "trcker-merchant-images",{})
+          s3Util.s3Upload(req.body.merchant_image_base64, "MerchantGalleryImages"+"/" + merchant_image_file_name, "dev-trcker-merchant-images",{})
           .catch(err=>{
             transaction.rollback()
             console.log("Error uploading to S3" + " "+ err.message)
@@ -123,7 +123,7 @@ exports.listAllPaginate = (req, res) => {
             new_element = element.get({plain:true})
             if(new_element.file_name){
                 if(new_element.file_name.startsWith("MerchantImage_")){
-                    new_element.signed_url = s3Util.s3GetSignedURL("trcker-merchant-images", "MerchantGalleryImages/"+new_element.file_name)
+                    new_element.signed_url = s3Util.s3GetSignedURL("dev-trcker-merchant-images", "MerchantGalleryImages/"+new_element.file_name)
                     new_result.rows.push(new_element)
                 }
             }

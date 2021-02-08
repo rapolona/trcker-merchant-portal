@@ -196,7 +196,7 @@ exports.create = (req, res) => {
         const now = moment().format('XX')
         var thumbnail_file_name = "Thumbnail_"+data.campaign_id+"_"+ now+"_"+req.body.thumbnail_image_name
         chainedPromises.push(
-          s3Util.s3Upload(req.body.thumbnail_image_base64, "ThumbnailImages"+"/" + thumbnail_file_name, "trcker-campaign-images",{})
+          s3Util.s3Upload(req.body.thumbnail_image_base64, "ThumbnailImages"+"/" + thumbnail_file_name, "dev-trcker-campaign-images",{})
           .catch(err=>{
             transaction.rollback()
             console.log("Error uploading to S3" + " "+ err.message)

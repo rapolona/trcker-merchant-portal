@@ -254,10 +254,6 @@ exports.approve = (req, res) => {
       where:task_ticket_condition,
       include: [
         {model: tasks, attributes: ['task_name']},
-        {model: Task_Detail, as:'task_details', attributes:['createdAt'],include: [{
-          model:Task_Question, as: 'task_question', attributes: ['question']},
-          ]
-        },
         {model: User_Detail, as:'user_detail', where:user_detail_condition,attributes: ['first_name', 'last_name', 'account_level', 'email', 'settlement_account_number', 'settlement_account_type']},
         {model: Campaign, as:'campaign', where:campaign_condition, attributes:['campaign_id','campaign_name'],
       include:{model:campaign_task_associations,where:{task_id: {[Op.col]: 'task_ticket.task_id' } }, attributes: ['task_id','reward_amount']}}
@@ -514,9 +510,9 @@ exports.getCampaignGallery = (req,res) => {
     dataObj.map(element => {
       element.task_details.forEach(taskDetail => {
         chainedPromise.push(
-          s3Utils.s3getHeadObject("trcker-task-ticket-images", campaign_id+"/"+taskDetail.response)
+          s3Utils.s3getHeadObject("dev-trcker-task-ticket-images", campaign_id+"/"+taskDetail.response)
           .then(data => {
-            resultUrls.push(s3Utils.s3GetSignedURL("trcker-task-ticket-images", campaign_id+"/"+taskDetail.response)) 
+            resultUrls.push(s3Utils.s3GetSignedURL("dev-trcker-task-ticket-images", campaign_id+"/"+taskDetail.response)) 
             })
             .catch(err => {
               console.log(err)
