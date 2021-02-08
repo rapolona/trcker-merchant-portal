@@ -5,6 +5,10 @@ exports.sendMail = (to, from, subject, message, callback)=>{
         host: '172.31.16.201',
         port:25,
         secure:false,
+        auth: {
+            user: "do-not-reply",
+            pass: '29EXt4'
+        },
         tls:{
             rejectUnauthorized:false
         }
