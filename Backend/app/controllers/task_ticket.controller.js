@@ -514,9 +514,9 @@ exports.getCampaignGallery = (req,res) => {
     dataObj.map(element => {
       element.task_details.forEach(taskDetail => {
         chainedPromise.push(
-          s3Utils.s3getHeadObject("dev-trcker-task-ticket-images", campaign_id+"/"+taskDetail.response)
+          s3Utils.s3getHeadObject("trcker-task-ticket-images", campaign_id+"/"+taskDetail.response)
           .then(data => {
-            resultUrls.push(s3Utils.s3GetSignedURL("dev-trcker-task-ticket-images", campaign_id+"/"+taskDetail.response)) 
+            resultUrls.push(s3Utils.s3GetSignedURL("trcker-task-ticket-images", campaign_id+"/"+taskDetail.response)) 
             })
             .catch(err => {
               console.log(err)
