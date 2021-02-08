@@ -76,9 +76,9 @@ exports.findOne = (req, res) => {
         if(data){
           console.log(data)
           if(data.profile_image){
-            s3Util.s3getHeadObject("dev-trcker-merchant-images", "ProfileImages/"+result.profile_image)
+            s3Util.s3getHeadObject("trcker-merchant-images", "ProfileImages/"+result.profile_image)
             .then(data => {
-              var signedProfileImageURL = s3Util.s3GetSignedURL("dev-trcker-merchant-images", "ProfileImages/"+result.profile_image)
+              var signedProfileImageURL = s3Util.s3GetSignedURL("trcker-merchant-images", "ProfileImages/"+result.profile_image)
               console.log(signedProfileImageURL)
               result.profile_image_url = signedProfileImageURL
               res.send(result)

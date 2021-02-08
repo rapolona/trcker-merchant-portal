@@ -2,14 +2,9 @@ var nodemailer = require("nodemailer");
 
 exports.sendMail = (to, from, subject, message, callback)=>{
     var transporter = nodemailer.createTransport({
-        //host: '172.31.16.201',
-        // port:25,
-        // secure:false,
-        service: "gmail",
-        auth: {
-            user:"dukewillard13@gmail.com", //"do-not-reply",
-            pass: "$3cur3Th1$"//'29EXt4'
-        },
+        host: '172.31.16.201',
+        port:25,
+        secure:false,
         tls:{
             rejectUnauthorized:false
         }
