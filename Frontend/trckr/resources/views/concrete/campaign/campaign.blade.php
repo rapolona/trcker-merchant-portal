@@ -148,6 +148,19 @@ setTimeout(function () {
       $(this).val('');
   });
 }, 2000);   
+
+            $('select.pagination_current_page').click(function(e){
+                let url = "{{ url('campaign/view') }}?";
+                let params = { 
+                    daterange : $('#daterange').val(),
+                    status : $('#status').val(),
+                    name : $('#name').val(),
+                    page : $(this).val()
+                };
+                let str = jQuery.param( params );
+                window.location = url + str;
+            });
+
             
             $('#searchBtn').click(function(e){
                 let url = "{{ url('campaign/view') }}?";

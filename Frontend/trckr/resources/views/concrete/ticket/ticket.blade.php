@@ -150,6 +150,20 @@ setTimeout(function () {
   });
 }, 2000);
 
+            $('select.pagination_current_page').click(function(e){
+                let url = "{{ url('ticket/view') }}?";
+                let params = { 
+                    daterange : $('#daterange').val(),
+                    status : $('#status').val(),
+                    campaign_id : $('#campaign_id').val(),
+                    name : $('#name').val(),
+                    page : $(this).val()
+                };
+                let str = jQuery.param( params );
+                window.location = url + str;
+            });
+
+
             $('#searchBtn').click(function(e){
                 let url = "{{ url('ticket/view') }}?";
                 let params = { 

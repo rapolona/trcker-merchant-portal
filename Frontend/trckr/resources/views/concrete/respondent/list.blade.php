@@ -79,6 +79,21 @@
 @section('js')
 <script type="text/javascript">
     $(document).ready(function (e) {
+
+        $('select.pagination_current_page').click(function(e){
+            let url = "{{ url('respondent') }}?";
+            let params = { 
+                    last_name : $('#last_name').val(),
+                    first_name : $('#first_name').val(),
+                    status : $('#status').val(),
+                    email : $('#email').val(),
+                    mobile : $('#mobile').val(),
+                    page : $(this).val()
+            };
+            let str = jQuery.param( params );
+            window.location = url + str;
+        });
+
         $('#searchBtn').click(function(e){
             let url = "{{ url('respondent') }}?";
             let params = { 

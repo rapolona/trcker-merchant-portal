@@ -68,6 +68,7 @@ class TicketController extends Controller
             'submission_date_end' => $dateEnd,
             //'campaign_id' => 'f959000f-d2d5-40da-a0c6-bd073586e1c7'
         ];
+
         
         $list = $this->merchantService->getAllTickets($data); 
         //print_r($list); exit();

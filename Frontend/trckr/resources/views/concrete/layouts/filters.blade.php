@@ -22,9 +22,9 @@
 
             @if($pagination['total_pages'] > 1)
             <li class="page-item">
-                <select class="form-control pages_option">
+                <select class="form-control pages_option pagination_current_page">
                     @for ($i = 1; $i < $pagination['total_pages'] + 1; $i++)
-                    <option>{{ $i }}</option>
+                    <option {{ ($i==$pagination['current_page'])? 'selected=""' : '' }}>{{ $i }}</option>
                     @endfor
                 </select>
             </li>

@@ -222,6 +222,16 @@
             $('#file').change(function(){
                 $('#file_upload').submit();
             });
+
+            $('select.pagination_current_page').click(function(e){
+                let url = "{{ url('m/branches') }}?";
+                let params = { 
+                    page : $(this).val()
+                };
+                let str = jQuery.param( params );
+                window.location = url + str;
+            });
+
         });
     </script>
 @stop

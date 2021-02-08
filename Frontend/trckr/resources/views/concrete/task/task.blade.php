@@ -135,6 +135,15 @@
 
                 window.location.href = "{{url('/task/edit?task_action_id=')}}" + tasks[0];
             });
+
+            $('select.pagination_current_page').click(function(e){
+                let url = "{{ url('task/view') }}?";
+                let params = { 
+                    page : $(this).val()
+                };
+                let str = jQuery.param( params );
+                window.location = url + str;
+            });
         });
     </script>
 @stop
