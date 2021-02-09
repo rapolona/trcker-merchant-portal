@@ -11,6 +11,10 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.STRING,
         allowNull: false,
       },
+      index:{
+        type: Sequelize.INTEGER,
+        allowNull: false
+      },
       next_label: {
         type: Sequelize.STRING(64),
         allowNull: true
