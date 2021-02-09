@@ -10,12 +10,11 @@
         <div class="col-sm-2">
             <input class="form-control" id="name" type="text" value="{{ $filter['name'] }}" placeholder="Respondent">
         </div>
-        <div class="col-sm-2">
-            <!--<input class="form-control" id="campaignname" type="text" value="{{ $filter['campaignname'] }}" placeholder="Campaign">-->
-            <select class="form-control" name="campaign_id" id="campaign_id">
+        <!--<div class="col-sm-2">
+            <select class="form-control" name="campaign_id" id="campaign_id" style="">
                 <option>--Campaign--</option>
             </select>
-        </div>
+        </div>-->
         <div class="col-sm-3">
             <select class="form-control" id="status">
                 <option value="">--Status--</option>
