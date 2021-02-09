@@ -58,6 +58,7 @@ return [
         'PENDING' => 'primary',
         'REJECTED' => 'danger',
         'APPROVED' => 'success',
+        'RESUBMISSION' => 'warning'
     ],
     
     'payout_status' =>[
