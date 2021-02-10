@@ -108,7 +108,22 @@ class TicketController extends Controller
             'count_per_page' => 25
         ]);
 
-        //print_r($ticket); exit();
+        if(strtotime(date('2021-02-09')) > strtotime($ticket[0]->createdAt)){
+            $task_details = $ticket[0]->task_details;
+            foreach ($task_details as $key => $value) {
+                unset($task_details[$key]->task_detail_id);
+            }
+
+            //$task_details = array_map("unserialize", array_unique(array_map("serialize", $task_details)));
+            $newDetails = [];
+            foreach ($task_details as $key => $value) {
+                if(!isset($newDetails[$value->task_question->question])){
+                    $newDetails[$value->task_question->question] = $value;
+                }
+            }
+
+            $ticket[0]->task_details = $newDetails;
+        }
 
         return view('concrete.ticket.view', ['tickets' => $ticket[0], 'pagination' => $pagination]);
     }
