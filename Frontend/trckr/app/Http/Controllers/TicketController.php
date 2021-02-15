@@ -108,7 +108,7 @@ class TicketController extends Controller
             'count_per_page' => 25
         ]);
 
-        if(strtotime(date('2021-02-09')) > strtotime($ticket[0]->createdAt)){
+      /*  if(strtotime(date('2021-02-09')) > strtotime($ticket[0]->createdAt)){
             $task_details = $ticket[0]->task_details;
             foreach ($task_details as $key => $value) {
                 unset($task_details[$key]->task_detail_id);
@@ -123,7 +123,7 @@ class TicketController extends Controller
             }
 
             $ticket[0]->task_details = $newDetails;
-        }
+        }*/
 
         return view('concrete.ticket.view', ['tickets' => $ticket[0], 'pagination' => $pagination]);
     }
