@@ -85,17 +85,21 @@
                 </div>
                 <hr />
                 <div class="table-responsive" style="padding-left: 10px; padding-right: 10px">
-                	<div><strong>Campaigns</strong></div>
+                	<div><strong>Tickets</strong></div>
                     <table class="table table-hover table-align-1 table-vertical-align data-table" data-table-lengthChange="true" data-page-length="10">
                         <thead>
                         <tr>
-                            <th scope="col">Campaign</th>
-                            <th scope="col">Task</th>
-                            <th scope="col">Reward</th>
+                            <th scope="col">ID</th>
                             <th scope="col">Status</th>
                         </tr>
                         </thead>
                         <tbody>
+                            @foreach($user->task_tickets as $ticket)
+                            <tr>
+                                <td>{{ $ticket->task_ticket_id }}</td>
+                                <td>{{ $ticket->approval_status }}</td>
+                            </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
