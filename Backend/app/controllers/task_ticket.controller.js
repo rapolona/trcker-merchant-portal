@@ -392,7 +392,44 @@ exports.approve = (req, res) => {
       }
 
     exports.getNextAndPrev = (req,res) => {
-      var task_ticket_id = req.body.task_ticket_id
+      const id = req.body.merchantid
+      var task_ticket_id = req.body.task_ticket_id || req.query.task_ticket_id
+      var task_ticket_condition = {}// For status & date of submission
+      var campaign_condition = {merchant_id:id} // For campaign name
+      var user_detail_condition = {} //For respondent email or name
+
+      if(req.query.respondent){
+        user_detail_condition = {
+          [Op.or]:[
+          {first_name: { [Op.like]: `%${req.query.respondent}%` }},
+          {last_name: { [Op.like]: `%${req.query.respondent}%` }},
+          {email: { [Op.like]: `%${req.query.respondent}%` }}
+        ]}
+      }
+      //Build condition for campaign
+      if(req.query.campaign_name){
+        campaign_condition.campaign_name = { [Op.like]: `%${req.query.campaign_name}%` } ; //Searching by campaign name
+      }
+      //Build condition for task ticket
+      if(req.query.status){
+        task_ticket_condition.approval_status = { [Op.like]: `%${req.query.status}%` } //Search by approval status
+      }
+      // Search by submission date 
+      if(req.query.submission_date_start && req.query.submission_date_end){
+        task_ticket_condition.createdAt = {[Op.gte]: req.query.submission_date_start,[Op.lte]: req.query.submission_date_end+' 23:59:00.000Z'};
+      } 
+      else {
+        if(req.query.submission_date_start){
+          task_ticket_condition.createdAt= {[Op.gte]: req.query.submission_date_start};
+        }
+        if(req.query.submission_date_end){
+          task_ticket_condition.createdAt= {[Op.lte]: req.query.submission_date_end+' 23:59:00.000Z'};
+        }
+      }
+      if(req.query.campaign_id){
+        task_ticket_condition.campaign_id = req.query.campaign_id
+      }
+
       if((req.query.page)&&(req.query.count_per_page)){
         page_number = parseInt(req.query.page);
         count_per_page = parseInt(req.query.count_per_page);  
@@ -401,7 +438,13 @@ exports.approve = (req, res) => {
 
       Task_Ticket.findAndCountAll({
         offset:skip_number_of_items, limit: count_per_page,distinct:true,
-        attributes:["task_ticket_id", "campaign_id"],
+        where:task_ticket_condition,
+        include: [
+          {model: tasks, attributes: ['task_name']},
+          {model: User_Detail, as:'user_detail', where:user_detail_condition,attributes: ['first_name', 'last_name', 'account_level', 'email', 'settlement_account_number', 'settlement_account_type']},
+          {model: Campaign, as:'campaign', where:campaign_condition, attributes:['campaign_id','campaign_name']}
+        ],
+        attributes:["task_ticket_id", "campaign_id", "createdAt"],
         order: [["createdAt", "DESC"]]
         })
         .then(data => {
@@ -414,24 +457,35 @@ exports.approve = (req, res) => {
             data.total_pages = Math.ceil(data.count/count_per_page);
             data.current_page = page_number;  
             var currentIndex = dataObj.findIndex(element => {
+              console.log(element)
               if(element.task_ticket_id == task_ticket_id){
                 return true
               }
             })
+
+            console.log("Current Index is " + currentIndex)
+            console.log("Current page is " + page_number)
             if(currentIndex == (dataObj.length-1) && page_number != data.total_pages){
-              skip_number_of_items = (page_number+1 * count_per_page) - count_per_page
+              skip_number_of_items = ((page_number+1)* count_per_page) - count_per_page
               Task_Ticket.findAndCountAll({
                 offset:skip_number_of_items, limit: count_per_page,distinct:true,
-                attributes:["task_ticket_id"],
+                where:task_ticket_condition,
+                include: [
+                  {model: tasks, attributes: ['task_name']},
+                  {model: User_Detail, as:'user_detail', where:user_detail_condition,attributes: ['first_name', 'last_name', 'account_level', 'email', 'settlement_account_number', 'settlement_account_type']},
+                  {model: Campaign, as:'campaign', where:campaign_condition, attributes:['campaign_id','campaign_name'],
+                include:{model:campaign_task_associations,where:{task_id: {[Op.col]: 'task_ticket.task_id' } }, attributes: ['task_id','reward_amount']}}
+                ],
+                attributes:["task_ticket_id", "campaign_id","createdAt"],
                 order: [["createdAt", "DESC"]]
                 })
                 .then(nextPageData => {
                   nextAndPrevData.current_page = page_number;   
                   nextAndPrevData.count_per_page = count_per_page
-                  nextAndPrevData.next = nextPageData[0]
+                  nextAndPrevData.next = nextPageData.rows[0]
                   nextAndPrevData.next.page = page_number+1
                   nextAndPrevData.prev = dataObj[currentIndex-1]
-                  nextAndPrevData.prev.page = page_number
+                  nextAndPrevData.prev.page = page_number                  
                   res.send(nextAndPrevData)
                 })
             }
@@ -439,7 +493,14 @@ exports.approve = (req, res) => {
               skip_number_of_items =((page_number-1) * count_per_page) - count_per_page
               Task_Ticket.findAndCountAll({
                 offset:skip_number_of_items, limit: count_per_page,distinct:true,
-                attributes:["task_ticket_id"],
+                where:task_ticket_condition,
+                include: [
+                  {model: tasks, attributes: ['task_name']},
+                  {model: User_Detail, as:'user_detail', where:user_detail_condition,attributes: ['first_name', 'last_name', 'account_level', 'email', 'settlement_account_number', 'settlement_account_type']},
+                  {model: Campaign, as:'campaign', where:campaign_condition, attributes:['campaign_id','campaign_name'],
+                include:{model:campaign_task_associations,where:{task_id: {[Op.col]: 'task_ticket.task_id' } }, attributes: ['task_id','reward_amount']}}
+                ],
+                attributes:["task_ticket_id", "campaign_id", "createdAt"],
                 order: [["createdAt", "DESC"]]
                 })
                 .then(prevPageData => {
@@ -447,7 +508,7 @@ exports.approve = (req, res) => {
                   nextAndPrevData.count_per_page = count_per_page
                   nextAndPrevData.next = dataObj[currentIndex+1]
                   nextAndPrevData.next.page = page_number
-                  nextAndPrevData.prev = prevPageData[prevPageData.length-1]
+                  nextAndPrevData.prev = prevPageData.rows[prevPageData.rows.length-1]
                   nextAndPrevData.prev.page = page_number-1
                   res.send(nextAndPrevData)
                 })  
