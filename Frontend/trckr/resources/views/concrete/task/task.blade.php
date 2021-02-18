@@ -144,6 +144,16 @@
                 let str = jQuery.param( params );
                 window.location = url + str;
             });
+
+            $('#searchBtn').click(function(e){
+                let url = "{{ url('task/view') }}?";
+                let params = { 
+                    task_name : $('#task_name').val()
+                };
+                let str = jQuery.param( params );
+                window.location = url + str;
+            });
+
         });
     </script>
 @stop
