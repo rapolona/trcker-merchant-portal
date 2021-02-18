@@ -4,7 +4,7 @@
     <div class="row">
         <div class="col-sm-7">
             <div class="input-group form-group">
-                <div class="input-group-prepend"><span class="input-group-text" id="basic-addon3">Nname</span></div>
+                <div class="input-group-prepend"><span class="input-group-text" id="basic-addon3">Name</span></div>
             <input class="form-control" id="name" type="text" value="{{ $filter['name'] }}" name="name">
             </div>
         </div>
@@ -82,16 +82,28 @@
 @stop
 
 @section('js')
-<select  type="text/javascript">
+<script  type="text/javascript">
     $(document).ready(function (e) {
         $('select.pagination_current_page').click(function(e){
             let url = "{{ url('payout') }}?";
             let params = { 
-                    page : $(this).val()
+                    page : $(this).val(),
+                    name : $('#name').val(),
+                    status : $('#status').val()
+            };
+            let str = jQuery.param( params );
+            window.location = url + str;
+        });
+
+        $('#searchBtn').click(function(e){
+            let url = "{{ url('payout') }}?";
+            let params = { 
+                name : $('#name').val(),
+                status : $('#status').val()
             };
             let str = jQuery.param( params );
             window.location = url + str;
         });
     });
-</select>
+</script>
 @stop
