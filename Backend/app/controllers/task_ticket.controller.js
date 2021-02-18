@@ -397,6 +397,7 @@ exports.approve = (req, res) => {
       var task_ticket_condition = {}// For status & date of submission
       var campaign_condition = {merchant_id:id} // For campaign name
       var user_detail_condition = {} //For respondent email or name
+      var filterObj = {}
 
       if(req.query.respondent){
         user_detail_condition = {
@@ -405,29 +406,37 @@ exports.approve = (req, res) => {
           {last_name: { [Op.like]: `%${req.query.respondent}%` }},
           {email: { [Op.like]: `%${req.query.respondent}%` }}
         ]}
+        filterObj.respondent = req.query.respondent
       }
       //Build condition for campaign
       if(req.query.campaign_name){
         campaign_condition.campaign_name = { [Op.like]: `%${req.query.campaign_name}%` } ; //Searching by campaign name
+        filterObj.campaign_name = req.query.campaign_name
       }
       //Build condition for task ticket
       if(req.query.status){
         task_ticket_condition.approval_status = { [Op.like]: `%${req.query.status}%` } //Search by approval status
+        filterObj.status = req.query.status
       }
       // Search by submission date 
       if(req.query.submission_date_start && req.query.submission_date_end){
         task_ticket_condition.createdAt = {[Op.gte]: req.query.submission_date_start,[Op.lte]: req.query.submission_date_end+' 23:59:00.000Z'};
+        filterObj.submission_date_start = req.query.submission_date_start;
+        filterObj.submission_date_end = req.query.submission_date_end;
       } 
       else {
         if(req.query.submission_date_start){
           task_ticket_condition.createdAt= {[Op.gte]: req.query.submission_date_start};
+          filterObj.submission_date_start = req.query.submission_date_start;
         }
         if(req.query.submission_date_end){
           task_ticket_condition.createdAt= {[Op.lte]: req.query.submission_date_end+' 23:59:00.000Z'};
+          filterObj.submission_date_end = req.query.submission_date_end;
         }
       }
       if(req.query.campaign_id){
         task_ticket_condition.campaign_id = req.query.campaign_id
+        filterObj.campaign_id = req.query.campaign_id
       }
 
       if((req.query.page)&&(req.query.count_per_page)){
@@ -462,6 +471,7 @@ exports.approve = (req, res) => {
                 return true
               }
             })
+            nextAndPrevData.filter = filterObj
 
             console.log("Current Index is " + currentIndex)
             console.log("Current page is " + page_number)
