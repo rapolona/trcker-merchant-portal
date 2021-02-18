@@ -95,7 +95,7 @@ class TicketController extends Controller
      *
      * @return View
      */
-    public function view_ticket($campaignId, $ticketId)
+    public function view_ticket($campaignId, $ticketId, Request $request)
     {
         $ticket = $this->capabilityService->getTicket([
             'task_ticket_id' => $ticketId,
@@ -104,9 +104,11 @@ class TicketController extends Controller
      
         $pagination = $this->merchantService->nextPrevTicket([
             'task_ticket_id' => $ticketId,
-            'page' => 1,
+            'page' => isset($request->page)? $request->page : 1,
             'count_per_page' => 25
         ]);
+
+        //print_r($pagination); exit();
 
       /*  if(strtotime(date('2021-02-09')) > strtotime($ticket[0]->createdAt)){
             $task_details = $ticket[0]->task_details;

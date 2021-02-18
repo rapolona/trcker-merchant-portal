@@ -53,11 +53,11 @@
                         </div>
                         <div class="col-md-2 pull-right text-right">
                             @if(isset($pagination->prev))
-                            <a href="{{ url('ticket/view/' . $pagination->prev->campaign_id . '/' . $pagination->prev->task_ticket_id ) }}" class="btn btn-primary"><span class="fa-arrow-circle-left"></span></a>
+                            <a href="{{ url('ticket/view/' . $pagination->prev->campaign_id . '/' . $pagination->prev->task_ticket_id ) }}?page={{ isset($pagination->prev->page)? $pagination->prev->page : ($pagination->next->page - 1) }}" class="btn btn-primary"><span class="fa-arrow-circle-left"></span></a>
                             @endif
 
                             @if($pagination->next)
-                            <a href="{{ url('ticket/view/' . $pagination->next->campaign_id . '/' . $pagination->next->task_ticket_id ) }}" class="btn btn-primary"><span class="fa-arrow-circle-right"></span></a>
+                            <a href="{{ url('ticket/view/' . $pagination->next->campaign_id . '/' . $pagination->next->task_ticket_id ) }}?page={{ isset($pagination->next->page)? $pagination->next->page : ($pagination->prev->page + 1) }}" class="btn btn-primary"><span class="fa-arrow-circle-right"></span></a>
                             @endif
                         </div>
                     
