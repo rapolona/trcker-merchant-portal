@@ -15,14 +15,29 @@ const Op = db.Sequelize.Op;
 exports.findAll = (req, res) => {
     var page_number = 1;
     var count_per_page = null;
+    var user_detail_condition = {}
+    var user_payout_condition = {}
+
     if((req.query.page)&&(req.query.count_per_page)){
         var page_number = parseInt(req.query.page);
         var count_per_page = parseInt(req.query.count_per_page);
       }
+    if(req.query.status){
+    user_payout_condition.status = { [Op.like]: `%${req.query.status}%` } //Search by approval status
+    }
+    if(req.query.name){
+    user_detail_condition = {
+        [Op.or]:[
+        {first_name: { [Op.like]: `%${req.query.name}%` }},
+        {last_name: { [Op.like]: `%${req.query.name}%` }},
+        {email: { [Op.like]: `%${req.query.name}%` }}
+    ]}
+    }
     var skip_number_of_items = (page_number * count_per_page) - count_per_page;
 
-    User_payout_request.findAndCountAll({offset:skip_number_of_items, limit: count_per_page, order: [["createdAt", "DESC"]],
-        include:[{model:UserDetails, 
+    User_payout_request.findAndCountAll({offset:skip_number_of_items, limit: count_per_page, order: [["createdAt", "DESC"]], 
+        where: user_payout_condition,
+        include:[{model:UserDetails, where:user_detail_condition, 
             include: [{model:City, as:"cityData"}, {model:Province, as:"provinceData"}, {model:Region, as:"regionData"}]
         }]
     })
