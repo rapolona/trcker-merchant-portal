@@ -45,6 +45,7 @@
                         <th>Mobile</th>
                         <th>Payout Type</th>
                         <th>Amount</th>
+                        <th>Date Requested</th>
                         <th>Status</th>
                         <th></th>
                     </tr>
@@ -63,6 +64,7 @@
                             <td>{{ $payout->user_detail->settlement_account_number }}</td>
                             <td>{{ $payout->user_detail->settlement_account_type }}</td>
                             <td>{{ $payout->amount }}</td>
+                            <td>{{ date('Y-m-d', strtotime($payout->createdAt)) }}</td>
                             <td class="text-{{ config('concreteadmin')['payout_status'][$payout->status] }}">
                                 {{ $payout->status }}
                             </td>
