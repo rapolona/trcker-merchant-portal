@@ -137,7 +137,7 @@ class TaskController extends Controller
             $temp['question'] = $k->label;
             $temp['required_inputs'] = $k->className;
 
-            if (in_array($k->className, array('CHECKBOX', 'SINGLE SELECT DROPDOWN', 'RANKING')))
+            if (in_array($k->className, array('CHECKBOX', 'SINGLE SELECT DROPDOWN', 'RANKING', 'TRUE OR FALSE')))
             {
                 $temp['task_question_choices'] = array();
                 foreach ($k->values as $j)
@@ -266,7 +266,7 @@ class TaskController extends Controller
             $temp['task_question_id'] = $task_question_id ;
             $temp['question'] = $k->label;
             $temp['required_inputs'] = $k->className;
-            if (in_array($k->className, array('CHECKBOX', 'SINGLE SELECT DROPDOWN')))
+            if (in_array($k->className, array('CHECKBOX', 'SINGLE SELECT DROPDOWN', 'RANKING', 'TRUE OR FALSE')))
             {
                 $temp['task_question_choices'] = array();
                 foreach ($k->values as $j)
