@@ -443,6 +443,8 @@ exports.approve = (req, res) => {
         page_number = parseInt(req.query.page);
         count_per_page = parseInt(req.query.count_per_page);  
       }
+      var skip_number_of_items = (page_number * count_per_page) - count_per_page
+
       Task_Ticket.findAndCountAll({
         offset:skip_number_of_items, limit: count_per_page,distinct:true,
         where:task_ticket_condition,
