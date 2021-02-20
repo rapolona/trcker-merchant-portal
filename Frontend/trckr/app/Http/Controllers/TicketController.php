@@ -101,16 +101,28 @@ class TicketController extends Controller
             'task_ticket_id' => $ticketId,
             'campaign_id' => $campaignId,
         ]);
+
+        $filter = [
+            'name' => $request->name,
+            'campaignname' => $request->campaignname,
+            'status' => $request->status,
+            'daterange' => $request->daterange
+        ];
      
         $pagination = $this->merchantService->nextPrevTicket([
             'task_ticket_id' => $ticketId,
             'page' => isset($request->page)? $request->page : 1,
-            'count_per_page' => 25
+            'count_per_page' => 25,
+           // 'filter' => $filter,
+            'name' => $request->name,
+            'campaignname' => $request->campaignname,
+            'status' => $request->status,
+            'daterange' => $request->daterange
         ]);
 
         //print_r($pagination); exit();
 
-      /*  if(strtotime(date('2021-02-09')) > strtotime($ticket[0]->createdAt)){
+        if(strtotime(date('2021-02-09')) > strtotime($ticket[0]->createdAt)){
             $task_details = $ticket[0]->task_details;
             foreach ($task_details as $key => $value) {
                 unset($task_details[$key]->task_detail_id);
@@ -125,7 +137,7 @@ class TicketController extends Controller
             }
 
             $ticket[0]->task_details = $newDetails;
-        }*/
+        }
 
         return view('concrete.ticket.view', ['tickets' => $ticket[0], 'pagination' => $pagination]);
     }

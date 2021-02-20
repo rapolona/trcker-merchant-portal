@@ -109,7 +109,7 @@
 
                                 <td>
                                     <div class="btn-group">
-                                        <a href="{{ url('ticket/view/' . $t->campaign_id . "/" . $t->task_ticket_id ) }}?page={{ $pagination['current_page'] }}"><button class="btn btn-light" type="button"><span class="fa-eye"></span></button></a>
+                                        <a href="{{ url('ticket/view/' . $t->campaign_id . "/" . $t->task_ticket_id ) }}?page={{ $pagination['current_page'] }}&{!! http_build_query($filter) !!}"><button class="btn btn-light" type="button"><span class="fa-eye"></span></button></a>
                                     </div>
                                 </td>
                             </tr>
