@@ -5,7 +5,9 @@
     <section class="section-sm bg-100">
         <div class="container-fluid">
             <div class="media flex-column flex-sm-row align-items-sm-center group-30">
+                @if(isset($campaign['signed_thumbnail_url']))
                 <div class="media-item"><img src="{{ $campaign['signed_thumbnail_url'] }}" width="165" height="165" alt=""></div>
+                @endif
                 <div class="media-body">
                     <h2>{{ $campaign['campaign_name'] }}</h2>
                     <p>
