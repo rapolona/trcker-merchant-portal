@@ -241,7 +241,7 @@ exports.findAllforMerchant = (req, res) => {
       .then(data => {
         
         if(task_id){
-          if(data[0].banner_image){
+          if(data[0].banner_image && data[0].banner_image.startsWith("Banner_")){
             data_obj =  data[0].get({plain:true});
             s3Util.s3getHeadObject("trcker-task-images", "BannerImages/"+data[0].banner_image)
             .then(new_data => {
