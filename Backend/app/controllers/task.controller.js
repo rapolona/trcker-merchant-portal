@@ -329,7 +329,9 @@ exports.chainedUpdate = (req, res) => {
 
 
   db.sequelize.transaction({autocommit:false},transaction => {
-
+  if(req.body.banner_image){
+    delete req.body.banner_image
+  }
   chainedPromises.push(
     Task.update(req.body, {
         where: {
@@ -350,6 +352,39 @@ exports.chainedUpdate = (req, res) => {
     })
   );
 
+  if(req.body.banner_image_name && req.body.banner_image_base64){
+    const now = moment().format('XX')
+    var banner_file_name = "Banner_"+req.body.task_id+"_"+ now+"_"+req.body.banner_image_name
+    chainedPromises.push(
+      s3Util.s3Upload(req.body.banner_image_base64, "BannerImages"+"/" + banner_file_name, "dev-trcker-task-images",{})
+      .catch(err=>{
+        transaction.rollback()
+        console.log("Error uploading to S3" + " "+ err.message)
+        res.status(500).send({
+          message: err.code || "Error uploading image to s3"
+        })
+      }))
+    console.log('editing task id '+ req.body.task_id)
+      chainedPromises.push(
+        Task.update({banner_image: banner_file_name}, {
+          where: { task_id: req.body.task_id }, transaction
+        })
+          .then(num => {
+            if (num == 1) {
+              //res.send(data);
+            } else {
+              res.status(422).send({
+                message: `Cannot update Task with id=${req.body.task_id}. Maybe Task was not found or req.body is empty!`
+              });
+            }
+          })
+          .catch(err => {
+            res.status(500).send({
+              message: err.code+" Error updating Task with id=" + req.body.task_id
+            });
+          })
+      )
+    }
   //For every question, Push query to update task question
   req.body.task_questions.forEach((element,i) => {
     element.task_id = id;
