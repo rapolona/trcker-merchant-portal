@@ -356,7 +356,7 @@ exports.chainedUpdate = (req, res) => {
     const now = moment().format('XX')
     var banner_file_name = "Banner_"+req.body.task_id+"_"+ now+"_"+req.body.banner_image_name
     chainedPromises.push(
-      s3Util.s3Upload(req.body.banner_image_base64, "BannerImages"+"/" + banner_file_name, "dev-trcker-task-images",{})
+      s3Util.s3Upload(req.body.banner_image_base64, "BannerImages"+"/" + banner_file_name, "trcker-task-images",{})
       .catch(err=>{
         transaction.rollback()
         console.log("Error uploading to S3" + " "+ err.message)
