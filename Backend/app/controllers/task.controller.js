@@ -385,65 +385,69 @@ exports.chainedUpdate = (req, res) => {
           })
       )
     }
-  //For every question, Push query to update task question
-  req.body.task_questions.forEach((element,i) => {
-    element.task_id = id;
-    element.index = i+1;
-    if(element.task_question_id){
-      chainedPromises.push(
-        Task_Question.update(element, {
-            where: {
-                task_question_id: element.task_question_id,
-            }, transaction
-        }).then(num => {
-          if (num != 1) {
-            res.status(422).send({
-              message: `Cannot update Task Question with id=${element.task_question_id}. Maybe task question does not belong to merchant or was not found.`
+  //For every question, Push query to update task 
+  if(req.body.task_questions){
+    req.body.task_questions.forEach((element,i) => {
+      element.task_id = id;
+      element.index = i+1;
+      if(element.task_question_id){
+        chainedPromises.push(
+          Task_Question.update(element, {
+              where: {
+                  task_question_id: element.task_question_id,
+              }, transaction
+          }).then(num => {
+            if (num != 1) {
+              res.status(422).send({
+                message: `Cannot update Task Question with id=${element.task_question_id}. Maybe task question does not belong to merchant or was not found.`
+              });
+            }
+          })
+          .catch(err => {
+            res.status(500).send({
+              message:
+                err.message || "Some error occurred while updating the Task Questions."
             });
-          }
-        })
-        .catch(err => {
+          })
+        );
+  
+      }
+      else{
+        chainedPromises.push(
+          Task_Question.create(element, {transaction}
+          ).catch(err => {
+            res.status(500).send({
+              message:
+                err.message || "Some error occurred while creating the Task Questions."
+            });
+          })
+        );
+      }
+    //If question has choices, Push query to update each choice
+      if(element.task_question_choices)
+      {
+        element.task_question_choices.forEach((choice) => {
+          console.log(choice)
+          choice.task_question_id = element.task_question_id;
+          chainedPromises.push(Task_Question_Choices.upsert(choice, {
+            where: {
+                choices_id: choice.choices_id,
+            }, transaction
+        }).catch(err => {
           res.status(500).send({
             message:
-              err.message || "Some error occurred while updating the Task Questions."
+              err.message || "Some error occurred while updating the Task Question Choices."
           });
         })
-      );
-
-    }
-    else{
-      chainedPromises.push(
-        Task_Question.create(element, {transaction}
-        ).catch(err => {
-          res.status(500).send({
-            message:
-              err.message || "Some error occurred while creating the Task Questions."
-          });
+          )
         })
-      );
-    }
-  //If question has choices, Push query to update each choice
-    if(element.task_question_choices)
-    {
-      element.task_question_choices.forEach((choice) => {
-        console.log(choice)
-        choice.task_question_id = element.task_question_id;
-        chainedPromises.push(Task_Question_Choices.upsert(choice, {
-          where: {
-              choices_id: choice.choices_id,
-          }, transaction
-      }).catch(err => {
-        res.status(500).send({
-          message:
-            err.message || "Some error occurred while updating the Task Question Choices."
-        });
-      })
-        )
-      })
-      
-    }
+        
+      }
+  
+      });
 
-    });
+  }
+
     return Promise.all(chainedPromises)
     .then(data => {
           res.status(200).send({
