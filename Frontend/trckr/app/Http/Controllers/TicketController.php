@@ -131,8 +131,8 @@ class TicketController extends Controller
             //$task_details = array_map("unserialize", array_unique(array_map("serialize", $task_details)));
             $newDetails = [];
             foreach ($task_details as $key => $value) {
-                if(!isset($newDetails[$value->task_question->question])){
-                    $newDetails[$value->task_question->question] = $value;
+                if(!isset($newDetails[$value->task_question->question . '-' . $value->response])){
+                    $newDetails[$value->task_question->question . '-' . $value->response] = $value;
                 }
             }
 
