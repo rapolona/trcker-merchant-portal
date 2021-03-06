@@ -157,7 +157,7 @@ class TicketController extends Controller
             "message" => "Approve Ticket(s) Success!",
         ];
 
-        return redirect('/ticket/view/' . "{$campaignId}/$ticketId")
+        return redirect()->back()
             ->with("formMessage", $msg);
     }
 
@@ -179,7 +179,7 @@ class TicketController extends Controller
             "message" => "Reject Ticket(s) Success!",
         ];
 
-        return redirect('/ticket/view/' . "{$campaignId}/$ticketId")
+        return redirect()->back()
             ->with("formMessage", $msg);
     }
 
@@ -200,7 +200,7 @@ class TicketController extends Controller
             "message" => "Award Ticket(s) Success!",
         ];
 
-        return redirect('/ticket/view/' . "{$campaignId}/$ticketId")
+        return redirect()->back()
             ->with("formMessage", $msg);
     }
 
