@@ -12,7 +12,7 @@ module.exports = app => {
 
     router.put("/payoutrequest", adminMiddleware.isAuthenticated, user_payout_requests.updatePayoutRequest);
     
-
+    router.post("/awardfromcampaign", adminMiddleware.isAuthenticated ,user_wallets.awardAllTicketsUnderCampaign)
 
     app.use('/merchant/', router);
 }

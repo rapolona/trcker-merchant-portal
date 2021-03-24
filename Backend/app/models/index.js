@@ -118,6 +118,10 @@ db.task_details.belongsTo(db.task_questions, {foreignKey:'task_question_id'})
 db.task_tickets.belongsTo(db.tasks, {foreignKey: 'task_id'})
 db.task_tickets.hasMany(db.task_ticket_audit, {foreignKey:'task_ticket_id'});
 
+db.task_tickets.hasMany(db.campaign_task_associations, {foreignKey:'campaign_id', sourceKey: 'campaign_id', targetKey:'campaign_id', scope: {
+    task_id: sequelize.where(sequelize.col('campaign_task_associations.task_id'), '=', sequelize.col('task_ticket.task_id')),
+  }})
+db.task_tickets.belongsTo(db.campaign_task_associations, {foreignKey: 'task_id', sourceKey: 'task_id', targetKey:'task_id'})
 
 //User rewards relationships
 db.users.hasOne(db.user_wallets, {foreignKey: "user_id"});
