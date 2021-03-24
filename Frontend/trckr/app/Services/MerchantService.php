@@ -63,6 +63,11 @@ class MerchantService
         return $this->repository->awardTicket($data);
     }
 
+    public function bulkAwardTicket($data)
+    {
+        return $this->repository->bulkAwardTicket($data);
+    }
+
     public function nextPrevTicket($data)
     {
         return $this->repository->nextPrevTicket($data);

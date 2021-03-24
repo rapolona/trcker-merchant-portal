@@ -205,6 +205,27 @@ class TicketController extends Controller
     }
 
     /**
+     * award instance
+     *
+     * @return redirect
+     */
+    public function bulk_award_ticket($campaignId, Request $request)
+    {
+        $data = [
+            'campaign_id' => $campaignId
+        ];
+        $this->merchantService->bulkAwardTicket($data);
+
+        $msg = [
+            "type" => "success",
+            "message" => "Award Ticket(s) Success!",
+        ];
+
+        return $msg; /*redirect()->back()
+            ->with("formMessage", $msg); */
+    }
+
+    /**
      * reject instance
      *
      * @return redirect

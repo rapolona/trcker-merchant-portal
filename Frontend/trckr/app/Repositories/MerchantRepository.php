@@ -123,6 +123,15 @@ class MerchantRepository extends Repository
         }
     }
 
+    public function bulkAwardTicket($data)
+    {
+        try {
+            return $this->trackerApi('post', $this->api . 'awardfromcampaign', $data);
+        } catch(\Exception $e) {
+            $this->sessionExpired($e);
+        }
+    }
+
     public function nextPrevTicket($data)
     {
         try {
