@@ -11,6 +11,8 @@ module.exports = app => {
     router.get("/payout_requests/findone/:user_payout_request_id", adminMiddleware.isAuthenticated, user_payout_requests.findOne);
 
     router.put("/payoutrequest", adminMiddleware.isAuthenticated, user_payout_requests.updatePayoutRequest);
+
+    router.post("/awardfromcampaign", user_wallets.awardAllTicketsUnderCampaign)
     
 
 
