@@ -241,7 +241,7 @@ exports.findAllforMerchant = (req, res) => {
       .then(data => {
         
         if(task_id){
-          if(data[0].banner_image){
+          if(data[0].banner_image && data[0].banner_image.startsWith("Banner_")){
             data_obj =  data[0].get({plain:true});
             s3Util.s3getHeadObject("trcker-task-images", "BannerImages/"+data[0].banner_image)
             .then(new_data => {
@@ -329,7 +329,9 @@ exports.chainedUpdate = (req, res) => {
 
 
   db.sequelize.transaction({autocommit:false},transaction => {
-
+  if(req.body.banner_image){
+    delete req.body.banner_image
+  }
   chainedPromises.push(
     Task.update(req.body, {
         where: {
@@ -350,65 +352,102 @@ exports.chainedUpdate = (req, res) => {
     })
   );
 
-  //For every question, Push query to update task question
-  req.body.task_questions.forEach((element,i) => {
-    element.task_id = id;
-    element.index = i+1;
-    if(element.task_question_id){
-      chainedPromises.push(
-        Task_Question.update(element, {
-            where: {
-                task_question_id: element.task_question_id,
-            }, transaction
-        }).then(num => {
-          if (num != 1) {
-            res.status(422).send({
-              message: `Cannot update Task Question with id=${element.task_question_id}. Maybe task question does not belong to merchant or was not found.`
-            });
-          }
-        })
-        .catch(err => {
-          res.status(500).send({
-            message:
-              err.message || "Some error occurred while updating the Task Questions."
-          });
-        })
-      );
-
-    }
-    else{
-      chainedPromises.push(
-        Task_Question.create(element, {transaction}
-        ).catch(err => {
-          res.status(500).send({
-            message:
-              err.message || "Some error occurred while creating the Task Questions."
-          });
-        })
-      );
-    }
-  //If question has choices, Push query to update each choice
-    if(element.task_question_choices)
-    {
-      element.task_question_choices.forEach((choice) => {
-        console.log(choice)
-        choice.task_question_id = element.task_question_id;
-        chainedPromises.push(Task_Question_Choices.upsert(choice, {
-          where: {
-              choices_id: choice.choices_id,
-          }, transaction
-      }).catch(err => {
+  if(req.body.banner_image_name && req.body.banner_image_base64){
+    const now = moment().format('XX')
+    var banner_file_name = "Banner_"+req.body.task_id+"_"+ now+"_"+req.body.banner_image_name
+    chainedPromises.push(
+      s3Util.s3Upload(req.body.banner_image_base64, "BannerImages"+"/" + banner_file_name, "trcker-task-images",{})
+      .catch(err=>{
+        transaction.rollback()
+        console.log("Error uploading to S3" + " "+ err.message)
         res.status(500).send({
-          message:
-            err.message || "Some error occurred while updating the Task Question Choices."
-        });
-      })
-        )
-      })
-      
+          message: err.code || "Error uploading image to s3"
+        })
+      }))
+    console.log('editing task id '+ req.body.task_id)
+      chainedPromises.push(
+        Task.update({banner_image: banner_file_name}, {
+          where: { task_id: req.body.task_id }, transaction
+        })
+          .then(num => {
+            if (num == 1) {
+              //res.send(data);
+            } else {
+              res.status(422).send({
+                message: `Cannot update Task with id=${req.body.task_id}. Maybe Task was not found or req.body is empty!`
+              });
+            }
+          })
+          .catch(err => {
+            res.status(500).send({
+              message: err.code+" Error updating Task with id=" + req.body.task_id
+            });
+          })
+      )
     }
+  //For every question, Push query to update task 
+  if(req.body.task_questions){
+    req.body.task_questions.forEach((element,i) => {
+      element.task_id = id;
+      element.index = i+1;
+      if(element.task_question_id){
+        chainedPromises.push(
+          Task_Question.update(element, {
+              where: {
+                  task_question_id: element.task_question_id,
+              }, transaction
+          }).then(num => {
+            if (num != 1) {
+              res.status(422).send({
+                message: `Cannot update Task Question with id=${element.task_question_id}. Maybe task question does not belong to merchant or was not found.`
+              });
+            }
+          })
+          .catch(err => {
+            res.status(500).send({
+              message:
+                err.message || "Some error occurred while updating the Task Questions."
+            });
+          })
+        );
+  
+      }
+      else{
+        chainedPromises.push(
+          Task_Question.create(element, {transaction}
+          ).catch(err => {
+            res.status(500).send({
+              message:
+                err.message || "Some error occurred while creating the Task Questions."
+            });
+          })
+        );
+      }
+    //If question has choices, Push query to update each choice
+      if(element.task_question_choices)
+      {
+        element.task_question_choices.forEach((choice) => {
+          console.log(choice)
+          choice.task_question_id = element.task_question_id;
+          chainedPromises.push(Task_Question_Choices.upsert(choice, {
+            where: {
+                choices_id: choice.choices_id,
+            }, transaction
+        }).catch(err => {
+          res.status(500).send({
+            message:
+              err.message || "Some error occurred while updating the Task Question Choices."
+          });
+        })
+          )
+        })
+        
+      }
+  
+      });
 
-    });
+  }
+
     return Promise.all(chainedPromises)
     .then(data => {
           res.status(200).send({
