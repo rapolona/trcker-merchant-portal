@@ -80,6 +80,6 @@ class MerchantService
 
     public function exportCsv($data)
     {
-        return $this->repository->updateAdminEmail($data);
+        return $this->repository->exportCsv($data);
     }
 }
