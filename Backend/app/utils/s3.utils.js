@@ -34,6 +34,35 @@ exports.s3Upload = (base64, fileName, bucket, metadataObj)=>{
     return checkHeadthenPutObject
 }
 
+exports.s3UploadCSV = (csvData, fileName, bucket, metadataObj)=>{
+
+    var params = {
+        Body:csvData,
+        Bucket:bucket,
+        Key:fileName,
+        ContentType: 'application/octet-stream',
+        ContentDisposition: 'attachment',
+        Metadata: metadataObj || {}
+    }
+    
+    var checkHeadthenPutObject = new Promise((resolve, reject) => {
+        this.s3getHeadObject(bucket, fileName)
+        .then(data=>{
+            console.log(data)
+            if(data){
+                reject({message: "Filename already exists"})
+            }
+        })
+        .catch((err)=>{
+            if(err.code="NotFound"){
+                var s3PutObjectPromise = s3.putObject(params).promise()
+                resolve(s3PutObjectPromise)
+            }
+        })
+    })
+    return checkHeadthenPutObject
+}
+
 
 exports.s3GetSignedURL = (bucket, key)=>{
     var params = {
