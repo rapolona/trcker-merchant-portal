@@ -1,5 +1,6 @@
 const { campaign_task_associations, tasks, task_ticket_audit } = require("../models");
 const db = require("../models");
+const moment = require("moment");
 const Task_Ticket = db.task_tickets;
 const Task_Ticket_Audit = db.task_ticket_audit;
 const Task_Detail = db.task_details;
@@ -9,6 +10,7 @@ const Campaign = db.campaigns;
 const Branches = db.branches;
 const Op = db.Sequelize.Op;
 const s3Utils = require("../utils/s3.utils.js");
+const { Parser } = require('json2csv');
 
 // Update a Task_Ticketn by the id in the request
 exports.approve = (req, res) => {
@@ -291,6 +293,135 @@ exports.approve = (req, res) => {
       });
     });
     }
+
+    exports.generateTicketReportCsv = (req,res)=> {
+      const id = req.body.merchantid
+      var task_ticket_condition = {}// For status & date of submission
+      var campaign_condition = {merchant_id:id} // For campaign name
+      var user_detail_condition = {} //For respondent email or name
+
+      if(req.query.respondent){
+        user_detail_condition = {
+          [Op.or]:[
+          {first_name: { [Op.like]: `%${req.query.respondent}%` }},
+          {last_name: { [Op.like]: `%${req.query.respondent}%` }},
+          {email: { [Op.like]: `%${req.query.respondent}%` }}
+        ]}
+      }
+      //Build condition for campaign
+      if(req.query.campaign_name){
+        campaign_condition.campaign_name = { [Op.like]: `%${req.query.campaign_name}%` } ; //Searching by campaign name
+      }
+      //Build condition for task ticket
+      if(req.query.status){
+        task_ticket_condition.approval_status = { [Op.like]: `%${req.query.status}%` } //Search by approval status
+      }
+      // Search by submission date 
+      if(req.query.submission_date_start && req.query.submission_date_end){
+        task_ticket_condition.createdAt = {[Op.gte]: req.query.submission_date_start,[Op.lte]: req.query.submission_date_end+' 23:59:00.000Z'};
+      } 
+      else {
+        if(req.query.submission_date_start){
+          task_ticket_condition.createdAt= {[Op.gte]: req.query.submission_date_start};
+        }
+        if(req.query.submission_date_end){
+          task_ticket_condition.createdAt= {[Op.lte]: req.query.submission_date_end+' 23:59:00.000Z'};
+        }
+      }
+      if(req.query.campaign_id){
+        task_ticket_condition.campaign_id = req.query.campaign_id
+      }
+
+     
+      Task_Ticket.findAll({
+        attributes: ['campaign_id','task_ticket_id','device_id','approval_status','createdAt','updatedAt'],
+        where: task_ticket_condition,
+        include: [
+          {model: Task_Detail, as:'task_details',
+            where:{ //This filters out all base64 image
+              [Op.and]: [
+                {response: {[Op.notLike]: 'data:image%'}},
+                db.Sequelize.where(db.Sequelize.fn('char_length', db.Sequelize.col('response')), {
+                  [Op.lt]: 1000
+                })
+              ]
+            },
+            attributes:['response'],
+            include: [
+              {model:Task_Question, as: 'task_question', attributes: ['question'] ,
+                include: {model:tasks, as: 'task', attributes:['task_name','task_id'], 
+                   },  }, //where:{campaign_id: {[Op.col]: 'task_ticket.campaign_id'}}
+            ]
+          },
+          {model: Branches, attributes:['name','address','city']},
+          {model: User_Detail, as:'user_detail', where: user_detail_condition, attributes: ['first_name', 'last_name', 'account_level', 'email', 'settlement_account_number', 'settlement_account_type']},
+          {model: Campaign, as:'campaign',where:campaign_condition, attributes:['campaign_id','campaign_name'], 
+          include:{model:campaign_task_associations,where:{task_id: {[Op.col]: 'task_ticket.task_id' } }, attributes: ['task_id','reward_amount']}}
+        ],
+        order: [["createdAt", "DESC"]]
+        })
+      .then(data => {
+        if(data[0]){
+          var csvConstruct = []
+          data.forEach((element,element_index) => {
+            
+            currentItem = element.get({plain:true})
+            //Set Up Columns
+
+            currentItem.task_details.forEach((detailElement,detail_element_index) => {
+              currentCsvRow = {
+                'Ticket ID': currentItem.task_ticket_id,
+                'Full Name': currentItem.user_detail.first_name + ' ' + currentItem.user_detail.last_name,
+                'Account Level': currentItem.user_detail.account_level,
+                'Email': currentItem.user_detail.email,
+                'Device ID':currentItem.device_id,
+                'Approval Status':currentItem.approval_status,
+                'Campaign ID':currentItem.campaign_id,
+                'Campaign Name':currentItem.campaign.campaign_name,
+                'Ticket Submitted': currentItem.createdAt.getDate() +'/'+(currentItem.createdAt.getMonth()+1) + '/' + currentItem.createdAt.getFullYear() + ' ' +currentItem.createdAt.toLocaleTimeString(),
+                'Mobile Number': currentItem.user_detail.settlement_account_number,
+                'Branch': currentItem.branch.name,
+                'Task Name': detailElement.task_question.task.task_name,
+                'Question': detailElement.task_question.question,
+                'Answer': detailElement.response,
+                'Reward': currentItem.campaign.campaign_task_associations[0].reward_amount
+              }
+              csvConstruct.push(currentCsvRow)
+
+            })
+
+          })
+          //console.log(csvConstruct)
+
+        }
+        const fields = ['Ticket ID', 'Full Name', 'Account Level','Email','Device ID','Approval Status','Campaign ID','Campaign Name','Ticket Submitted','Mobile Number','Branch','Task Name','Question','Answer','Reward'];
+        const opts = { fields };
+
+        try {
+          const parser = new Parser(opts);
+          const csv = parser.parse(csvConstruct, opts);
+          const now = moment().format('XX')
+          var report_file_name = "TicketReport_"+now+'_'+moment().format('LLL')+".csv"
+          s3Utils.s3UploadCSV(csv, id+"/" + report_file_name, "dev-trcker-csv-reports",{})
+          var signedReportURL = s3Utils.s3GetSignedURL("dev-trcker-csv-reports", id+"/"+report_file_name)
+          console.log(signedReportURL)
+          var csvResponse = {
+            s3_csv_url: signedReportURL
+          }
+
+        } catch (err) {
+          console.error(err);
+        }
+        res.send(csvResponse);
+      })
+      .catch(err => {
+        console.log(err)
+        res.status(500).send({
+          message:
+            err.message || "Some error occurred while retrieving task tickets."
+        });
+      });
+      }
 
     exports.findAllTicketsForReport = (req,res)=> {
       const id = req.body.merchantid
