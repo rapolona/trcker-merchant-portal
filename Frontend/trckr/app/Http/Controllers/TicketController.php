@@ -10,6 +10,7 @@ use Config, Session;
 use DateTime;
 use App\Services\CapabilityService;
 use App\Services\MerchantService;
+use App\Services\CampaignService;
 
 class TicketController extends Controller
 {
@@ -20,8 +21,13 @@ class TicketController extends Controller
 
     private $defaultPerPage;
 
-    public function __construct(CapabilityService $capabilityService, MerchantService $merchantService)
+    private $campaignService;
+
+    public function __construct(CapabilityService $capabilityService, 
+        CampaignService $campaignService,
+        MerchantService $merchantService)
     {
+        $this->campaignService = $campaignService;
         $this->capabilityService = $capabilityService;
         $this->merchantService = $merchantService;
         $this->defaultPerPage = Config::get('trckr.table_pagination');
@@ -66,7 +72,7 @@ class TicketController extends Controller
             'status' => $request->status,
             'submission_date_start' => $dateStart,
             'submission_date_end' => $dateEnd,
-            //'campaign_id' => 'f959000f-d2d5-40da-a0c6-bd073586e1c7'
+            'campaign_id' => $request->campaign_id
         ];
 
         
@@ -87,7 +93,14 @@ class TicketController extends Controller
             'total_pages' => $total_pages
         ];
 
-        return view('concrete.ticket.ticket', ['tickets' => $rows, 'pagination' => $pagination, 'filter' => $filter ]);
+        $campaigns = $this->campaignService->getAll($data);
+
+        return view('concrete.ticket.ticket', [
+            'tickets' => $rows, 
+            'pagination' => $pagination, 
+            'filter' => $filter,
+            'campaigns' => $campaigns
+        ]);
     }
 
     /**

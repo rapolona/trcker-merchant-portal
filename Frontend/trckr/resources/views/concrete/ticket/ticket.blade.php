@@ -10,11 +10,14 @@
         <div class="col-sm-2">
             <input class="form-control" id="name" type="text" value="{{ $filter['name'] }}" placeholder="Respondent">
         </div>
-        <!--<div class="col-sm-2">
+        <div class="col-sm-2">
             <select class="form-control" name="campaign_id" id="campaign_id" style="">
                 <option>--Campaign--</option>
+                @foreach ($campaigns as $campaign)
+                <option value="{{ $campaign->campaign_id }}">{{ $campaign->campaign_name }}</option>
+                @endforeach
             </select>
-        </div>-->
+        </div>
         <div class="col-sm-3">
             <select class="form-control" id="status">
                 <option value="">--Status--</option>
@@ -50,6 +53,7 @@
                     <div class="col-sm-6">
                         <button type="button" value="reject" class="btn btn-danger btn-sm pull-right approve-reject"><span class="fa-ban"></span><span class="pl-2">Reject</span></button>
                         <button type="button" value="approve" class="btn btn-light btn-sm pull-right approve-reject"><span class="fa-check"></span><span class="pl-2">Approve</span></button>
+                        <button id="bulkAward" type="button" value="award" class="btn btn-light btn-sm pull-right"><span class="fa-check"></span><span class="pl-2">Award</span></button>
                         <input id="ticket-status" name="status" type="hidden" />
                     </div>
                 </div>
@@ -201,6 +205,30 @@ setTimeout(function () {
                     $('#tableList').submit();
                 }
             });
+
+
+            $('.approve-reject').click(function(e){
+                let val = $(this).attr('value');
+                $('#ticket-status').val(val);
+
+                if (confirm('Are you sure you want to ' + val + ' these items ?')) {
+                    $('#tableList').submit();
+                }
+            });
+
+            $('#bulkAward').click(function(e){
+                let campaign_id = $('campaign_id').attr('value');
+                if(campaign_id){
+                    alert('Please select campaign!');
+                }else{
+                    if (confirm('Are you sure you want to AWARD all APPROVED tickets under this campaign?')) {
+                        window.location = "{{url('/ticket/bulk-award-ticket')}}/" + campaign_id;
+                    }
+                }
+                
+            });
+
+            
 
             $("#export").click(function(){
                 window.location.href = "{{url('/ticket/export_csv')}}";
