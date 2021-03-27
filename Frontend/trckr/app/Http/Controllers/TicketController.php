@@ -233,8 +233,8 @@ class TicketController extends Controller
             "message" => "Award Ticket(s) Success!",
         ];
 
-        return $msg; /*redirect()->back()
-            ->with("formMessage", $msg); */
+        return redirect()->back()
+            ->with("formMessage", $msg); 
     }
 
     /**
