@@ -93,7 +93,7 @@ class TicketController extends Controller
             'total_pages' => $total_pages
         ];
 
-        $campaigns = $this->campaignService->getAll($data);
+        $campaigns = $this->campaignService->getAll([]);
 
         return view('concrete.ticket.ticket', [
             'tickets' => $rows, 
