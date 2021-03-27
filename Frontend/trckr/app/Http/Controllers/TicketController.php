@@ -95,6 +95,8 @@ class TicketController extends Controller
 
         $campaigns = $this->campaignService->getAll([]);
 
+        print_r($campaigns); exit();
+
         return view('concrete.ticket.ticket', [
             'tickets' => $rows, 
             'pagination' => $pagination, 
