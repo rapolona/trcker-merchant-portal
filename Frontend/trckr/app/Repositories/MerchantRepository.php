@@ -152,4 +152,15 @@ class MerchantRepository extends Repository
         }
     }
 
+    public function exportCsv($data = null)
+    {
+        try {
+            $data = ($data==null) ? [] : $data;
+            $uri = http_build_query($data);
+            return $this->trackerApi('get', $this->api . 'ticketcsv?' . $uri , $data);
+        } catch(\Exception $e) {
+            $this->sessionExpired($e);
+        }
+    }
+
 }

@@ -53,7 +53,7 @@
                     <div class="col-sm-6">
                         <button type="button" value="reject" class="btn btn-danger btn-sm pull-right approve-reject"><span class="fa-ban"></span><span class="pl-2">Reject</span></button>
                         <button type="button" value="approve" class="btn btn-light btn-sm pull-right approve-reject"><span class="fa-check"></span><span class="pl-2">Approve</span></button>
-                        <button id="bulkAward" type="button" value="award" class="btn btn-light btn-sm pull-right"><span class="fa-check"></span><span class="pl-2">Award</span></button>
+                        <button id="bulkAward" type="button" value="award" class="btn btn-primary btn-sm pull-right"><span class="fa-check"></span><span class="pl-2">Award</span></button>
                         <input id="ticket-status" name="status" type="hidden" />
                     </div>
                 </div>
@@ -180,12 +180,17 @@ setTimeout(function () {
             });
 
             $('#downloadBtn').click(function(e){
+
+                let campaign_id = $('campaign_id').attr('value');
+                if(campaign_id){
+                    alert('Please select campaign!');
+                    return false;
+                }
+
                 let url = "{{ url('/ticket/export_csv') }}?";
                 let params = { 
                     daterange : $('#daterange').val(),
-                    status : $('#status').val(),
                     campaign_id : $('#campaign_id').val(),
-                    name : $('#name').val(),
                 };
                 let str = jQuery.param( params );
                 window.location = url + str;

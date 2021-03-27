@@ -77,4 +77,9 @@ class MerchantService
     {
         return $this->repository->updateAdminEmail($data);
     }
+
+    public function exportCsv($data)
+    {
+        return $this->repository->updateAdminEmail($data);
+    }
 }

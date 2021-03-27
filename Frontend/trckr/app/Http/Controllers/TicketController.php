@@ -278,99 +278,15 @@ class TicketController extends Controller
 
     public function export_csv(Request $request)
     {
-       
-        //creating the csv data
-        $csv_data = array();
-        $csv_data[0] = [
-            'Ticket ID',
-            'Full Name',
-            'Account Level',
-            'Email',
-            'Device ID',
-            'Approval Status',
-            'Campaign ID',
-            'Campaign Name',
-            'Ticket Submitted',
-            'Mobile Number',
-            //'Location',
-            'Ticket Status',
-            'Branch',
-            'Task Name',
-            'Question',
-            'Answer',
-            'Reward'
+        $data = [
+            'campaign_id' => $request->campaign_id
         ];
-        
-        $tickets = $this->merchantService->getTicketReport(); 
 
+        $csv = $this->merchantService->exportCsv($data);
 
-
-        foreach ($tickets as $key => $k)
-        {
-            $k->createdAt = new DateTime($k->createdAt);
-
-            foreach ($k->task_details as $detailKey => $details) {
-                # code...
-          
-                $base_data = array(
-                    'Ticket ID' => $k->task_ticket_id,
-                    'Full Name' => "{$k->user_detail->first_name} {$k->user_detail->last_name}",
-                    'Account Level' => $k->user_detail->account_level,
-                    'Email' => $k->user_detail->email,
-                    'Device ID' => $k->device_id,
-                    'Approval Status' => $k->approval_status,
-                    'Campaign ID' => $k->campaign->campaign_id,
-                    'Campaign Name' => $k->campaign->campaign_name,
-                    'Ticket Submitted' => $k->createdAt->format("Y-m-d H:i:s"),
-                    'Mobile Number' => $k->user_detail->settlement_account_number,
-                    //'Location' => "No info available yet",
-                    'Ticket Status' => $k->approval_status,
-                    'Branch' => "{$k->branch->name} {$k->branch->address} {$k->branch->city}",
-                    'Task Name' => $details->task_question->task_name,
-                    'Question' => $details->task_question->question,
-                    'Answer' => $details->response,
-                    'Reward' => $details->task_question->reward_amount
-                );
-
-                array_push($csv_data, $base_data);
-            }
-        }
-
-        //echo $this->array2csv($csv_data);exit;
-        $this->download_send_headers("export.csv");
-        echo $this->array2csv($csv_data);
-        die();
+        echo $csv;
     }
 
-    function array2csv(array &$array)
-    {
-        if (count($array) == 0) return null;
 
-        ob_start();
-        $df = fopen("php://output", 'w');
 
-       // fputcsv($df, array_keys(reset($array), ";"));
-
-        foreach ($array as $row) fputcsv($df, $row, ";");
-
-        fclose($df);
-        return ob_get_clean();
-    }
-
-    function download_send_headers($filename = "export.csv") {
-        // disable caching
-        $now = gmdate("D, d M Y H:i:s");
-        header("Expires: Tue, 03 Jul 2001 06:00:00 GMT");
-        header("Cache-Control: max-age=0, no-cache, must-revalidate, proxy-revalidate");
-        header("Last-Modified: {$now} GMT");
-
-        // force download
-        header("Content-Type: application/force-download");
-        header("Content-Type: application/octet-stream");
-        header("Content-Type: application/download");
-
-        // disposition / encoding on response body
-        header("Content-Disposition: attachment;filename={$filename}");
-        header("Content-Transfer-Encoding: binary");
-    }
 }
