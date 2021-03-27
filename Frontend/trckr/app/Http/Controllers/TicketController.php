@@ -284,7 +284,7 @@ class TicketController extends Controller
 
         $csv = $this->merchantService->exportCsv($data);
 
-        print_r( $csv ) ;
+        print_r( $csv->s3_csv_url ) ;
     }
 
 
