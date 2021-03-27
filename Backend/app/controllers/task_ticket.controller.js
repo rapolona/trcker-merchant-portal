@@ -324,8 +324,20 @@ exports.approve = (req, res) => {
         if(req.query.submission_date_start){
           task_ticket_condition.createdAt= {[Op.gte]: req.query.submission_date_start};
         }
+        else{
+          res.status(400).send({
+            message: "Must provide start date"
+          });
+          return;
+        }
         if(req.query.submission_date_end){
           task_ticket_condition.createdAt= {[Op.lte]: req.query.submission_date_end+' 23:59:00.000Z'};
+        }
+        else{
+          res.status(400).send({
+            message: "Must provide end date"
+          });
+          return;
         }
       }
       if(req.query.campaign_id){
