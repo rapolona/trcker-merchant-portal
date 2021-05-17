@@ -9,6 +9,8 @@ const Task_Classification = db.task_classifications;
 
 const Op = db.Sequelize.Op;
 
+task_images_bucket_name = process.env.TASK_IMAGES_BUCKET
+
 // Create and Save a new Task
 exports.create = (req, res) => {
     // Validate request
@@ -108,7 +110,7 @@ exports.createCustom = (req, res) => {
           const now = moment().format('XX')
           var banner_file_name = "Banner_"+data.task_id+"_"+ now+"_"+req.body.banner_image_name
           chainedPromises.push(
-            s3Util.s3Upload(req.body.banner_image_base64, "BannerImages"+"/" + banner_file_name, "trcker-task-images",{})
+            s3Util.s3Upload(req.body.banner_image_base64, "BannerImages"+"/" + banner_file_name, task_images_bucket_name,{})
             .catch(err=>{
               transaction.rollback()
               console.log("Error uploading to S3" + " "+ err.message)
@@ -243,12 +245,12 @@ exports.findAllforMerchant = (req, res) => {
         if(task_id){
           if(data[0].banner_image && data[0].banner_image.startsWith("Banner_")){
             data_obj =  data[0].get({plain:true});
-            s3Util.s3getHeadObject("trcker-task-images", "BannerImages/"+data[0].banner_image)
+            s3Util.s3getHeadObject(task_images_bucket_name, "BannerImages/"+data[0].banner_image)
             .then(new_data => {
               console.log(new_data)
               console.log(data_obj)
               data_obj.signed_banner_image_url = ""
-              var signedBannerImageURL = s3Util.s3GetSignedURL("trcker-task-images", "BannerImages/"+data[0].banner_image)
+              var signedBannerImageURL = s3Util.s3GetSignedURL(task_images_bucket_name, "BannerImages/"+data[0].banner_image)
               data_obj.signed_banner_image_url = signedBannerImageURL
               console.log(data_obj)
               res.send(data_obj)
@@ -356,7 +358,7 @@ exports.chainedUpdate = (req, res) => {
     const now = moment().format('XX')
     var banner_file_name = "Banner_"+req.body.task_id+"_"+ now+"_"+req.body.banner_image_name
     chainedPromises.push(
-      s3Util.s3Upload(req.body.banner_image_base64, "BannerImages"+"/" + banner_file_name, "trcker-task-images",{})
+      s3Util.s3Upload(req.body.banner_image_base64, "BannerImages"+"/" + banner_file_name, task_images_bucket_name,{})
       .catch(err=>{
         transaction.rollback()
         console.log("Error uploading to S3" + " "+ err.message)

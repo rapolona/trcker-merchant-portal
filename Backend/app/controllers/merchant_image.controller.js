@@ -4,6 +4,8 @@ const s3Util = require("../utils/s3.utils.js");
 const moment = require("moment");
 const Op = db.Sequelize.Op;
 
+merchant_images_bucket_name = process.env.MERCHANT_IMAGES_BUCKET
+
 // Create and Save a new Branch
 exports.create = (req, res) => {
     // Validate request
@@ -32,7 +34,7 @@ exports.create = (req, res) => {
         const now = moment().format('XX')
         var merchant_image_file_name = "MerchantImage_"+data.merchant_image_id+"_"+ now+"_"+req.body.merchant_image_file_name
         chainedPromises.push(
-          s3Util.s3Upload(req.body.merchant_image_base64, "MerchantGalleryImages"+"/" + merchant_image_file_name, "trcker-merchant-images",{})
+          s3Util.s3Upload(req.body.merchant_image_base64, "MerchantGalleryImages"+"/" + merchant_image_file_name, merchant_images_bucket_name,{})
           .catch(err=>{
             transaction.rollback()
             console.log("Error uploading to S3" + " "+ err.message)
@@ -92,7 +94,7 @@ exports.create = (req, res) => {
 
 
 
-// Retrieve all Branches from the database.
+// Retrieve all Merchant images from the database.
 exports.listAllPaginate = (req, res) => {
   const id = req.body.merchantid;
   var condition = req.query
@@ -123,7 +125,7 @@ exports.listAllPaginate = (req, res) => {
             new_element = element.get({plain:true})
             if(new_element.file_name){
                 if(new_element.file_name.startsWith("MerchantImage_")){
-                    new_element.signed_url = s3Util.s3GetSignedURL("trcker-merchant-images", "MerchantGalleryImages/"+new_element.file_name)
+                    new_element.signed_url = s3Util.s3GetSignedURL(merchant_images_bucket_name, "MerchantGalleryImages/"+new_element.file_name)
                     new_result.rows.push(new_element)
                 }
             }

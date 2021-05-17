@@ -17,7 +17,8 @@ const s3Util = require("../utils/s3.utils.js");
 
 
 
-
+console.log(process.env.CAMPAIGN_IMAGES_BUCKET)
+campaign_images_bucket_name = process.env.CAMPAIGN_IMAGES_BUCKET
 
 // Create and Save a new Campaign
 exports.create = (req, res) => {
@@ -196,7 +197,7 @@ exports.create = (req, res) => {
         const now = moment().format('XX')
         var thumbnail_file_name = "Thumbnail_"+data.campaign_id+"_"+ now+"_"+req.body.thumbnail_image_name
         chainedPromises.push(
-          s3Util.s3Upload(req.body.thumbnail_image_base64, "ThumbnailImages"+"/" + thumbnail_file_name, "trcker-campaign-images",{})
+          s3Util.s3Upload(req.body.thumbnail_image_base64, "ThumbnailImages"+"/" + thumbnail_file_name, campaign_images_bucket_name ,{})
           .catch(err=>{
             transaction.rollback()
             console.log("Error uploading to S3" + " "+ err.message)
@@ -394,10 +395,10 @@ exports.findOne = (req, res) => {
         new_result.end_date = new_result.end_date.toISOString().substring(0,10);
         console.log(data.thumbnail_url)
         if(data.thumbnail_url){
-          s3Util.s3getHeadObject("trcker-campaign-images", "ThumbnailImages/"+data.thumbnail_url)
+          s3Util.s3getHeadObject(campaign_images_bucket_name, "ThumbnailImages/"+data.thumbnail_url)
           .then(new_data => {
             console.log(new_data)
-            var signedThumbnailImageURL = s3Util.s3GetSignedURL("trcker-campaign-images", "ThumbnailImages/"+data.thumbnail_url)
+            var signedThumbnailImageURL = s3Util.s3GetSignedURL(campaign_images_bucket_name, "ThumbnailImages/"+data.thumbnail_url)
 
             new_result.signed_thumbnail_url = signedThumbnailImageURL
             console.log(new_result)

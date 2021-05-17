@@ -1,8 +1,8 @@
 const AWS = require("aws-sdk")
 const s3 = new AWS.S3({
-        "accessKeyId": "AKIA5MZCB65CNCTVEI66", 
-        "secretAccessKey": "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", 
-        "region": "ap-southeast-1" 
+        "accessKeyId": process.env.ACCESS_KEY_ID, 
+        "secretAccessKey": process.env.SECRET_ACCESS_KEY, 
+        "region": process.env.S3_REGION
     }
 );
 

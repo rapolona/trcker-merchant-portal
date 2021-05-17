@@ -12,6 +12,9 @@ const Op = db.Sequelize.Op;
 const s3Utils = require("../utils/s3.utils.js");
 const { Parser } = require('json2csv');
 
+csv_reports_bucket_name = process.env.CSV_REPORTS_BUCKET
+task_ticket_images_bucket_name = process.env.TASK_TICKET_IMAGES_BUCKET
+
 // Update a Task_Ticketn by the id in the request
 exports.approve = (req, res) => {
   const id = req.body.task_ticket_id;
@@ -414,8 +417,8 @@ exports.approve = (req, res) => {
           console.log(csvConstruct)
           console.log(report_file_name)
           
-          s3Utils.s3UploadCSV(csv, id+"/" + report_file_name, "trcker-csv-reports",{})
-          var signedReportURL = s3Utils.s3GetSignedURL("trcker-csv-reports", id+"/"+report_file_name)
+          s3Utils.s3UploadCSV(csv, id+"/" + report_file_name, csv_reports_bucket_name,{})
+          var signedReportURL = s3Utils.s3GetSignedURL(csv_reports_bucket_name, id+"/"+report_file_name)
           console.log(signedReportURL) 
           var csvResponse = {
             s3_csv_url: signedReportURL
@@ -725,9 +728,9 @@ exports.getCampaignGallery = (req,res) => {
     dataObj.map(element => {
       element.task_details.forEach(taskDetail => {
         chainedPromise.push(
-          s3Utils.s3getHeadObject("trcker-task-ticket-images", campaign_id+"/"+taskDetail.response)
+          s3Utils.s3getHeadObject(task_ticket_images_bucket_name, campaign_id+"/"+taskDetail.response)
           .then(data => {
-            resultUrls.push(s3Utils.s3GetSignedURL("trcker-task-ticket-images", campaign_id+"/"+taskDetail.response)) 
+            resultUrls.push(s3Utils.s3GetSignedURL(task_ticket_images_bucket_name, campaign_id+"/"+taskDetail.response)) 
             })
             .catch(err => {
               console.log(err)

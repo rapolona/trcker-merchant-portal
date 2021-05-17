@@ -7,6 +7,8 @@ const Op = db.Sequelize.Op;
 const s3Util = require("../utils/s3.utils.js");
 const moment = require("moment")
 
+merchant_images_bucket_name = process.env.MERCHANT_IMAGES_BUCKET
+
 // Create and Save a new Merchant
 exports.create = (req, res) => {
     // Validate request
@@ -76,9 +78,9 @@ exports.findOne = (req, res) => {
         if(data){
           console.log(data)
           if(data.profile_image){
-            s3Util.s3getHeadObject("trcker-merchant-images", "ProfileImages/"+result.profile_image)
+            s3Util.s3getHeadObject(merchant_images_bucket_name, "ProfileImages/"+result.profile_image)
             .then(data => {
-              var signedProfileImageURL = s3Util.s3GetSignedURL("trcker-merchant-images", "ProfileImages/"+result.profile_image)
+              var signedProfileImageURL = s3Util.s3GetSignedURL(merchant_images_bucket_name, "ProfileImages/"+result.profile_image)
               console.log(signedProfileImageURL)
               result.profile_image_url = signedProfileImageURL
               res.send(result)
@@ -114,7 +116,7 @@ exports.update = (req, res) => {
       .then(num => {
         if (num == 1) {
           if(req.body.profile_image_base64){
-            var s3UploadData = s3Util.s3Upload(req.body.profile_image_base64, "ProfileImages/"+req.body.profile_image, "trcker-merchant-images", {})
+            var s3UploadData = s3Util.s3Upload(req.body.profile_image_base64, "ProfileImages/"+req.body.profile_image, merchant_images_bucket_name, {})
             console.log(s3UploadData)
             s3UploadData.then(() => {
               res.send({
