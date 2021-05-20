@@ -37,6 +37,48 @@ module.exports = (sequelize, Sequelize) => {
         email:{
             type: Sequelize.STRING
         },
+        occupation:{
+            type: Sequelize.STRING(128)
+        },
+        industry:{
+            type: Sequelize.STRING(128)
+        },
+        employment_status:{
+            type: Sequelize.STRING(64)
+        },
+        monthly_income_range:{
+            type: Sequelize.STRING(64)
+        },
+        age_range:{
+            type: Sequelize.STRING(64)
+        },
+        residence_type:{
+            type: Sequelize.STRING(64)
+        },
+        LSM_score:{
+            type: Sequelize.SMALLINT
+        },
+        IS_SSS:{
+            type: Sequelize.BOOLEAN
+        },
+        IS_ID_VALIDATED:{
+            type: Sequelize.BOOLEAN
+        },
+        IS_DECISION_MAKER:{
+            type: Sequelize.BOOLEAN
+        },
+        IS_BUYER:{
+            type: Sequelize.BOOLEAN
+        },
+        mobile_phone_number:{
+            type: Sequelize.STRING(64)
+        },
+        user_quality_score:{
+            type: Sequelize.STRING(64)
+        },
+        IS_ACTIVE_P3:{
+            type: Sequelize.BOOLEAN
+        },
         user_id:{
             type: DataTypes.UUID,
             allowNull: false,
