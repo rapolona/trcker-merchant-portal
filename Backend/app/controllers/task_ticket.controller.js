@@ -251,6 +251,9 @@ exports.approve = (req, res) => {
     if(req.query.campaign_id){
       task_ticket_condition.campaign_id = req.query.campaign_id
     }
+    if(req.query.awarded){
+      task_ticket_condition.awarded = req.query.awarded
+    }
 
 
 
