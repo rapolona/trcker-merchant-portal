@@ -18,7 +18,7 @@
                 @endforeach
             </select>
         </div>
-        <div class="col-sm-3">
+        <div class="col-sm-2">
             <select class="form-control" id="status">
                 <option value="">--Status--</option>
                 <option {{ ($filter['status']=="PENDING")? 'selected' : '' }} value="PENDING">PENDING</option>
@@ -27,7 +27,14 @@
                 <option {{ ($filter['status']=="RESUBMISSION")? 'selected' : '' }} value="RESUBMISSION">RESUBMISSION</option>
             </select>
         </div>
-        <div class="col-sm-3">
+        <div class="col-sm-2">
+            <select class="form-control" id="awarded">
+                <option value="">--Awarded--</option>
+                <option value="">No</option>
+                <option {{ ($filter['awarded']=="1")? 'selected' : '' }} value="1">Yes</option>
+            </select>
+        </div>
+        <div class="col-sm-2">
             <div class="input-group form-group">
                 <div class="input-group-prepend"><span class="input-group-text"><span class="fa-calendar"></span></span></div>
                 <input class="form-control" id="daterange" type="text" value="{{ $filter['daterange'] }}" placeholder="Date Range">
@@ -158,6 +165,7 @@ setTimeout(function () {
                 let params = { 
                     daterange : $('#daterange').val(),
                     status : $('#status').val(),
+                    awarded : $('#awarded').val(),
                     campaign_id : $('#campaign_id').val(),
                     name : $('#name').val(),
                     page : $(this).val()
@@ -172,6 +180,7 @@ setTimeout(function () {
                 let params = { 
                     daterange : $('#daterange').val(),
                     status : $('#status').val(),
+                    awarded : $('#awarded').val(),
                     campaign_id : $('#campaign_id').val(),
                     name : $('#name').val(),
                 };

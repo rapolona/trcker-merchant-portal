@@ -50,6 +50,7 @@ class TicketController extends Controller
             'name' => $request->name,
             'campaignname' => $request->campaignname,
             'status' => $request->status,
+            'awarded' => $request->awarded,
             'daterange' => $request->daterange
         ];
 
@@ -77,7 +78,7 @@ class TicketController extends Controller
 
         
         $list = $this->merchantService->getAllTickets($data); 
-        print_r($list); exit();
+        //print_r($list); exit();
         $rows = [];
         $current_page = 1;
         $total_pages = 1;
