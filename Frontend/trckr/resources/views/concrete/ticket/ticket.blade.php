@@ -12,7 +12,7 @@
         </div>
         <div class="col-sm-2">
             <select class="form-control" name="campaign_id" id="campaign_id" style="">
-                <option>--Campaign--</option>
+                <option value="">--Campaign--</option>
                 @foreach ($campaigns as $campaign)
                 <option value="{{ $campaign->campaign_id }}">{{ $campaign->campaign_name }}</option>
                 @endforeach
