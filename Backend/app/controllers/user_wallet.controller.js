@@ -17,10 +17,14 @@ exports.awardTicketAmount = (req, res) => {
                 message: `Error sending money to user. Ticket has already been awarded.`
               });
         }
+        
+        ticket_data = data.get({plain:true})
+        console.log(ticket_data)
+        var current_reward = ticket_data.reward_amount 
 
         campaign_task_associations.findOne({where: {task_id: data.task_id, campaign_id: data.campaign_id} })
         .then(new_data => {
-            var new_wallet_value = 'current_amount + '+ new_data.reward_amount
+            var new_wallet_value = 'current_amount + '+ current_reward
             console.log(new_wallet_value)
             User_wallet.update({current_amount: db.Sequelize.literal(new_wallet_value) }, {
                 where: { user_id: data.user_id }

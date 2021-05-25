@@ -178,6 +178,7 @@ exports.findAll = (req, res) => {
       });
   };
 
+
 // Retrieve all Tasks from the database.
 exports.findAllforMerchant = (req, res) => {
   const merchant_id = req.body.merchantid;
@@ -296,6 +297,29 @@ exports.findOne = (req, res) => {
         });
       });
   };
+
+// Find a single Task with an id
+exports.duplicateFetch= (req, res) => {
+  const task_id = req.query.task_id
+  
+  
+
+  Task.findOne({where:{task_id:task_id},
+    attributes:{exclude:['task_id','task_classification_id','merchant_id','createdAt','updatedAt']},
+    include:{model:Task_Question, attributes:['question','label','index','required_inputs'],
+      include:{model:Task_Question_Choices,attributes:['choices_value','index','next_label']}}
+  })
+    .then(data => {
+      new_result=data.get({plain:true});
+      
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: "Error retrieving Task with id=" + id
+      });
+    });
+};
 
 // Update a Task by the id in the request
 exports.update = (req, res) => {

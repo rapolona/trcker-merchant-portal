@@ -18,6 +18,8 @@ module.exports = app => {
   
     // Update a Task with id
     router.put("/task", adminMiddleware.isAuthenticated, tasks.chainedUpdate);
+
+    router.get("/task/duplicateFetch", adminMiddleware.isAuthenticated, tasks.duplicateFetch);
   
     // Delete a Task with id
     //router.delete("/", tasks.delete);
