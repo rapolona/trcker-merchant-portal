@@ -67,7 +67,7 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.STRING(64)
       },
       campaign_type: {
-        type: Sequelize.STRING(64)
+        type: Sequelize.TEXT
       },
       last_updated_by: {
         type: Sequelize.STRING(64)

@@ -281,7 +281,7 @@ exports.approve = (req, res) => {
         data.rows.forEach((element,element_index) => {
           dataObj.push(element.get({plain:true}))
           //Loop below is for iterating through each task within task_details.
-          dataObj[element_index].reward_amount = element.campaign.campaign_task_associations[0].reward_amount
+          
           dataObj[element_index].task_name = element.task.task_name;
           delete dataObj[element_index].task
           delete dataObj[element_index].campaign.campaign_task_associations
