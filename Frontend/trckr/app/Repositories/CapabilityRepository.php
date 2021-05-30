@@ -86,4 +86,22 @@ class CapabilityRepository extends Repository
             $this->sessionExpired($e);
         }
     }
+
+    public function getProvinces()
+    {
+        try {
+            return $this->trackerApi('get', $this->api . 'capability/provinceGetAll', []);
+        } catch(\Exception $e) {
+            $this->sessionExpired($e);
+        }
+    }
+
+    public function getRegions()
+    {
+        try {
+            return $this->trackerApi('get', $this->api . 'capability/regionGetAll', []);
+        } catch(\Exception $e) {
+            $this->sessionExpired($e);
+        }
+    }
 }

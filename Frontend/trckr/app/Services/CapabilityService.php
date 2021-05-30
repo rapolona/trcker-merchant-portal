@@ -68,5 +68,15 @@ class CapabilityService
     {
         return $this->repository->getCities();
     }
+
+    public function getProvinces()
+    {
+        return $this->repository->getCities();
+    }
+
+    public function getRegions()
+    {
+        return $this->repository->getCities();
+    }
 }
 

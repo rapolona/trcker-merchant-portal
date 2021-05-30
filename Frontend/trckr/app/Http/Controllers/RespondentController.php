@@ -59,6 +59,19 @@ class RespondentController extends Controller
         return view('concrete.respondent.view', ['user' => $user]);
     }
 
+    public function edit($id, Request $request)
+    {
+        $user = $this->respondentService->get($id);
+
+        //print_r( $user ); exit();
+        return view('concrete.respondent.edit', ['user' => $user]);
+    }
+
+    public function update($id, Request $request)
+    {
+        $user = $this->respondentService->get($id);
+    }
+
     public function block($id, Request $request)
     {
         $validator = Validator::make($request->all(), [

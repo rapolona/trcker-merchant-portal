@@ -60,6 +60,7 @@
                             <td>{{ $user->status }}</td>
                             <td>{{ $user->settlement_account_type }}: {{ $user->settlement_account_number }}</td>
                             <td>
+                                <a href="{{ url('respondent/edit/'. $user->user_id  ) }}" class="btn btn-primary">edit</a>
                                 <a href="{{ url('respondent/'. $user->user_id  ) }}" class="btn btn-primary">view</a>
                             </td>
                         </tr>
