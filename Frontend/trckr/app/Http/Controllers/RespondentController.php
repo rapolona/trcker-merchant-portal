@@ -69,8 +69,8 @@ class RespondentController extends Controller
         $provinces = $this->capabilityService->getProvinces();
         $regions = $this->capabilityService->getRegions();
 
-        print_r( $user ); 
-        exit();
+       // print_r( $user ); 
+       // exit();
         return view('concrete.respondent.edit', [
             'user' => $user,
             'cities' => $cities,
