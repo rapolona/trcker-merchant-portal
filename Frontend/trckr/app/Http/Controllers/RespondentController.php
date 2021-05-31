@@ -69,9 +69,7 @@ class RespondentController extends Controller
         $provinces = $this->capabilityService->getProvinces();
         $regions = $this->capabilityService->getRegions();
 
-        print_r( $cities ); 
-        print_r( $provinces ); 
-        print_r( $regions ); 
+        print_r( $user ); 
         exit();
         return view('concrete.respondent.edit', [
             'user' => $user,
@@ -79,6 +77,45 @@ class RespondentController extends Controller
             'provinces' => $cities,
             'regions' => $cities,
         ]);
+
+        /* CITIES
+    [18] => stdClass Object
+        (
+            [Id] => 21
+            [Psgccode] => 012821000
+            [label] => Sarrat
+            [Regdesc] => 01
+            [Provcode] => 0128
+            [value] => 012821
+            [createdAt] => 2021-02-08T07:12:53.000Z
+            [updatedAt] => 2021-02-08T07:12:53.000Z
+        )
+        */
+
+        /* Province
+    [86] => stdClass Object
+        (
+            [Id] => 88
+            [Psgccode] => 168500000
+            [label] => Dinagat Islands
+            [Regcode] => 16
+            [Provcode] => 1685
+            [createdAt] => 2021-02-08T07:13:23.000Z
+            [updatedAt] => 2021-02-08T07:13:23.000Z
+        )
+        */
+
+         /* REGION
+    [0] => stdClass Object
+        (
+            [Id] => 1
+            [label] => Region I (Ilocos Region)
+            [regionCode] => 01
+            [createdAt] => 2021-02-08T07:13:55.000Z
+            [updatedAt] => 2021-02-08T07:13:55.000Z
+        )
+        */
+
     }
 
     public function update($id, Request $request)
