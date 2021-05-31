@@ -71,12 +71,12 @@ class CapabilityService
 
     public function getProvinces()
     {
-        return $this->repository->getCities();
+        return $this->repository->getProvinces();
     }
 
     public function getRegions()
     {
-        return $this->repository->getCities();
+        return $this->repository->getRegions();
     }
 }
 

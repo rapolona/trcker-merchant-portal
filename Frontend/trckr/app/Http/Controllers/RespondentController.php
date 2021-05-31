@@ -5,18 +5,21 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use App\Services\RespondentService;
+use App\Services\CapabilityService;
 use Response, Config, Validator;
 
 class RespondentController extends Controller
 {
 
     private $respondentService;
+    private $capabilityService;
 
     private $defaultPerPage;
 
-    public function __construct(RespondentService $respondentService)
+    public function __construct(RespondentService $respondentService, CapabilityService $capabilityService)
     {
         $this->respondentService = $respondentService;
+        $this->capabilityService = $capabilityService;
         $this->defaultPerPage = Config::get('trckr.table_pagination');
     }
 
@@ -62,9 +65,20 @@ class RespondentController extends Controller
     public function edit($id, Request $request)
     {
         $user = $this->respondentService->get($id);
+        $cities = $this->capabilityService->getCities();
+        $provinces = $this->capabilityService->getProvinces();
+        $regions = $this->capabilityService->getRegions();
 
-        //print_r( $user ); exit();
-        return view('concrete.respondent.edit', ['user' => $user]);
+        vardump( $cities ); 
+        vardump( $provinces ); 
+        vardump( $regions ); 
+        exit();
+        return view('concrete.respondent.edit', [
+            'user' => $user,
+            'cities' => $cities,
+            'provinces' => $cities,
+            'regions' => $cities,
+        ]);
     }
 
     public function update($id, Request $request)
