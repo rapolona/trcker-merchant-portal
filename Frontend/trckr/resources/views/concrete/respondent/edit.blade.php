@@ -154,3 +154,10 @@
         });
     </script>
 @stop
+
+@section('js')
+    <script type="text/javascript" src="{{url('/js/jquery.ph-locations-v1.0.0.js')}}"></script>
+    <script type="text/javascript">
+
+    </script>
+@endsection
