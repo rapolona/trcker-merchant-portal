@@ -2,157 +2,154 @@
 
 @section('content')
 <section>
-    <div class="row no-gutters">
-        <div class="col-md-4 col-lg-3 col-xxl-2 bg-100">
-            <div class="px-3 py-4">
-                <div class="panel">
-                    <div class="panel-body">
-                        <div class="list-block-container">
-                            <div class="list-block-title">User Details</div>
-                            <table class="table table-hover table-align-1 table-vertical-align">
-                            	<tbody>
-                            		<tr>
-                            			<td align="right"><strong>Name: </strong></td>
-                            			<td>{{ $user->first_name }} {{ $user->last_name }}</td>
-                            		</tr>
-                            		<tr>
-                            			<td><strong>Level: </strong></td>
-                            			<td>{{ $user->account_level }}</td>
-                            		</tr>
-                            		<tr>
-                            			<td><strong>Age: </strong></td>
-                            			<td>{{ $user->age }}</td>
-                            		</tr>
-                            		<tr>
-                            			<td><strong>Birthday: </strong></td>
-                            			<td>{{ date('Y-m-d', strtotime($user->birthday)) }}</td>
-                            		</tr>
-                            		<tr>
-                            			<td><strong>Gender: </strong></td>
-                            			<td>{{ $user->gender }}</td>
-                            		</tr>
-                            		<tr>
-                            			<td><strong>Email: </strong></td>
-                            			<td>{{ $user->email }}</td>
-                            		</tr>
-                            		<tr>
-                            			<td><strong>Settlement: </strong></td>
-                            			<td>{{ $user->settlement_account_type }}: {{ $user->settlement_account_number }}</td>
-                            		</tr>
-                            		<tr>
-                            			<td><strong>Account Creation: </strong></td>
-                            			<td>{{ date('Y-m-d', strtotime($user->createdAt)) }}</td>
-                            		</tr>
-                            	</tbody>
-                            </table>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
+    <div class="panel">
+        <div class="panel-header">
+            <div class="panel-title">Respondent Details</div>
         </div>
-        <div class="col-md-8 col-lg-9 col-xxl-10 border-md-left">
-            <div class="bg-white">
-                <div class="group-15 p-3 d-flex flex-wrap justify-content-lg-between">
-                    <div class="row" >
-                        <div style="float: left" >
-                            <a id="block" class="btn btn-danger"><span class="fa-remove"></span> Block</a>
+        <div class="panel-body">
+            <form method="post">
+                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                <div class="row row-30">
+                    <div class="col-md-6">
+                        <div class="input-group form-group">
+                            <div class="input-group-prepend"><span class="input-group-text"><span class="fa-institution"></span></span></div>
+                            <input class="form-control  {{ $errors->first('address')? 'form-control-danger' : '' }}" type="text" value="{{ old('name') }}" name="name" placeholder="Branch Name">
                         </div>
+                        @if($errors->first('name'))
+                            <div class="tag-manager-container">
+                                <span class="tm-tag badge badge-danger" ><span>{{ $errors->first('name') }}</span></span>
+                            </div>
+                        @endif
+                        <div class="input-group form-group">
+                            <select name="brand" data-placeholder="Brand" class="select2 {{ $errors->first('brand')? 'form-control-danger' : '' }}">
+                                <option label="placeholder"></option>
+                                @foreach ($filters->brand as $option)
+                                    @if(!empty($option))
+                                        <option {{ (old('brand')==$option)? 'selected="selected"' : '' }} value="{{ $option }}">{{ $option }}</option>
+                                    @endif
+                                @endforeach
+                            </select>
+                        </div>
+                        @if($errors->first('brand'))
+                            <div class="tag-manager-container">
+                                <span class="tm-tag badge badge-danger" ><span>{{ $errors->first('brand') }}</span></span>
+                            </div>
+                        @endif
+                        <div class="input-group form-group">
+                            <div class="input-group-prepend"><span class="input-group-text"><span class="fa-address-card-o"></span></span></div>
+                            <input class="form-control {{ $errors->first('address')? 'form-control-danger' : '' }}" type="text" name="address" value="{{ old('address') }}" placeholder="Address">
+                        </div>
+                        @if($errors->first('address'))
+                            <div class="tag-manager-container">
+                                <span class="tm-tag badge badge-danger" ><span>{{ $errors->first('address') }}</span></span>
+                            </div>
+                        @endif
+                        <div class="input-group form-group">
+                            <select name="region" data-placeholder="Region" class="select2 {{ $errors->first('region')? 'form-control-danger' : '' }}">
+                                <option label="placeholder"></option>
+                                @foreach ($filters->region as $option)
+                                    @if(!empty($option))
+                                        <option {{ (old('region')==$option)? 'selected="selected"' : '' }} value="{{ $option }}">{{ $option }}</option>
+                                    @endif
+                                @endforeach
+                            </select>
+                        </div>
+                        @if($errors->first('region'))
+                            <div class="tag-manager-container">
+                                <span class="tm-tag badge badge-danger" ><span>{{ $errors->first('region') }}</span></span>
+                            </div>
+                        @endif
+                        <div class="input-group form-group">
+                            <div class="input-group-prepend"><span class="input-group-text"><span class="fa-map-marker"></span></span></div>
+                            <input class="form-control {{ $errors->first('latitude')? 'form-control-danger' : '' }}" type="text" name="latitude" value="{{ old('latitude') }}" placeholder="Latitude">
+                        </div>
+                        @if($errors->first('latitude'))
+                            <div class="tag-manager-container">
+                                <span class="tm-tag badge badge-danger" ><span>{{ $errors->first('latitude') }}</span></span>
+                            </div>
+                        @endif
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="input-group form-group">
+                            <select name="business_type" data-placeholder="Business Type" class="select2 {{ $errors->first('business_type')? 'form-control-danger' : '' }}">
+                                <option label="placeholder"></option>
+                                @foreach ($filters->business_type as $option)
+                                    @if(!empty($option))
+                                        <option {{ (old('business_type')==$option)? 'selected="selected"' : '' }} value="{{ $option }}">{{ $option }}</option>
+                                    @endif
+                                @endforeach
+                            </select>
+                        </div>
+                        @if($errors->first('business_type'))
+                            <div class="tag-manager-container">
+                                <span class="tm-tag badge badge-danger" ><span>{{ $errors->first('business_type') }}</span></span>
+                            </div>
+                        @endif
+                        <div class="input-group form-group">
+                            <select name="store_type" data-placeholder="Store Type" class="select2 {{ $errors->first('store_type')? 'form-control-danger' : '' }}">
+                                <option label="placeholder"></option>
+                                @foreach ($filters->store_type as $option)
+                                    @if(!empty($option))
+                                        <option {{ (old('store_type')==$option)? 'selected="selected"' : '' }} value="{{ $option }}">{{ $option }}</option>
+                                    @endif
+                                @endforeach
+                            </select>
+                        </div>
+                        @if($errors->first('store_type'))
+                            <div class="tag-manager-container">
+                                <span class="tm-tag badge badge-danger" ><span>{{ $errors->first('store_type') }}</span></span>
+                            </div>
+                        @endif
+                        <div class="input-group form-group">
+                            <select name="city" data-placeholder="City" class="select2 {{ $errors->first('city')? 'form-control-danger' : '' }}">
+                                <option label="placeholder"></option>
+                                @foreach ($filters->city as $option)
+                                    @if(!empty($option))
+                                        <option {{ (old('city')==$option)? 'selected="selected"' : '' }} value="{{ $option }}">{{ $option }}</option>
+                                    @endif
+                                @endforeach
+                            </select>
+                        </div>
+                        @if($errors->first('city'))
+                            <div class="tag-manager-container">
+                                <span class="tm-tag badge badge-danger" ><span>{{ $errors->first('city') }}</span></span>
+                            </div>
+                        @endif
+                        <div class="input-group form-group">
+                            <select name="province" data-placeholder="Province" class="select2 {{ $errors->first('province')? 'form-control-danger' : '' }}">
+                                <option label="placeholder"></option>
+                                @foreach ($filters->province as $option)
+                                    @if(!empty($option))
+                                        <option {{ (old('province')==$option)? 'selected="selected"' : '' }} value="{{ $option }}">{{ $option }}</option>
+                                    @endif
+                                @endforeach
+                            </select>
+                        </div>
+                        @if($errors->first('province'))
+                            <div class="tag-manager-container">
+                                <span class="tm-tag badge badge-danger" ><span>{{ $errors->first('province') }}</span></span>
+                            </div>
+                        @endif
+                        <div class="input-group form-group">
+                            <div class="input-group-prepend"><span class="input-group-text"><span class="fa-map-marker"></span></span></div>
+                            <input class="form-control {{ $errors->first('longitude')? 'form-control-danger' : '' }}" type="text" name="longitude" value="{{ old('longitude') }}" placeholder="Longitude">
+                        </div>
+                        @if($errors->first('longitude'))
+                            <div class="tag-manager-container">
+                                <span class="tm-tag badge badge-danger" ><span>{{ $errors->first('longitude') }}</span></span>
+                            </div>
+                        @endif
+                    </div>
+
+                    <div class="col-sm-12 text-right">
+                        <button class="btn btn-primary" type="submit">Save Branch</button>
                     </div>
                 </div>
-                <div class="table-responsive" style="padding-left: 10px; padding-right: 10px">
-                	<div><strong>Payout Requests</strong></div>
-                    <table class="table table-hover table-align-1 table-vertical-align data-table" data-table-lengthChange="true" data-page-length="5">
-                        <thead>
-                        <tr>
-                            <th scope="col">Request Date</th>
-                            <th scope="col">Amount</th>
-                            <th scope="col">Remarks</th>
-                            <th scope="col">Status</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($user->user_payout_requests as $payout)
-                            <tr>
-                                <td>{{ date('Y-m-d', strtotime($payout->createdAt)) }}</td>
-                                <td>{{ $payout->amount }}</td>
-                                <td>{{ $payout->reference_id }}</td>
-                                <td>{{ $payout->status }}</td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-                <hr />
-                <div class="table-responsive" style="padding-left: 10px; padding-right: 10px">
-                	<div><strong>Tickets</strong></div>
-                    <table class="table table-hover table-align-1 table-vertical-align data-table" data-table-lengthChange="true" data-page-length="10">
-                        <thead>
-                        <tr>
-                            <th scope="col">ID</th>
-                            <th scope="col">Status</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($user->task_tickets as $ticket)
-                            <tr>
-                                <td>{{ $ticket->task_ticket_id }}</td>
-                                <td>{{ $ticket->approval_status }}</td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+            </form>
         </div>
     </div>
 </section>
-@stop
-
-
-@section('js')
-    <script type="text/javascript">
-
-        $(document).ready(function (e) {
-
-            $("#block").click(function(){
-                let url = "{{ url('respondent/block/'.$user->user_id ) }}";
-                $.confirm({
-                    title: 'Hustle',
-                    content: '' +
-                    '<form action="" class="formName">' +
-                    '<div class="form-group">' +
-                    '<label>Reason for Blocking this user:</label>' +
-                    '<input type="text" placeholder="Reason" class="reason form-control" required />' +
-                    '</div>' +
-                    '</form>',
-                    buttons: {
-                        formSubmit: {
-                            text: 'Submit',
-                            btnClass: 'btn-blue',
-                            action: function () {
-                                var reasons = this.$content.find('.reason').val();
-                                if(!reasons){
-                                    $.alert('provide a valid reason');
-                                    return false;
-                                }
-                                let params = { reason : reasons };
-                                let str = jQuery.param( params );
-                                window.location = url + '?' + str;
-                            }
-                        },
-                        cancel: function () {
-                            //close
-                        },
-                    },
-                    onContentReady: function () {
-                        // DO NOTHING
-                    }
-                });
-            });
-
-        });
-    </script>
 @stop
 
 @section('js')
