@@ -11,7 +11,7 @@
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                 <div class="row row-30">
                     <div class="col-md-12">
-                        
+
                         <div class="input-group form-group">
                             <div class="input-group-prepend"><span class="input-group-text">First Name</span></div>
                             <input class="form-control  {{ $errors->first('address')? 'form-control-danger' : '' }}" type="text" value="{{ old('name') }}" name="name" placeholder="Branch Name">
@@ -33,6 +33,8 @@
                         <div class="input-group form-group">
                             <div class="input-group-prepend"><span class="input-group-text"><span class="fa-map-marker"></span></span></div>
                             <input class="form-control {{ $errors->first('latitude')? 'form-control-danger' : '' }}" type="text" name="latitude" value="{{ old('latitude') }}" placeholder="Latitude">
+
+                            <select name="city" id="my-city-dropdown"></select>
                         </div>
                     </div>
 
