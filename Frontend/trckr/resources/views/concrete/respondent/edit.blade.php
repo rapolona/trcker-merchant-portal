@@ -10,32 +10,47 @@
             <form method="post">
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                 <div class="row row-30">
-                    <div class="col-md-12">
-
+                    <div class="col-md-6">
                         <div class="input-group form-group">
                             <div class="input-group-prepend"><span class="input-group-text">First Name</span></div>
-                            <input class="form-control  {{ $errors->first('address')? 'form-control-danger' : '' }}" type="text" value="{{ old('name') }}" name="name" placeholder="Branch Name">
+                            <input class="form-control  {{ $errors->first('first_name')? 'form-control-danger' : '' }}" type="text" value="{{ old('first_name') }}" name="first_name">
                         </div>
+                    </div>
+                    <div class="col-md-6">
                         <div class="input-group form-group">
-                            <select name="brand" data-placeholder="Brand" class="select2 {{ $errors->first('brand')? 'form-control-danger' : '' }}">
-                                <option label="placeholder"></option>
+                            <div class="input-group-prepend"><span class="input-group-text">Last Name</span></div>
+                            <input class="form-control  {{ $errors->first('last_name')? 'form-control-danger' : '' }}" type="text" value="{{ old('last_name') }}" name="last_name">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-group form-group">
+                            <div class="input-group-prepend"><span class="input-group-text">Email</span></div>
+                            <input class="form-control  {{ $errors->first('email')? 'form-control-danger' : '' }}" type="text" value="{{ old('email') }}" name="email">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-group form-group">
+                            <div class="input-group-prepend"><span class="input-group-text">Birthday</span></div>
+                            <input class="form-control  {{ $errors->first('birthday')? 'form-control-danger' : '' }}" type="text" value="{{ old('birthday') }}" name="birthday">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-group form-group">
+                            <div class="input-group-prepend"><span class="input-group-text">Gender</span></div>
+                            <select class="form-control {{ $errors->first('gender')? 'form-control-danger' : '' }} name="gender">
+                                <option>Male</option>
+                                <option>Female</option>
                             </select>
                         </div>
+                    <div>
+                        <div class="col-md-6">
                         <div class="input-group form-group">
-                            <div class="input-group-prepend"><span class="input-group-text"><span class="fa-address-card-o"></span></span></div>
-                            <input class="form-control {{ $errors->first('address')? 'form-control-danger' : '' }}" type="text" name="address" value="{{ old('address') }}" placeholder="Address">
-                        </div>
-                        <div class="input-group form-group">
-                            <select name="region" data-placeholder="Region" class="select2 {{ $errors->first('region')? 'form-control-danger' : '' }}">
-                                <option label="placeholder"></option>
+                            <div class="input-group-prepend"><span class="input-group-text">Account Level</span></div>
+                            <select class="form-control {{ $errors->first('gender')? 'form-control-danger' : '' }} name="account_level">
+                                <option>basic</option>
                             </select>
                         </div>
-                        <div class="input-group form-group">
-                            <div class="input-group-prepend"><span class="input-group-text"><span class="fa-map-marker"></span></span></div>
-                            <input class="form-control {{ $errors->first('latitude')? 'form-control-danger' : '' }}" type="text" name="latitude" value="{{ old('latitude') }}" placeholder="Latitude">
-                        </div>
-
-                                <div>
+                    <div>
             <table>
                 <tr>
                     <td>Region</td>
@@ -80,13 +95,6 @@
 
                     var province_code = $(this).val();
                     $('#city').ph_locations( 'fetch_list', [{"province_code": province_code}]);
-                },
-
-
-                fill_barangays: function(){
-
-                    var city_code = $(this).val();
-                    $('#barangay').ph_locations('fetch_list', [{"city_code": city_code}]);
                 }
             };
 
