@@ -42,34 +42,59 @@
                                 <option>Female</option>
                             </select>
                         </div>
-                    <div>
-                        <div class="col-md-6">
+                    </div>
+                    <div class="col-md-6">
                         <div class="input-group form-group">
                             <div class="input-group-prepend"><span class="input-group-text">Account Level</span></div>
                             <select class="form-control {{ $errors->first('gender')? 'form-control-danger' : '' }} name="account_level">
                                 <option>basic</option>
                             </select>
                         </div>
-                    <div>
-            <table>
-                <tr>
-                    <td>Region</td>
-                    <td><select id="region"></select></td>
-                </tr>
-                <tr>
-                    <td>Province</td>
-                    <td><select id="province"></select></td>
-                </tr>
-                <tr>
-                    <td>City</td>
-                    <td><select id="city"></select></td>
-                </tr>
-            </table>
-
-        </div>
                     </div>
+                </div>
 
-                    <div class="col-sm-12 text-right">
+                <div class="row row-30">
+                    <div class="col-md-12"><h3>Address</h3></div>
+                    <div class="col-md-6">
+                        <div class="input-group form-group">
+                            <div class="input-group-prepend"><span class="input-group-text">Region</span></div>
+                            <select class="form-control {{ $errors->first('regionId')? 'form-control-danger' : '' }} name="regionId" id="region">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-group form-group">
+                            <div class="input-group-prepend"><span class="input-group-text">Province</span></div>
+                            <select class="form-control {{ $errors->first('provinceId')? 'form-control-danger' : '' }} name="provinceId" id="province">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-group form-group">
+                            <div class="input-group-prepend"><span class="input-group-text">City</span></div>
+                            <select class="form-control {{ $errors->first('cityId')? 'form-control-danger' : '' }} name="cityId" id="city">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-group form-group">
+                            <div class="input-group-prepend"><span class="input-group-text">Residence Type</span></div>
+                            <select class="form-control {{ $errors->first('residence_type')? 'form-control-danger' : '' }} name="residence_type">
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row row-30">
+                    <div class="col-md-12"><h3>Occupation Details</h3></div>
+                </div>
+  
+                <div class="row row-30">
+                    <div class="col-md-12"><h3>Settlement Account</h3></div>
+                </div>
+
+                <div class="row row-30">
+                    <div class="col-md-12">
                         <button class="btn btn-primary" type="submit">Update</button>
                     </div>
                 </div>
