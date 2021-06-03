@@ -87,10 +87,63 @@
 
                 <div class="row row-30">
                     <div class="col-md-12"><h3>Occupation Details</h3></div>
+                    <div class="col-md-6">
+                        <div class="input-group form-group">
+                            <div class="input-group-prepend"><span class="input-group-text">Job</span></div>
+                            <input class="form-control  {{ $errors->first('occupation')? 'form-control-danger' : '' }}" type="text" value="{{ old('occupation') }}" name="occupation">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-group form-group">
+                            <div class="input-group-prepend"><span class="input-group-text">Industry</span></div>
+                            <select class="form-control {{ $errors->first('industry')? 'form-control-danger' : '' }} name="industry" >
+                                <option>BPO</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-group form-group">
+                            <div class="input-group-prepend"><span class="input-group-text">Employment Status</span></div>
+                            <select class="form-control {{ $errors->first('employment_status')? 'form-control-danger' : '' }} name="employment_status" >
+                                <option>Probitionary</option>
+                                <option>Regular</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-group form-group">
+                            <div class="input-group-prepend"><span class="input-group-text">Monthly Income</span></div>
+                            <select class="form-control {{ $errors->first('monthly_income')? 'form-control-danger' : '' }} name="monthly_income">
+                                <option>1,000-10,000</option>
+                                <option>10,000-50,000</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
   
                 <div class="row row-30">
                     <div class="col-md-12"><h3>Settlement Account</h3></div>
+                    <div class="col-md-6">
+                        <div class="input-group form-group">
+                            <div class="input-group-prepend"><span class="input-group-text">Mobile Number</span></div>
+                            <input class="form-control  {{ $errors->first('mobile_phone_number')? 'form-control-danger' : '' }}" type="text" value="{{ old('mobile_phone_number') }}" name="mobile_phone_number">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-group form-group">
+                            <div class="input-group-prepend"><span class="input-group-text">Account Number</span></div>
+                            <input class="form-control  {{ $errors->first('settlement_account_number')? 'form-control-danger' : '' }}" type="text" value="{{ old('settlement_account_number') }}" name="settlement_account_number">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-group form-group">
+                            <div class="input-group-prepend"><span class="input-group-text">Account Type</span></div>
+                            <select class="form-control {{ $errors->first('settlement_account_type')? 'form-control-danger' : '' }} name="settlement_account_type">
+                                <option>GCash</option>
+                                <option>Paymaya</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="row row-30">
