@@ -717,7 +717,7 @@ exports.getCampaignGallery = (req,res) => {
   }
   var skip_number_of_items = (page_number * count_per_page) - count_per_page
   Task_Ticket.findAndCountAll({
-    where: {campaign_id: campaign_id}, include: [{model:Task_Detail, include:[{model:Task_Question, where:{required_inputs: "IMAGE"}}]}],
+    where: {campaign_id: campaign_id, approval_status: "APPROVED"}, include: [{model:Task_Detail, include:[{model:Task_Question, where:{required_inputs: "IMAGE"}}]}],
     limit:count_per_page, offset:skip_number_of_items
   })
   .then(data =>{
