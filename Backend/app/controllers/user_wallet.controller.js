@@ -3,6 +3,7 @@ const db = require("../models");
 const User_wallet = db.user_wallets;
 const Task_ticket = db.task_tickets;
 const Op = db.Sequelize.Op;
+const User_Wallet_Audit = db.user_wallet_audit;
 
 exports.awardTicketAmount = (req, res) => {
     const merchant_id = req.body.merchantid;
@@ -118,4 +119,63 @@ exports.awardAllTicketsUnderCampaign = (req, res) => {
         })
       })
     })
+}
+
+exports.editWallet = (req, res) =>{
+  const user_id = req.body.user_id
+  const amount = req.body.amount
+  const addOrRemoveFlag = req.body.operation
+  var updatedAtTime = new Date()
+  updatedAtTime = updatedAtTime.setTime(updatedAtTime.getTime() - (updatedAtTime.getTimezoneOffset()*60000))
+  var addOrRemoveString = ""
+
+  const user_wallet_audit_obj = {
+    amount_changed_to: amount,
+    last_updated_by: req.body.adminid,
+    last_updated_by_type: "ADMIN"
+  }
+
+  switch(addOrRemoveFlag){
+    case "add":
+      addOrRemoveString = "+";
+      break;
+    case "subtract":
+      addOrRemoveString = "-";
+      break;
+    default:
+      addOrRemoveString = ""
+  }
+
+  User_wallet.update({current_amount:db.sequelize.literal(`current_amount${addOrRemoveString}${amount}`), updatedAt: updatedAtTime}, {where:{user_id : user_id}})
+  .then(num => {
+    if(num == 1 ){
+      User_wallet.findOne({where:{user_id:user_id}})
+      .then(data => {
+        if(data){
+          user_wallet_audit_obj.amount_changed_to = data.current_amount
+          User_Wallet_Audit.create(user_wallet_audit_obj)
+      .then(data  => {
+        if(data){
+          res.send({message: "Updated wallet amount succesfully"})
+        }
+        else{
+          res.status(500).send({message: "No audit created"})
+        }
+      })
+      .catch(err => {
+        console.log(err)
+        res.status(500).send({
+          message: "Error creating audit"
+        })
+      })
+        }
+      })
+    }
+  })
+  .catch(err => {
+    console.log(err)
+    res.status(500).send({
+      message: "Error updating wallet"
+    })
+  })
 }

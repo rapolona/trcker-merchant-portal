@@ -74,6 +74,7 @@ db.users.hasOne(db.userdetails, { foreignKey: "user_id", as:"userDetails"});
 db.userdetails.belongsTo(db.users, {foreignKey: "user_id", as:"users"});
 db.userdetails.hasMany(db.task_tickets, {foreignKey:'user_id', sourceKey: 'user_id', targetKey: 'user_id'});
 db.userdetails.hasMany(db.userpayoutrequests, {foreignKey:'user_id', sourceKey: 'user_id', targetKey: 'user_id'})
+db.user_wallet_audit = require("./user_wallet_audit.model.js")(sequelize,Sequelize)
 //User rewards related tables
 db.user_wallets = require("./user_wallet.model.js")(sequelize, Sequelize);
 
