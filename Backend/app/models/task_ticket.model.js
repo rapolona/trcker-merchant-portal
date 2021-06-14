@@ -23,6 +23,10 @@ module.exports = (sequelize, Sequelize) => {
       approval_status: {
         type: Sequelize.STRING(64)
       },
+      reward_amount:{
+        type: Sequelize.INTEGER,
+        allowNull: true
+      },
       awarded: {
         type: Sequelize.BOOLEAN,
         defaultValue: false
